@@ -1,0 +1,7 @@
+@import "./colors.scss";
+
+.customButton:hover {
+  background-color: $HOVER_COLOR !important;
+  outline: 1px solid $HOVER_COLOR;
+  transition: 0.2s;
+}

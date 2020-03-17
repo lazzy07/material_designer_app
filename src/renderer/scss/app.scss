@@ -1,0 +1,68 @@
+@import "./colors.scss";
+
+body {
+  background-color: $DEFAULT_BACKGROUND_COLOR;
+  color: $FONT_COLOR;
+  font-family: "adRegular";
+  user-select: none;
+  overflow-x: hidden;
+}
+
+h1 {
+  color: $IMPORTANT_FONT_COLOR;
+  font-family: "adBold";
+}
+
+h2 {
+  color: $IMPORTANT_FONT_COLOR;
+  font-family: "adBold";
+}
+
+h3 {
+  color: $IMPORTANT_FONT_COLOR;
+  font-family: "adBold";
+}
+
+h4 {
+  color: $IMPORTANT_FONT_COLOR;
+  font-family: "adBold";
+}
+
+h5 {
+  color: $IMPORTANT_FONT_COLOR;
+  font-family: "adBold";
+}
+
+h6 {
+  color: $IMPORTANT_FONT_COLOR;
+  font-family: "adBold";
+}
+
+p {
+  color: $FONT_COLOR;
+}
+
+@font-face {
+  font-family: "adBold";
+  src: url("../fonts/AdventPro-Bold.ttf");
+}
+
+@font-face {
+  font-family: "adRegular";
+  src: url("../fonts/AdventPro-Regular.ttf");
+}
+
+.container-after-titlebar {
+  overflow-x: hidden !important;
+}
+
+.clickableText {
+  font-weight: bolder;
+  color: $IMPORTANT_FONT_COLOR;
+  cursor: pointer;
+}
+
+.clickableText:hover {
+  text-decoration: underline;
+  text-decoration-color: $IMPORTANT_FONT_COLOR;
+}

@@ -1,0 +1,21 @@
+export const colors = {
+  LIGHT_GREY: "#364346",
+  DARK_GREY: "#293538",
+  DARKER_GREY: "#20292b",
+  LIGHTER_GREY: "#5a6f72",
+  LIGHTEST_GREY: "#b3b6b6",
+  WHITE_GREY: "#cfd5d6",
+  RED: "#e8232d",
+  CYAN: "#00acc1"
+};
+
+export const defaultColors = {
+  DEFAULT_BACKGROUND_COLOR: colors.DARK_GREY,
+  IMPORTANT_BACKGROUND_COLOR: colors.DARKER_GREY,
+  FONT_COLOR: colors.LIGHTEST_GREY,
+  IMPORTANT_FONT_COLOR: colors.WHITE_GREY,
+  ERROR_COLOR: colors.RED,
+  PRIMARY_COLOR: colors.CYAN,
+  DISABLED_FONT_COLOR: colors.LIGHTER_GREY,
+  HOVER_COLOR: colors.LIGHTER_GREY
+};
