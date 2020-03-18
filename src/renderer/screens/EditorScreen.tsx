@@ -9,7 +9,7 @@ interface State {
   loading: boolean;
 }
 
-export default class MainScreen extends Component<Props, State> {
+export default class EditorScreen extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -18,10 +18,7 @@ export default class MainScreen extends Component<Props, State> {
     };
   }
 
-  componentDidMount = () => {
-    ipcRenderer.send(IpcMessages.LOAD_LOGIN_PAGE);
-    remote.getCurrentWindow().close();
-  };
+  componentDidMount = () => {};
 
   render() {
     const { loading } = this.state;

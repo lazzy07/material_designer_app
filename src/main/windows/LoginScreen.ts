@@ -5,7 +5,6 @@ export class LoginScreen {
   private url = "";
   constructor(url: string) {
     this.url = url;
-    this.createScreen();
   }
 
   createScreen() {

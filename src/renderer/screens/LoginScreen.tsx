@@ -4,6 +4,8 @@ import InputBox from "../components/form/InputBox";
 import Button from "../components/form/Button";
 import { faUser, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { IpcMessages } from "../../IpcMessages";
+import { ipcRenderer, remote } from "electron";
 
 interface Props {}
 
@@ -66,6 +68,15 @@ class LoginScreen extends Component<Props & RouteComponentProps, State> {
     return this.setState({
       errorPassword: "Must be atleast 6 characters long"
     });
+  };
+
+  startWithoutSignin = () => {
+    this.loadEditorScreen();
+  };
+
+  loadEditorScreen = () => {
+    ipcRenderer.send(IpcMessages.LOAD_EDITOR_PAGE);
+    remote.getCurrentWindow().close();
   };
 
   render() {
@@ -165,6 +176,18 @@ class LoginScreen extends Component<Props & RouteComponentProps, State> {
                   title="Sign Up"
                   background="rgba(0,0,0,0)"
                 />
+              </div>
+              <div
+                style={{
+                  marginTop: 20,
+                  width: "100%",
+                  textAlign: "center",
+                  fontWeight: "bolder"
+                }}
+              >
+                <p className="clickableText" onClick={this.startWithoutSignin}>
+                  Start without signing in
+                </p>
               </div>
             </div>
           </div>
