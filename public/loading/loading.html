@@ -5,10 +5,84 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <style>
+    @font-face {
+      font-family: "adRegular";
+      src: url("./dependencies/fonts/AdventPro-Regular.ttf");
+    }
+
+    body {
+      font-family: "adRegular";
+      user-select: none;
+      overflow-x: hidden;
+    }
+
+    p {
+      margin: 0px;
+      padding: 2px;
+    }
+  </style>
 </head>
 
-<body style="background-color: black;">
+<body style="background-color: #20292b;overflow: hidden;">
+  <div style="display: flex;">
+    <div style="flex: 1;position: relative;">
+      <div style="display: flex;position: absolute;top: 50%;left: 50%;" class="el" id="js-el"></div>
+      <div style="width: 100%;height: 100vh;display: flex;justify-content: center;align-items: center;">
+        <img width="120px" src="./dependencies/img/icon_trans.png" />
+      </div>
+    </div>
+    <div
+      style="flex: 1;display: flex;text-align: left;color: #b3b6b6;flex-direction: column;padding-right: 10px;padding-top: 50px;padding-left: 10px;">
+      <h1 style="font-weight: bolder;color: #009688;">Material Designer</h1>
+      <p>Created by Cyborg studios, Kandy, Sri Lanka</p>
+      <p>A free and opensource texture designer for commercial and private use. Licenced under MIT Licence.</p>
+      <p style="padding-top: 10px;">A @lazzy07 production</p>
+    </div>
+  </div>
+  <script src="./dependencies/js/mo.js"></script>
 
+  <script>
+    const opt = {
+      parent: '#js-el',
+      radius: {
+        80: 160
+      },
+      children: {
+        duration: 2000,
+        radius: {
+          2: 1
+        },
+        fill: {
+          "#b3b6b6": "#b3b6b6"
+        }
+      },
+      count: 40
+    }
+
+
+    const burst1 = new mojs.Burst({
+      ...opt
+    })
+
+    const burst2 = new mojs.Burst({
+      ...opt,
+      timeline: {
+        delay: 200
+      }
+    })
+
+    const burst3 = new mojs.Burst({
+      ...opt,
+      timeline: {
+        delay: 600
+      }
+    })
+
+    new mojs.Timeline({
+      repeat: 9999
+    }).add([burst1, burst2, burst3]).play()
+  </script>
 </body>
 
 </html>

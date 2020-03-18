@@ -6,7 +6,7 @@ export const colors = {
   LIGHTEST_GREY: "#b3b6b6",
   WHITE_GREY: "#cfd5d6",
   RED: "#e8232d",
-  CYAN: "#00acc1"
+  CYAN: "#009688"
 };
 
 export const defaultColors = {
