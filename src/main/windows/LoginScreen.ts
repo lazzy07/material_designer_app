@@ -9,8 +9,8 @@ export class LoginScreen {
 
   createScreen() {
     this.window = new BrowserWindow({
-      width: 900,
-      height: 600,
+      width: 800,
+      height: 500,
       resizable: false,
       frame: false,
       webPreferences: {

@@ -37,7 +37,7 @@ export class EditorScreen {
       windowOpts: mainOptions,
       templateUrl: `${__dirname}/loading/loading.html`,
       splashScreenOpts: {
-        width: 600,
+        width: 700,
         height: 400
       }
     };
