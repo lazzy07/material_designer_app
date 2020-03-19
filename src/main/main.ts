@@ -7,6 +7,9 @@ import installExtension, {
 } from "electron-devtools-installer";
 import { listenToMessages } from "./IpcListners";
 import { EditorScreen } from "./windows/EditorScreen";
+import { EditorMenu } from "./menus/EditorMenu";
+
+EditorMenu.setUrl(MAIN_WINDOW_WEBPACK_ENTRY);
 
 let store: any;
 let editorScreen: EditorScreen = new EditorScreen(MAIN_WINDOW_WEBPACK_ENTRY);

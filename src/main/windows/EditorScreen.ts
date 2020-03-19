@@ -1,5 +1,6 @@
 import { BrowserWindow } from "electron";
 import * as Splashscreen from "@trodi/electron-splashscreen";
+import { EditorMenu } from "../menus/EditorMenu";
 
 export class EditorScreen {
   private window: BrowserWindow | null = null;
@@ -21,7 +22,13 @@ export class EditorScreen {
 
     this.window.loadURL(this.url + "?main");
     this.window.webContents.openDevTools({ mode: "detach" });
+    this.setApplicationMenu();
   }
+
+  setApplicationMenu = () => {
+    const menu = new EditorMenu();
+    this.window?.setMenu(menu.buildMenu());
+  };
 
   createScreenInitial = () => {
     const mainOptions: Electron.BrowserWindowConstructorOptions = {
@@ -45,5 +52,6 @@ export class EditorScreen {
     this.window = Splashscreen.initSplashScreen(config);
     this.window.loadURL(this.url + "?main");
     this.window.webContents.openDevTools({ mode: "detach" });
+    this.setApplicationMenu();
   };
 }
