@@ -7,12 +7,22 @@ import installExtension, {
 } from "electron-devtools-installer";
 import { listenToMessages } from "./IpcListners";
 import { EditorScreen } from "./windows/EditorScreen";
-import { EditorMenu } from "./menus/EditorMenu";
-
-EditorMenu.setUrl(MAIN_WINDOW_WEBPACK_ENTRY);
+import { LoginScreen } from "./windows/LoginScreen";
+import { OpenProjectScreen } from "./windows/OpenProjectScreen";
 
 let store: any;
-let editorScreen: EditorScreen = new EditorScreen(MAIN_WINDOW_WEBPACK_ENTRY);
+
+export interface Screens {
+  editorScreen: EditorScreen;
+  loginScreen: LoginScreen;
+  openProjectScreen: OpenProjectScreen;
+}
+
+export const screens: Screens = {
+  editorScreen: new EditorScreen(MAIN_WINDOW_WEBPACK_ENTRY),
+  loginScreen: new LoginScreen(MAIN_WINDOW_WEBPACK_ENTRY),
+  openProjectScreen: new OpenProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY)
+};
 
 if (require("electron-squirrel-startup")) {
   app.quit();
@@ -24,7 +34,7 @@ const createStore = () => {
 
 const inititlaizeApp = () => {
   console.log("Current environment: " + process.env.NODE_ENV);
-  editorScreen.createScreenInitial();
+  screens.editorScreen.createScreenInitial();
 };
 
 app.on("ready", () => {
@@ -55,4 +65,4 @@ app.on("activate", () => {
   }
 });
 
-listenToMessages(MAIN_WINDOW_WEBPACK_ENTRY);
+listenToMessages(screens);

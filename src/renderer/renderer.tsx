@@ -10,8 +10,10 @@ import LoginHot from "./LoginHot";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../public/index.scss";
 import "./scss/app.scss";
+import { Titleb } from "./titlebars/Titleb";
+import { EditorMenu } from "./menus/EditorMenu";
 
-let titlebar: Titlebar;
+let titlebar: Titleb;
 
 console.log(
   '👋 This message is being logged by "renderer.tsx", included via webpack'
@@ -21,28 +23,33 @@ const windowType = window.location.href.split("?")[1];
 let element: any;
 switch (windowType) {
   case "main":
-    titlebar = new Titlebar({
-      backgroundColor: Color.fromHex(colors.DARKER_GREY),
-      shadow: true,
-      unfocusEffect: true,
-      titleHorizontalAlignment: "center"
+    titlebar = new Titleb({
+      icon: "/main_window/dependencies/img/icon_32x32.png"
     });
     element = <App />;
+    const em = new EditorMenu();
+    const menu = em.buildMenu();
+    titlebar.setMenu(menu);
     break;
   case "login":
-    titlebar = new Titlebar({
-      backgroundColor: Color.fromHex(colors.DARKER_GREY),
-      // shadow: true,
+    titlebar = new Titleb({
       icon: "/main_window/dependencies/img/icon_32x32.png",
-      unfocusEffect: true,
       menu: null,
       maximizable: false,
       titleHorizontalAlignment: "center"
     });
-    titlebar.updateTitle("Login - Material Designer");
+    titlebar.getTitlebar().updateTitle("Login - Material Designer");
 
     element = <LoginHot />;
     break;
+  case "openproject":
+    titlebar = new Titleb({
+      icon: "/main_window/dependencies/img/icon_32x32.png",
+      menu: null,
+      maximizable: false,
+      titleHorizontalAlignment: "center"
+    });
+    titlebar.getTitlebar().updateTitle("Open Project");
 }
 
 ReactDOM.render(
