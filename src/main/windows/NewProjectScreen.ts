@@ -1,5 +1,5 @@
-import { OpenProjectScreen } from "./OpenProjectScreen";
 import { BrowserWindow } from "electron";
+import { EditorScreen } from "./EditorScreen";
 
 export class NewProjectScreen {
   private window: BrowserWindow | null = null;
@@ -8,9 +8,9 @@ export class NewProjectScreen {
     this.url = url;
   }
 
-  createScreen(openProjectScreen: OpenProjectScreen) {
+  createScreen(editorScreen: EditorScreen) {
     this.window = new BrowserWindow({
-      parent: openProjectScreen.window!,
+      parent: editorScreen.window!,
       width: 800,
       height: 500,
       modal: true,

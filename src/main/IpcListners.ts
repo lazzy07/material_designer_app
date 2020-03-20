@@ -16,6 +16,6 @@ export const listenToMessages = (screens: Screens) => {
   });
 
   ipcMain.on(IpcMessages.NEW_PROJECT_PAGE, () => {
-    screens.newProjectScreen.createScreen(screens.openProjectScreen);
+    screens.newProjectScreen.createScreen(screens.editorScreen);
   });
 };

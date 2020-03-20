@@ -1,5 +1,8 @@
 import { remote, Menu as MenuP, MenuItemConstructorOptions } from "electron";
-import { openProjectScreen } from "./editor_menu_actions/EditorMenuActions";
+import {
+  openProjectScreen,
+  newProjectScreen
+} from "./editor_menu_actions/EditorMenuActions";
 const { Menu } = remote;
 
 const menu: MenuItemConstructorOptions[] = [
@@ -8,7 +11,13 @@ const menu: MenuItemConstructorOptions[] = [
     submenu: [
       {
         label: "New",
+        accelerator: "CommandOrControl+N",
         click: () => openProjectScreen()
+      },
+      {
+        label: "Open",
+        accelerator: "CommandOrControl+O",
+        click: () => newProjectScreen()
       }
     ]
   },

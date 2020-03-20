@@ -252,7 +252,7 @@ export default class OpenProjectScreen extends Component<Props, State> {
                   onClick={() => {}}
                 />
               </div>
-              <div
+              {/* <div
                 style={{ flex: 1, display: "flex", justifyContent: "center" }}
               >
                 <Button
@@ -260,7 +260,7 @@ export default class OpenProjectScreen extends Component<Props, State> {
                   title="New project"
                   onClick={() => {}}
                 />
-              </div>
+              </div> */}
               <div
                 style={{ flex: 1, display: "flex", justifyContent: "center" }}
               >
