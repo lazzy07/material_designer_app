@@ -7,12 +7,16 @@ import {
   IconDefinition,
   faWifi,
   faExclamationCircle,
-  faFile
+  faFile,
+  faTimesCircle,
+  faPlusSquare
 } from "@fortawesome/free-solid-svg-icons";
 import Checkbox from "../components/form/Checkbox";
 import Button from "../components/form/Button";
 import { defaultColors } from "../constants/Colors";
 import InputBox from "../components/form/InputBox";
+import Textarea from "../components/form/Textarea";
+import { remote } from "electron";
 
 type CloudConnectionType =
   | "no_network"
@@ -75,6 +79,12 @@ export default class NewProjectScreen extends Component<Props, State> {
       case "not_loggedin":
         return "Not logged in";
     }
+  };
+
+  //TODO:: Add webguard
+  closeNewrojectScreen = () => {
+    const window = remote.getCurrentWindow();
+    window.close();
   };
 
   render() {
@@ -199,12 +209,45 @@ export default class NewProjectScreen extends Component<Props, State> {
               label="File Name"
               onChange={() => {}}
             />
-            <InputBox
-              id="filePath"
-              value="File Path"
-              label="File Path"
-              onChange={() => {}}
-            />
+            <div style={{ paddingTop: 10 }}>
+              <InputBox
+                id="filePath"
+                value="File Path"
+                label="Local File Path"
+                onChange={() => {}}
+              />
+            </div>
+            <div style={{ paddingLeft: 120, paddingRight: 80 }}>
+              <Button title="Browse" onClick={() => {}} />
+            </div>
+            <div style={{ paddingTop: 20 }}>
+              <Textarea
+                value="Hello"
+                label="Description"
+                onChange={() => {}}
+                id="description"
+              />
+            </div>
+            <div
+              style={{
+                paddingLeft: 120,
+                paddingRight: 120,
+                paddingTop: 20,
+                display: "flex",
+                justifyContent: "space-between"
+              }}
+            >
+              <Button
+                icon={faPlusSquare}
+                title="Create New"
+                onClick={() => {}}
+              />
+              <Button
+                icon={faTimesCircle}
+                title="Cancel"
+                onClick={this.closeNewrojectScreen}
+              />
+            </div>
           </div>
         </div>
       </div>

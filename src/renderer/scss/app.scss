@@ -103,3 +103,8 @@ p {
   border: 2px solid $PRIMARY_COLOR;
   transition: 0.5s;
 }
+
+::selection {
+  color: $IMPORTANT_FONT_COLOR;
+  background: $PRIMARY_COLOR;
+}
