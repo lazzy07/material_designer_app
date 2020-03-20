@@ -33,7 +33,9 @@ export default class Sidebar extends Component<Props, State> {
     return (
       <div key={index} style={{ paddingBottom }}>
         <p
-          onClick={() => this.props.setSelected(ele.title)}
+          onClick={() =>
+            ele.clickable ? this.props.setSelected(ele.title) : undefined
+          }
           className={`${ele.clickable ? "clickableAlt" : ""} ${
             this.props.menu.selected === ele.title ? "primaryColorText" : ""
           }`}

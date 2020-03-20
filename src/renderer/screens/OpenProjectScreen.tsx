@@ -4,17 +4,48 @@ import {
   faFile,
   faLaptopCode,
   faCloud,
-  faUserTag
+  faUserTag,
+  faFolderOpen,
+  faFileImport,
+  faFolderPlus,
+  faTimesCircle
 } from "@fortawesome/free-solid-svg-icons";
 import { defaultColors } from "../constants/Colors";
 import Sidebar, { SidebarMenu } from "../components/sidebar/Sidebar";
 import { ProjectFile } from "src/interfaces/ProjectFile";
 import ProjectFileElement from "../components/project_file/ProjectFileElement";
+import Button from "../components/form/Button";
+import { getStaticPath } from "./../services/StaticAssetResolver";
+import { remote } from "electron";
 
 const localFiles: ProjectFile[] = [
   {
     filePath:
       "C:/documents and settings/lazzy07/material/first project.matproj",
+    lastModiied: Date.now(),
+    type: "local"
+  },
+  {
+    filePath:
+      "C:/documents and settings/lazzy07/material/second project.matproj",
+    lastModiied: Date.now(),
+    type: "local"
+  },
+  {
+    filePath:
+      "C:/documents and settings/lazzy07/material/second project.matproj",
+    lastModiied: Date.now(),
+    type: "local"
+  },
+  {
+    filePath:
+      "C:/documents and settings/lazzy07/material/second project.matproj",
+    lastModiied: Date.now(),
+    type: "local"
+  },
+  {
+    filePath:
+      "C:/documents and settings/lazzy07/material/second project.matproj",
     lastModiied: Date.now(),
     type: "local"
   },
@@ -65,6 +96,8 @@ interface Props {}
 
 interface State {
   sideMenu: SidebarMenu;
+  recentSelectedLocal: number;
+  recentSelectedCloud: number;
 }
 
 export default class OpenProjectScreen extends Component<Props, State> {
@@ -72,27 +105,58 @@ export default class OpenProjectScreen extends Component<Props, State> {
     super(props);
 
     this.state = {
-      sideMenu
+      sideMenu,
+      recentSelectedCloud: -1,
+      recentSelectedLocal: -1
     };
   }
 
   setSelected = (selected: string) => {
     let menu = { ...this.state.sideMenu, selected };
-    this.setState({ sideMenu: menu });
+    this.setState({
+      sideMenu: menu,
+      recentSelectedCloud: -1,
+      recentSelectedLocal: -1
+    });
+  };
+
+  setRecentSelected = (type: "local" | "cloud", index: number) => {
+    if (type === "local") {
+      this.setState({ recentSelectedLocal: index, recentSelectedCloud: -1 });
+    } else {
+      this.setState({ recentSelectedLocal: -1, recentSelectedCloud: index });
+    }
   };
 
   renderLocalFiles = () => {
     return (
-      <div>
+      <div style={{ overflowY: "auto" }}>
         {localFiles.map((ele, index) => {
-          return <ProjectFileElement file={ele} key={index} />;
+          return (
+            <div
+              key={index}
+              onClick={() => this.setRecentSelected("local", index)}
+              onDoubleClick={() => console.log("Double Click")}
+            >
+              <ProjectFileElement
+                selected={index === this.state.recentSelectedLocal}
+                file={ele}
+              />
+            </div>
+          );
         })}
       </div>
     );
   };
 
+  //TODO:: Add webguard
+  closeProjectScreen = () => {
+    const window = remote.getCurrentWindow();
+    window.close();
+  };
+
   renderCloudFiles = () => {
-    return <div>cloud files</div>;
+    return <div style={{ overflowY: "auto" }}>cloud files</div>;
   };
 
   renderFiles = () => {
@@ -120,9 +184,39 @@ export default class OpenProjectScreen extends Component<Props, State> {
               setSelected={this.setSelected}
               menu={this.state.sideMenu}
             />
+            <div
+              style={{
+                position: "absolute",
+                left: 30,
+                bottom: 10,
+                display: "flex"
+              }}
+            >
+              <img
+                src={getStaticPath("/dependencies/img/icon_trans.png")}
+                alt=""
+                width="30px"
+              />
+              <div
+                style={{
+                  width: "100%",
+                  transform: "translate(0, 25%)",
+                  paddingLeft: 10,
+                  height: 30
+                }}
+              >
+                <h6>Material Designer</h6>
+              </div>
+            </div>
           </div>
-          <div className="col-sm-8" style={{ padding: 10 }}>
-            <h4 style={{ color: defaultColors.IMPORTANT_FONT_COLOR }}>
+          <div className="col-sm-8" style={{ overflow: "hidden" }}>
+            <h4
+              style={{
+                color: defaultColors.IMPORTANT_FONT_COLOR,
+                paddingBottom: 10,
+                paddingTop: 10
+              }}
+            >
               <FontAwesomeIcon icon={faFile} />
               {"  "}
               Open {this.state.sideMenu.selected} Project
@@ -130,10 +224,57 @@ export default class OpenProjectScreen extends Component<Props, State> {
             <div
               style={{
                 width: "95%",
-                minHeight: "70%"
+                height: "330px",
+                overflowY: "auto"
               }}
             >
               {this.renderFiles()}
+            </div>
+            <div
+              style={{
+                paddingTop: 20,
+                paddingRight: 20,
+                display: "flex",
+                width: "100%",
+                justifyContent: "space-between"
+              }}
+            >
+              <div
+                style={{ flex: 1, display: "flex", justifyContent: "center" }}
+              >
+                <Button
+                  disabled={
+                    this.state.recentSelectedLocal === -1 &&
+                    this.state.recentSelectedCloud === -1
+                  }
+                  icon={faFileImport}
+                  title="Open"
+                  onClick={() => {}}
+                />
+              </div>
+              <div
+                style={{ flex: 1, display: "flex", justifyContent: "center" }}
+              >
+                <Button
+                  icon={faFolderPlus}
+                  title="New project"
+                  onClick={() => {}}
+                />
+              </div>
+              <div
+                style={{ flex: 1, display: "flex", justifyContent: "center" }}
+              >
+                <Button icon={faFolderOpen} title="Browse" onClick={() => {}} />
+              </div>
+              <div
+                style={{ flex: 1, display: "flex", justifyContent: "center" }}
+              >
+                <Button
+                  icon={faTimesCircle}
+                  title="Close"
+                  onClick={this.closeProjectScreen}
+                />
+              </div>
             </div>
           </div>
         </div>

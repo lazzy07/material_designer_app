@@ -1,16 +1,16 @@
+import { OpenProjectScreen } from "./OpenProjectScreen";
 import { BrowserWindow } from "electron";
-import { EditorScreen } from "./EditorScreen";
 
-export class OpenProjectScreen {
-  window: BrowserWindow | null = null;
+export class NewProjectScreen {
+  private window: BrowserWindow | null = null;
   private url = "";
   constructor(url: string) {
     this.url = url;
   }
 
-  createScreen(editorScreen: EditorScreen) {
+  createScreen(openProjectScreen: OpenProjectScreen) {
     this.window = new BrowserWindow({
-      parent: editorScreen.window!,
+      parent: openProjectScreen.window!,
       width: 800,
       height: 500,
       modal: true,
@@ -22,7 +22,7 @@ export class OpenProjectScreen {
       }
     });
     this.window.webContents.openDevTools({ mode: "detach" });
-    this.window.loadURL(this.url + "?openproject");
+    this.window.loadURL(this.url + "?newproject");
 
     this.window.once("ready-to-show", () => {
       this.window?.show();

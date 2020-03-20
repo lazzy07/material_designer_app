@@ -1,5 +1,24 @@
 @import "./colors.scss";
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: $IMPORTANT_BACKGROUND_COLOR;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: $BORDER_COLOR;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: $BORDER_COLOR;
+}
+
 body {
   background-color: $DEFAULT_BACKGROUND_COLOR;
   color: $FONT_COLOR;
@@ -73,4 +92,14 @@ p {
 
 .primaryColorText {
   color: $PRIMARY_COLOR;
+}
+
+.hoverBorderColor:hover {
+  border: 2px solid $BORDER_COLOR;
+  transition: 0.2s;
+}
+
+.hoverPrimaryBorderColor {
+  border: 2px solid $PRIMARY_COLOR;
+  transition: 0.5s;
 }

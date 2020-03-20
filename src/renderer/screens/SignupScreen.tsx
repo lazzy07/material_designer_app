@@ -3,6 +3,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import InputBox from "../components/form/InputBox";
 import Button from "../components/form/Button";
 import { faSignInAlt, faUser } from "@fortawesome/free-solid-svg-icons";
+import { getStaticPath } from "./../services/StaticAssetResolver";
 
 interface Props {}
 
@@ -154,7 +155,7 @@ class SignupScreen extends Component<Props & RouteComponentProps, State> {
       <div className="row">
         <div className="col-sm-6">
           <img
-            src="/main_window/dependencies/img/icon_trans.png"
+            src={getStaticPath("/dependencies/img/icon_trans.png")}
             alt=""
             style={{
               width: "100%",

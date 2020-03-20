@@ -9,7 +9,7 @@ import { listenToMessages } from "./IpcListners";
 import { EditorScreen } from "./windows/EditorScreen";
 import { LoginScreen } from "./windows/LoginScreen";
 import { OpenProjectScreen } from "./windows/OpenProjectScreen";
-
+import { NewProjectScreen } from "./windows/NewProjectScreen";
 
 let store: any;
 
@@ -17,12 +17,14 @@ export interface Screens {
   editorScreen: EditorScreen;
   loginScreen: LoginScreen;
   openProjectScreen: OpenProjectScreen;
+  newProjectScreen: NewProjectScreen;
 }
 
 export const screens: Screens = {
   editorScreen: new EditorScreen(MAIN_WINDOW_WEBPACK_ENTRY),
   loginScreen: new LoginScreen(MAIN_WINDOW_WEBPACK_ENTRY),
-  openProjectScreen: new OpenProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY)
+  openProjectScreen: new OpenProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY),
+  newProjectScreen: new NewProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY)
 };
 
 if (require("electron-squirrel-startup")) {
@@ -67,4 +69,3 @@ app.on("activate", () => {
 });
 
 listenToMessages(screens);
-

@@ -10,6 +10,7 @@ interface State {
 
 interface Props {
   file: ProjectFile;
+  selected: boolean;
 }
 
 export default class ProjectFileElement extends Component<Props, State> {
@@ -35,11 +36,19 @@ export default class ProjectFileElement extends Component<Props, State> {
     }
   };
 
+  getDate = (d: number) => {
+    const date = new Date(d);
+    return date.toLocaleString();
+  };
+
   render() {
     const fp = this.getFilepath(this.props.file.filePath);
     return (
       <div>
         <div
+          className={`${
+            this.props.selected ? "hoverPrimaryBorderColor" : "hoverBorderColor"
+          }`}
           style={{
             backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR,
             minHeight: 80,
@@ -47,7 +56,8 @@ export default class ProjectFileElement extends Component<Props, State> {
             marginTop: 5,
             marginBottom: 5,
             padding: 10,
-            display: "flex"
+            display: "flex",
+            cursor: "pointer"
           }}
         >
           <div style={{ paddingRight: 10, fontSize: 25 }}>
@@ -55,7 +65,7 @@ export default class ProjectFileElement extends Component<Props, State> {
               icon={this.props.file.type === "local" ? faFile : faCloud}
             />
           </div>
-          <div>
+          <div style={{ width: "100%" }}>
             <div style={{ fontSize: 12 }}>
               {fp[0]}
               <span
@@ -75,6 +85,12 @@ export default class ProjectFileElement extends Component<Props, State> {
               }}
             >
               {this.state.description}
+            </div>
+            <div style={{ width: "100%", fontSize: 10, textAlign: "end" }}>
+              Last Modified :&nbsp;{" "}
+              <span style={{ letterSpacing: 1 }}>
+                {this.getDate(this.props.file.lastModiied)}
+              </span>
             </div>
           </div>
         </div>
