@@ -10,6 +10,7 @@ import { EditorScreen } from "./windows/EditorScreen";
 import { LoginScreen } from "./windows/LoginScreen";
 import { OpenProjectScreen } from "./windows/OpenProjectScreen";
 
+
 let store: any;
 
 export interface Screens {
@@ -66,3 +67,4 @@ app.on("activate", () => {
 });
 
 listenToMessages(screens);
+

@@ -1,13 +1,16 @@
 const path = require('path');
 const rules = require('./webpack.rules');
+const BUILD_ENV = require("./webpack.env").BUILD_ENV;
+
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 function srcPaths(src) {
     return path.join(__dirname, src);
 }
 
 module.exports = {
-    mode: 'development',
+    mode: BUILD_ENV,
     devtool: 'source-map',
     target: 'electron-main',
     entry: './src/main/main.ts',
@@ -23,6 +26,7 @@ module.exports = {
         extensions: ['.js', '.ts', '.tsx', '.jsx', '.json']
     },
     plugins: [
-        new CopyWebpackPlugin([{from: "public/loading", to: "loading"}])
+        new CopyWebpackPlugin([{from: "public/loading", to: "loading"}]),
+        new ForkTsCheckerWebpackPlugin({async: true})
     ]
 };

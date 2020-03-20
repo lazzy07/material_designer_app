@@ -1,13 +1,14 @@
 const path = require('path');
 const rules = require('./webpack.rules');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const plugins = require("./webpack.plugins");
+const BUILD_ENV = require("./webpack.env").BUILD_ENV;
 
 function srcPaths(src) {
     return path.join(__dirname, src);
 }
 
 module.exports = {
-    mode: 'development',
+    mode: BUILD_ENV,
     target: 'electron-renderer',
     devtool: 'source-map',
     module: {
@@ -22,7 +23,5 @@ module.exports = {
         },
         extensions: ['.js', '.ts', '.tsx', '.jsx', '.json']
     },
-    plugins: [
-        new CopyWebpackPlugin([{from: "public/dependencies", to: "main_window/dependencies"}])
-    ]
+    plugins
 };
