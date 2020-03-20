@@ -13,6 +13,7 @@ import { EditorMenu } from "./menus/EditorMenu";
 import OpenProjectHot from "./OpenProjectHot";
 import { getStaticPath } from "./services/StaticAssetResolver";
 import { AppContainer } from "react-hot-loader";
+import NewProjectHot from "./NewProjectHot";
 
 let titlebar: Titleb;
 let renderer: string = "./App";
@@ -50,11 +51,23 @@ switch (windowType) {
       icon: getStaticPath("/dependencies/img/icon_32x32.png"),
       menu: null,
       maximizable: false,
-      titleHorizontalAlignment: "center"
+      titleHorizontalAlignment: "center",
+      minimizable: false
     });
-    renderer = "./OpenProjectHot";
     titlebar.getTitlebar().updateTitle("Open Project");
     element = <OpenProjectHot />;
+    break;
+
+  case "newproject":
+    titlebar = new Titleb({
+      icon: getStaticPath("/dependencies/img/icon_32x32.png"),
+      menu: null,
+      maximizable: false,
+      titleHorizontalAlignment: "center",
+      minimizable: false
+    });
+    titlebar.getTitlebar().updateTitle("New Project");
+    element = <NewProjectHot />;
     break;
 }
 

@@ -12,12 +12,12 @@ const menu: MenuItemConstructorOptions[] = [
       {
         label: "New",
         accelerator: "CommandOrControl+N",
-        click: () => openProjectScreen()
+        click: () => newProjectScreen()
       },
       {
         label: "Open",
         accelerator: "CommandOrControl+O",
-        click: () => newProjectScreen()
+        click: () => openProjectScreen()
       }
     ]
   },
