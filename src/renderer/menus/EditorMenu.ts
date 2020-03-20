@@ -1,7 +1,8 @@
 import { remote, Menu as MenuP, MenuItemConstructorOptions } from "electron";
 import {
   openProjectScreen,
-  newProjectScreen
+  newProjectScreen,
+  openLoginScreen
 } from "./editor_menu_actions/EditorMenuActions";
 const { Menu } = remote;
 
@@ -29,7 +30,8 @@ const menu: MenuItemConstructorOptions[] = [
     label: "Cloud",
     submenu: [
       {
-        label: "Logout"
+        label: "Login",
+        click: () => openLoginScreen()
       }
     ]
   }

@@ -1,0 +1,68 @@
+@import "./colors.scss";
+
+/* The container */
+.containerChk {
+  display: block;
+  position: relative;
+  padding-left: 32px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.containerChk input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: $BORDER_COLOR;
+}
+
+/* On mouse-over, add a grey background color */
+.containerChkHover:hover input~.checkmark {
+  background-color: $HOVER_COLOR;
+}
+
+/* When the checkbox is checked, add a blue background */
+.containerChk input:checked~.checkmark {
+  background-color: $BORDER_COLOR;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.containerChk input:checked~.checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.containerChk .checkmark:after {
+  left: 6px;
+  top: 0px;
+  width: 8px;
+  height: 16px;
+  border: solid $IMPORTANT_FONT_COLOR;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}

@@ -56,8 +56,14 @@ export default class InputBox extends Component<Props, State> {
     }
 
     return (
-      <div className="row" style={{ width: "100%" }}>
-        <div className={this.props.labelClasses}>
+      <div
+        className="row"
+        style={{
+          width: "100%",
+          display: "flex"
+        }}
+      >
+        <div style={{ flex: 3 }} className={this.props.labelClasses}>
           <label
             className={`inputlabel ${
               !error ? (disabled ? "disabledText" : "") : "errorText"
@@ -69,7 +75,12 @@ export default class InputBox extends Component<Props, State> {
           </label>
         </div>
         <div
-          style={{ position: "relative", paddingBottom: 16, marginBottom: 5 }}
+          style={{
+            flex: 9,
+            position: "relative",
+            paddingBottom: 16,
+            marginBottom: 5
+          }}
           className={this.props.inputClasses}
         >
           <input

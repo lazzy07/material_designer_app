@@ -8,3 +8,7 @@ export const openProjectScreen = () => {
 export const newProjectScreen = () => {
   ipcRenderer.send(IpcMessages.NEW_PROJECT_PAGE);
 };
+
+export const openLoginScreen = () => {
+  ipcRenderer.send(IpcMessages.LOAD_LOGIN_PAGE);
+};

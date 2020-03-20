@@ -173,7 +173,7 @@ class SignupScreen extends Component<Props & RouteComponentProps, State> {
           <div style={{ textAlign: "center", width: "100%", paddingTop: 20 }}>
             <h2>Let's Signup</h2>
           </div>
-          <div>
+          <div style={{ paddingRight: 50 }}>
             <div>
               <InputBox
                 value={this.state.send.firstName}
@@ -181,7 +181,7 @@ class SignupScreen extends Component<Props & RouteComponentProps, State> {
                   this.onChange(key, val);
                 }}
                 id={"firstName"}
-                label="First Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                label="First Name"
                 placeHolder="Enter first name"
                 error={this.state.error.firstName}
               />
@@ -191,7 +191,7 @@ class SignupScreen extends Component<Props & RouteComponentProps, State> {
                 value={this.state.send.lastName}
                 onChange={(key, val) => this.onChange(key, val)}
                 id={"lastName"}
-                label="Last Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                label="Last Name"
                 placeHolder="Enter last name"
                 error={this.state.error.lastName}
               />
@@ -201,7 +201,7 @@ class SignupScreen extends Component<Props & RouteComponentProps, State> {
                 value={this.state.send.userName}
                 onChange={(key, val) => this.onChange(key, val)}
                 id={"userName"}
-                label="User Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                label="User Name"
                 placeHolder="Enter user name"
                 error={this.state.error.userName}
               />
@@ -211,7 +211,7 @@ class SignupScreen extends Component<Props & RouteComponentProps, State> {
                 value={this.state.send.email}
                 onChange={(key, val) => this.onChange(key, val)}
                 id={"email"}
-                label="Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                label="Email"
                 placeHolder="Enter a valid email"
                 error={this.state.error.email}
               />
@@ -222,7 +222,7 @@ class SignupScreen extends Component<Props & RouteComponentProps, State> {
                 type="password"
                 onChange={(key, val) => this.onChange(key, val)}
                 id={"password"}
-                label="Password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                label="Password"
                 placeHolder="Enter a password (min of 6)"
                 error={this.state.error.password}
               />
@@ -237,7 +237,13 @@ class SignupScreen extends Component<Props & RouteComponentProps, State> {
                 error={this.state.error.confirmPassword}
               />
             </div>
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: 10
+              }}
+            >
               <div style={{ paddingRight: 10 }}>
                 <Button
                   title="Signup"
