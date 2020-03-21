@@ -9,7 +9,9 @@ import {
   faExclamationCircle,
   faFile,
   faTimesCircle,
-  faPlusSquare
+  faPlusSquare,
+  faCheck,
+  faTimes
 } from "@fortawesome/free-solid-svg-icons";
 import Checkbox from "../components/form/Checkbox";
 import Button from "../components/form/Button";
@@ -17,6 +19,7 @@ import { defaultColors } from "../constants/Colors";
 import InputBox from "../components/form/InputBox";
 import Textarea from "../components/form/Textarea";
 import { remote } from "electron";
+import Loading from "../components/common/Loading";
 
 type CloudConnectionType =
   | "no_network"
@@ -24,9 +27,23 @@ type CloudConnectionType =
   | "loggedin"
   | "network_error";
 
+type SavingState = "saving" | "done" | "error" | "inactive";
+
 interface State {
   cloudActive: boolean;
   localActive: boolean;
+  localSaveState: SavingState;
+  cloudSaveState: SavingState;
+  data: {
+    fileName: string;
+    filePath: string;
+    description: string;
+  };
+  errors: {
+    fileName: string;
+    filePath: string;
+    description: string;
+  };
 }
 
 interface Props {}
@@ -37,13 +54,33 @@ export default class NewProjectScreen extends Component<Props, State> {
 
     this.state = {
       cloudActive: false,
-      localActive: true
+      localActive: true,
+      localSaveState: "error",
+      cloudSaveState: "error",
+      data: {
+        fileName: "",
+        filePath: "",
+        description: ""
+      },
+      errors: {
+        fileName: "",
+        filePath: "",
+        description: ""
+      }
     };
   }
 
   //TODO::Add arithmetic to check loggedin or not
   getNetworkInfo = (): CloudConnectionType => {
-    return "no_network";
+    return "loggedin";
+  };
+
+  setChanges = (key: string, val: string) => {
+    this.setState({ data: { ...this.state.data, [key]: val } });
+  };
+
+  setError = (key: string, val: string) => {
+    this.setState({ errors: { ...this.state.errors, [key]: val } });
   };
 
   getCloudConnectionIcon = (): IconDefinition => {
@@ -85,6 +122,47 @@ export default class NewProjectScreen extends Component<Props, State> {
   closeNewrojectScreen = () => {
     const window = remote.getCurrentWindow();
     window.close();
+  };
+
+  getSavingLogo = (state: SavingState) => {
+    switch (state) {
+      case "done":
+        return (
+          <FontAwesomeIcon
+            icon={faCheck}
+            style={{ color: defaultColors.PRIMARY_COLOR }}
+          />
+        );
+      case "inactive":
+        return null;
+      case "error":
+        return (
+          <FontAwesomeIcon
+            icon={faTimes}
+            style={{ color: defaultColors.ERROR_COLOR }}
+          />
+        );
+      case "saving":
+        return <Loading width={30} height={30} />;
+    }
+  };
+
+  getSavingState = (state: SavingState) => {
+    switch (state) {
+      case "done":
+        return <div>Save complete</div>;
+      case "error":
+        return (
+          <div>
+            Error occured! to Try again,{" "}
+            <span className="clickableText">Click Here</span>
+          </div>
+        );
+      case "saving":
+        return <div>Saving...</div>;
+      case "inactive":
+        return null;
+    }
   };
 
   render() {
@@ -198,23 +276,23 @@ export default class NewProjectScreen extends Component<Props, State> {
             style={{
               height: window.innerHeight - 30,
               overflow: "hidden",
-              paddingTop: 50,
+              paddingTop: 30,
               paddingLeft: 80,
               paddingRight: 10
             }}
           >
             <InputBox
               id="fileName"
-              value="New File"
+              value={this.state.data.fileName}
               label="File Name"
-              onChange={() => {}}
+              onChange={(key, val) => this.setChanges(key, val)}
             />
             <div style={{ paddingTop: 10 }}>
               <InputBox
                 id="filePath"
-                value="File Path"
+                value={this.state.data.filePath}
                 label="Local File Path"
-                onChange={() => {}}
+                onChange={(key, val) => this.setChanges(key, val)}
               />
             </div>
             <div style={{ paddingLeft: 120, paddingRight: 80 }}>
@@ -222,22 +300,58 @@ export default class NewProjectScreen extends Component<Props, State> {
             </div>
             <div style={{ paddingTop: 20 }}>
               <Textarea
-                value="Hello"
+                value={this.state.data.description}
                 label="Description"
-                onChange={() => {}}
+                onChange={(key, val) => this.setChanges(key, val)}
                 id="description"
+                maxLength={100}
               />
             </div>
+            <div style={{ height: 70, paddingTop: 10 }}>
+              {this.state.localActive &&
+                this.state.localSaveState !== "inactive" && (
+                  <div
+                    style={{
+                      display: "flex",
+                      paddingLeft: 40,
+                      paddingRight: 40,
+                      alignItems: "center"
+                    }}
+                  >
+                    {this.getSavingLogo(this.state.localSaveState)}
+                    <div style={{ paddingLeft: 10 }}>Local Save: &nbsp;</div>
+                    {this.getSavingState(this.state.localSaveState)}
+                  </div>
+                )}
+              {this.state.cloudActive &&
+                this.getNetworkInfo() === "loggedin" &&
+                this.state.cloudSaveState !== "inactive" && (
+                  <div
+                    style={{
+                      display: "flex",
+                      paddingLeft: 40,
+                      paddingRight: 40,
+                      alignItems: "center"
+                    }}
+                  >
+                    {this.getSavingLogo(this.state.cloudSaveState)}
+                    <div style={{ paddingLeft: 10 }}>Cloud Save: &nbsp;</div>
+                    {this.getSavingState(this.state.cloudSaveState)}
+                  </div>
+                )}
+            </div>
+            <div style={{ width: "100%", height: 35 }}></div>
             <div
               style={{
+                paddingTop: 10,
                 paddingLeft: 120,
                 paddingRight: 120,
-                paddingTop: 20,
                 display: "flex",
                 justifyContent: "space-between"
               }}
             >
               <Button
+                disabled={!(this.state.cloudActive || this.state.localActive)}
                 icon={faPlusSquare}
                 title="Create New"
                 onClick={() => {}}

@@ -12,7 +12,7 @@ export class NewProjectScreen {
     this.window = new BrowserWindow({
       parent: editorScreen.window!,
       width: 800,
-      height: 500,
+      height: 550,
       modal: true,
       resizable: false,
       frame: false,

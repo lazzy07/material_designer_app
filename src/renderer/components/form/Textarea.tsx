@@ -112,6 +112,20 @@ export default class Textarea extends Component<Props, State> {
           >
             {error}
           </label>
+          {this.props.maxLength && (
+            <label
+              style={{
+                position: "absolute",
+                fontSize: 11,
+                left: 2,
+                bottom: -9,
+                fontWeight: "bold"
+              }}
+              htmlFor={this.props.id}
+            >
+              {this.props.value.length} / {this.props.maxLength}
+            </label>
+          )}
         </div>
       </div>
     );
