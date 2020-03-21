@@ -3,6 +3,7 @@ import { defaultColors, colors } from "../../constants/Colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import "../../scss/button.scss";
+import Loading from "../common/Loading";
 
 interface Props {
   disabled?: boolean;
@@ -11,6 +12,7 @@ interface Props {
   background?: string;
   noBorder?: boolean;
   icon?: IconDefinition;
+  loading?: boolean;
 }
 
 interface State {}
@@ -19,9 +21,17 @@ export default class Button extends Component<Props, State> {
   render() {
     return (
       <div
-        onClick={this.props.disabled ? undefined : this.props.onClick}
+        onClick={
+          this.props.disabled || this.props.loading
+            ? undefined
+            : this.props.onClick
+        }
         className={
-          this.props.disabled ? "" : this.props.noBorder ? "" : "customButton"
+          this.props.disabled || this.props.loading
+            ? ""
+            : this.props.noBorder
+            ? ""
+            : "customButton"
         }
         style={{
           backgroundColor:
@@ -43,22 +53,26 @@ export default class Button extends Component<Props, State> {
           opacity: this.props.disabled ? 0.3 : undefined
         }}
       >
-        <div
-          style={{
-            color: this.props.disabled
-              ? defaultColors.DISABLED_FONT_COLOR
-              : undefined,
-            display: "flex",
-            justifyContent: "center"
-          }}
-        >
-          {this.props.icon ? (
-            <div style={{ paddingRight: "10px" }}>
-              <FontAwesomeIcon icon={this.props.icon} />
-            </div>
-          ) : null}
-          {this.props.title}
-        </div>
+        {this.props.loading ? (
+          <Loading width={30} height={30} />
+        ) : (
+          <div
+            style={{
+              color: this.props.disabled
+                ? defaultColors.DISABLED_FONT_COLOR
+                : undefined,
+              display: "flex",
+              justifyContent: "center"
+            }}
+          >
+            {this.props.icon ? (
+              <div style={{ paddingRight: "10px" }}>
+                <FontAwesomeIcon icon={this.props.icon} />
+              </div>
+            ) : null}
+            {this.props.title}
+          </div>
+        )}
       </div>
     );
   }

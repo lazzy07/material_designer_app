@@ -40,7 +40,10 @@ export class EditorScreen {
     this.window = Splashscreen.initSplashScreen(config);
     this.window.maximize();
     this.window.loadURL(this.url + "?main");
-    this.window.webContents.openDevTools({ mode: "detach" });
+
+    this.window.webContents.on("did-frame-finish-load", () => {
+      this.window!.webContents.openDevTools({ mode: "detach" });
+    });
 
     this.window.on("ready-to-show", () => {
       screens.openProjectScreen.createScreen(this);

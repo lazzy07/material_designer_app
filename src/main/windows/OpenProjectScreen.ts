@@ -21,7 +21,9 @@ export class OpenProjectScreen {
         nodeIntegration: true
       }
     });
-    this.window.webContents.openDevTools({ mode: "detach" });
+    this.window.webContents.on("did-frame-finish-load", () => {
+      this.window!.webContents.openDevTools({ mode: "detach" });
+    });
     this.window.loadURL(this.url + "?openproject");
 
     this.window.once("ready-to-show", () => {

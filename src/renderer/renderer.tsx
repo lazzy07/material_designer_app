@@ -1,3 +1,7 @@
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../../public/index.scss";
+import "./scss/app.scss";
+import "animate.css/animate.min.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
@@ -5,15 +9,13 @@ import * as serviceWorker from "../serviceWorker";
 import { Provider } from "react-redux";
 import { rendererStore } from "../redux/store";
 import LoginHot from "./LoginHot";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "../../public/index.scss";
-import "./scss/app.scss";
 import { Titleb } from "./titlebars/Titleb";
 import { EditorMenu } from "./menus/EditorMenu";
 import OpenProjectHot from "./OpenProjectHot";
 import { getStaticPath } from "./services/StaticAssetResolver";
 import { AppContainer } from "react-hot-loader";
 import NewProjectHot from "./NewProjectHot";
+import SaveProjectHot from "./SaveProjectHot";
 
 let titlebar: Titleb;
 let renderer: string = "./App";
@@ -68,6 +70,19 @@ switch (windowType) {
     });
     titlebar.getTitlebar().updateTitle("New Project");
     element = <NewProjectHot />;
+    break;
+
+  case "saveproject":
+    titlebar = new Titleb({
+      icon: getStaticPath("/dependencies/img/icon_32x32.png"),
+      menu: null,
+      // closeable: false,
+      maximizable: false,
+      titleHorizontalAlignment: "center",
+      minimizable: false
+    });
+    titlebar.getTitlebar().updateTitle("Save Project");
+    element = <SaveProjectHot />;
     break;
 }
 

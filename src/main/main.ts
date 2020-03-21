@@ -10,6 +10,7 @@ import { EditorScreen } from "./windows/EditorScreen";
 import { LoginScreen } from "./windows/LoginScreen";
 import { OpenProjectScreen } from "./windows/OpenProjectScreen";
 import { NewProjectScreen } from "./windows/NewProjectScreen";
+import { SaveProjectScreen } from "./windows/SaveProjectScreen";
 
 let store: any;
 
@@ -18,13 +19,15 @@ export interface Screens {
   loginScreen: LoginScreen;
   openProjectScreen: OpenProjectScreen;
   newProjectScreen: NewProjectScreen;
+  saveProjectScreen: SaveProjectScreen;
 }
 
 export const screens: Screens = {
   editorScreen: new EditorScreen(MAIN_WINDOW_WEBPACK_ENTRY),
   loginScreen: new LoginScreen(MAIN_WINDOW_WEBPACK_ENTRY),
   openProjectScreen: new OpenProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY),
-  newProjectScreen: new NewProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY)
+  newProjectScreen: new NewProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY),
+  saveProjectScreen: new SaveProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY)
 };
 
 if (require("electron-squirrel-startup")) {

@@ -2,7 +2,7 @@ import { BrowserWindow } from "electron";
 import { EditorScreen } from "./EditorScreen";
 
 export class NewProjectScreen {
-  private window: BrowserWindow | null = null;
+  window: BrowserWindow | null = null;
   private url = "";
   constructor(url: string) {
     this.url = url;
@@ -12,7 +12,7 @@ export class NewProjectScreen {
     this.window = new BrowserWindow({
       parent: editorScreen.window!,
       width: 800,
-      height: 550,
+      height: 500,
       modal: true,
       resizable: false,
       frame: false,
@@ -21,7 +21,9 @@ export class NewProjectScreen {
         nodeIntegration: true
       }
     });
-    this.window.webContents.openDevTools({ mode: "detach" });
+    this.window.webContents.on("did-frame-finish-load", () => {
+      this.window!.webContents.openDevTools({ mode: "detach" });
+    });
     this.window.loadURL(this.url + "?newproject");
 
     this.window.once("ready-to-show", () => {

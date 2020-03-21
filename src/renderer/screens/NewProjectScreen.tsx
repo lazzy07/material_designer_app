@@ -18,8 +18,10 @@ import Button from "../components/form/Button";
 import { defaultColors } from "../constants/Colors";
 import InputBox from "../components/form/InputBox";
 import Textarea from "../components/form/Textarea";
-import { remote } from "electron";
-import Loading from "../components/common/Loading";
+import { remote, ipcRenderer } from "electron";
+import { IpcMessages } from "../../IpcMessages";
+import { connect } from "react-redux";
+import { saveNewProjectData } from "../../redux/actions/SaveProjectActions";
 
 type CloudConnectionType =
   | "no_network"
@@ -27,13 +29,9 @@ type CloudConnectionType =
   | "loggedin"
   | "network_error";
 
-type SavingState = "saving" | "done" | "error" | "inactive";
-
 interface State {
   cloudActive: boolean;
   localActive: boolean;
-  localSaveState: SavingState;
-  cloudSaveState: SavingState;
   data: {
     fileName: string;
     filePath: string;
@@ -44,19 +42,20 @@ interface State {
     filePath: string;
     description: string;
   };
+  isDone: boolean;
 }
 
-interface Props {}
+interface Props {
+  saveNewProjectData: (data: any) => void;
+}
 
-export default class NewProjectScreen extends Component<Props, State> {
+class NewProjectScreen extends Component<Props, State> {
   constructor(props) {
     super(props);
 
     this.state = {
       cloudActive: false,
       localActive: true,
-      localSaveState: "error",
-      cloudSaveState: "error",
       data: {
         fileName: "",
         filePath: "",
@@ -66,7 +65,8 @@ export default class NewProjectScreen extends Component<Props, State> {
         fileName: "",
         filePath: "",
         description: ""
-      }
+      },
+      isDone: true
     };
   }
 
@@ -75,8 +75,16 @@ export default class NewProjectScreen extends Component<Props, State> {
     return "loggedin";
   };
 
+  //TODO::Add webguard
+  openSaveProjectScreen = () => {
+    ipcRenderer.send(IpcMessages.SAVE_PROJECT_PAGE);
+  };
+
   setChanges = (key: string, val: string) => {
-    this.setState({ data: { ...this.state.data, [key]: val } });
+    this.setState({
+      data: { ...this.state.data, [key]: val },
+      errors: { ...this.state.errors, [key]: "" }
+    });
   };
 
   setError = (key: string, val: string) => {
@@ -124,44 +132,40 @@ export default class NewProjectScreen extends Component<Props, State> {
     window.close();
   };
 
-  getSavingLogo = (state: SavingState) => {
-    switch (state) {
-      case "done":
-        return (
-          <FontAwesomeIcon
-            icon={faCheck}
-            style={{ color: defaultColors.PRIMARY_COLOR }}
-          />
-        );
-      case "inactive":
-        return null;
-      case "error":
-        return (
-          <FontAwesomeIcon
-            icon={faTimes}
-            style={{ color: defaultColors.ERROR_COLOR }}
-          />
-        );
-      case "saving":
-        return <Loading width={30} height={30} />;
+  checkCanSave = () => {
+    if (this.state.data.fileName.length > 0) {
+      if (this.state.data.filePath.length > 0) {
+        if (true) {
+          if (this.state.data.description.length >= 10) {
+            return true;
+          } else {
+            this.setError(
+              "description",
+              "Description must be atleat 10 characters long"
+            );
+          }
+        } else {
+          this.setError("filePath", "Not a valid filepath");
+        }
+      } else {
+        this.setError("filePath", "Cannot be empty");
+      }
+    } else {
+      this.setError("fileName", "File name cannot be empty");
     }
+    return false;
   };
 
-  getSavingState = (state: SavingState) => {
-    switch (state) {
-      case "done":
-        return <div>Save complete</div>;
-      case "error":
-        return (
-          <div>
-            Error occured! to Try again,{" "}
-            <span className="clickableText">Click Here</span>
-          </div>
-        );
-      case "saving":
-        return <div>Saving...</div>;
-      case "inactive":
-        return null;
+  onClickCreate = () => {
+    if (this.checkCanSave()) {
+      this.props.saveNewProjectData({
+        localActive: this.state.localActive,
+        cloudActive: this.state.cloudActive,
+        fileName: this.state.data.fileName,
+        filePath: this.state.data.filePath,
+        description: this.state.data.description
+      });
+      this.openSaveProjectScreen();
     }
   };
 
@@ -283,6 +287,7 @@ export default class NewProjectScreen extends Component<Props, State> {
           >
             <InputBox
               id="fileName"
+              error={this.state.errors.fileName}
               value={this.state.data.fileName}
               label="File Name"
               onChange={(key, val) => this.setChanges(key, val)}
@@ -290,7 +295,9 @@ export default class NewProjectScreen extends Component<Props, State> {
             <div style={{ paddingTop: 10 }}>
               <InputBox
                 id="filePath"
+                error={this.state.errors.filePath}
                 value={this.state.data.filePath}
+                disabled={!this.state.localActive}
                 label="Local File Path"
                 onChange={(key, val) => this.setChanges(key, val)}
               />
@@ -300,6 +307,7 @@ export default class NewProjectScreen extends Component<Props, State> {
             </div>
             <div style={{ paddingTop: 20 }}>
               <Textarea
+                error={this.state.errors.description}
                 value={this.state.data.description}
                 label="Description"
                 onChange={(key, val) => this.setChanges(key, val)}
@@ -307,40 +315,7 @@ export default class NewProjectScreen extends Component<Props, State> {
                 maxLength={100}
               />
             </div>
-            <div style={{ height: 70, paddingTop: 10 }}>
-              {this.state.localActive &&
-                this.state.localSaveState !== "inactive" && (
-                  <div
-                    style={{
-                      display: "flex",
-                      paddingLeft: 40,
-                      paddingRight: 40,
-                      alignItems: "center"
-                    }}
-                  >
-                    {this.getSavingLogo(this.state.localSaveState)}
-                    <div style={{ paddingLeft: 10 }}>Local Save: &nbsp;</div>
-                    {this.getSavingState(this.state.localSaveState)}
-                  </div>
-                )}
-              {this.state.cloudActive &&
-                this.getNetworkInfo() === "loggedin" &&
-                this.state.cloudSaveState !== "inactive" && (
-                  <div
-                    style={{
-                      display: "flex",
-                      paddingLeft: 40,
-                      paddingRight: 40,
-                      alignItems: "center"
-                    }}
-                  >
-                    {this.getSavingLogo(this.state.cloudSaveState)}
-                    <div style={{ paddingLeft: 10 }}>Cloud Save: &nbsp;</div>
-                    {this.getSavingState(this.state.cloudSaveState)}
-                  </div>
-                )}
-            </div>
-            <div style={{ width: "100%", height: 35 }}></div>
+            <div style={{ width: "100%", height: 40 }}></div>
             <div
               style={{
                 paddingTop: 10,
@@ -354,7 +329,7 @@ export default class NewProjectScreen extends Component<Props, State> {
                 disabled={!(this.state.cloudActive || this.state.localActive)}
                 icon={faPlusSquare}
                 title="Create New"
-                onClick={() => {}}
+                onClick={this.onClickCreate}
               />
               <Button
                 icon={faTimesCircle}
@@ -368,3 +343,9 @@ export default class NewProjectScreen extends Component<Props, State> {
     );
   }
 }
+
+const mapActionsToProps = {
+  saveNewProjectData
+};
+
+export default connect(null, mapActionsToProps)(NewProjectScreen);

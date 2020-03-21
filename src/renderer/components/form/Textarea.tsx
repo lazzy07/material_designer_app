@@ -67,7 +67,7 @@ export default class Textarea extends Component<Props, State> {
         <div style={{ flex: 3 }} className={this.props.labelClasses}>
           <label
             className={`inputlabel ${
-              !error ? (disabled ? "disabledText" : "") : "errorText"
+              !error ? (this.props.disabled ? "disabledText" : "") : "errorText"
             }`}
             style={{ paddingRight: 10 }}
             htmlFor={this.props.id}
