@@ -10,8 +10,7 @@ import {
   faFile,
   faTimesCircle,
   faPlusSquare,
-  faCheck,
-  faTimes
+  faPlus
 } from "@fortawesome/free-solid-svg-icons";
 import Checkbox from "../components/form/Checkbox";
 import Button from "../components/form/Button";
@@ -22,6 +21,11 @@ import { remote, ipcRenderer } from "electron";
 import { IpcMessages } from "../../IpcMessages";
 import { connect } from "react-redux";
 import { saveNewProjectData } from "../../redux/actions/SaveProjectActions";
+import fs from "fs";
+import path from "path";
+import { SAVE_DEFAULT_PATH, LAST_SAVE_PATH } from "../constants/Path";
+import unusedFilename from "unused-filename";
+import validFileName from "valid-filename";
 
 type CloudConnectionType =
   | "no_network"
@@ -41,8 +45,8 @@ interface State {
     fileName: string;
     filePath: string;
     description: string;
+    main: string;
   };
-  isDone: boolean;
 }
 
 interface Props {
@@ -57,16 +61,16 @@ class NewProjectScreen extends Component<Props, State> {
       cloudActive: false,
       localActive: true,
       data: {
-        fileName: "",
-        filePath: "",
+        fileName: "Untitled",
+        filePath: localStorage.getItem(LAST_SAVE_PATH) || this.getSavePath(),
         description: ""
       },
       errors: {
         fileName: "",
         filePath: "",
-        description: ""
-      },
-      isDone: true
+        description: "",
+        main: ""
+      }
     };
   }
 
@@ -85,6 +89,10 @@ class NewProjectScreen extends Component<Props, State> {
       data: { ...this.state.data, [key]: val },
       errors: { ...this.state.errors, [key]: "" }
     });
+
+    key === "fileName" ||
+      (key === "filePath" &&
+        this.setState({ errors: { ...this.state.errors, main: "" } }));
   };
 
   setError = (key: string, val: string) => {
@@ -132,10 +140,71 @@ class NewProjectScreen extends Component<Props, State> {
     window.close();
   };
 
+  getSavePath = () => {
+    const documentsPath = remote.app.getPath("documents");
+
+    if (fs.existsSync(SAVE_DEFAULT_PATH)) {
+      return SAVE_DEFAULT_PATH;
+    } else {
+      return documentsPath;
+    }
+  };
+
+  getFileName = async () => {
+    return await unusedFilename(
+      path.join(this.state.data.filePath, this.state.data.fileName + ".matproj")
+    );
+  };
+
+  //TODO:: Add webguard
+  openSaveDialog = () => {
+    const p = path.parse(
+      path.join(this.state.data.filePath, this.state.data.fileName)
+    );
+
+    const fullPath = path.join(
+      this.state.data.filePath.trim(),
+      p.ext
+        ? this.state.data.fileName.trim()
+        : this.state.data.fileName.trim() + ".matproj"
+    );
+
+    remote.dialog
+      .showSaveDialog(remote.getCurrentWindow(), {
+        title: "Save New Project",
+        defaultPath: fullPath,
+        buttonLabel: "Add Project",
+        filters: [{ name: "Material Projects", extensions: ["matproj"] }],
+        properties: ["createDirectory", "showOverwriteConfirmation"]
+      })
+      .then(val => {
+        if (!val.canceled) {
+          const fullPath = val.filePath;
+
+          if (fullPath) {
+            const fp = path.parse(fullPath);
+
+            localStorage.setItem(LAST_SAVE_PATH, fp.dir);
+
+            this.setChanges("filePath", fp.dir);
+            this.setChanges("fileName", fp.name);
+          }
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  //TODO:: Add webguard
+  validFilePath = () => {
+    return fs.existsSync(this.state.data.filePath.trim());
+  };
+
   checkCanSave = () => {
     if (this.state.data.fileName.length > 0) {
-      if (this.state.data.filePath.length > 0) {
-        if (true) {
+      if (this.state.data.filePath.length > 0 && this.validFilePath()) {
+        if (validFileName(this.state.data.fileName)) {
           if (this.state.data.description.length >= 10) {
             return true;
           } else {
@@ -145,10 +214,10 @@ class NewProjectScreen extends Component<Props, State> {
             );
           }
         } else {
-          this.setError("filePath", "Not a valid filepath");
+          this.setError("filePath", "Not a valid filename");
         }
       } else {
-        this.setError("filePath", "Cannot be empty");
+        this.setError("filePath", "Not a valid path");
       }
     } else {
       this.setError("fileName", "File name cannot be empty");
@@ -156,8 +225,31 @@ class NewProjectScreen extends Component<Props, State> {
     return false;
   };
 
-  onClickCreate = () => {
+  onClickCreate = (nc = false) => {
+    const p = path.parse(
+      path.join(
+        this.state.data.filePath.trim(),
+        this.state.data.fileName.trim()
+      )
+    );
+
+    const fullPath = path.join(
+      this.state.data.filePath.trim(),
+      p.ext
+        ? this.state.data.fileName.trim()
+        : this.state.data.fileName.trim() + ".matproj"
+    );
+
     if (this.checkCanSave()) {
+      if (!nc) {
+        if (fs.existsSync(fullPath)) {
+          return this.setError(
+            "main",
+            "File already exists, want to continue?"
+          );
+        }
+      }
+
       this.props.saveNewProjectData({
         localActive: this.state.localActive,
         cloudActive: this.state.cloudActive,
@@ -167,6 +259,14 @@ class NewProjectScreen extends Component<Props, State> {
       });
       this.openSaveProjectScreen();
     }
+  };
+
+  componentDidMount = () => {
+    //TODO:: Add webguard
+    this.getFileName().then(val => {
+      const p = path.parse(val);
+      this.setState({ data: { ...this.state.data, fileName: p.name } });
+    });
   };
 
   render() {
@@ -303,7 +403,7 @@ class NewProjectScreen extends Component<Props, State> {
               />
             </div>
             <div style={{ paddingLeft: 120, paddingRight: 80 }}>
-              <Button title="Browse" onClick={() => {}} />
+              <Button title="Browse" onClick={() => this.openSaveDialog()} />
             </div>
             <div style={{ paddingTop: 20 }}>
               <Textarea
@@ -315,7 +415,17 @@ class NewProjectScreen extends Component<Props, State> {
                 maxLength={100}
               />
             </div>
-            <div style={{ width: "100%", height: 40 }}></div>
+            <div
+              style={{
+                width: "100%",
+                height: 40,
+                color: defaultColors.ERROR_COLOR,
+                textAlign: "center",
+                fontWeight: "bolder"
+              }}
+            >
+              {this.state.errors.main}
+            </div>
             <div
               style={{
                 paddingTop: 10,
@@ -325,12 +435,21 @@ class NewProjectScreen extends Component<Props, State> {
                 justifyContent: "space-between"
               }}
             >
-              <Button
-                disabled={!(this.state.cloudActive || this.state.localActive)}
-                icon={faPlusSquare}
-                title="Create New"
-                onClick={this.onClickCreate}
-              />
+              {!this.state.errors.main ? (
+                <Button
+                  disabled={!(this.state.cloudActive || this.state.localActive)}
+                  icon={faPlusSquare}
+                  title="Create New"
+                  onClick={() => this.onClickCreate()}
+                />
+              ) : (
+                <Button
+                  disabled={!(this.state.cloudActive || this.state.localActive)}
+                  icon={faPlus}
+                  title="Continue"
+                  onClick={() => this.onClickCreate(true)}
+                />
+              )}
               <Button
                 icon={faTimesCircle}
                 title="Cancel"

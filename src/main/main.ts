@@ -11,6 +11,8 @@ import { LoginScreen } from "./windows/LoginScreen";
 import { OpenProjectScreen } from "./windows/OpenProjectScreen";
 import { NewProjectScreen } from "./windows/NewProjectScreen";
 import { SaveProjectScreen } from "./windows/SaveProjectScreen";
+import fs from "fs";
+import { SAVE_DEFAULT_PATH } from "../common_constants/path";
 
 let store: any;
 
@@ -52,6 +54,18 @@ app.on("ready", () => {
     .then(name => console.log(`Added Extension:  ${name}`))
     .catch(err => console.log("An error occurred: ", err));
 
+  try {
+    const path = SAVE_DEFAULT_PATH;
+    const exists = fs.existsSync(path);
+
+    if (!exists) {
+      console.log("SAVE_DEFAULT_PATH created");
+      fs.mkdirSync(path);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+
   createStore();
   inititlaizeApp();
 });
@@ -72,3 +86,5 @@ app.on("activate", () => {
 });
 
 listenToMessages(screens);
+
+export { store };

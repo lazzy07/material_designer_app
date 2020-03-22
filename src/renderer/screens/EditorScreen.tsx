@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import Loading from "../components/Loading";
-import { ipcRenderer, remote } from "electron";
-import { IpcMessages } from "../../IpcMessages";
 import { startKeyboardListners } from "../listners/editor_listners/EditorKeyboardListners";
 
 interface Props {}
