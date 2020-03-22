@@ -13,6 +13,12 @@ import { connect } from "react-redux";
 import { Store } from "../../redux/reducers";
 import Button from "../components/form/Button";
 import { remote } from "electron";
+import { initialProjectData } from "../project_data/InitialProjectData";
+import fs from "fs";
+import path from "path";
+import { openProject } from "../../redux/actions/ProjectActions";
+import { Project } from "../../interfaces/Project";
+import RecentProjects from "../services/RecentProjects";
 
 type SavingState = "saving" | "done" | "error" | "inactive";
 
@@ -26,6 +32,8 @@ interface State {
   localSaveState: SavingState;
   cloudSaveState: SavingState;
   isLocalActive: boolean;
+  error: string;
+  isComplete: boolean;
 }
 
 interface Props {
@@ -34,6 +42,7 @@ interface Props {
   description: string;
   fileName: string;
   filePath: string;
+  openProject: (project: Project) => void;
 }
 
 class SaveProjectScreen extends Component<Props, State> {
@@ -41,9 +50,11 @@ class SaveProjectScreen extends Component<Props, State> {
     super(props);
 
     this.state = {
-      localSaveState: "done",
-      cloudSaveState: "saving",
-      isLocalActive: props.localActive
+      localSaveState: "inactive",
+      cloudSaveState: "inactive",
+      isLocalActive: props.localActive,
+      error: "",
+      isComplete: true
     };
   }
 
@@ -56,27 +67,6 @@ class SaveProjectScreen extends Component<Props, State> {
   //TODO::Add arithmetic to check loggedin or not
   getNetworkInfo = (): CloudConnectionType => {
     return "loggedin";
-  };
-
-  canContinue = () => {
-    if (this.props.localActive) {
-      if (this.state.localSaveState === "done") {
-        if (this.props.cloudActive) {
-          if (
-            this.state.cloudSaveState === "error" ||
-            this.state.cloudSaveState === "done"
-          ) {
-            return true;
-          }
-        } else {
-          return true;
-        }
-      }
-    } else {
-      if (this.state.cloudSaveState === "done") {
-        return true;
-      }
-    }
   };
 
   getSavingLogo = (state: SavingState) => {
@@ -128,6 +118,66 @@ class SaveProjectScreen extends Component<Props, State> {
     }
   };
 
+  getInitData = () => {
+    const initProjectData = initialProjectData();
+    initProjectData.description = this.props.description;
+    initProjectData.filePath = this.props.filePath;
+    initProjectData.fileName = this.props.fileName;
+    return initProjectData;
+  };
+
+  //TODO:: Add webguard
+  saveLocal = (initProjectData: Project) => {
+    if (this.props.localActive) {
+      this.setState({ localSaveState: "saving" });
+
+      const jsonData = JSON.stringify(initProjectData);
+
+      fs.writeFile(
+        path.join(this.props.filePath, this.props.fileName),
+        jsonData,
+        err => {
+          if (err) {
+            this.setState({
+              localSaveState: "error",
+              error: "Cannot proceed with a local file save faliure"
+            });
+          } else {
+            this.setState({ localSaveState: "done", error: "" });
+            RecentProjects.addData({
+              filePath: path.join(this.props.filePath, this.props.fileName),
+              type: "local",
+              lastModified: Date.now(),
+              description: this.props.description
+            });
+            RecentProjects.saveData();
+            if (this.props.cloudActive) {
+              this.saveWeb(initProjectData);
+            } else {
+              this.setState({ isComplete: true });
+              this.props.openProject(initProjectData);
+            }
+          }
+        }
+      );
+    }
+  };
+
+  //TODO:: Finish this
+  saveWeb = (projectData: Project) => {
+    //Arithmetic goes here and add arithmeti to how to cal isComplete
+    this.setState({ isComplete: true });
+    this.props.openProject(projectData);
+  };
+
+  componentDidMount = () => {
+    if (this.props.localActive) {
+      this.saveLocal(this.getInitData());
+    } else {
+      this.saveWeb(this.getInitData());
+    }
+  };
+
   render() {
     return (
       <div>
@@ -149,11 +199,11 @@ class SaveProjectScreen extends Component<Props, State> {
             <div className="col-sm-8">
               <div
                 style={{
-                  paddingTop: 20,
-                  fontSize: 18,
+                  paddingTop: 0,
+                  fontSize: 15,
                   display: "flex",
                   alignItems: "center",
-                  height: 110
+                  height: 90
                 }}
               >
                 <div>
@@ -196,18 +246,31 @@ class SaveProjectScreen extends Component<Props, State> {
               </div>
               <div
                 style={{
+                  width: "100%",
+                  height: 20,
+                  textAlign: "center",
+                  color: defaultColors.ERROR_COLOR
+                }}
+              >
+                {this.state.error}
+              </div>
+              <div
+                style={{
                   display: "flex",
                   justifyContent: "space-between",
                   paddingLeft: 100,
                   paddingRight: 100
                 }}
               >
-                <Button icon={faCheck} title="Done" onClick={() => {}} />
-                <Button
-                  icon={faTimesCircle}
-                  title="Cancel"
-                  onClick={this.closeNewrojectScreen}
-                />
+                {!this.state.isComplete ? (
+                  <Button
+                    icon={faTimesCircle}
+                    title="Cancel"
+                    onClick={this.closeNewrojectScreen}
+                  />
+                ) : (
+                  <Button icon={faCheck} title="Done" onClick={() => {}} />
+                )}
               </div>
             </div>
           </div>
@@ -223,4 +286,8 @@ const mapStateToProps = (store: Store) => {
   };
 };
 
-export default connect(mapStateToProps)(SaveProjectScreen);
+const mapDispatchToProps = {
+  openProject
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SaveProjectScreen);

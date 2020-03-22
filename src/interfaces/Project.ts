@@ -1,6 +1,11 @@
 import { Image } from "./Image";
 
 export interface Project {
+  id: string;
+  filePath: string;
+  fileName: string;
+  currentGraph: string;
+  description: string;
   graphs: any[];
   textures: Image[];
   preview: {
@@ -8,4 +13,6 @@ export interface Project {
     shape: string;
     wireframe: boolean;
   };
+  modifiedAt: number;
+  createdAt: number;
 }

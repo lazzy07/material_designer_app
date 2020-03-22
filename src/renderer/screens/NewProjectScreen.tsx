@@ -253,8 +253,10 @@ class NewProjectScreen extends Component<Props, State> {
       this.props.saveNewProjectData({
         localActive: this.state.localActive,
         cloudActive: this.state.cloudActive,
-        fileName: this.state.data.fileName,
-        filePath: this.state.data.filePath,
+        fileName: p.ext
+          ? this.state.data.fileName.trim()
+          : this.state.data.fileName.trim() + ".matproj",
+        filePath: this.state.data.filePath.trim(),
         description: this.state.data.description
       });
       this.openSaveProjectScreen();

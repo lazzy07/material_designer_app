@@ -7,55 +7,16 @@ import {
   faUserTag,
   faFolderOpen,
   faFileImport,
-  faFolderPlus,
-  faTimesCircle
+  faTimesCircle,
+  faFileExcel
 } from "@fortawesome/free-solid-svg-icons";
 import { defaultColors } from "../constants/Colors";
 import Sidebar, { SidebarMenu } from "../components/sidebar/Sidebar";
-import { ProjectFile } from "src/interfaces/ProjectFile";
 import ProjectFileElement from "../components/project_file/ProjectFileElement";
 import Button from "../components/form/Button";
 import { getStaticPath } from "./../services/StaticAssetResolver";
 import { remote } from "electron";
-
-const localFiles: ProjectFile[] = [
-  {
-    filePath:
-      "C:/documents and settings/lazzy07/material/first project.matproj",
-    lastModiied: Date.now(),
-    type: "local"
-  },
-  {
-    filePath:
-      "C:/documents and settings/lazzy07/material/second project.matproj",
-    lastModiied: Date.now(),
-    type: "local"
-  },
-  {
-    filePath:
-      "C:/documents and settings/lazzy07/material/second project.matproj",
-    lastModiied: Date.now(),
-    type: "local"
-  },
-  {
-    filePath:
-      "C:/documents and settings/lazzy07/material/second project.matproj",
-    lastModiied: Date.now(),
-    type: "local"
-  },
-  {
-    filePath:
-      "C:/documents and settings/lazzy07/material/second project.matproj",
-    lastModiied: Date.now(),
-    type: "local"
-  },
-  {
-    filePath:
-      "C:/documents and settings/lazzy07/material/second project.matproj",
-    lastModiied: Date.now(),
-    type: "local"
-  }
-];
+import RecentProjects from "../services/RecentProjects";
 
 const sideMenu: SidebarMenu = {
   title: "Open File",
@@ -129,22 +90,46 @@ export default class OpenProjectScreen extends Component<Props, State> {
   };
 
   renderLocalFiles = () => {
+    RecentProjects.initSavedData();
+
+    const localFiles = RecentProjects.getData();
+
     return (
       <div style={{ overflowY: "auto" }}>
-        {localFiles.map((ele, index) => {
-          return (
-            <div
-              key={index}
-              onClick={() => this.setRecentSelected("local", index)}
-              onDoubleClick={() => console.log("Double Click")}
-            >
-              <ProjectFileElement
-                selected={index === this.state.recentSelectedLocal}
-                file={ele}
+        {localFiles.length > 0 ? (
+          localFiles.map((ele, index) => {
+            return (
+              <div
+                key={index}
+                onClick={() => this.setRecentSelected("local", index)}
+                onDoubleClick={() => console.log("Double Click")}
+              >
+                <ProjectFileElement
+                  selected={index === this.state.recentSelectedLocal}
+                  file={ele}
+                />
+              </div>
+            );
+          })
+        ) : (
+          <div
+            style={{
+              height: "300px",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <div style={{ textAlign: "center" }}>
+              <FontAwesomeIcon
+                icon={faFileExcel}
+                style={{ fontSize: "70px" }}
               />
+              <h5>No recent files</h5>
             </div>
-          );
-        })}
+          </div>
+        )}
       </div>
     );
   };
