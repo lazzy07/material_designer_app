@@ -91,11 +91,32 @@ export default class OpenProjectScreen extends Component<Props, State> {
       })
       .then(val => {
         if (!val.canceled) {
-          openProjectFromFile(val.filePaths[0]);
+          openProjectFromFile(val.filePaths[0])
+            .then(val => {
+              this.closeProjectScreen();
+            })
+            .catch(err => {
+              //TODO:: Handle Error
+              console.log(err);
+            });
         }
       })
       .catch(err => {
         //TODO:: Handle Error
+        console.log(err);
+      });
+  };
+
+  //TODO:: Add webguard
+  closeScreenWhenDoneByModal = () => {};
+
+  openRecentFile = (path: string) => {
+    openProjectFromFile(path)
+      .then(val => {
+        this.closeProjectScreen();
+      })
+      .catch(err => {
+        //TODO:: Handle error
         console.log(err);
       });
   };
@@ -105,6 +126,44 @@ export default class OpenProjectScreen extends Component<Props, State> {
       this.setState({ recentSelectedLocal: index, recentSelectedCloud: -1 });
     } else {
       this.setState({ recentSelectedLocal: -1, recentSelectedCloud: index });
+    }
+  };
+
+  //TODO:: Add webguard
+  closeProjectScreen = () => {
+    const window = remote.getCurrentWindow();
+    window.close();
+  };
+
+  renderCloudFiles = () => {
+    return <div style={{ overflowY: "auto" }}>cloud files</div>;
+  };
+
+  renderFiles = () => {
+    if (this.state.sideMenu.selected === "Local") {
+      return this.renderLocalFiles();
+    } else {
+      return this.renderCloudFiles();
+    }
+  };
+
+  onClickOpen = () => {
+    if (this.state.recentSelectedLocal > -1) {
+      const localFiles = RecentProjects.getData();
+      if (localFiles[this.state.recentSelectedLocal]) {
+        openProjectFromFile(localFiles[this.state.recentSelectedLocal].filePath)
+          .then(val => {
+            this.closeProjectScreen();
+          })
+          .catch(err => {
+            //TODO:: Handle error
+            console.log(err);
+          });
+      } else {
+        console.log("Recent Loacal file cannot be opened");
+      }
+    } else {
+      console.log("Recent local file not selected");
     }
   };
 
@@ -121,7 +180,7 @@ export default class OpenProjectScreen extends Component<Props, State> {
               <div
                 key={index}
                 onClick={() => this.setRecentSelected("local", index)}
-                onDoubleClick={() => console.log("Double Click")}
+                onDoubleClick={() => this.openRecentFile(ele.filePath)}
               >
                 <ProjectFileElement
                   selected={index === this.state.recentSelectedLocal}
@@ -151,24 +210,6 @@ export default class OpenProjectScreen extends Component<Props, State> {
         )}
       </div>
     );
-  };
-
-  //TODO:: Add webguard
-  closeProjectScreen = () => {
-    const window = remote.getCurrentWindow();
-    window.close();
-  };
-
-  renderCloudFiles = () => {
-    return <div style={{ overflowY: "auto" }}>cloud files</div>;
-  };
-
-  renderFiles = () => {
-    if (this.state.sideMenu.selected === "Local") {
-      return this.renderLocalFiles();
-    } else {
-      return this.renderCloudFiles();
-    }
   };
 
   render() {
@@ -253,7 +294,7 @@ export default class OpenProjectScreen extends Component<Props, State> {
                   }
                   icon={faFileImport}
                   title="Open"
-                  onClick={() => {}}
+                  onClick={() => this.onClickOpen()}
                 />
               </div>
               {/* <div

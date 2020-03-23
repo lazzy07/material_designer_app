@@ -12,13 +12,14 @@ import Loading from "../components/common/Loading";
 import { connect } from "react-redux";
 import { Store } from "../../redux/reducers";
 import Button from "../components/form/Button";
-import { remote } from "electron";
+import { remote, ipcRenderer } from "electron";
 import { initialProjectData } from "../project_data/InitialProjectData";
 import fs from "fs";
 import path from "path";
 import { openProject } from "../../redux/actions/ProjectActions";
 import { Project } from "../../interfaces/Project";
 import RecentProjects from "../services/RecentProjects";
+import { IpcMessages } from "../../IpcMessages";
 
 type SavingState = "saving" | "done" | "error" | "inactive";
 
@@ -170,6 +171,11 @@ class SaveProjectScreen extends Component<Props, State> {
     this.props.openProject(projectData);
   };
 
+  //TODO:: Add webguard
+  onClickDone = () => {
+    ipcRenderer.send(IpcMessages.CLOSE_NEW_PROJECT_PAGE);
+  };
+
   componentDidMount = () => {
     if (this.props.localActive) {
       this.saveLocal(this.getInitData());
@@ -269,7 +275,11 @@ class SaveProjectScreen extends Component<Props, State> {
                     onClick={this.closeNewrojectScreen}
                   />
                 ) : (
-                  <Button icon={faCheck} title="Done" onClick={() => {}} />
+                  <Button
+                    icon={faCheck}
+                    title="Done"
+                    onClick={() => this.onClickDone()}
+                  />
                 )}
               </div>
             </div>

@@ -22,4 +22,8 @@ export const listenToMessages = (screens: Screens) => {
   ipcMain.on(IpcMessages.SAVE_PROJECT_PAGE, () => {
     screens.saveProjectScreen.createScreen(screens.newProjectScreen);
   });
+
+  ipcMain.on(IpcMessages.CLOSE_NEW_PROJECT_PAGE, () => {
+    screens.newProjectScreen.window?.close();
+  });
 };

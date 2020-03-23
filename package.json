@@ -1,8 +1,8 @@
 {
-  "name": "controller",
-  "productName": "controller",
+  "name": "material_designer",
+  "productName": "Material Designer",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Material desiner the texture editor",
   "main": "./.webpack/main",
   "scripts": {
     "start": "electron-forge start",

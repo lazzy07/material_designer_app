@@ -90,9 +90,8 @@ class NewProjectScreen extends Component<Props, State> {
       errors: { ...this.state.errors, [key]: "" }
     });
 
-    key === "fileName" ||
-      (key === "filePath" &&
-        this.setState({ errors: { ...this.state.errors, main: "" } }));
+    (key === "fileName" || key === "filePath") &&
+      this.setState({ errors: { ...this.state.errors, main: "" } });
   };
 
   setError = (key: string, val: string) => {

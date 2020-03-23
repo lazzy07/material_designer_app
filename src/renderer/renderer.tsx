@@ -76,7 +76,7 @@ switch (windowType) {
     titlebar = new Titleb({
       icon: getStaticPath("/dependencies/img/icon_32x32.png"),
       menu: null,
-      // closeable: false,
+      closeable: false,
       maximizable: false,
       titleHorizontalAlignment: "center",
       minimizable: false
