@@ -106,6 +106,7 @@
     "electron-redux": "^1.4.0",
     "electron-squirrel-startup": "^1.0.0",
     "filenamify": "^4.1.0",
+    "golden-layout": "^1.5.9",
     "jquery": "^3.4.1",
     "react": "^16.13.0",
     "react-animated-css": "^1.2.1",
