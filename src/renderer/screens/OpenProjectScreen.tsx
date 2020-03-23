@@ -17,6 +17,7 @@ import Button from "../components/form/Button";
 import { getStaticPath } from "./../services/StaticAssetResolver";
 import { remote } from "electron";
 import RecentProjects from "../services/RecentProjects";
+import { openProjectFromFile } from "./../services/OpenProject";
 
 const sideMenu: SidebarMenu = {
   title: "Open File",
@@ -79,6 +80,24 @@ export default class OpenProjectScreen extends Component<Props, State> {
       recentSelectedCloud: -1,
       recentSelectedLocal: -1
     });
+  };
+
+  //TODO:: Add webguard
+  browseFiles = () => {
+    remote.dialog
+      .showOpenDialog(remote.getCurrentWindow(), {
+        properties: ["openFile"],
+        filters: [{ name: "Material project", extensions: ["matproj"] }]
+      })
+      .then(val => {
+        if (!val.canceled) {
+          openProjectFromFile(val.filePaths[0]);
+        }
+      })
+      .catch(err => {
+        //TODO:: Handle Error
+        console.log(err);
+      });
   };
 
   setRecentSelected = (type: "local" | "cloud", index: number) => {
@@ -249,7 +268,11 @@ export default class OpenProjectScreen extends Component<Props, State> {
               <div
                 style={{ flex: 1, display: "flex", justifyContent: "center" }}
               >
-                <Button icon={faFolderOpen} title="Browse" onClick={() => {}} />
+                <Button
+                  icon={faFolderOpen}
+                  title="Browse"
+                  onClick={() => this.browseFiles()}
+                />
               </div>
               <div
                 style={{ flex: 1, display: "flex", justifyContent: "center" }}

@@ -86,10 +86,12 @@ switch (windowType) {
     break;
 }
 
+const rStore = rendererStore();
+
 const render = () =>
   ReactDOM.render(
     <AppContainer>
-      <Provider store={rendererStore()}>{element}</Provider>
+      <Provider store={rStore}>{element}</Provider>
     </AppContainer>,
     document.getElementById("root")
   );
@@ -101,4 +103,4 @@ render();
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.register();
 
-export { titlebar };
+export { titlebar, rStore };

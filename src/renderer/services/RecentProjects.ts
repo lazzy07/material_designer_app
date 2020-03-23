@@ -1,4 +1,5 @@
 import { ProjectFile } from "../../interfaces/ProjectFile";
+import fs from "fs";
 
 export default class RecentProjects {
   private static data: ProjectFile[] = [];
@@ -7,7 +8,15 @@ export default class RecentProjects {
     const strData = localStorage.getItem("recentProjects");
 
     if (strData) {
-      RecentProjects.data = JSON.parse(strData);
+      const data: ProjectFile[] = JSON.parse(strData);
+      const availale: ProjectFile[] = [];
+      for (let i of data) {
+        if (fs.existsSync(i.filePath)) {
+          availale.push(i);
+        }
+      }
+
+      RecentProjects.data = availale;
     }
   };
 
@@ -15,9 +24,23 @@ export default class RecentProjects {
     RecentProjects.initSavedData();
     const data = RecentProjects.data;
     if (data.length > 20) {
+      let isExists: ProjectFile | undefined = undefined;
+
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].filePath === project.filePath) {
+          data.splice(i, 1);
+        }
+      }
+
       const newData = [project, ...data.slice(0, 19)];
       RecentProjects.data = newData;
     } else {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].filePath === project.filePath) {
+          data.splice(i, 1);
+        }
+      }
+
       RecentProjects.data = [project, ...RecentProjects.data];
     }
   };

@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import { IpcMessages } from "src/IpcMessages";
+import { IpcMessages } from "../IpcMessages";
 import { Screens } from "./main";
 
 export const listenToMessages = (screens: Screens) => {
