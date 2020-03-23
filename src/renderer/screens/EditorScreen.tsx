@@ -5,6 +5,7 @@ import BottomStatus from "../components/editor_page/BottomStatus";
 import { GoldenLayoutComponent } from "../components/editor_page/golden_layout/GoldenLayoutComponent";
 import GraphScreen from "../components/editor_page/editor_components/GraphScreen";
 import { defaultColors } from "../constants/Colors";
+import { DEFAULT_LAYOUT } from "../components/editor_page/golden_layout/DefaultLayout";
 
 interface Props {}
 
@@ -44,24 +45,7 @@ export default class EditorScreen extends Component<Props, State> {
               }
             }}
             config={{
-              content: [
-                {
-                  type: "stack",
-                  content: [
-                    {
-                      title: "A react component",
-                      type: "react-component",
-                      component: "testItem",
-                      props: { value: "I'm on the left" }
-                    },
-                    {
-                      title: "Another react component",
-                      type: "react-component",
-                      component: "testItem"
-                    }
-                  ]
-                }
-              ]
+              content: DEFAULT_LAYOUT
             }}
             registerComponents={myLayout => {
               myLayout.registerComponent("testItem", GraphScreen);
