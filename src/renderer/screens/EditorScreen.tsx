@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Loading from "../components/Loading";
 import { startKeyboardListners } from "../listners/editor_listners/EditorKeyboardListners";
+import BottomStatus from "../components/editor_page/BottomStatus";
 
 interface Props {}
 
@@ -22,24 +23,17 @@ export default class EditorScreen extends Component<Props, State> {
   };
 
   render() {
-    const { loading } = this.state;
-
-    if (loading) {
-      return (
-        <div
-          style={{
-            minHeight: "80vh",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            overflow: "hidden"
-          }}
-        >
-          <Loading />
+    return (
+      <div
+        style={{
+          height: window.innerHeight - 30,
+          width: "100%"
+        }}
+      >
+        <div>
+          <BottomStatus />
         </div>
-      );
-    }
-    return <div>Main Screen</div>;
+      </div>
+    );
   }
 }
