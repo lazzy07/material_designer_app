@@ -5,6 +5,7 @@ import GoldenLayout from "golden-layout";
 import "golden-layout/src/css/goldenlayout-base.css";
 import "../../../scss/DarkTheme.scss";
 import $ from "jquery";
+import { IS_WEB } from "../../../services/Webguard";
 
 export class GoldenLayoutComponent extends React.Component<any, any> {
   state: any = {};
@@ -39,17 +40,30 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
     });
   }
 
-  goldenLayoutInstance: any = undefined;
+  goldenLayoutInstance: GoldenLayout | undefined = undefined;
 
   componentDidMount() {
     this.goldenLayoutInstance = new GoldenLayout(
       this.props.config || {},
       this.containerRef.current
     );
+
     if (this.props.registerComponents instanceof Function)
       this.props.registerComponents(this.goldenLayoutInstance);
-    this.goldenLayoutInstance.reactContainer = this;
+    (this.goldenLayoutInstance as any).reactContainer = this;
     this.goldenLayoutInstance.init();
+
+    if (!IS_WEB && this.goldenLayoutInstance) {
+      this.goldenLayoutInstance.on("stackCreated", stack => {
+        const popoutButton = $('<li class="lm_popout"></li>');
+
+        stack.header.controlsContainer.prepend(popoutButton);
+
+        $(popoutButton).on("click", () => {
+          console.log("clicked");
+        });
+      });
+    }
   }
 }
 

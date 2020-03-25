@@ -3,7 +3,7 @@ export const DEFAULT_LAYOUT = [
     type: "row",
     content: [
       {
-        //Libraries
+        width: 20,
         type: "column",
         content: [
           {
@@ -30,9 +30,11 @@ export const DEFAULT_LAYOUT = [
       },
       {
         //Viewers
+        width: 55,
         type: "column",
         content: [
           {
+            height: 45,
             type: "row",
             content: [
               {
@@ -48,6 +50,7 @@ export const DEFAULT_LAYOUT = [
             ]
           },
           {
+            height: 55,
             type: "row",
             content: [
               {
@@ -61,12 +64,14 @@ export const DEFAULT_LAYOUT = [
       },
       {
         // outliner and options
+        width: 25,
         type: "column",
         content: [
           {
             type: "row",
             content: [
               {
+                height: 35,
                 title: "Outliner",
                 type: "react-component",
                 component: "testItem"
@@ -74,6 +79,7 @@ export const DEFAULT_LAYOUT = [
             ]
           },
           {
+            height: 65,
             type: "stack",
             content: [
               {

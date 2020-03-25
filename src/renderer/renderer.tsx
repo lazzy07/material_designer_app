@@ -23,15 +23,20 @@ let renderer: string = "./App";
 console.log(
   '👋 This message is being logged by "renderer.tsx", included via webpack'
 );
-
-const windowType = window.location.href.split("?")[1];
+const lastPart = window.location.href.split("?")[1];
+const windowType = lastPart.split("&")[0];
 let element: any;
 switch (windowType) {
   case "main":
     titlebar = new Titleb({
-      icon: getStaticPath("/dependencies/img/icon_32x32.png")
+      icon: getStaticPath("/dependencies/img/icon_32x32.png"),
+      shadow: false
     });
-    element = <App />;
+    element = (
+      <div>
+        <App />
+      </div>
+    );
     const em = new EditorMenu();
     const menu = em.buildMenu();
     titlebar.setMenu(menu);
@@ -91,7 +96,7 @@ const rStore = rendererStore();
 const render = () =>
   ReactDOM.render(
     <AppContainer>
-      <Provider store={rStore}>{element}</Provider>
+      <Provider store={rStore}>{<div>{element}</div>}</Provider>
     </AppContainer>,
     document.getElementById("root")
   );

@@ -45,7 +45,10 @@ export default class EditorScreen extends Component<Props, State> {
               }
             }}
             config={{
-              content: DEFAULT_LAYOUT
+              content: DEFAULT_LAYOUT,
+              settings: {
+                showPopoutIcon: false
+              }
             }}
             registerComponents={myLayout => {
               myLayout.registerComponent("testItem", GraphScreen);
