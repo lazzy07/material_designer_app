@@ -27,7 +27,8 @@ export class SubEditorScreen {
     this.window.webContents.on("did-frame-finish-load", () => {
       this.window!.webContents.openDevTools({ mode: "detach" });
     });
-    this.window.loadURL(this.url + "?subeditor");
+
+    this.window.loadURL(this.url + "?subeditor&" + this.id);
 
     this.window.once("ready-to-show", () => {
       this.window?.show();

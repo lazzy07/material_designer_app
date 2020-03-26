@@ -64,7 +64,9 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
         $(popoutButton).on("click", () => {
           if (!IS_WEB) {
             const ipcRenderer = require("electron").ipcRenderer;
-            ipcRenderer.send(IpcMessages.OPEN_SUB_EDITOR_PAGE, [{}]);
+            ipcRenderer.send(IpcMessages.OPEN_SUB_EDITOR_PAGE, {
+              element: stack._activeContentItem.config.title
+            });
           }
         });
       });

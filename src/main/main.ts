@@ -5,7 +5,7 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS
 } from "electron-devtools-installer";
-import { listenToMessages } from "./IpcListners";
+import { listenToMessages } from "./IpcListeners";
 import { EditorScreen } from "./windows/EditorScreen";
 import { LoginScreen } from "./windows/LoginScreen";
 import { OpenProjectScreen } from "./windows/OpenProjectScreen";

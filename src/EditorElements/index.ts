@@ -58,4 +58,22 @@ export const ProjectProps: EditorElement = {
   component: "testItem"
 };
 
-export const getElement = () => {};
+const allElements = [
+  NodeLibrary,
+  HdriLibrary,
+  TextureLibrary,
+  Preview3D,
+  GraphEditor,
+  NodePreview,
+  Outliner,
+  NodeProps,
+  ProjectProps
+];
+
+export const getElement = (title: string) => {
+  for (let i of allElements) {
+    if (i.title === title) {
+      return i;
+    }
+  }
+};
