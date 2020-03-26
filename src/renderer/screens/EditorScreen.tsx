@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Loading from "../components/Loading";
 import { startKeyboardListners } from "../listners/editor_listners/EditorKeyboardListners";
 import BottomStatus from "../components/editor_page/BottomStatus";
 import { GoldenLayoutComponent } from "../components/editor_page/golden_layout/GoldenLayoutComponent";
@@ -9,11 +8,13 @@ import { DEFAULT_LAYOUT } from "../components/editor_page/golden_layout/DefaultL
 import { IS_WEB } from "../services/Webguard";
 import { ElementsToLocalStorage } from "../../EditorElements/ElementsToLocalStorage";
 import { IpcMessages } from "../../IpcMessages";
+import { ipcRenderer } from "electron";
 
 interface Props {}
 
 interface State {
   loading: boolean;
+  trigger: boolean;
 }
 
 export default class EditorScreen extends Component<Props, State> {
@@ -25,7 +26,8 @@ export default class EditorScreen extends Component<Props, State> {
     super(props);
 
     this.state = {
-      loading: true
+      loading: false,
+      trigger: false
     };
 
     if (!IS_WEB) {
@@ -86,8 +88,18 @@ export default class EditorScreen extends Component<Props, State> {
     }
   };
 
+  listenResetLayout = () => {
+    window.addEventListener("loadDefaultLayout", () => {
+      localStorage.removeItem("mainConfig");
+      localStorage.removeItem("subEditorData");
+      ipcRenderer.send(IpcMessages.CLOSE_ALL_SUB_EDITORS);
+      window.location.reload(false);
+    });
+  };
+
   componentDidMount = () => {
     startKeyboardListners();
+    this.listenResetLayout();
   };
 
   render() {
@@ -115,7 +127,8 @@ export default class EditorScreen extends Component<Props, State> {
                 constrainDragToContainer: false,
                 ...this.settings
               },
-              ...this.config
+              ...this.config,
+              trigger: this.state.trigger
             }}
             registerComponents={myLayout => {
               myLayout.registerComponent("testItem", GraphScreen);

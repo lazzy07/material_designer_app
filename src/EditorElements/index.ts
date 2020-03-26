@@ -58,7 +58,7 @@ export const ProjectProps: EditorElement = {
   component: "testItem"
 };
 
-const allElements = [
+export const allElements = [
   NodeLibrary,
   HdriLibrary,
   TextureLibrary,

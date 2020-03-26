@@ -39,7 +39,6 @@ switch (windowType) {
       icon: getStaticPath("/dependencies/img/icon_32x32.png"),
       shadow: false
     });
-    titlebar.startListenUpdateMenu();
     element = (
       <div>
         <App />
@@ -47,6 +46,7 @@ switch (windowType) {
     );
 
     titlebar.setMenu(menu);
+    titlebar.startListenUpdateMenu();
     break;
   case "login":
     titlebar = new Titleb({

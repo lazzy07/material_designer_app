@@ -48,4 +48,12 @@ export const listenToMessages = (screens: Screens, url: string) => {
   ipcMain.on(IpcMessages.UPDATE_TITLEBAR, () => {
     screens.editorScreen.window?.webContents.send(IpcMessages.UPDATE_TITLEBAR);
   });
+
+  ipcMain.on(IpcMessages.CLOSE_ALL_SUB_EDITORS, () => {
+    for (let i of screens.subEditorScreens) {
+      i.window?.close();
+    }
+
+    screens.subEditorScreens = [];
+  });
 };

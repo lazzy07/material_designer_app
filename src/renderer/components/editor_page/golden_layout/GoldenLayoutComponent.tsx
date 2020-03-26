@@ -45,6 +45,18 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
     });
   }
 
+  menubarListener = () => {
+    window.addEventListener("addNewTab", (e: CustomEventInit) => {
+      if (this.goldenLayoutInstance?.selectedItem) {
+        this.goldenLayoutInstance?.selectedItem.addChild(e.detail.element);
+      } else {
+        this.goldenLayoutInstance?.root.contentItems[0].addChild(
+          e.detail.element
+        );
+      }
+    });
+  };
+
   appMainConfigurations = () => {
     const ipcRenderer = require("electron").ipcRenderer;
 
@@ -162,6 +174,7 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
       const screenId = lastPart.split("&")[1];
 
       if (!screenId || screenId === "main") {
+        this.menubarListener();
         this.appMainConfigurations();
       } else {
         this.appSubEditorConfigurations(screenId);

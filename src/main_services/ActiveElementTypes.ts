@@ -5,7 +5,7 @@ const getActiveItemsHelper = (
   activeItems: string[]
 ) => {
   for (let i of content) {
-    if (i.type === "react-component") {
+    if (i.type === "component") {
       activeItems.push(i.title!);
     } else {
       if (i.content) {

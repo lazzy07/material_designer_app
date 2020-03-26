@@ -2,6 +2,7 @@ import { Titlebar, Color, TitlebarOptions } from "custom-electron-titlebar";
 import { colors } from "../constants/Colors";
 import { ipcRenderer } from "electron";
 import { IpcMessages } from "../../IpcMessages";
+import { EditorMenu } from "../menus/EditorMenu";
 
 export class Titleb {
   private titlebar: Titlebar;
@@ -22,7 +23,8 @@ export class Titleb {
 
   startListenUpdateMenu = () => {
     ipcRenderer.on(IpcMessages.UPDATE_TITLEBAR, () => {
-      if (this.menu) this.titlebar.updateMenu(this.menu);
+      const em = new EditorMenu();
+      if (this.menu) this.titlebar.updateMenu(em.buildMenu());
     });
   };
 
