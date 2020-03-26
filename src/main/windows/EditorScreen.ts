@@ -3,12 +3,13 @@ import * as Splashscreen from "@trodi/electron-splashscreen";
 import { screens } from "../main";
 
 export class EditorScreen {
+  id: string = "main";
   window: BrowserWindow | null = null;
   private url = "";
 
   private mainOptions: Electron.BrowserWindowConstructorOptions = {
-    height: 600,
-    width: 800,
+    minHeight: 600,
+    minWidth: 800,
     frame: false,
     transparent: true,
     webPreferences: {
@@ -32,7 +33,7 @@ export class EditorScreen {
       windowOpts: this.mainOptions,
       templateUrl: `${__dirname}/loading/loading.html`,
       splashScreenOpts: {
-        width: 500,
+        width: 600,
         height: 360,
         backgroundColor: "#20292b"
       }

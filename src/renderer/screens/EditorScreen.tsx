@@ -35,7 +35,7 @@ export default class EditorScreen extends Component<Props, State> {
         }}
       >
         <div>
-          <GoldenLayoutComponent //config from simple react example: https://golden-layout.com/examples/#qZXEyv
+          <GoldenLayoutComponent
             htmlAttrs={{
               style: {
                 height: window.innerHeight - 63,
@@ -47,7 +47,8 @@ export default class EditorScreen extends Component<Props, State> {
             config={{
               content: DEFAULT_LAYOUT,
               settings: {
-                showPopoutIcon: false
+                showPopoutIcon: false,
+                constrainDragToContainer: false
               }
             }}
             registerComponents={myLayout => {

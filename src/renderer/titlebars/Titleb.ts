@@ -7,7 +7,7 @@ export class Titleb {
   constructor(options?: any) {
     this.titlebar = new Titlebar({
       backgroundColor: Color.fromHex(colors.DARKER_GREY),
-      shadow: true,
+      // shadow: true,
       unfocusEffect: true,
       titleHorizontalAlignment: "center",
       ...options

@@ -6,6 +6,7 @@ import "golden-layout/src/css/goldenlayout-base.css";
 import "../../../scss/DarkTheme.scss";
 import $ from "jquery";
 import { IS_WEB } from "../../../services/Webguard";
+import { IpcMessages } from "./../../../../IpcMessages";
 
 export class GoldenLayoutComponent extends React.Component<any, any> {
   state: any = {};
@@ -59,11 +60,50 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
 
         stack.header.controlsContainer.prepend(popoutButton);
 
+        // Open a new sub editor window
         $(popoutButton).on("click", () => {
-          console.log("clicked");
+          if (!IS_WEB) {
+            const ipcRenderer = require("electron").ipcRenderer;
+            ipcRenderer.send(IpcMessages.OPEN_SUB_EDITOR_PAGE, [{}]);
+          }
         });
       });
     }
+
+    let leftTheScreen = false;
+    let lastTab: any = null;
+    this.goldenLayoutInstance.on("tabCreated", tab => {
+      if (lastTab && tab) {
+        if (lastTab.element[0].title === tab.element[0].title) {
+          lastTab = null;
+          try {
+            tab.closeElement.trigger("click"); //.contentItem.container.close();
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+
+      tab._dragListener.on("dragStart", () => {
+        leftTheScreen = false;
+      });
+
+      tab._dragListener.on("dragStop", () => {
+        if (leftTheScreen) {
+          lastTab = tab;
+        }
+      });
+
+      $("body").mouseleave(() => {
+        leftTheScreen = true;
+      });
+
+      $("body").mouseenter(() => {
+        if (leftTheScreen) {
+          leftTheScreen = false;
+        }
+      });
+    });
   }
 }
 

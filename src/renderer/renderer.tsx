@@ -18,7 +18,6 @@ import NewProjectHot from "./NewProjectHot";
 import SaveProjectHot from "./SaveProjectHot";
 
 let titlebar: Titleb;
-let renderer: string = "./App";
 
 console.log(
   '👋 This message is being logged by "renderer.tsx", included via webpack'
@@ -26,6 +25,10 @@ console.log(
 const lastPart = window.location.href.split("?")[1];
 const windowType = lastPart.split("&")[0];
 let element: any;
+
+const em = new EditorMenu();
+const menu = em.buildMenu();
+
 switch (windowType) {
   case "main":
     titlebar = new Titleb({
@@ -37,8 +40,7 @@ switch (windowType) {
         <App />
       </div>
     );
-    const em = new EditorMenu();
-    const menu = em.buildMenu();
+
     titlebar.setMenu(menu);
     break;
   case "login":
@@ -49,7 +51,6 @@ switch (windowType) {
       titleHorizontalAlignment: "center"
     });
     titlebar.getTitlebar().updateTitle("Login - Material Designer");
-    renderer = getStaticPath("./LoginHot");
 
     element = <LoginHot />;
     break;
@@ -88,6 +89,15 @@ switch (windowType) {
     });
     titlebar.getTitlebar().updateTitle("Save Project");
     element = <SaveProjectHot />;
+    break;
+  case "subeditor":
+    titlebar = new Titleb({
+      icon: getStaticPath("/dependencies/img/icon_32x32.png"),
+
+      titleHorizontalAlignment: "center"
+    });
+    titlebar.setMenu(menu);
+    element = <App />;
     break;
 }
 

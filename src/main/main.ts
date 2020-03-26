@@ -13,6 +13,7 @@ import { NewProjectScreen } from "./windows/NewProjectScreen";
 import { SaveProjectScreen } from "./windows/SaveProjectScreen";
 import fs from "fs";
 import { SAVE_DEFAULT_PATH } from "../common_constants/path";
+import { SubEditorScreen } from "./windows/SubEditorScreen";
 
 let store: any;
 
@@ -22,6 +23,7 @@ export interface Screens {
   openProjectScreen: OpenProjectScreen;
   newProjectScreen: NewProjectScreen;
   saveProjectScreen: SaveProjectScreen;
+  subEditorScreens: SubEditorScreen[];
 }
 
 export const screens: Screens = {
@@ -29,7 +31,8 @@ export const screens: Screens = {
   loginScreen: new LoginScreen(MAIN_WINDOW_WEBPACK_ENTRY),
   openProjectScreen: new OpenProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY),
   newProjectScreen: new NewProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY),
-  saveProjectScreen: new SaveProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY)
+  saveProjectScreen: new SaveProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY),
+  subEditorScreens: []
 };
 
 if (require("electron-squirrel-startup")) {
@@ -85,6 +88,6 @@ app.on("activate", () => {
   }
 });
 
-listenToMessages(screens);
+listenToMessages(screens, MAIN_WINDOW_WEBPACK_ENTRY);
 
 export { store };
