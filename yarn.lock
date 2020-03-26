@@ -4478,6 +4478,11 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
+electron-browser-storage@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/electron-browser-storage/-/electron-browser-storage-1.0.6.tgz#1507be52a38c726f9d3f138c79260bbee58f4f87"
+  integrity sha512-ap986HDJNPAangFsG0w0KWMal2GSOXEShMXho5Ory9XG+u2CIfP76nI1yruSemTCvDr+Rg4zpC8Ec9S349eUgw==
+
 electron-devtools-installer@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/electron-devtools-installer/-/electron-devtools-installer-2.2.4.tgz#261a50337e37121d338b966f07922eb4939a8763"

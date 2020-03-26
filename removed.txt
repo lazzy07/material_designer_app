@@ -1,0 +1,35 @@
+// let leftTheScreen = false;
+// let lastTab: any = null;
+
+// this.goldenLayoutInstance.on("tabCreated", tab => {
+    //   if (lastTab && tab) {
+    //     if (lastTab.element[0].title === tab.element[0].title) {
+    //       lastTab = null;
+    //       try {
+    //         tab.closeElement.trigger("click"); //.contentItem.container.close();
+    //       } catch (err) {
+    //         console.log(err);
+    //       }
+    //     }
+    //   }
+
+    //   tab._dragListener.on("dragStart", () => {
+    //     leftTheScreen = false;
+    //   });
+
+    //   tab._dragListener.on("dragStop", () => {
+    //     if (leftTheScreen) {
+    //       lastTab = tab;
+    //     }
+    //   });
+
+    //   $("body").mouseleave(() => {
+    //     leftTheScreen = true;
+    //   });
+
+    //   $("body").mouseenter(() => {
+    //     if (leftTheScreen) {
+    //       leftTheScreen = false;
+    //     }
+    //   });
+    // });

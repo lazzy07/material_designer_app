@@ -5,5 +5,8 @@ export const IpcMessages = {
   NEW_PROJECT_PAGE: "new project page",
   SAVE_PROJECT_PAGE: "save project page",
   CLOSE_NEW_PROJECT_PAGE: "close new project page",
-  OPEN_SUB_EDITOR_PAGE: "open sub editor page"
+  OPEN_SUB_EDITOR_PAGE: "open sub editor page",
+  SUB_EDITOR_TO_MAIN: "dock back sub editor",
+  SUB_DATA_TO_MAIN: "sub data to main",
+  UPDATE_TITLEBAR: "update titlebar"
 };

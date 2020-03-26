@@ -4,7 +4,54 @@ import {
   newProjectScreen,
   openLoginScreen
 } from "./editor_menu_actions/EditorMenuActions";
+import { getActiveItems } from "../../main_services/ActiveElementTypes";
 const { Menu } = remote;
+
+let checked = false;
+
+const renderWindowMenuElements = (): MenuItemConstructorOptions[] => {
+  return [
+    {
+      label: "Reset to Default"
+    },
+    {
+      type: "separator"
+    },
+    {
+      label: "Nodes",
+      type: "checkbox",
+      checked,
+
+      click: () => {
+        checked = !checked;
+      }
+    },
+    {
+      label: "HDRIs"
+    },
+    {
+      label: "Textures"
+    },
+    {
+      label: "3D Preview"
+    },
+    {
+      label: "Node Preview"
+    },
+    {
+      label: "Graph Editor"
+    },
+    {
+      label: "Outliner"
+    },
+    {
+      label: "Node Props"
+    },
+    {
+      label: "Project Props"
+    }
+  ];
+};
 
 const menu: MenuItemConstructorOptions[] = [
   {
@@ -34,6 +81,10 @@ const menu: MenuItemConstructorOptions[] = [
         click: () => openLoginScreen()
       }
     ]
+  },
+  {
+    label: "Windows",
+    submenu: renderWindowMenuElements()
   }
 ];
 

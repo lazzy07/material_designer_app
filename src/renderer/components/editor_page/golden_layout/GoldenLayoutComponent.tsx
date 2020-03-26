@@ -14,6 +14,7 @@ import { ElementsToLocalStorage } from "./../../../../EditorElements/ElementsToL
 export class GoldenLayoutComponent extends React.Component<any, any> {
   state: any = {};
   containerRef: any = React.createRef();
+  goldenLayoutInstance: GoldenLayout | undefined = undefined;
 
   render() {
     let panels: any = Array.from(this.state.renderPanels || []);
@@ -44,7 +45,104 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
     });
   }
 
-  goldenLayoutInstance: GoldenLayout | undefined = undefined;
+  appMainConfigurations = () => {
+    const ipcRenderer = require("electron").ipcRenderer;
+
+    this.goldenLayoutInstance!.on("stateChanged", () => {
+      const state = JSON.stringify(this.goldenLayoutInstance?.toConfig());
+      localStorage.setItem("mainConfig", state);
+      ipcRenderer.send(IpcMessages.UPDATE_TITLEBAR);
+    });
+
+    ipcRenderer.on(IpcMessages.SUB_DATA_TO_MAIN, (event, args) => {
+      if (this.goldenLayoutInstance?.selectedItem) {
+        this.goldenLayoutInstance?.selectedItem.addChild(args);
+      } else {
+        this.goldenLayoutInstance?.root.contentItems[0].addChild(args);
+      }
+    });
+  };
+
+  appSubEditorConfigurations = (screenId: string) => {
+    const ipcRenderer = require("electron").ipcRenderer;
+
+    this.goldenLayoutInstance!.on("stateChanged", () => {
+      ElementsToLocalStorage.updateData(
+        screenId,
+        this.goldenLayoutInstance?.toConfig()
+      );
+
+      ipcRenderer.send(IpcMessages.UPDATE_TITLEBAR);
+    });
+  };
+
+  popinButtonArithmetic = (
+    popinButton: JQuery<HTMLElement>,
+    screenId: string,
+    stack: any
+  ) => {
+    $(popinButton).on("click", () => {
+      const ipcRenderer = require("electron").ipcRenderer;
+      ipcRenderer.send(
+        IpcMessages.SUB_EDITOR_TO_MAIN,
+        getElement(stack._activeContentItem.config.title)
+      );
+      ElementsToLocalStorage.removeData(screenId);
+      const remote = require("electron").remote;
+      remote.getCurrentWindow().close();
+    });
+  };
+
+  popoutButtonArithmetic = (
+    popoutButton: JQuery<HTMLElement>,
+    screenId: string,
+    stack: any
+  ) => {
+    $(popoutButton).on("click", () => {
+      if (!IS_WEB) {
+        const ipcRenderer = require("electron").ipcRenderer;
+        const id = v4();
+        const layout: Config = {
+          content: [
+            {
+              type: "row",
+              content: [
+                {
+                  ...getElement(stack._activeContentItem.config.title)!
+                }
+              ]
+            }
+          ],
+          settings: {
+            showPopoutIcon: false,
+            constrainDragToContainer: false
+          }
+        };
+        ElementsToLocalStorage.addData(id, layout);
+        ipcRenderer.send(IpcMessages.OPEN_SUB_EDITOR_PAGE, {
+          id,
+          layout
+        });
+      }
+      stack._activeContentItem.remove();
+    });
+  };
+
+  onStackCreated = (stack: any) => {
+    const popoutButton = $('<li class="lm_popout"></li>');
+    const popinButton = $('<li class="lm_popout"></li>');
+
+    const lastPart = window.location.href.split("?")[1];
+    const screenId = lastPart.split("&")[1];
+
+    if (!screenId || screenId === "main")
+      stack.header.controlsContainer.prepend(popoutButton);
+    else stack.header.controlsContainer.prepend(popinButton);
+
+    this.popinButtonArithmetic(popinButton, screenId, stack);
+
+    this.popoutButtonArithmetic(popoutButton, screenId, stack);
+  };
 
   componentDidMount() {
     this.goldenLayoutInstance = new GoldenLayout(
@@ -54,81 +152,27 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
 
     if (this.props.registerComponents instanceof Function)
       this.props.registerComponents(this.goldenLayoutInstance);
+
     (this.goldenLayoutInstance as any).reactContainer = this;
     this.goldenLayoutInstance.init();
 
+    //dock back to main
     if (!IS_WEB && this.goldenLayoutInstance) {
-      this.goldenLayoutInstance.on("stackCreated", stack => {
-        const popoutButton = $('<li class="lm_popout"></li>');
+      const lastPart = window.location.href.split("?")[1];
+      const screenId = lastPart.split("&")[1];
 
-        stack.header.controlsContainer.prepend(popoutButton);
-
-        // Open a new sub editor window
-        $(popoutButton).on("click", () => {
-          if (!IS_WEB) {
-            const ipcRenderer = require("electron").ipcRenderer;
-            const id = v4();
-            const layout: Config = {
-              content: [
-                {
-                  type: "row",
-                  content: [
-                    {
-                      ...getElement(stack._activeContentItem.config.title)!
-                    }
-                  ]
-                }
-              ],
-              settings: {
-                showPopoutIcon: false,
-                constrainDragToContainer: false
-              }
-            };
-            ElementsToLocalStorage.addData(id, layout);
-            ipcRenderer.send(IpcMessages.OPEN_SUB_EDITOR_PAGE, {
-              id,
-              layout
-            });
-          }
-          stack._activeContentItem.remove();
-        });
-      });
+      if (!screenId || screenId === "main") {
+        this.appMainConfigurations();
+      } else {
+        this.appSubEditorConfigurations(screenId);
+      }
     }
 
-    let leftTheScreen = false;
-    let lastTab: any = null;
-    this.goldenLayoutInstance.on("tabCreated", tab => {
-      if (lastTab && tab) {
-        if (lastTab.element[0].title === tab.element[0].title) {
-          lastTab = null;
-          try {
-            tab.closeElement.trigger("click"); //.contentItem.container.close();
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      }
-
-      tab._dragListener.on("dragStart", () => {
-        leftTheScreen = false;
+    if (!IS_WEB && this.goldenLayoutInstance) {
+      this.goldenLayoutInstance.on("stackCreated", stack => {
+        this.onStackCreated(stack);
       });
-
-      tab._dragListener.on("dragStop", () => {
-        if (leftTheScreen) {
-          lastTab = tab;
-        }
-      });
-
-      $("body").mouseleave(() => {
-        leftTheScreen = true;
-      });
-
-      $("body").mouseenter(() => {
-        if (leftTheScreen) {
-          leftTheScreen = false;
-        }
-      });
-    });
+    }
   }
 }
 

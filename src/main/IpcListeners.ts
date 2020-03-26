@@ -37,4 +37,15 @@ export const listenToMessages = (screens: Screens, url: string) => {
     screens.subEditorScreens.push(newWindow);
     newWindow.createScreen(screens.editorScreen);
   });
+
+  ipcMain.on(IpcMessages.SUB_EDITOR_TO_MAIN, (event, arg) => {
+    screens.editorScreen.window?.webContents.send(
+      IpcMessages.SUB_DATA_TO_MAIN,
+      arg
+    );
+  });
+
+  ipcMain.on(IpcMessages.UPDATE_TITLEBAR, () => {
+    screens.editorScreen.window?.webContents.send(IpcMessages.UPDATE_TITLEBAR);
+  });
 };

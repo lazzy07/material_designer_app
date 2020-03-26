@@ -16,6 +16,9 @@ import { getStaticPath } from "./services/StaticAssetResolver";
 import { AppContainer } from "react-hot-loader";
 import NewProjectHot from "./NewProjectHot";
 import SaveProjectHot from "./SaveProjectHot";
+import { remote, ipcRenderer } from "electron";
+import { ElementsToLocalStorage } from "../EditorElements/ElementsToLocalStorage";
+import { IpcMessages } from "../IpcMessages";
 
 let titlebar: Titleb;
 
@@ -36,6 +39,7 @@ switch (windowType) {
       icon: getStaticPath("/dependencies/img/icon_32x32.png"),
       shadow: false
     });
+    titlebar.startListenUpdateMenu();
     element = (
       <div>
         <App />
@@ -94,11 +98,15 @@ switch (windowType) {
   case "subeditor":
     titlebar = new Titleb({
       icon: getStaticPath("/dependencies/img/icon_32x32.png"),
-
+      menu: null,
       titleHorizontalAlignment: "center"
     });
-    console.log(id);
-    titlebar.setMenu(menu);
+    // console.log(id);
+    // titlebar.setMenu(menu);
+    remote.getCurrentWindow().on("close", () => {
+      ElementsToLocalStorage.removeData(id);
+      ipcRenderer.send(IpcMessages.UPDATE_TITLEBAR);
+    });
     element = <App />;
     break;
 }

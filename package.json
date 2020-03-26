@@ -104,6 +104,7 @@
     "animate.css": "^3.7.2",
     "bootstrap": "^4.4.1",
     "custom-electron-titlebar": "^3.2.2-hotfix62",
+    "electron-browser-storage": "^1.0.6",
     "electron-redux": "^1.4.0",
     "electron-squirrel-startup": "^1.0.0",
     "filenamify": "^4.1.0",
