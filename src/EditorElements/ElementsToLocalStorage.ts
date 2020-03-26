@@ -1,17 +1,25 @@
 import { Config } from "golden-layout";
 export class ElementsToLocalStorage {
-  static data: { id: string; config: Config }[];
+  static data: { id: string; config: Config }[] = [];
 
   static initData = () => {
-    const strdata = localStorage.getItem("screenData");
+    const strdata = localStorage.getItem("subEditorData");
     if (strdata) {
       ElementsToLocalStorage.data = JSON.parse(strdata);
     }
   };
 
+  static saveData = () => {
+    localStorage.setItem(
+      "subEditorData",
+      JSON.stringify(ElementsToLocalStorage.data)
+    );
+  };
+
   static addData = (id: string, config: Config) => {
     ElementsToLocalStorage.initData();
     ElementsToLocalStorage.data.push({ id, config });
+    ElementsToLocalStorage.saveData();
   };
 
   static updateData = (id: string, config: Config) => {
@@ -25,6 +33,7 @@ export class ElementsToLocalStorage {
     }
 
     ElementsToLocalStorage.data = data;
+    ElementsToLocalStorage.saveData();
   };
 
   static removeData = (id: string) => {
@@ -38,5 +47,6 @@ export class ElementsToLocalStorage {
     }
 
     ElementsToLocalStorage.data = data;
+    ElementsToLocalStorage.saveData();
   };
 }

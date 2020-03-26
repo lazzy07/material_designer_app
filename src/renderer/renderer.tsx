@@ -24,6 +24,7 @@ console.log(
 );
 const lastPart = window.location.href.split("?")[1];
 const windowType = lastPart.split("&")[0];
+const id = lastPart.split("&")[1];
 let element: any;
 
 const em = new EditorMenu();
@@ -96,6 +97,7 @@ switch (windowType) {
 
       titleHorizontalAlignment: "center"
     });
+    console.log(id);
     titlebar.setMenu(menu);
     element = <App />;
     break;

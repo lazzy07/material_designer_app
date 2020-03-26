@@ -33,27 +33,7 @@ export const listenToMessages = (screens: Screens, url: string) => {
   });
 
   ipcMain.on(IpcMessages.OPEN_SUB_EDITOR_PAGE, (event, arg) => {
-    const id = v4();
-
-    const layout: Config = {
-      content: [
-        {
-          type: "row",
-          content: [
-            {
-              ...getElement(arg.element)!
-            }
-          ]
-        }
-      ],
-      settings: {
-        showPopoutIcon: false,
-        constrainDragToContainer: false
-      }
-    };
-
-    ElementsToLocalStorage.addData(id, layout);
-    const newWindow = new SubEditorScreen(id, url, layout);
+    const newWindow = new SubEditorScreen(arg.id, url, arg.layout);
     screens.subEditorScreens.push(newWindow);
     newWindow.createScreen(screens.editorScreen);
   });

@@ -1,12 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./GoldenLayoutDependencies";
-import GoldenLayout from "golden-layout";
+import GoldenLayout, { Config } from "golden-layout";
 import "golden-layout/src/css/goldenlayout-base.css";
 import "../../../scss/DarkTheme.scss";
 import $ from "jquery";
 import { IS_WEB } from "../../../services/Webguard";
 import { IpcMessages } from "./../../../../IpcMessages";
+import { v4 } from "uuid";
+import { getElement } from "../../../../EditorElements";
+import { ElementsToLocalStorage } from "./../../../../EditorElements/ElementsToLocalStorage";
 
 export class GoldenLayoutComponent extends React.Component<any, any> {
   state: any = {};
@@ -64,10 +67,30 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
         $(popoutButton).on("click", () => {
           if (!IS_WEB) {
             const ipcRenderer = require("electron").ipcRenderer;
+            const id = v4();
+            const layout: Config = {
+              content: [
+                {
+                  type: "row",
+                  content: [
+                    {
+                      ...getElement(stack._activeContentItem.config.title)!
+                    }
+                  ]
+                }
+              ],
+              settings: {
+                showPopoutIcon: false,
+                constrainDragToContainer: false
+              }
+            };
+            ElementsToLocalStorage.addData(id, layout);
             ipcRenderer.send(IpcMessages.OPEN_SUB_EDITOR_PAGE, {
-              element: stack._activeContentItem.config.title
+              id,
+              layout
             });
           }
+          stack._activeContentItem.remove();
         });
       });
     }
