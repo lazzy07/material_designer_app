@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { startKeyboardListners } from "../listners/editor_listners/EditorKeyboardListners";
 import BottomStatus from "../components/editor_page/BottomStatus";
 import { GoldenLayoutComponent } from "../components/editor_page/golden_layout/GoldenLayoutComponent";
-import GraphScreen from "../components/editor_page/editor_components/GraphScreen";
+import GraphScreen from "../components/editor_page/editor_components/GraphEditorScreen";
 import { defaultColors } from "../constants/Colors";
 import { DEFAULT_LAYOUT } from "../components/editor_page/golden_layout/DefaultLayout";
 import { IS_WEB } from "../services/Webguard";
