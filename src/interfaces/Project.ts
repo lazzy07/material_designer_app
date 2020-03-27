@@ -12,6 +12,7 @@ export interface Project {
     subdivision: number;
     shape: string;
     wireframe: boolean;
+    exposure: number;
   };
   modifiedAt: number;
   createdAt: number;

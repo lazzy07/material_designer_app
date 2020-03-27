@@ -1,3 +1,15 @@
+import {
+  NodeLibrary,
+  HdriLibrary,
+  TextureLibrary,
+  Preview3D,
+  NodePreview,
+  GraphEditor,
+  Outliner,
+  NodeProps,
+  GraphProps
+} from "../../../../EditorElements";
+
 export const DEFAULT_LAYOUT = [
   {
     type: "row",
@@ -8,23 +20,7 @@ export const DEFAULT_LAYOUT = [
         content: [
           {
             type: "stack",
-            content: [
-              {
-                title: "Nodes",
-                type: "react-component",
-                component: "testItem"
-              },
-              {
-                title: "HDRIs",
-                type: "react-component",
-                component: "testItem"
-              },
-              {
-                title: "Textures",
-                type: "react-component",
-                component: "testItem"
-              }
-            ]
+            content: [NodeLibrary, HdriLibrary, TextureLibrary]
           }
         ]
       },
@@ -36,29 +32,12 @@ export const DEFAULT_LAYOUT = [
           {
             height: 45,
             type: "row",
-            content: [
-              {
-                title: "3D Preview",
-                type: "react-component",
-                component: "testItem"
-              },
-              {
-                title: "Node Preview",
-                type: "react-component",
-                component: "testItem"
-              }
-            ]
+            content: [Preview3D, NodePreview]
           },
           {
             height: 55,
             type: "row",
-            content: [
-              {
-                title: "Graph Editor",
-                type: "react-component",
-                component: "testItem"
-              }
-            ]
+            content: [GraphEditor]
           }
         ]
       },
@@ -68,31 +47,14 @@ export const DEFAULT_LAYOUT = [
         type: "column",
         content: [
           {
-            type: "row",
-            content: [
-              {
-                height: 35,
-                title: "Outliner",
-                type: "react-component",
-                component: "testItem"
-              }
-            ]
+            type: "stack",
+            height: 35,
+            content: [Outliner]
           },
           {
             height: 65,
             type: "stack",
-            content: [
-              {
-                title: "Node Props",
-                type: "react-component",
-                component: "testItem"
-              },
-              {
-                title: "Project Props",
-                type: "react-component",
-                component: "testItem"
-              }
-            ]
+            content: [NodeProps, GraphProps]
           }
         ]
       }

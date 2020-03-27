@@ -17,5 +17,6 @@ export const defaultColors = {
   ERROR_COLOR: colors.RED,
   PRIMARY_COLOR: colors.CYAN,
   DISABLED_FONT_COLOR: colors.LIGHTER_GREY,
-  HOVER_COLOR: colors.LIGHTER_GREY
+  HOVER_COLOR: colors.LIGHTER_GREY,
+  BORDER_COLOR: colors.LIGHT_GREY
 };

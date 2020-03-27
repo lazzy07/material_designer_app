@@ -2,7 +2,7 @@
   "name": "material_designer",
   "productName": "Material Designer",
   "version": "1.0.0",
-  "description": "Material desiner the texture editor",
+  "description": "Material Designer The Texture Editor",
   "main": "./.webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -114,6 +114,7 @@
     "react-animated-css": "^1.2.1",
     "react-apollo": "^3.1.3",
     "react-bootstrap": "^1.0.0-beta.17",
+    "react-desktop-menus": "^1.0.8",
     "react-dom": "^16.13.0",
     "react-hot-loader": "^4.12.19",
     "react-particles-js": "^2.7.1",

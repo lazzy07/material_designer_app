@@ -2,13 +2,21 @@ import React, { Component } from "react";
 import { startKeyboardListners } from "../listners/editor_listners/EditorKeyboardListners";
 import BottomStatus from "../components/editor_page/BottomStatus";
 import { GoldenLayoutComponent } from "../components/editor_page/golden_layout/GoldenLayoutComponent";
-import GraphScreen from "../components/editor_page/editor_components/GraphEditorScreen";
+import GraphEditorScreen from "../components/editor_page/editor_components/GraphEditorScreen";
 import { defaultColors } from "../constants/Colors";
 import { DEFAULT_LAYOUT } from "../components/editor_page/golden_layout/DefaultLayout";
 import { IS_WEB } from "../services/Webguard";
 import { ElementsToLocalStorage } from "../../EditorElements/ElementsToLocalStorage";
 import { IpcMessages } from "../../IpcMessages";
 import { ipcRenderer } from "electron";
+import NodesScreen from "../components/editor_page/editor_components/NodesScreen";
+import HdrisScreen from "../components/editor_page/editor_components/HdrisScreen";
+import TexturesScreen from "../components/editor_page/editor_components/TexturesScreen";
+import Preview3DScreen from "../components/editor_page/editor_components/Preview3DScreen";
+import NodePreviewScreen from "../components/editor_page/editor_components/NodePreviewScreen";
+import OutlinerScreen from "../components/editor_page/editor_components/OutlinerScreen";
+import NodePropsScreen from "../components/editor_page/editor_components/NodePropsScreen";
+import GraphPropsScreen from "../components/editor_page/editor_components/GraphPropsScreen";
 
 interface Props {}
 
@@ -131,7 +139,15 @@ export default class EditorScreen extends Component<Props, State> {
               trigger: this.state.trigger
             }}
             registerComponents={myLayout => {
-              myLayout.registerComponent("testItem", GraphScreen);
+              myLayout.registerComponent("nodes", NodesScreen);
+              myLayout.registerComponent("hdris", HdrisScreen);
+              myLayout.registerComponent("textures", TexturesScreen);
+              myLayout.registerComponent("preview3d", Preview3DScreen);
+              myLayout.registerComponent("graphEditor", GraphEditorScreen);
+              myLayout.registerComponent("nodePreview", NodePreviewScreen);
+              myLayout.registerComponent("outliner", OutlinerScreen);
+              myLayout.registerComponent("nodeProps", NodePropsScreen);
+              myLayout.registerComponent("graphProps", GraphPropsScreen);
             }}
           />
         </div>

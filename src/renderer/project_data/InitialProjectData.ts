@@ -9,7 +9,8 @@ export const initialProjectData = (): Project => {
     preview: {
       shape: "cube",
       subdivision: 100,
-      wireframe: false
+      wireframe: false,
+      exposure: 1
     },
     description: "",
     currentGraph: "",

@@ -7,55 +7,55 @@ export interface EditorElement {
 export const NodeLibrary: EditorElement = {
   title: "Nodes",
   type: "react-component",
-  component: "testItem"
+  component: "nodes"
 };
 
 export const HdriLibrary: EditorElement = {
   title: "HDRIs",
   type: "react-component",
-  component: "testItem"
+  component: "hdris"
 };
 
 export const TextureLibrary: EditorElement = {
   title: "Textures",
   type: "react-component",
-  component: "testItem"
+  component: "textures"
 };
 
 export const Preview3D: EditorElement = {
   title: "3D Preview",
   type: "react-component",
-  component: "testItem"
+  component: "preview3d"
 };
 
 export const GraphEditor: EditorElement = {
   title: "Graph Editor",
   type: "react-component",
-  component: "testItem"
+  component: "graphEditor"
 };
 
 export const NodePreview: EditorElement = {
   title: "Node Preview",
   type: "react-component",
-  component: "testItem"
+  component: "nodePreview"
 };
 
 export const Outliner: EditorElement = {
   title: "Outliner",
   type: "react-component",
-  component: "testItem"
+  component: "outliner"
 };
 
 export const NodeProps: EditorElement = {
   title: "Node Props",
   type: "react-component",
-  component: "testItem"
+  component: "nodeProps"
 };
 
-export const ProjectProps: EditorElement = {
-  title: "Project Props",
+export const GraphProps: EditorElement = {
+  title: "Graph Props",
   type: "react-component",
-  component: "testItem"
+  component: "graphProps"
 };
 
 export const allElements = [
@@ -67,7 +67,7 @@ export const allElements = [
   NodePreview,
   Outliner,
   NodeProps,
-  ProjectProps
+  GraphProps
 ];
 
 export const getElement = (title: string) => {
