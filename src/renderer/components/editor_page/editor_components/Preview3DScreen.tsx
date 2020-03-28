@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Preview3dMenu from "./editor_dependencies/Preview3dMenu";
+import Preview3dMenu from "./editor_dependencies/preview_3d/Preview3dMenu";
 import ScreenComponent from "../../common/ScreenComponent";
 
 interface Props {}
@@ -13,7 +13,6 @@ export default class Preview3DScreen extends ScreenComponent<Props, State> {
     return (
       <div
         style={{
-          backgroundColor: "red",
           width: this.state.width,
           height: this.state.height
         }}

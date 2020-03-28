@@ -1,7 +1,17 @@
 import React, { Component } from "react";
+import ScreenComponent from "../../common/ScreenComponent";
+import NodePreviewMenu from "./editor_dependencies/node_preview/NodePreviewMenu";
 
-export default class NodePreviewScreen extends Component {
+interface Props {}
+
+interface State {}
+
+export default class NodePreviewScreen extends ScreenComponent<Props, State> {
   render() {
-    return <div>Node Preview Screen</div>;
+    return (
+      <div>
+        <NodePreviewMenu />
+      </div>
+    );
   }
 }

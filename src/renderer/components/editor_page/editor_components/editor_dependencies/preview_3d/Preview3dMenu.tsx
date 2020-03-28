@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import Menubar from "../../../common/MenuBar";
-import { ScreenMenu } from "../../../../services/RenderMenu";
+import Menubar from "../../../../common/MenuBar";
+import { ScreenMenu } from "../../../../../services/RenderMenu";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCube, faPlus, faWrench } from "@fortawesome/free-solid-svg-icons";
-import { defaultColors } from "../../../../constants/Colors";
+import { defaultColors } from "../../../../../constants/Colors";
 
 const menu: ScreenMenu[] = [
   {
@@ -81,6 +81,17 @@ const menu: ScreenMenu[] = [
           />
         ),
         content: []
+      },
+      {
+        label: "Exposure",
+        type: "item",
+        icon: (
+          <FontAwesomeIcon
+            icon={faWrench}
+            style={{ color: defaultColors.FONT_COLOR }}
+          />
+        ),
+        content: []
       }
     ]
   }
@@ -89,20 +100,8 @@ const menu: ScreenMenu[] = [
 export default class Preview3dMenu extends Component {
   render() {
     return (
-      <div
-        style={{ width: "100%", display: "flex-box", flexDirection: "column" }}
-      >
-        <div style={{ width: "100%" }}>
-          <Menubar menu={menu} />
-        </div>
-        <div
-          style={{
-            width: "100%",
-            height: "100%"
-          }}
-        >
-          Hello
-        </div>
+      <div style={{ width: "100%" }}>
+        <Menubar menu={menu} />
       </div>
     );
   }

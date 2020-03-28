@@ -18,6 +18,7 @@ export const renderScreenMenu = (menu: ScreenMenu[]) => {
     if (ele.type === "item") {
       return (
         <MenuItem
+          key={id}
           label={ele.label}
           style={{
             color: defaultColors.FONT_COLOR,
