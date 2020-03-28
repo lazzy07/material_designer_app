@@ -63,17 +63,23 @@ export default class InputBox extends Component<Props, State> {
           display: "flex"
         }}
       >
-        <div style={{ flex: 3 }} className={this.props.labelClasses}>
-          <label
-            className={`inputlabel ${
-              !error ? (this.props.disabled ? "disabledText" : "") : "errorText"
-            }`}
-            style={{ paddingRight: 10 }}
-            htmlFor={this.props.id}
-          >
-            {this.props.label}
-          </label>
-        </div>
+        {this.props.label && (
+          <div style={{ flex: 3 }} className={this.props.labelClasses}>
+            <label
+              className={`inputlabel ${
+                !error
+                  ? this.props.disabled
+                    ? "disabledText"
+                    : ""
+                  : "errorText"
+              }`}
+              style={{ paddingRight: 10 }}
+              htmlFor={this.props.id}
+            >
+              {this.props.label}
+            </label>
+          </div>
+        )}
         <div
           style={{
             flex: 9,

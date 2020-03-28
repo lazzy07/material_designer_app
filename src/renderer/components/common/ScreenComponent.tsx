@@ -10,17 +10,18 @@ interface Props {
   glEventHub: any;
 }
 
-export default abstract class ScreenComponent<P, S> extends Component<
+export default abstract class ScreenComponent<P = {}, S = {}> extends Component<
   Props,
   State
 > {
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
 
     this.state = {
       width: this.props.glContainer.width,
       height: this.props.glContainer.height
     };
+
     this.calDimensions();
   }
 
