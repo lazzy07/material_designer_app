@@ -108,3 +108,7 @@ p {
   color: $IMPORTANT_FONT_COLOR;
   background: $PRIMARY_COLOR;
 }
+
+.dropzone:focus {
+  outline: none;
+}
