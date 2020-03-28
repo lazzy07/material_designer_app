@@ -17,25 +17,30 @@ import NodePreviewScreen from "../components/editor_page/editor_components/NodeP
 import OutlinerScreen from "../components/editor_page/editor_components/OutlinerScreen";
 import NodePropsScreen from "../components/editor_page/editor_components/NodePropsScreen";
 import GraphPropsScreen from "../components/editor_page/editor_components/GraphPropsScreen";
+import { Dimensions } from "../../interfaces/Dimensions";
 
 interface Props {}
 
 interface State {
   loading: boolean;
   trigger: boolean;
+  dimensions: Dimensions;
 }
 
 export default class EditorScreen extends Component<Props, State> {
   layout: any = DEFAULT_LAYOUT;
   settings: any;
   config: any;
+  resizeTimer: any;
+  currentLayout: any;
 
   constructor(props: Props) {
     super(props);
 
     this.state = {
       loading: false,
-      trigger: false
+      trigger: false,
+      dimensions: { height: window.innerHeight, width: window.innerWidth }
     };
 
     if (!IS_WEB) {
@@ -105,25 +110,38 @@ export default class EditorScreen extends Component<Props, State> {
     });
   };
 
+  doneResizing = () => {
+    this.setState({
+      dimensions: { width: window.innerWidth, height: window.innerHeight }
+    });
+    if (this.currentLayout)
+      this.currentLayout.updateSize(window.innerWidth, window.innerHeight - 63);
+  };
+
   componentDidMount = () => {
     startKeyboardListners();
     this.listenResetLayout();
+
+    window.addEventListener("resize", e => {
+      clearTimeout(this.resizeTimer);
+      this.resizeTimer = setTimeout(this.doneResizing, 100);
+    });
   };
 
   render() {
     return (
       <div
         style={{
-          height: window.innerHeight - 63,
-          width: "100%"
+          height: this.state.dimensions.height - 63,
+          width: this.state.dimensions.width
         }}
       >
         <div>
           <GoldenLayoutComponent
             htmlAttrs={{
               style: {
-                height: window.innerHeight - 63,
-                width: "100%",
+                height: this.state.dimensions.height - 53,
+                width: this.state.dimensions.width,
                 paddingTop: 6,
                 backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR
               }
@@ -139,6 +157,7 @@ export default class EditorScreen extends Component<Props, State> {
               trigger: this.state.trigger
             }}
             registerComponents={myLayout => {
+              this.currentLayout = myLayout;
               myLayout.registerComponent("nodes", NodesScreen);
               myLayout.registerComponent("hdris", HdrisScreen);
               myLayout.registerComponent("textures", TexturesScreen);

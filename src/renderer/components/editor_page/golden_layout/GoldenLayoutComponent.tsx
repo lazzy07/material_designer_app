@@ -19,7 +19,11 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
   render() {
     let panels: any = Array.from(this.state.renderPanels || []);
     return (
-      <div ref={this.containerRef} {...this.props.htmlAttrs}>
+      <div
+        style={this.props.htmlAttrs.style}
+        ref={this.containerRef}
+        {...this.props.htmlAttrs}
+      >
         {panels.map((panel, index) => {
           return ReactDOM.createPortal(
             panel._getReactComponent(),
