@@ -3,7 +3,7 @@ import "../../scss/checkbox.scss";
 
 interface Props {
   checked?: boolean;
-  label: string;
+  label?: string;
   onClick: () => void;
   disabled?: boolean;
 }

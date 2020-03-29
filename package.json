@@ -117,6 +117,7 @@
     "react-bootstrap": "^1.0.0-beta.17",
     "react-desktop-menus": "^1.0.8",
     "react-dom": "^16.13.0",
+    "react-dropdown": "^1.7.0",
     "react-dropzone": "^10.2.2",
     "react-hot-loader": "^4.12.19",
     "react-lazyload": "^2.6.5",

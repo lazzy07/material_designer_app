@@ -24,7 +24,7 @@ export default class RadioButton extends Component<Props, State> {
             name={this.props.id}
             onChange={() => {}}
           />
-          <span className="checkmark"></span>
+          <span className="rcheckmark"></span>
         </label>
       </div>
     );

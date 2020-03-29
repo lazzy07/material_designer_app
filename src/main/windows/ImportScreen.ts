@@ -12,7 +12,7 @@ export class ImportScreen {
     this.window = new BrowserWindow({
       parent: editorScreen.window!,
       width: 700,
-      height: 600,
+      height: 650,
       modal: true,
       resizable: false,
       frame: false,

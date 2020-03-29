@@ -21,7 +21,7 @@
 }
 
 /* Create a custom radio button */
-.checkmark {
+.rcheckmark {
   position: absolute;
   top: 0;
   left: 0;
@@ -33,29 +33,29 @@
 }
 
 /* On mouse-over, add a grey background color */
-.containerRadio:hover input~.checkmark {
+.containerRadio:hover input~.rcheckmark {
   background-color: $HOVER_COLOR;
 }
 
 /* When the radio button is checked, add a blue background */
-.containerRadio input:checked~.checkmark {
+.containerRadio input:checked~.rcheckmark {
   background-color: $BORDER_COLOR;
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after {
+.rcheckmark:after {
   content: "";
   position: absolute;
   display: none;
 }
 
 /* Show the indicator (dot/circle) when checked */
-.containerRadio input:checked~.checkmark:after {
+.containerRadio input:checked~.rcheckmark:after {
   display: block;
 }
 
 /* Style the indicator (dot/circle) */
-.containerRadio .checkmark:after {
+.containerRadio .rcheckmark:after {
   top: 4px;
   left: 4px;
   width: 6px;
