@@ -14,7 +14,8 @@ export class LoginScreen {
       resizable: false,
       frame: false,
       webPreferences: {
-        nodeIntegration: true
+        nodeIntegration: true,
+        webSecurity: false
       }
     });
     this.window.webContents.on("did-frame-finish-load", () => {

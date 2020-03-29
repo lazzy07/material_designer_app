@@ -1,7 +1,7 @@
 import { BrowserWindow } from "electron";
 import { EditorScreen } from "./EditorScreen";
 
-export class OpenProjectScreen {
+export class ImportScreen {
   window: BrowserWindow | null = null;
   private url = "";
   constructor(url: string) {
@@ -11,8 +11,8 @@ export class OpenProjectScreen {
   createScreen(editorScreen: EditorScreen) {
     this.window = new BrowserWindow({
       parent: editorScreen.window!,
-      width: 800,
-      height: 500,
+      width: 700,
+      height: 600,
       modal: true,
       resizable: false,
       frame: false,
@@ -25,7 +25,7 @@ export class OpenProjectScreen {
     this.window.webContents.on("did-frame-finish-load", () => {
       this.window!.webContents.openDevTools({ mode: "detach" });
     });
-    this.window.loadURL(this.url + "?openproject");
+    this.window.loadURL(this.url + "?import");
 
     this.window.once("ready-to-show", () => {
       this.window?.show();

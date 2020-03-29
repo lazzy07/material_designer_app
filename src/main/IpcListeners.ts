@@ -56,4 +56,8 @@ export const listenToMessages = (screens: Screens, url: string) => {
 
     screens.subEditorScreens = [];
   });
+
+  ipcMain.on(IpcMessages.OPEN_IMPORT_SCREEN, () => {
+    screens.importScreen.createScreen(screens.editorScreen);
+  });
 };

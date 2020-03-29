@@ -19,6 +19,7 @@ import SaveProjectHot from "./SaveProjectHot";
 import { remote, ipcRenderer } from "electron";
 import { ElementsToLocalStorage } from "../EditorElements/ElementsToLocalStorage";
 import { IpcMessages } from "../IpcMessages";
+import ImportHot from "./ImportHot";
 
 let titlebar: Titleb;
 
@@ -81,6 +82,18 @@ switch (windowType) {
     });
     titlebar.getTitlebar().updateTitle("New Project");
     element = <NewProjectHot />;
+    break;
+
+  case "import":
+    titlebar = new Titleb({
+      icon: getStaticPath("/dependencies/img/icon_32x32.png"),
+      menu: null,
+      maximizable: false,
+      titleHorizontalAlignment: "center",
+      minimizable: false
+    });
+    titlebar.getTitlebar().updateTitle("Import Assets - Material designer");
+    element = <ImportHot />;
     break;
 
   case "saveproject":

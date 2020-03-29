@@ -13,7 +13,8 @@ export class EditorScreen {
     frame: false,
     transparent: true,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      webSecurity: false
     }
   };
 

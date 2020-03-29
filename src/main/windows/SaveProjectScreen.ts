@@ -18,7 +18,8 @@ export class SaveProjectScreen {
       frame: false,
       show: false,
       webPreferences: {
-        nodeIntegration: true
+        nodeIntegration: true,
+        webSecurity: false
       }
     });
     this.window.webContents.on("did-frame-finish-load", () => {

@@ -9,5 +9,6 @@ export const IpcMessages = {
   SUB_EDITOR_TO_MAIN: "dock back sub editor",
   SUB_DATA_TO_MAIN: "sub data to main",
   UPDATE_TITLEBAR: "update titlebar",
-  CLOSE_ALL_SUB_EDITORS: "close all sub editors"
+  CLOSE_ALL_SUB_EDITORS: "close all sub editors",
+  OPEN_IMPORT_SCREEN: "open import screen"
 };

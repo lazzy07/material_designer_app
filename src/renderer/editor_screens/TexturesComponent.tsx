@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import InputBox from "../components/form/InputBox";
 import { ImportTypes } from "../services/ImportImageData";
 import DropFiles from "../components/editor_page/editor_components/editor_dependencies/common/DropFiles";
+import { IS_WEB } from "../services/Webguard";
+import { IpcMessages } from "../../IpcMessages";
 
 interface Props {
   setImportFiles: (type: ImportTypes, files: File[]) => void;
@@ -14,7 +16,17 @@ interface State {}
 
 class TexturesComponent extends Component<Props, State> {
   onDrop = (files: File[]) => {
-    this.props.setImportFiles("texture", files);
+    if (files.length > 0) {
+      this.props.setImportFiles("texture", files);
+
+      if (!IS_WEB) {
+        const ipcRenderer = require("electron").ipcRenderer;
+
+        ipcRenderer.send(IpcMessages.OPEN_IMPORT_SCREEN);
+      } else {
+        //TODO:: Add web arithmetic here
+      }
+    }
   };
 
   render() {
