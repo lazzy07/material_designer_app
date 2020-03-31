@@ -151,7 +151,11 @@ class NewProjectScreen extends Component<Props, State> {
 
   getFileName = async () => {
     return await unusedFilename(
-      path.join(this.state.data.filePath, this.state.data.fileName + ".matproj")
+      path.join(
+        this.state.data.filePath,
+        this.state.data.fileName,
+        this.state.data.fileName + ".matproj"
+      )
     );
   };
 
@@ -219,7 +223,7 @@ class NewProjectScreen extends Component<Props, State> {
         this.setError("filePath", "Not a valid path");
       }
     } else {
-      this.setError("fileName", "File name cannot be empty");
+      this.setError("fileName", "Project name cannot be empty");
     }
     return false;
   };
@@ -234,6 +238,7 @@ class NewProjectScreen extends Component<Props, State> {
 
     const fullPath = path.join(
       this.state.data.filePath.trim(),
+      p.name,
       p.ext
         ? this.state.data.fileName.trim()
         : this.state.data.fileName.trim() + ".matproj"
@@ -255,6 +260,7 @@ class NewProjectScreen extends Component<Props, State> {
         fileName: p.ext
           ? this.state.data.fileName.trim()
           : this.state.data.fileName.trim() + ".matproj",
+        folderPath: path.join(this.state.data.filePath.trim(), p.name),
         filePath: this.state.data.filePath.trim(),
         description: this.state.data.description
       });
@@ -386,13 +392,24 @@ class NewProjectScreen extends Component<Props, State> {
               paddingRight: 10
             }}
           >
+            <div
+              style={{
+                fontSize: 13,
+                width: "100%",
+                textAlign: "end",
+                paddingRight: 30
+              }}
+            >
+              A folder will be created automatically for the project
+            </div>
             <InputBox
               id="fileName"
               error={this.state.errors.fileName}
               value={this.state.data.fileName}
-              label="File Name"
+              label="Project Name"
               onChange={(key, val) => this.setChanges(key, val)}
             />
+
             <div style={{ paddingTop: 10 }}>
               <InputBox
                 id="filePath"

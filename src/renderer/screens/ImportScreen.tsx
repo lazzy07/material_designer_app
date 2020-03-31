@@ -10,16 +10,29 @@ import Loading from "../components/common/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faTimes, faSave } from "@fortawesome/free-solid-svg-icons";
 import Button from "../components/form/Button";
-import RadioButton from "../components/form/RadioButton";
 import Dropdown from "react-dropdown";
 import "../scss/dropdown.scss";
+import fs from "fs";
+import path from "path";
+import { APP_DATA_PATH, LOCAL_LIBRARY_PATH } from "../constants/Path";
+import { remote } from "electron";
+import { LocalAssetLibrary } from "../services/AssetLibrary";
+import { compressImage } from "../services/ImageCompressor";
+
 interface Props {
   assetData: { type: ImportTypes; assets: ImportAssetFile[] };
+  isLocal: boolean;
+  isCloud: boolean;
+  isProject: boolean;
+  projectPath: string;
 }
 
 interface State {
   assetData: { type: ImportTypes; assets: ImportAssetFile[] };
   type: "inactive" | "saving" | "error" | "done";
+  saveType: "Save to library" | "Save to project";
+  saveLocal: boolean;
+  saveCloud: boolean;
 }
 
 class ImportScreen extends Component<Props, State> {
@@ -28,9 +41,16 @@ class ImportScreen extends Component<Props, State> {
 
     this.state = {
       assetData: { ...this.props.assetData },
-      type: "inactive"
+      type: "inactive",
+      saveType: "Save to library",
+      saveCloud: false,
+      saveLocal: true
     };
   }
+
+  closeScreen = () => {
+    remote.getCurrentWindow().close();
+  };
 
   setFileName = (id: string, val: string) => {
     let data = [...this.state.assetData.assets];
@@ -72,6 +92,159 @@ class ImportScreen extends Component<Props, State> {
           alt=""
         />
       );
+    }
+  };
+
+  saveFileStates = (assets: ImportAssetFile[]) => {
+    this.setState({ assetData: { ...this.state.assetData, assets } });
+  };
+
+  saveLocalTextures = (i: ImportAssetFile, targetPath: string) => {
+    let as = this.state.assetData.assets;
+    let preview = "";
+    const library = new LocalAssetLibrary(
+      path.join(LOCAL_LIBRARY_PATH, this.state.assetData.type + ".matdll")
+    );
+    fs.readFile(targetPath, (err, data) => {
+      if (err) {
+        //TODO:: Handle error
+        i.activeType = "error";
+        this.saveFileStates(as);
+        console.log(err);
+      } else {
+        if (data) {
+          const ext = path.parse(i.filePath).ext;
+          const type = ext.split(".")[1] ? ext.split(".")[1] : "";
+          const blob = new Blob([data], {
+            type: "image/" + type
+          });
+          console.log(blob);
+          compressImage(blob, {
+            quality: 0.6,
+            maxHeight: 400,
+            maxWidth: 400
+          })
+            .then(val => {
+              var reader = new FileReader();
+              reader.readAsDataURL(blob);
+              reader.onloadend = () => {
+                if (reader.result) {
+                  preview = reader.result as any;
+
+                  library.setAssetData({
+                    data: targetPath,
+                    dataType: "path",
+                    id: i.id,
+                    fileName: i.fileName,
+                    type: this.state.assetData.type,
+                    previewType:
+                      this.state.assetData.type === "node" ? "icon" : "image",
+                    preview
+                  });
+
+                  i.activeType = "done";
+                  this.saveFileStates(as);
+                }
+              };
+            })
+            .catch(err => {
+              //TODO:: Handle error
+              i.activeType = "error";
+              this.saveFileStates(as);
+              console.log(err);
+            });
+        }
+      }
+    });
+  };
+
+  saveLocalFile = (filePath: string, saveType: "library" | "project") => {
+    let as = this.state.assetData.assets;
+
+    for (let i of as) {
+      if (i.selected) {
+        i.activeType = "saving";
+        this.saveFileStates(as);
+        const p = path.parse(i.filePath);
+
+        const libPath = path.join(
+          filePath,
+          "library",
+          this.props.assetData.type
+        );
+
+        fs.mkdirSync(libPath, { recursive: true });
+
+        const targetPath = path.join(
+          filePath,
+          "library",
+          this.props.assetData.type,
+          i.id + p.ext
+        );
+
+        fs.copyFile(i.filePath, targetPath, async err => {
+          if (err) {
+            //TODO:: Handle error
+            console.log(err);
+            i.activeType = "error";
+            this.saveFileStates(as);
+          } else {
+            if (
+              saveType === "library" &&
+              this.state.assetData.type === "texture"
+            ) {
+              this.saveLocalTextures(i, targetPath);
+            }
+          }
+        });
+      }
+    }
+  };
+
+  saveToLocalLibrary = async () => {
+    const targetPath = APP_DATA_PATH;
+
+    const filePath = path.join(
+      LOCAL_LIBRARY_PATH,
+      this.state.assetData.type + ".matdll"
+    );
+
+    const assetData = new LocalAssetLibrary(filePath);
+
+    const data = this.saveLocalFile(targetPath, "library");
+
+    for (let i of this.state.assetData.assets) {
+      if (i.selected && i.activeType === "done") {
+      }
+    }
+  };
+
+  saveToLocalProject = () => {
+    const targetPath = this.props.projectPath;
+    this.saveLocalFile(targetPath, "project");
+  };
+
+  saveToCloudLibrary = () => {};
+
+  saveToCloudProject = () => {};
+
+  saveAssets = () => {
+    if (this.state.saveType === "Save to library") {
+      if (this.state.saveLocal) {
+        this.saveToLocalLibrary();
+      } else {
+        if (this.state.saveCloud) {
+          this.saveToCloudLibrary();
+        }
+      }
+    } else {
+      if (this.state.saveLocal) {
+        this.saveToLocalProject();
+      } else {
+        if (this.state.saveCloud) {
+          this.saveToCloudProject();
+        }
+      }
     }
   };
 
@@ -189,10 +362,13 @@ class ImportScreen extends Component<Props, State> {
               Where you need these files to save
             </div>
             <Dropdown
-              disabled
-              className={"diabledDropdown"}
-              value={"Save to library"}
-              options={["Save to library", "Save to project"]}
+              onChange={val => this.setState({ saveType: val.label as any })}
+              value={this.state.saveType}
+              options={
+                this.props.isProject
+                  ? ["Save to library", "Save to project"]
+                  : ["Save to library"]
+              }
             />
           </div>
         </div>
@@ -222,8 +398,22 @@ class ImportScreen extends Component<Props, State> {
                 justifyContent: "space-between"
               }}
             >
-              <Checkbox onClick={() => {}} label="Add to cloud library" />
-              <Checkbox onClick={() => {}} label="Add to local library" />
+              <Checkbox
+                disabled={this.state.saveType === "Save to project"}
+                onClick={() =>
+                  this.setState({ saveCloud: !this.state.saveCloud })
+                }
+                checked={this.state.saveCloud}
+                label="Add to cloud library"
+              />
+              <Checkbox
+                disabled={this.state.saveType === "Save to project"}
+                onClick={() =>
+                  this.setState({ saveLocal: !this.state.saveLocal })
+                }
+                checked={this.state.saveLocal}
+                label="Add to local library"
+              />
             </div>
             <div style={{ height: 40 }}></div>
             <div
@@ -237,10 +427,14 @@ class ImportScreen extends Component<Props, State> {
               <Button
                 icon={faSave}
                 title={"Add to Library"}
-                onClick={() => {}}
+                onClick={() => this.saveAssets()}
               />
               <div style={{ paddingRight: "20px" }}></div>
-              <Button icon={faTimes} title={"Cancel"} onClick={() => {}} />
+              <Button
+                icon={faTimes}
+                title={"Cancel"}
+                onClick={() => this.closeScreen()}
+              />
             </div>
           </div>
         </div>
@@ -251,7 +445,11 @@ class ImportScreen extends Component<Props, State> {
 
 const mapStateToProps = (state: Store) => {
   return {
-    assetData: state.system.importingAssets
+    assetData: state.system.importingAssets,
+    isLocal: state.project.isLocal,
+    isCloud: state.project.isCloud,
+    isProject: state.project.id || state.project.filePath ? true : false,
+    projectPath: state.project.filePath
   };
 };
 

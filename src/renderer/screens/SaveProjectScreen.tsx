@@ -14,13 +14,12 @@ import { Store } from "../../redux/reducers";
 import Button from "../components/form/Button";
 import { remote, ipcRenderer } from "electron";
 import { initialProjectData } from "../project_data/InitialProjectData";
-import fs from "fs";
-import path from "path";
 import { openProject } from "../../redux/actions/ProjectActions";
 import { Project } from "../../interfaces/Project";
 import RecentProjects from "../services/RecentProjects";
 import { IpcMessages } from "../../IpcMessages";
-
+import fs from "fs";
+import path from "path";
 type SavingState = "saving" | "done" | "error" | "inactive";
 
 type CloudConnectionType =
@@ -43,6 +42,7 @@ interface Props {
   description: string;
   fileName: string;
   filePath: string;
+  folderPath: string;
   openProject: (project: Project) => void;
 }
 
@@ -122,8 +122,10 @@ class SaveProjectScreen extends Component<Props, State> {
   getInitData = () => {
     const initProjectData = initialProjectData();
     initProjectData.description = this.props.description;
-    initProjectData.filePath = this.props.filePath;
+    initProjectData.filePath = this.props.folderPath;
     initProjectData.fileName = this.props.fileName;
+    initProjectData.isCloud = this.props.cloudActive;
+    initProjectData.isLocal = this.props.localActive;
     return initProjectData;
   };
 
@@ -132,10 +134,12 @@ class SaveProjectScreen extends Component<Props, State> {
     if (this.props.localActive) {
       this.setState({ localSaveState: "saving" });
 
+      if (!fs.existsSync(this.props.folderPath)) {
+        fs.mkdirSync(this.props.folderPath);
+      }
       const jsonData = JSON.stringify(initProjectData);
-
       fs.writeFile(
-        path.join(this.props.filePath, this.props.fileName),
+        path.join(this.props.folderPath, this.props.fileName),
         jsonData,
         err => {
           if (err) {
@@ -146,7 +150,7 @@ class SaveProjectScreen extends Component<Props, State> {
           } else {
             this.setState({ localSaveState: "done", error: "" });
             RecentProjects.addData({
-              filePath: path.join(this.props.filePath, this.props.fileName),
+              filePath: path.join(this.props.folderPath, this.props.fileName),
               type: "local",
               lastModified: Date.now(),
               description: this.props.description

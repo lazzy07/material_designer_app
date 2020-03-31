@@ -14,6 +14,8 @@ export interface Project {
     wireframe: boolean;
     exposure: number;
   };
+  isCloud: boolean;
+  isLocal: boolean;
   modifiedAt: number;
   createdAt: number;
 }

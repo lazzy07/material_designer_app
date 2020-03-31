@@ -5,6 +5,7 @@ export interface SaveProject {
   localActive: boolean;
   cloudActive: boolean;
   filePath: string;
+  folderPath: string;
   fileName: string;
   description: string;
 }
@@ -14,6 +15,7 @@ const initState: SaveProject = {
   cloudActive: false,
   fileName: "",
   filePath: "",
+  folderPath: "",
   description: ""
 };
 

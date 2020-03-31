@@ -15,6 +15,8 @@ export const initialProjectData = (): Project => {
     description: "",
     currentGraph: "",
     textures: [],
+    isCloud: false,
+    isLocal: true,
     createdAt: Date.now(),
     modifiedAt: Date.now()
   };
