@@ -18,6 +18,8 @@ import { APP_DATA_PATH, LOCAL_LIBRARY_PATH } from "../constants/Path";
 import { remote } from "electron";
 import { LocalAssetLibrary } from "../services/AssetLibrary";
 import { compressImage } from "../services/ImageCompressor";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+import * as THREE from "three";
 
 interface Props {
   assetData: { type: ImportTypes; assets: ImportAssetFile[] };
@@ -81,17 +83,68 @@ class ImportScreen extends Component<Props, State> {
   };
 
   //rendering file icon of the import asset
-  renderFileIcon = (path: string) => {
-    if (this.state.assetData.type === "node") {
+  renderFileIcon = (filePath: string) => {
+    const type = this.state.assetData.type;
+    if (type === "node") {
       return null;
-    } else {
+    } else if (type === "texture") {
       return (
         <img
           style={{ maxWidth: 90, maxHeight: 90, objectFit: "contain" }}
-          src={path}
+          src={filePath}
           alt=""
         />
       );
+    } else {
+      const ext = path.parse(filePath).ext;
+      if (ext === ".png") {
+        return (
+          <img
+            style={{ maxWidth: 90, maxHeight: 90, objectFit: "contain" }}
+            src={filePath}
+            alt=""
+          />
+        );
+      } else if (ext === ".hdr") {
+        let myRef: HTMLDivElement | null;
+        let dom = (
+          <div
+            id={filePath}
+            ref={ref => (myRef = ref)}
+            style={{ width: 90, height: 90 }}
+          ></div>
+        );
+        new RGBELoader()
+          .setDataType(THREE.UnsignedByteType)
+          .load(filePath, texture => {
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(90, 90);
+            renderer.toneMapping = THREE.ReinhardToneMapping;
+            renderer.toneMappingExposure = 2.0;
+
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.setClearColor(defaultColors.DEFAULT_BACKGROUND_COLOR);
+            const scene = new THREE.Scene();
+            const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+            if (myRef) {
+              if (myRef.children.length === 0)
+                myRef.appendChild(renderer.domElement);
+              let material = new THREE.MeshBasicMaterial({ map: texture });
+              let quad = new THREE.PlaneBufferGeometry(
+                (1.5 * texture.image.width) / texture.image.height,
+                1.5
+              );
+              let mesh = new THREE.Mesh(quad, material);
+              scene.add(mesh);
+              renderer.toneMappingExposure = 2.0;
+              renderer.render(scene, camera);
+            }
+          });
+        return dom;
+      }
+
+      return <div></div>;
     }
   };
 
@@ -99,66 +152,7 @@ class ImportScreen extends Component<Props, State> {
     this.setState({ assetData: { ...this.state.assetData, assets } });
   };
 
-  saveLocalTextures = (i: ImportAssetFile, targetPath: string) => {
-    let as = this.state.assetData.assets;
-    let preview = "";
-    const library = new LocalAssetLibrary(
-      path.join(LOCAL_LIBRARY_PATH, this.state.assetData.type + ".matdll")
-    );
-    fs.readFile(targetPath, (err, data) => {
-      if (err) {
-        //TODO:: Handle error
-        i.activeType = "error";
-        this.saveFileStates(as);
-        console.log(err);
-      } else {
-        if (data) {
-          const ext = path.parse(i.filePath).ext;
-          const type = ext.split(".")[1] ? ext.split(".")[1] : "";
-          const blob = new Blob([data], {
-            type: "image/" + type
-          });
-          console.log(blob);
-          compressImage(blob, {
-            quality: 0.6,
-            maxHeight: 400,
-            maxWidth: 400
-          })
-            .then(val => {
-              var reader = new FileReader();
-              reader.readAsDataURL(blob);
-              reader.onloadend = () => {
-                if (reader.result) {
-                  preview = reader.result as any;
-
-                  library.setAssetData({
-                    data: targetPath,
-                    dataType: "path",
-                    id: i.id,
-                    fileName: i.fileName,
-                    type: this.state.assetData.type,
-                    previewType:
-                      this.state.assetData.type === "node" ? "icon" : "image",
-                    preview
-                  });
-
-                  i.activeType = "done";
-                  this.saveFileStates(as);
-                }
-              };
-            })
-            .catch(err => {
-              //TODO:: Handle error
-              i.activeType = "error";
-              this.saveFileStates(as);
-              console.log(err);
-            });
-        }
-      }
-    });
-  };
-
-  saveLocalFile = (filePath: string, saveType: "library" | "project") => {
+  saveLocalFile = (filePath: string) => {
     let as = this.state.assetData.assets;
 
     for (let i of as) {
@@ -189,12 +183,8 @@ class ImportScreen extends Component<Props, State> {
             i.activeType = "error";
             this.saveFileStates(as);
           } else {
-            if (
-              saveType === "library" &&
-              this.state.assetData.type === "texture"
-            ) {
-              this.saveLocalTextures(i, targetPath);
-            }
+            i.activeType = "done";
+            this.saveFileStates(as);
           }
         });
       }
@@ -209,9 +199,7 @@ class ImportScreen extends Component<Props, State> {
       this.state.assetData.type + ".matdll"
     );
 
-    const assetData = new LocalAssetLibrary(filePath);
-
-    const data = this.saveLocalFile(targetPath, "library");
+    const data = this.saveLocalFile(targetPath);
 
     for (let i of this.state.assetData.assets) {
       if (i.selected && i.activeType === "done") {
@@ -221,7 +209,7 @@ class ImportScreen extends Component<Props, State> {
 
   saveToLocalProject = () => {
     const targetPath = this.props.projectPath;
-    this.saveLocalFile(targetPath, "project");
+    this.saveLocalFile(targetPath);
   };
 
   saveToCloudLibrary = () => {};

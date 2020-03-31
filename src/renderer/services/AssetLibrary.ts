@@ -1,6 +1,6 @@
 import { AssetFile } from "./../../interfaces/AssetFile";
 import { IS_WEB } from "./Webguard";
-
+import fs from "fs";
 export class LocalAssetLibrary {
   private assets: AssetFile[] = [];
   private filePath: string;
@@ -11,26 +11,19 @@ export class LocalAssetLibrary {
 
   importAssetData = () => {
     if (!IS_WEB) {
-      const fs = require("fs");
       if (fs.existsSync(this.filePath)) {
-        fs.readFile(this.filePath, (err, strData) => {
-          if (err) {
-            //TODO:: Handle error
-            console.log(err);
+        try {
+          const strdata = fs.readFileSync(this.filePath);
+          const data = JSON.parse(strdata.toString());
+          if (data) {
+            this.assets = data;
           } else {
-            try {
-              const data = JSON.parse(strData);
-              if (data) {
-                this.assets = data;
-              } else {
-                console.log("No data found when reading file");
-              }
-            } catch (error) {
-              //TODO:: Handle error
-              console.log(error);
-            }
+            console.log("No data found when reading file");
           }
-        });
+        } catch (error) {
+          //TODO:: Handle error
+          console.log(error);
+        }
       }
     } else {
       //TODO:: Add cloud arithmetic
@@ -39,19 +32,13 @@ export class LocalAssetLibrary {
 
   saveAssetData = () => {
     if (!IS_WEB) {
-      const fs = require("fs");
-
       const data = JSON.stringify(this.assets);
-      fs.writeFile(this.filePath, data, err => {
-        //TODO:: Handle error
-
-        console.log(err);
-      });
+      fs.writeFileSync(this.filePath, data);
     } else {
     }
   };
 
-  getAssetData = () => {
+  getAssetData = async () => {
     this.importAssetData();
     return this.assets;
   };
@@ -65,6 +52,7 @@ export class LocalAssetLibrary {
       }
     }
     if (canSave) {
+      console.log(asset);
       this.assets.push(asset);
       this.saveAssetData();
     }
