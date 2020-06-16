@@ -1,10 +1,10 @@
 import {
   openProjectScreen,
-  newProjectScreen
-} from "../../../renderer/menus/editor_menu_actions/EditorMenuActions";
+  newProjectScreen,
+} from "../../menus/editor_menu_actions/EditorMenuActions";
 
 export const startKeyboardListners = () => {
-  window.addEventListener("keyup", event => {
+  window.addEventListener("keyup", (event) => {
     saveProjectListner(event);
     openProjectListner(event);
     newProjectListner(event);

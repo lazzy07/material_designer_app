@@ -16,9 +16,8 @@ import fs from "fs";
 import path from "path";
 import { APP_DATA_PATH, LOCAL_LIBRARY_PATH } from "../constants/Path";
 import { remote } from "electron";
-import { LocalAssetLibrary } from "../services/AssetLibrary";
-import { compressImage } from "../services/ImageCompressor";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+import { EXRLoader } from "three/examples/jsm/loaders/EXRLoader";
 import * as THREE from "three";
 
 interface Props {
@@ -46,7 +45,7 @@ class ImportScreen extends Component<Props, State> {
       type: "inactive",
       saveType: "Save to library",
       saveCloud: false,
-      saveLocal: true
+      saveLocal: true,
     };
   }
 
@@ -64,7 +63,7 @@ class ImportScreen extends Component<Props, State> {
     }
 
     this.setState({
-      assetData: { ...this.state.assetData, assets: [...data] }
+      assetData: { ...this.state.assetData, assets: [...data] },
     });
   };
 
@@ -78,7 +77,7 @@ class ImportScreen extends Component<Props, State> {
     }
 
     this.setState({
-      assetData: { ...this.state.assetData, assets: [...data] }
+      assetData: { ...this.state.assetData, assets: [...data] },
     });
   };
 
@@ -110,13 +109,13 @@ class ImportScreen extends Component<Props, State> {
         let dom = (
           <div
             id={filePath}
-            ref={ref => (myRef = ref)}
+            ref={(ref) => (myRef = ref)}
             style={{ width: 90, height: 90 }}
           ></div>
         );
         new RGBELoader()
           .setDataType(THREE.UnsignedByteType)
-          .load(filePath, texture => {
+          .load(filePath, (texture) => {
             const renderer = new THREE.WebGLRenderer();
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(90, 90);
@@ -142,10 +141,60 @@ class ImportScreen extends Component<Props, State> {
             }
           });
         return dom;
+      } else if (ext === ".exr") {
+        let myRef: HTMLDivElement | null;
+        let dom = (
+          <div
+            id={filePath}
+            ref={(ref) => (myRef = ref)}
+            style={{ width: 90, height: 90 }}
+          ></div>
+        );
+        new EXRLoader()
+          .setDataType(THREE.FloatType)
+          .load(filePath, (texture) => {
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(90, 90);
+            renderer.toneMapping = THREE.ReinhardToneMapping;
+            renderer.toneMappingExposure = 2.0;
+
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.setClearColor(defaultColors.DEFAULT_BACKGROUND_COLOR);
+            const scene = new THREE.Scene();
+            const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+            if (myRef) {
+              if (myRef.children.length === 0)
+                myRef.appendChild(renderer.domElement);
+              let material = new THREE.MeshBasicMaterial({ map: texture });
+              let quad = new THREE.PlaneBufferGeometry(
+                (1.5 * texture.image.width) / texture.image.height,
+                1.5
+              );
+              let mesh = new THREE.Mesh(quad, material);
+              scene.add(mesh);
+              renderer.toneMappingExposure = 2.0;
+              renderer.render(scene, camera);
+            }
+          });
       }
 
       return <div></div>;
     }
+  };
+
+  //Creating preview file
+  createPreviewFile = async (filePath: string, fileData: ImportAssetFile) => {
+    return new Promise((resolve, reject) => {
+      const fileType = this.props.assetData.type;
+
+      const targetPath = path.join(
+        filePath,
+        "library",
+        fileType,
+        fileData.id + ".preview"
+      );
+    });
   };
 
   saveFileStates = (assets: ImportAssetFile[]) => {
@@ -176,7 +225,7 @@ class ImportScreen extends Component<Props, State> {
           i.id + p.ext
         );
 
-        fs.copyFile(i.filePath, targetPath, async err => {
+        fs.copyFile(i.filePath, targetPath, async (err) => {
           if (err) {
             //TODO:: Handle error
             console.log(err);
@@ -184,6 +233,10 @@ class ImportScreen extends Component<Props, State> {
             this.saveFileStates(as);
           } else {
             i.activeType = "done";
+
+            //create preview file
+            await this.createPreviewFile(filePath, i);
+
             this.saveFileStates(as);
           }
         });
@@ -194,17 +247,7 @@ class ImportScreen extends Component<Props, State> {
   saveToLocalLibrary = async () => {
     const targetPath = APP_DATA_PATH;
 
-    const filePath = path.join(
-      LOCAL_LIBRARY_PATH,
-      this.state.assetData.type + ".matdll"
-    );
-
-    const data = this.saveLocalFile(targetPath);
-
-    for (let i of this.state.assetData.assets) {
-      if (i.selected && i.activeType === "done") {
-      }
-    }
+    this.saveLocalFile(targetPath);
   };
 
   saveToLocalProject = () => {
@@ -273,7 +316,7 @@ class ImportScreen extends Component<Props, State> {
         style={{
           display: "flex",
           height: 90,
-          width: "100%"
+          width: "100%",
         }}
       >
         <div
@@ -281,7 +324,7 @@ class ImportScreen extends Component<Props, State> {
             display: "flex",
             height: 90,
             flexDirection: "column",
-            justifyContent: "center"
+            justifyContent: "center",
           }}
         >
           {this.renderFileStatusIcon(asset)}
@@ -291,7 +334,7 @@ class ImportScreen extends Component<Props, State> {
             display: "flex",
             justifyContent: "center",
             paddingLeft: 10,
-            paddingRight: 10
+            paddingRight: 10,
           }}
         >
           {this.renderFileIcon(asset.filePath)}
@@ -302,7 +345,7 @@ class ImportScreen extends Component<Props, State> {
             flexDirection: "column",
             justifyContent: "center",
             paddingLeft: 30,
-            width: "100%"
+            width: "100%",
           }}
         >
           <div style={{ fontSize: 13, width: "100%", textAlign: "left" }}>
@@ -331,7 +374,7 @@ class ImportScreen extends Component<Props, State> {
     return (
       <div
         style={{
-          height: "100%"
+          height: "100%",
         }}
       >
         <div>
@@ -343,14 +386,14 @@ class ImportScreen extends Component<Props, State> {
               paddingBottom: "0px",
               display: "flex",
               alignItems: "center",
-              justifyContent: "flex-end"
+              justifyContent: "flex-end",
             }}
           >
             <div style={{ paddingRight: "10PX" }}>
               Where you need these files to save
             </div>
             <Dropdown
-              onChange={val => this.setState({ saveType: val.label as any })}
+              onChange={(val) => this.setState({ saveType: val.label as any })}
               value={this.state.saveType}
               options={
                 this.props.isProject
@@ -372,7 +415,7 @@ class ImportScreen extends Component<Props, State> {
               overflowY: "auto",
               padding: "20px",
               paddingTop: "5px",
-              paddingBottom: "5px"
+              paddingBottom: "5px",
             }}
           >
             {this.renderFileList()}
@@ -383,7 +426,7 @@ class ImportScreen extends Component<Props, State> {
                 paddingLeft: "120px",
                 paddingRight: "120px",
                 display: "flex",
-                justifyContent: "space-between"
+                justifyContent: "space-between",
               }}
             >
               <Checkbox
@@ -409,7 +452,7 @@ class ImportScreen extends Component<Props, State> {
                 display: "flex",
                 justifyContent: "center",
                 paddingLeft: "90px",
-                paddingRight: "90px"
+                paddingRight: "90px",
               }}
             >
               <Button
@@ -437,7 +480,7 @@ const mapStateToProps = (state: Store) => {
     isLocal: state.project.isLocal,
     isCloud: state.project.isCloud,
     isProject: state.project.id || state.project.filePath ? true : false,
-    projectPath: state.project.filePath
+    projectPath: state.project.filePath,
   };
 };
 

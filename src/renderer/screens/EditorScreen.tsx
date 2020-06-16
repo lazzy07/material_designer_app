@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { startKeyboardListners } from "../listners/editor_listners/EditorKeyboardListners";
+import { startKeyboardListners } from "../listeners/editor_listeners/EditorKeyboardListeners";
 import BottomStatus from "../components/editor_page/BottomStatus";
 import { GoldenLayoutComponent } from "../components/editor_page/golden_layout/GoldenLayoutComponent";
 import GraphEditorScreen from "../components/editor_page/editor_components/GraphEditorScreen";
@@ -40,7 +40,7 @@ export default class EditorScreen extends Component<Props, State> {
     this.state = {
       loading: false,
       trigger: false,
-      dimensions: { height: window.innerHeight, width: window.innerWidth }
+      dimensions: { height: window.innerHeight, width: window.innerWidth },
     };
 
     if (!IS_WEB) {
@@ -67,7 +67,7 @@ export default class EditorScreen extends Component<Props, State> {
       const ipcRenderer = require("electron").ipcRenderer;
       ipcRenderer.send(IpcMessages.OPEN_SUB_EDITOR_PAGE, {
         id: i.id,
-        layout: i.config
+        layout: i.config,
       });
     }
   };
@@ -94,7 +94,7 @@ export default class EditorScreen extends Component<Props, State> {
           this.settings = {
             showMaximiseIcon: false,
             showCloseIcon: false,
-            ...i.config.settings
+            ...i.config.settings,
           };
         }
       }
@@ -112,7 +112,7 @@ export default class EditorScreen extends Component<Props, State> {
 
   doneResizing = () => {
     this.setState({
-      dimensions: { width: window.innerWidth, height: window.innerHeight }
+      dimensions: { width: window.innerWidth, height: window.innerHeight },
     });
     if (this.currentLayout)
       this.currentLayout.updateSize(window.innerWidth, window.innerHeight - 63);
@@ -122,7 +122,7 @@ export default class EditorScreen extends Component<Props, State> {
     startKeyboardListners();
     this.listenResetLayout();
 
-    window.addEventListener("resize", e => {
+    window.addEventListener("resize", (e) => {
       clearTimeout(this.resizeTimer);
       this.resizeTimer = setTimeout(this.doneResizing, 100);
     });
@@ -133,7 +133,7 @@ export default class EditorScreen extends Component<Props, State> {
       <div
         style={{
           height: this.state.dimensions.height - 63,
-          width: this.state.dimensions.width
+          width: this.state.dimensions.width,
         }}
       >
         <div>
@@ -143,20 +143,20 @@ export default class EditorScreen extends Component<Props, State> {
                 height: this.state.dimensions.height - 53,
                 width: this.state.dimensions.width,
                 paddingTop: 6,
-                backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR
-              }
+                backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR,
+              },
             }}
             config={{
               content: this.layout,
               settings: {
                 showPopoutIcon: false,
                 constrainDragToContainer: false,
-                ...this.settings
+                ...this.settings,
               },
               ...this.config,
-              trigger: this.state.trigger
+              trigger: this.state.trigger,
             }}
-            registerComponents={myLayout => {
+            registerComponents={(myLayout) => {
               this.currentLayout = myLayout;
               myLayout.registerComponent("nodes", NodesScreen);
               myLayout.registerComponent("hdris", HdrisScreen);
