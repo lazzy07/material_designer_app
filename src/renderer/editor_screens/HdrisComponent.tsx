@@ -17,7 +17,7 @@ interface State {
 }
 
 class HDRIsComponent extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: any) {
     super(props);
 
     this.state = {
@@ -55,7 +55,7 @@ class HDRIsComponent extends Component<Props, State> {
             id={"searchHdris"}
             value={this.state.searchText}
             placeHolder={"Search HDRI"}
-            onChange={(key, val) => this.onChangeSearchText(val)}
+            onChange={(_, val) => this.onChangeSearchText(val)}
           />
         </div>
         <DropFiles

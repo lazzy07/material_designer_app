@@ -4,9 +4,15 @@ import {
   replayActionMain,
   getInitialStateRenderer,
   forwardToMain,
-  replayActionRenderer
+  replayActionRenderer,
 } from "electron-redux";
-import { createStore, applyMiddleware, Store, compose } from "redux";
+import {
+  createStore,
+  applyMiddleware,
+  Store,
+  compose,
+  CombinedState,
+} from "redux";
 import { rootReducer } from "./reducers";
 import thunk from "redux-thunk";
 

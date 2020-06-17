@@ -6,23 +6,34 @@ import { ImportTypes } from "../services/ImportImageData";
 import DropFiles from "../components/editor_page/editor_components/editor_dependencies/common/DropFiles";
 import { IS_WEB } from "../services/Webguard";
 import { IpcMessages } from "../../IpcMessages";
+import { getPreviewFiles, readJsonFile } from "../services/FileServices";
+import { LOCAL_TEXTURES_PATH, PROJECT_TEXTURES_PATH } from "../constants/Path";
+import { AssetPreviewFile } from "../../interfaces/AssetPreviewFile";
+import { Store } from "../../redux/reducers";
 
 interface Props {
   setImportFiles: (type: ImportTypes, files: File[]) => void;
   dimensions: { width: number; height: number };
+  projectPath: string;
 }
 
 interface State {
   searchText: string;
+  libraryPreviewFiles: AssetPreviewFile[];
+  projectPreviewFiles: AssetPreviewFile[];
 }
 
 class TexturesComponent extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: any) {
     super(props);
 
     this.state = {
       searchText: "",
+      libraryPreviewFiles: [],
+      projectPreviewFiles: [],
     };
+
+    this.getLibraryTextureIcons();
   }
 
   onDrop = (files: File[]) => {
@@ -43,6 +54,62 @@ class TexturesComponent extends Component<Props, State> {
     this.setState({ searchText: text });
   };
 
+  /**
+   * Get all the icons of the project libraries textures to state
+   */
+  getProjectTextureIcons = async () => {
+    if (!IS_WEB) {
+      const path = require("path");
+      if (this.props.projectPath) {
+        try {
+          const projectTexPath = PROJECT_TEXTURES_PATH();
+          const files = await getPreviewFiles(projectTexPath);
+          let fileData: AssetPreviewFile[] = [];
+          for (let i of files) {
+            const data = await readJsonFile<AssetPreviewFile>(
+              path.join(PROJECT_TEXTURES_PATH(), i)
+            );
+            fileData.push(data);
+          }
+          console.log(fileData);
+          this.setState({ libraryPreviewFiles: fileData });
+        } catch (err) {
+          //TODO:: Handle error
+          console.log(err);
+        }
+      }
+    }
+  };
+
+  /**
+   * Get and add all the icons of the library textures (app library) to state
+   */
+  getLibraryTextureIcons = async () => {
+    if (!IS_WEB) {
+      const path = require("path");
+      try {
+        const files = await getPreviewFiles(LOCAL_TEXTURES_PATH);
+        let fileData: AssetPreviewFile[] = [];
+        for (let i of files) {
+          const data = await readJsonFile<AssetPreviewFile>(
+            path.join(LOCAL_TEXTURES_PATH, i)
+          );
+          fileData.push(data);
+        }
+        this.setState({ libraryPreviewFiles: fileData });
+      } catch (err) {
+        //TODO:: Handle error
+        console.log(err);
+      }
+    }
+  };
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (this.props.projectPath != prevProps.projectPath) {
+      this.getProjectTextureIcons();
+    }
+  }
+
   render() {
     return (
       <div
@@ -56,7 +123,7 @@ class TexturesComponent extends Component<Props, State> {
             id={"searchTextures"}
             value={this.state.searchText}
             placeHolder={"Search Texture"}
-            onChange={(key, val) => this.onChangeSearchText(val)}
+            onChange={(_, val) => this.onChangeSearchText(val)}
           />
         </div>
         <DropFiles
@@ -75,4 +142,10 @@ const mapDispatchToProps = {
   setImportFiles,
 };
 
-export default connect(null, mapDispatchToProps)(TexturesComponent);
+const mapStateToProps = (state: Store) => {
+  return {
+    projectPath: state.project.filePath,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TexturesComponent);
