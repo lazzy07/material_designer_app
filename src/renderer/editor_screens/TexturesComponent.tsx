@@ -12,9 +12,19 @@ interface Props {
   dimensions: { width: number; height: number };
 }
 
-interface State {}
+interface State {
+  searchText: string;
+}
 
 class TexturesComponent extends Component<Props, State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      searchText: "",
+    };
+  }
+
   onDrop = (files: File[]) => {
     if (files.length > 0) {
       this.props.setImportFiles("texture", files);
@@ -29,25 +39,29 @@ class TexturesComponent extends Component<Props, State> {
     }
   };
 
+  onChangeSearchText = (text: string) => {
+    this.setState({ searchText: text });
+  };
+
   render() {
     return (
       <div
         style={{
           height: this.props.dimensions.height,
-          width: this.props.dimensions.width
+          width: this.props.dimensions.width,
         }}
       >
         <div style={{ paddingLeft: "25px", paddingTop: "10px" }}>
           <InputBox
             id={"searchTextures"}
-            value={""}
+            value={this.state.searchText}
             placeHolder={"Search Texture"}
-            onChange={() => {}}
+            onChange={(key, val) => this.onChangeSearchText(val)}
           />
         </div>
         <DropFiles
           accept={["image/jpeg", "image/png", "image/jpg"]}
-          onAccept={files => this.onDrop(files)}
+          onAccept={(files) => this.onDrop(files)}
           dimensions={this.props.dimensions}
         >
           <div style={{ height: "100%", width: "100%" }}></div>
@@ -58,7 +72,7 @@ class TexturesComponent extends Component<Props, State> {
 }
 
 const mapDispatchToProps = {
-  setImportFiles
+  setImportFiles,
 };
 
 export default connect(null, mapDispatchToProps)(TexturesComponent);

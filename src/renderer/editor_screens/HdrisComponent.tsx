@@ -12,9 +12,23 @@ interface Props {
   dimensions: { width: number; height: number };
 }
 
-interface State {}
+interface State {
+  searchText: string;
+}
 
 class HDRIsComponent extends Component<Props, State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      searchText: "",
+    };
+  }
+
+  onChangeSearchText = (text: string) => {
+    this.setState({ searchText: text });
+  };
+
   onDrop = (files: File[]) => {
     if (files.length > 0) {
       this.props.setImportFiles("hdri", files);
@@ -33,15 +47,15 @@ class HDRIsComponent extends Component<Props, State> {
       <div
         style={{
           height: this.props.dimensions.height,
-          width: this.props.dimensions.width
+          width: this.props.dimensions.width,
         }}
       >
         <div style={{ paddingLeft: "25px", paddingTop: "10px" }}>
           <InputBox
-            id={"searchTextures"}
-            value={""}
-            placeHolder={"Search Texture"}
-            onChange={() => {}}
+            id={"searchHdris"}
+            value={this.state.searchText}
+            placeHolder={"Search HDRI"}
+            onChange={(key, val) => this.onChangeSearchText(val)}
           />
         </div>
         <DropFiles
@@ -51,9 +65,9 @@ class HDRIsComponent extends Component<Props, State> {
             "image/jpg",
             "image/hdr",
             ".hdr",
-            ".exr"
+            ".exr",
           ]}
-          onAccept={files => this.onDrop(files)}
+          onAccept={(files) => this.onDrop(files)}
           dimensions={this.props.dimensions}
         >
           <div style={{ height: "100%", width: "100%" }}></div>
@@ -64,7 +78,7 @@ class HDRIsComponent extends Component<Props, State> {
 }
 
 const mapDispatchToProps = {
-  setImportFiles
+  setImportFiles,
 };
 
 export default connect(null, mapDispatchToProps)(HDRIsComponent);
