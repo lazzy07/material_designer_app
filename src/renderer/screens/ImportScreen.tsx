@@ -14,13 +14,13 @@ import Dropdown from "react-dropdown";
 import "../scss/dropdown.scss";
 import fs from "fs";
 import path from "path";
-import { APP_DATA_PATH, LOCAL_LIBRARY_PATH } from "../constants/Path";
+import { APP_DATA_PATH } from "../constants/Path";
 import { remote } from "electron";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { EXRLoader } from "three/examples/jsm/loaders/EXRLoader";
 import * as THREE from "three";
 import { AssetPreviewFile } from "../../interfaces/AssetPreviewFile";
-import { compressImage, base64toFile } from "../services/ImageCompressor";
+import { compressImage, bufferToFile } from "../services/ImageCompressor";
 
 interface Props {
   assetData: { type: ImportTypes; assets: ImportAssetFile[] };
@@ -39,7 +39,9 @@ interface State {
 }
 
 class ImportScreen extends Component<Props, State> {
-  constructor(props) {
+  dummyRenderer: any = null;
+
+  constructor(props: any) {
     super(props);
 
     this.state = {
@@ -83,6 +85,38 @@ class ImportScreen extends Component<Props, State> {
     });
   };
 
+  createRenderer = (
+    myRef: HTMLDivElement | null,
+    texture: THREE.DataTexture,
+    width = 90,
+    height = 90
+  ) => {
+    const renderer = new THREE.WebGLRenderer({ preserveDrawingBuffer: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(width, height);
+    renderer.toneMapping = THREE.ReinhardToneMapping;
+    renderer.toneMappingExposure = 2.0;
+
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.setClearColor(defaultColors.DEFAULT_BACKGROUND_COLOR);
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    if (myRef) {
+      if (myRef.children.length === 0) myRef.appendChild(renderer.domElement);
+      let material = new THREE.MeshBasicMaterial({ map: texture });
+      let quad = new THREE.PlaneBufferGeometry(
+        (1.5 * texture.image.width) / texture.image.height,
+        1.5
+      );
+      let mesh = new THREE.Mesh(quad, material);
+      scene.add(mesh);
+      renderer.toneMappingExposure = 2.0;
+      renderer.render(scene, camera);
+    }
+
+    return renderer;
+  };
+
   //rendering file icon of the import asset
   renderFileIcon = (filePath: string) => {
     const type = this.state.assetData.type;
@@ -118,29 +152,7 @@ class ImportScreen extends Component<Props, State> {
         new RGBELoader()
           .setDataType(THREE.UnsignedByteType)
           .load(filePath, (texture) => {
-            const renderer = new THREE.WebGLRenderer();
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setSize(90, 90);
-            renderer.toneMapping = THREE.ReinhardToneMapping;
-            renderer.toneMappingExposure = 2.0;
-
-            renderer.outputEncoding = THREE.sRGBEncoding;
-            renderer.setClearColor(defaultColors.DEFAULT_BACKGROUND_COLOR);
-            const scene = new THREE.Scene();
-            const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-            if (myRef) {
-              if (myRef.children.length === 0)
-                myRef.appendChild(renderer.domElement);
-              let material = new THREE.MeshBasicMaterial({ map: texture });
-              let quad = new THREE.PlaneBufferGeometry(
-                (1.5 * texture.image.width) / texture.image.height,
-                1.5
-              );
-              let mesh = new THREE.Mesh(quad, material);
-              scene.add(mesh);
-              renderer.toneMappingExposure = 2.0;
-              renderer.render(scene, camera);
-            }
+            this.createRenderer(myRef, texture);
           });
         return dom;
       } else if (ext === ".exr") {
@@ -155,84 +167,81 @@ class ImportScreen extends Component<Props, State> {
         new EXRLoader()
           .setDataType(THREE.FloatType)
           .load(filePath, (texture) => {
-            const renderer = new THREE.WebGLRenderer();
-            renderer.setPixelRatio(window.devicePixelRatio);
-            renderer.setSize(90, 90);
-            renderer.toneMapping = THREE.ReinhardToneMapping;
-            renderer.toneMappingExposure = 2.0;
-
-            renderer.outputEncoding = THREE.sRGBEncoding;
-            renderer.setClearColor(defaultColors.DEFAULT_BACKGROUND_COLOR);
-            const scene = new THREE.Scene();
-            const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-            if (myRef) {
-              if (myRef.children.length === 0)
-                myRef.appendChild(renderer.domElement);
-              let material = new THREE.MeshBasicMaterial({ map: texture });
-              let quad = new THREE.PlaneBufferGeometry(
-                (1.5 * texture.image.width) / texture.image.height,
-                1.5
-              );
-              let mesh = new THREE.Mesh(quad, material);
-              scene.add(mesh);
-              renderer.toneMappingExposure = 2.0;
-              renderer.render(scene, camera);
-            }
+            this.createRenderer(myRef, texture);
           });
+        return dom;
       }
 
       return <div></div>;
     }
   };
 
-  //Creating preview file
-  createPreviewFile = (filePath: string, fileData: ImportAssetFile) => {
+  savePreviewFile = (
+    filePath: string,
+    fileData: ImportAssetFile,
+    dataBlob: File
+  ): Promise<boolean> => {
     return new Promise(async (resolve, reject) => {
-      const fileType = this.props.assetData.type;
+      console.log(dataBlob);
+      const compressedData = await compressImage(dataBlob, {
+        quality: 1,
+        maxHeight: 300,
+        maxWidth: 300,
+      });
+      var reader = new FileReader();
+      reader.readAsDataURL(compressedData);
+      reader.onloadend = () => {
+        const fileType = this.props.assetData.type;
+        const base64data = reader.result as any;
+        const data: AssetPreviewFile = {
+          id: fileData.id,
+          fileName: fileData.fileName,
+          data: base64data,
+          fileType: fileType,
+        };
+        const targetPath = path.join(
+          filePath,
+          "library",
+          fileType,
+          fileData.id + ".preview"
+        );
+        fs.writeFile(targetPath, JSON.stringify(data), (err) => {
+          if (err) {
+            reject(false);
+          } else {
+            resolve(true);
+          }
+        });
+      };
+    });
+  };
 
-      const targetPath = path.join(
-        filePath,
-        "library",
-        fileType,
-        fileData.id + ".preview"
-      );
-
+  //Create preview image
+  createPreviewImage = (filePath: string, fileData: ImportAssetFile) => {
+    return new Promise(async (resolve, reject) => {
       try {
         fs.readFile(fileData.filePath, async (err, contentData) => {
-          if (fileType === "texture") {
+          if (!err) {
             try {
               const ext = path.parse(fileData.filePath).ext;
-
-              const dataBlob = base64toFile(
+              const dataBlob = bufferToFile(
                 contentData,
                 fileData.id,
                 "image/" + ext.substr(1)
               );
-              console.log(dataBlob);
               if (dataBlob) {
-                const compressedData = await compressImage(dataBlob, {
-                  quality: 1,
-                  maxHeight: 300,
-                  maxWidth: 300,
-                });
-                var reader = new FileReader();
-                reader.readAsDataURL(compressedData);
-                reader.onloadend = () => {
-                  const base64data = reader.result as any;
-                  const data: AssetPreviewFile = {
-                    id: fileData.id,
-                    fileName: fileData.fileName,
-                    data: base64data,
-                    fileType: fileType,
-                  };
-                  fs.writeFile(targetPath, JSON.stringify(data), (err) => {
-                    if (err) {
-                      reject(false);
-                    } else {
-                      resolve(true);
-                    }
-                  });
-                };
+                try {
+                  const res = await this.savePreviewFile(
+                    filePath,
+                    fileData,
+                    dataBlob
+                  );
+                  resolve(res);
+                } catch (err) {
+                  //TODO:: Handle Error
+                  console.log(err);
+                  reject(false);
+                }
               } else {
                 reject(false);
               }
@@ -241,12 +250,136 @@ class ImportScreen extends Component<Props, State> {
               console.log(err);
               reject(false);
             }
+          } else {
+            //TODO:: Handle Error
+            console.log(err);
+            reject(false);
           }
         });
       } catch (err) {
         //TODO:: Handle error
         console.log(err);
         reject(false);
+      }
+    });
+  };
+
+  createPreviewHdr = (filePath: string, fileData: ImportAssetFile) => {
+    return new Promise((resolve, reject) => {
+      try {
+        new RGBELoader()
+          .setDataType(THREE.UnsignedByteType)
+          .load(fileData.filePath, async (texture) => {
+            const height = texture.image.height;
+            const width = texture.image.width;
+
+            let xx = width;
+            let yy = height;
+            if (height > 300 || width > 300) {
+              if (height > width) {
+                yy = 300;
+                xx = (300 / height) * width;
+              } else {
+                xx = 300;
+                yy = (300 / width) * height;
+              }
+            }
+
+            const renderer = this.createRenderer(
+              this.dummyRenderer,
+              texture,
+              xx,
+              yy
+            );
+
+            const strMime = "image/jpeg";
+            const imgData = renderer.domElement.toDataURL(strMime);
+            const fileType = this.props.assetData.type;
+
+            const data: AssetPreviewFile = {
+              id: fileData.id,
+              fileName: fileData.fileName,
+              data: imgData,
+              fileType: fileType,
+            };
+            const targetPath = path.join(
+              filePath,
+              "library",
+              fileType,
+              fileData.id + ".preview"
+            );
+            fs.writeFile(targetPath, JSON.stringify(data), (err) => {
+              if (err) {
+                reject(false);
+              } else {
+                resolve(true);
+              }
+            });
+          });
+      } catch (err) {
+        //TODO:: Handle Error
+        console.log(err);
+        reject(err);
+      }
+    });
+  };
+
+  createPreviewExr = (filePath: string, fileData: ImportAssetFile) => {
+    return new Promise((resolve, reject) => {
+      try {
+        new EXRLoader()
+          .setDataType(THREE.FloatType)
+          .load(fileData.filePath, async (texture) => {
+            const height = texture.image.height;
+            const width = texture.image.width;
+
+            let xx = width;
+            let yy = height;
+            if (height > 300 || width > 300) {
+              if (height > width) {
+                yy = 300;
+                xx = (300 / height) * width;
+              } else {
+                xx = 300;
+                yy = (300 / width) * height;
+              }
+            }
+
+            const renderer = this.createRenderer(
+              this.dummyRenderer,
+              texture,
+              xx,
+              yy
+            );
+
+            const strMime = "image/jpeg";
+            const imgData = renderer.domElement.toDataURL(strMime);
+            const fileType = this.props.assetData.type;
+
+            const data: AssetPreviewFile = {
+              id: fileData.id,
+              fileName: fileData.fileName,
+              data: imgData,
+              fileType: fileType,
+            };
+            const targetPath = path.join(
+              filePath,
+              "library",
+              fileType,
+              fileData.id + ".preview"
+            );
+            fs.writeFile(targetPath, JSON.stringify(data), (err) => {
+              if (err) {
+                reject(false);
+              } else {
+                resolve(true);
+              }
+            });
+          });
+      } catch (err) {
+        //TODO:: Handle Error
+        console.log(err);
+        reject(err);
       }
     });
   };
@@ -289,7 +422,19 @@ class ImportScreen extends Component<Props, State> {
             try {
               i.activeType = "done";
               //create preview file
-              await this.createPreviewFile(filePath, i);
+              if (
+                this.state.assetData.type === "texture" ||
+                this.state.assetData.type === "hdri"
+              ) {
+                const ext = path.parse(i.filePath).ext;
+                if (ext === ".jpg" || ext === ".jpeg" || ext === ".png") {
+                  await this.createPreviewImage(filePath, i);
+                } else if (ext === ".exr") {
+                  await this.createPreviewExr(filePath, i);
+                } else if (ext === ".hdr") {
+                  await this.createPreviewHdr(filePath, i);
+                }
+              }
               this.saveFileStates(as);
             } catch (err) {
               i.activeType = "error";
@@ -433,6 +578,10 @@ class ImportScreen extends Component<Props, State> {
           height: "100%",
         }}
       >
+        <div
+          style={{ display: "none" }}
+          ref={(ref) => (this.dummyRenderer = ref)}
+        ></div>
         <div>
           <div
             style={{
@@ -519,7 +668,7 @@ class ImportScreen extends Component<Props, State> {
               <div style={{ paddingRight: "20px" }}></div>
               <Button
                 icon={faTimes}
-                title={"Cancel"}
+                title={"Close"}
                 onClick={() => this.closeScreen()}
               />
             </div>

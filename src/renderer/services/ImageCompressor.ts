@@ -68,7 +68,7 @@ export const compressImage = (
 //   });
 // };
 
-export const base64toFile = (
+export const bufferToFile = (
   data: Buffer,
   fileName: string,
   contentType?: string
