@@ -19,6 +19,8 @@ import { remote } from "electron";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { EXRLoader } from "three/examples/jsm/loaders/EXRLoader";
 import * as THREE from "three";
+import { AssetPreviewFile } from "../../interfaces/AssetPreviewFile";
+import { compressImage, base64toFile } from "../services/ImageCompressor";
 
 interface Props {
   assetData: { type: ImportTypes; assets: ImportAssetFile[] };
@@ -96,7 +98,7 @@ class ImportScreen extends Component<Props, State> {
       );
     } else {
       const ext = path.parse(filePath).ext;
-      if (ext === ".png") {
+      if (ext === ".png" || ext === ".jpeg" || ext === ".jpg") {
         return (
           <img
             style={{ maxWidth: 90, maxHeight: 90, objectFit: "contain" }}
@@ -184,8 +186,8 @@ class ImportScreen extends Component<Props, State> {
   };
 
   //Creating preview file
-  createPreviewFile = async (filePath: string, fileData: ImportAssetFile) => {
-    return new Promise((resolve, reject) => {
+  createPreviewFile = (filePath: string, fileData: ImportAssetFile) => {
+    return new Promise(async (resolve, reject) => {
       const fileType = this.props.assetData.type;
 
       const targetPath = path.join(
@@ -194,6 +196,58 @@ class ImportScreen extends Component<Props, State> {
         fileType,
         fileData.id + ".preview"
       );
+
+      try {
+        fs.readFile(fileData.filePath, async (err, contentData) => {
+          if (fileType === "texture") {
+            try {
+              const ext = path.parse(fileData.filePath).ext;
+
+              const dataBlob = base64toFile(
+                contentData,
+                fileData.id,
+                "image/" + ext.substr(1)
+              );
+              console.log(dataBlob);
+              if (dataBlob) {
+                const compressedData = await compressImage(dataBlob, {
+                  quality: 1,
+                  maxHeight: 300,
+                  maxWidth: 300,
+                });
+                var reader = new FileReader();
+                reader.readAsDataURL(compressedData);
+                reader.onloadend = () => {
+                  const base64data = reader.result as any;
+                  const data: AssetPreviewFile = {
+                    id: fileData.id,
+                    fileName: fileData.fileName,
+                    data: base64data,
+                    fileType: fileType,
+                  };
+                  fs.writeFile(targetPath, JSON.stringify(data), (err) => {
+                    if (err) {
+                      reject(false);
+                    } else {
+                      resolve(true);
+                    }
+                  });
+                };
+              } else {
+                reject(false);
+              }
+            } catch (err) {
+              //TODO:: Handle Error
+              console.log(err);
+              reject(false);
+            }
+          }
+        });
+      } catch (err) {
+        //TODO:: Handle error
+        console.log(err);
+        reject(false);
+      }
     });
   };
 
@@ -232,12 +286,15 @@ class ImportScreen extends Component<Props, State> {
             i.activeType = "error";
             this.saveFileStates(as);
           } else {
-            i.activeType = "done";
-
-            //create preview file
-            await this.createPreviewFile(filePath, i);
-
-            this.saveFileStates(as);
+            try {
+              i.activeType = "done";
+              //create preview file
+              await this.createPreviewFile(filePath, i);
+              this.saveFileStates(as);
+            } catch (err) {
+              i.activeType = "error";
+              this.saveFileStates(as);
+            }
           }
         });
       }
@@ -246,7 +303,6 @@ class ImportScreen extends Component<Props, State> {
 
   saveToLocalLibrary = async () => {
     const targetPath = APP_DATA_PATH;
-
     this.saveLocalFile(targetPath);
   };
 
