@@ -10,6 +10,7 @@ import { getPreviewFiles, readJsonFile } from "../services/FileServices";
 import { LOCAL_TEXTURES_PATH, PROJECT_TEXTURES_PATH } from "../constants/Path";
 import { AssetPreviewFile } from "../../interfaces/AssetPreviewFile";
 import { Store } from "../../redux/reducers";
+import ImagePreview from "../components/library_components/ImagePreview";
 
 interface Props {
   setImportFiles: (type: ImportTypes, files: File[]) => void;
@@ -104,6 +105,12 @@ class TexturesComponent extends Component<Props, State> {
     }
   };
 
+  renderLibraryPreviews = () => {
+    return this.state.libraryPreviewFiles.map((ele) => {
+      return <ImagePreview key={ele.id} src={ele.data} title={ele.fileName} />;
+    });
+  };
+
   componentDidUpdate(prevProps: Props, prevState: State) {
     if (this.props.projectPath != prevProps.projectPath) {
       this.getProjectTextureIcons();
@@ -131,7 +138,17 @@ class TexturesComponent extends Component<Props, State> {
           onAccept={(files) => this.onDrop(files)}
           dimensions={this.props.dimensions}
         >
-          <div style={{ height: "100%", width: "100%" }}></div>
+          <div
+            style={{
+              height: "100%",
+              width: "100%",
+              paddingBottom: "60px",
+              overflowX: "hidden",
+              overflowY: "scroll",
+            }}
+          >
+            <div>{this.renderLibraryPreviews()}</div>
+          </div>
         </DropFiles>
       </div>
     );
