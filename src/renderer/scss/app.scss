@@ -81,6 +81,10 @@ p {
   cursor: pointer;
 }
 
+.clickable:hover {
+  background-color: $IMPORTANT_BACKGROUND_COLOR;
+}
+
 .clickableText:hover {
   text-decoration: underline;
   text-decoration-color: $IMPORTANT_FONT_COLOR;

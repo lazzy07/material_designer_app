@@ -11,6 +11,9 @@ import { LOCAL_TEXTURES_PATH, PROJECT_TEXTURES_PATH } from "../constants/Path";
 import { AssetPreviewFile } from "../../interfaces/AssetPreviewFile";
 import { Store } from "../../redux/reducers";
 import ImagePreview from "../components/library_components/ImagePreview";
+import LibrarySettings, {
+  THUMBNAIL_TYPES,
+} from "../components/library_components/LibrarySettings";
 
 interface Props {
   setImportFiles: (type: ImportTypes, files: File[]) => void;
@@ -20,6 +23,7 @@ interface Props {
 
 interface State {
   searchText: string;
+  selectedThumbnail: THUMBNAIL_TYPES;
   libraryPreviewFiles: AssetPreviewFile[];
   projectPreviewFiles: AssetPreviewFile[];
 }
@@ -30,6 +34,7 @@ class TexturesComponent extends Component<Props, State> {
 
     this.state = {
       searchText: "",
+      selectedThumbnail: "thumb",
       libraryPreviewFiles: [],
       projectPreviewFiles: [],
     };
@@ -111,6 +116,18 @@ class TexturesComponent extends Component<Props, State> {
     });
   };
 
+  renderProjectPreviews = () => {
+    return this.state.projectPreviewFiles.map((ele) => {
+      return <ImagePreview key={ele.id} src={ele.data} title={ele.fileName} />;
+    });
+  };
+
+  setSelectedThumbnailType = (type: THUMBNAIL_TYPES) => {
+    this.setState({
+      selectedThumbnail: type,
+    });
+  };
+
   componentDidUpdate(prevProps: Props, prevState: State) {
     if (this.props.projectPath != prevProps.projectPath) {
       this.getProjectTextureIcons();
@@ -125,6 +142,11 @@ class TexturesComponent extends Component<Props, State> {
           width: this.props.dimensions.width,
         }}
       >
+        <LibrarySettings
+          selected={this.state.selectedThumbnail}
+          onClickThumbType={this.setSelectedThumbnailType}
+          onClickRefresh={() => console.log("refresh")}
+        />
         <div style={{ paddingLeft: "25px", paddingTop: "10px" }}>
           <InputBox
             id={"searchTextures"}
@@ -148,6 +170,7 @@ class TexturesComponent extends Component<Props, State> {
             }}
           >
             <div>{this.renderLibraryPreviews()}</div>
+            <div>{this.renderProjectPreviews()}</div>
           </div>
         </DropFiles>
       </div>
