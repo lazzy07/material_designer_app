@@ -6,14 +6,24 @@ import { ImportTypes } from "../services/ImportImageData";
 import DropFiles from "../components/editor_page/editor_components/editor_dependencies/common/DropFiles";
 import { IS_WEB } from "../services/Webguard";
 import { IpcMessages } from "../../IpcMessages";
+import { Store } from "../../redux/reducers";
+import { THUMBNAIL_TYPES } from "../components/library_components/LibrarySettings";
+import { AssetPreviewFile } from "../../interfaces/AssetPreviewFile";
+import { PROJECT_HRIS_PATH, LOCAL_HDRIS_PATH } from "../constants/Path";
+import { readJsonFile, getPreviewFiles } from "../services/FileServices";
+import ImagePreview from "../components/library_components/ImagePreview";
 
 interface Props {
   setImportFiles: (type: ImportTypes, files: File[]) => void;
   dimensions: { width: number; height: number };
+  projectPath: string;
 }
 
 interface State {
   searchText: string;
+  selectedThumbnail: THUMBNAIL_TYPES;
+  libraryPreviewFiles: AssetPreviewFile[];
+  projectPreviewFiles: AssetPreviewFile[];
 }
 
 class HDRIsComponent extends Component<Props, State> {
@@ -22,7 +32,12 @@ class HDRIsComponent extends Component<Props, State> {
 
     this.state = {
       searchText: "",
+      selectedThumbnail: "thumblarge",
+      libraryPreviewFiles: [],
+      projectPreviewFiles: []
     };
+
+    this.getLibraryHdriIcons();
   }
 
   onChangeSearchText = (text: string) => {
@@ -41,6 +56,73 @@ class HDRIsComponent extends Component<Props, State> {
       }
     }
   };
+
+  getProjectHdriIcons = async () => {
+    if (!IS_WEB) {
+      const path = require("path");
+      if (this.props.projectPath) {
+        try {
+          const projectHdriPath = PROJECT_HRIS_PATH();
+          const files = await getPreviewFiles(projectHdriPath);
+          let fileData: AssetPreviewFile[] = [];
+          for (let i of files) {
+            const data = await readJsonFile<AssetPreviewFile>(
+              path.join(PROJECT_HRIS_PATH(), i)
+            );
+            fileData.push(data);
+          }
+          console.log(fileData);
+          this.setState({ libraryPreviewFiles: fileData });
+        } catch (err) {
+          //TODO:: Handle error
+          console.log(err);
+        }
+      }
+    }
+  };
+
+  /**
+   * Get and add all the icons of the library hdri (app library) to state
+   */
+  getLibraryHdriIcons = async () => {
+    if (!IS_WEB) {
+      const path = require("path");
+      try {
+        const files = await getPreviewFiles(LOCAL_HDRIS_PATH);
+        let fileData: AssetPreviewFile[] = [];
+        for (let i of files) {
+          const data = await readJsonFile<AssetPreviewFile>(
+            path.join(LOCAL_HDRIS_PATH, i)
+          );
+          fileData.push(data);
+        }
+        this.setState({ libraryPreviewFiles: fileData });
+      } catch (err) {
+        //TODO:: Handle error
+        console.log(err);
+      }
+    }
+  };
+
+
+  renderLibraryPreviews = () => {
+    return this.state.libraryPreviewFiles.map((ele) => {
+      return <ImagePreview key={ele.id} src={ele.data} title={ele.fileName} />;
+    });
+  };
+
+  renderProjectPreviews = () => {
+    return this.state.projectPreviewFiles.map((ele) => {
+      return <ImagePreview key={ele.id} src={ele.data} title={ele.fileName} />;
+    });
+  };
+
+  componentDidUpdate(prevProps: Props, _: State) {
+    if (this.props.projectPath != prevProps.projectPath) {
+      this.getProjectHdriIcons();
+    }
+  }
+
 
   render() {
     return (
@@ -70,7 +152,10 @@ class HDRIsComponent extends Component<Props, State> {
           onAccept={(files) => this.onDrop(files)}
           dimensions={this.props.dimensions}
         >
-          <div style={{ height: "100%", width: "100%" }}></div>
+          <div style={{ height: "100%", width: "100%" }}>
+            {this.renderLibraryPreviews()}
+            {this.renderProjectPreviews()}
+          </div>
         </DropFiles>
       </div>
     );
@@ -81,4 +166,10 @@ const mapDispatchToProps = {
   setImportFiles,
 };
 
-export default connect(null, mapDispatchToProps)(HDRIsComponent);
+const mapStateToProps = (state: Store) => {
+  return {
+    projectPath: state.project.filePath,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HDRIsComponent);
