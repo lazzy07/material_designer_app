@@ -3,7 +3,7 @@ declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 import { mainStore } from "../redux/store";
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
-  REDUX_DEVTOOLS
+  REDUX_DEVTOOLS,
 } from "electron-devtools-installer";
 import { listenToMessages } from "./IpcListeners";
 import { EditorScreen } from "./windows/EditorScreen";
@@ -35,7 +35,7 @@ export const screens: Screens = {
   newProjectScreen: new NewProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY),
   saveProjectScreen: new SaveProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY),
   subEditorScreens: [],
-  importScreen: new ImportScreen(MAIN_WINDOW_WEBPACK_ENTRY)
+  importScreen: new ImportScreen(MAIN_WINDOW_WEBPACK_ENTRY),
 };
 
 if (require("electron-squirrel-startup")) {
@@ -46,19 +46,19 @@ const createStore = () => {
   store = mainStore();
 };
 
-const inititlaizeApp = () => {
+const initializeApp = () => {
   console.log("Current environment: " + process.env.NODE_ENV);
   screens.editorScreen.createScreenInitial();
 };
 
 app.on("ready", () => {
   installExtension(REACT_DEVELOPER_TOOLS)
-    .then(name => console.log(`Added Extension:  ${name}`))
-    .catch(err => console.log("An error occurred: ", err));
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log("An error occurred: ", err));
 
   installExtension(REDUX_DEVTOOLS)
-    .then(name => console.log(`Added Extension:  ${name}`))
-    .catch(err => console.log("An error occurred: ", err));
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log("An error occurred: ", err));
 
   try {
     const path = SAVE_DEFAULT_PATH;
@@ -73,7 +73,7 @@ app.on("ready", () => {
   }
 
   createStore();
-  inititlaizeApp();
+  initializeApp();
 });
 
 // Quit when all windows are closed.
@@ -87,7 +87,7 @@ app.on("activate", () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    inititlaizeApp();
+    initializeApp();
   }
 });
 

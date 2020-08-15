@@ -107,13 +107,13 @@ class HDRIsComponent extends Component<Props, State> {
 
   renderLibraryPreviews = () => {
     return this.state.libraryPreviewFiles.map((ele) => {
-      return <ImagePreview key={ele.id} src={ele.data} title={ele.fileName} />;
+      return <ImagePreview noBlackBackground thumbnailType={this.state.selectedThumbnail} key={ele.id} src={ele.data} title={ele.fileName} />;
     });
   };
 
   renderProjectPreviews = () => {
     return this.state.projectPreviewFiles.map((ele) => {
-      return <ImagePreview key={ele.id} src={ele.data} title={ele.fileName} />;
+      return <ImagePreview noBlackBackground thumbnailType={this.state.selectedThumbnail} key={ele.id} src={ele.data} title={ele.fileName} />;
     });
   };
 

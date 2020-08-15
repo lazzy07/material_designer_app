@@ -112,13 +112,27 @@ class TexturesComponent extends Component<Props, State> {
 
   renderLibraryPreviews = () => {
     return this.state.libraryPreviewFiles.map((ele) => {
-      return <ImagePreview key={ele.id} src={ele.data} title={ele.fileName} />;
+      return (
+        <ImagePreview
+          thumbnailType={this.state.selectedThumbnail}
+          key={ele.id}
+          src={ele.data}
+          title={ele.fileName}
+        />
+      );
     });
   };
 
   renderProjectPreviews = () => {
     return this.state.projectPreviewFiles.map((ele) => {
-      return <ImagePreview key={ele.id} src={ele.data} title={ele.fileName} />;
+      return (
+        <ImagePreview
+          thumbnailType={this.state.selectedThumbnail}
+          key={ele.id}
+          src={ele.data}
+          title={ele.fileName}
+        />
+      );
     });
   };
 
@@ -128,7 +142,7 @@ class TexturesComponent extends Component<Props, State> {
     });
   };
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
+  componentDidUpdate(prevProps: Props) {
     if (this.props.projectPath != prevProps.projectPath) {
       this.getProjectTextureIcons();
     }
@@ -169,7 +183,17 @@ class TexturesComponent extends Component<Props, State> {
               overflowY: "scroll",
             }}
           >
-            <div>{this.renderLibraryPreviews()}</div>
+            <div
+              style={{
+                display:
+                  this.state.selectedThumbnail !== "list" ? "flex" : undefined,
+                flexWrap: "wrap",
+                paddingLeft: 20,
+                paddingRight: 20,
+              }}
+            >
+              {this.renderLibraryPreviews()}
+            </div>
             <div>{this.renderProjectPreviews()}</div>
           </div>
         </DropFiles>
