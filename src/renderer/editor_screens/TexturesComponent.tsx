@@ -193,8 +193,8 @@ class TexturesComponent extends Component<Props, State> {
               }}
             >
               {this.renderLibraryPreviews()}
+              <div>{this.renderProjectPreviews()}</div>
             </div>
-            <div>{this.renderProjectPreviews()}</div>
           </div>
         </DropFiles>
       </div>

@@ -7,7 +7,7 @@ import DropFiles from "../components/editor_page/editor_components/editor_depend
 import { IS_WEB } from "../services/Webguard";
 import { IpcMessages } from "../../IpcMessages";
 import { Store } from "../../redux/reducers";
-import { THUMBNAIL_TYPES } from "../components/library_components/LibrarySettings";
+import LibrarySettings, { THUMBNAIL_TYPES } from "../components/library_components/LibrarySettings";
 import { AssetPreviewFile } from "../../interfaces/AssetPreviewFile";
 import { PROJECT_HRIS_PATH, LOCAL_HDRIS_PATH } from "../constants/Path";
 import { readJsonFile, getPreviewFiles } from "../services/FileServices";
@@ -107,13 +107,33 @@ class HDRIsComponent extends Component<Props, State> {
 
   renderLibraryPreviews = () => {
     return this.state.libraryPreviewFiles.map((ele) => {
-      return <ImagePreview noBlackBackground thumbnailType={this.state.selectedThumbnail} key={ele.id} src={ele.data} title={ele.fileName} />;
+      return <ImagePreview
+        hdriType
+        noBlackBackground
+        thumbnailType={this.state.selectedThumbnail}
+        key={ele.id}
+        src={ele.data}
+        title={ele.fileName}
+      />;
     });
   };
 
   renderProjectPreviews = () => {
     return this.state.projectPreviewFiles.map((ele) => {
-      return <ImagePreview noBlackBackground thumbnailType={this.state.selectedThumbnail} key={ele.id} src={ele.data} title={ele.fileName} />;
+      return <ImagePreview
+        hdriType
+        noBlackBackground
+        thumbnailType={this.state.selectedThumbnail}
+        key={ele.id}
+        src={ele.data}
+        title={ele.fileName}
+      />;
+    });
+  };
+
+  setSelectedThumbnailType = (type: THUMBNAIL_TYPES) => {
+    this.setState({
+      selectedThumbnail: type,
     });
   };
 
@@ -132,6 +152,11 @@ class HDRIsComponent extends Component<Props, State> {
           width: this.props.dimensions.width,
         }}
       >
+        <LibrarySettings
+          selected={this.state.selectedThumbnail}
+          onClickThumbType={this.setSelectedThumbnailType}
+          onClickRefresh={() => console.log("refresh")}
+        />
         <div style={{ paddingLeft: "25px", paddingTop: "10px" }}>
           <InputBox
             id={"searchHdris"}
@@ -152,9 +177,21 @@ class HDRIsComponent extends Component<Props, State> {
           onAccept={(files) => this.onDrop(files)}
           dimensions={this.props.dimensions}
         >
-          <div style={{ height: "100%", width: "100%" }}>
-            {this.renderLibraryPreviews()}
-            {this.renderProjectPreviews()}
+          <div style={{
+            height: "100%", width: "100%", paddingBottom: "60px",
+            overflowX: "hidden",
+            overflowY: "scroll",
+          }}>
+            <div style={{
+              display:
+                this.state.selectedThumbnail !== "list" ? "flex" : undefined,
+              flexWrap: "wrap",
+              paddingLeft: 20,
+              paddingRight: 20,
+            }}>
+              {this.renderLibraryPreviews()}
+              {this.renderProjectPreviews()}
+            </div>
           </div>
         </DropFiles>
       </div>

@@ -5,6 +5,7 @@ interface Props {
   src: string;
   title: string;
   thumbnailType: THUMBNAIL_TYPES;
+  hdriType?: boolean;
   noBlackBackground?: boolean;
 }
 
@@ -29,9 +30,9 @@ export default class ImagePreview extends Component<Props, State> {
                     : undefined,
               height:
                 this.props.thumbnailType === "thumblarge"
-                  ? 120
+                  ? this.props.hdriType ? 70 : 120
                   : this.props.thumbnailType === "thumb"
-                    ? 80
+                    ? this.props.hdriType ? 50 : 80
                     : undefined,
             }}
             src={this.props.src}
