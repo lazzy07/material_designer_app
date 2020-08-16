@@ -1,0 +1,11 @@
+@import "./colors.scss";
+
+.imagePreview {
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.imagePreview:hover {
+  background-color: $IMPORTANT_BACKGROUND_COLOR;
+}

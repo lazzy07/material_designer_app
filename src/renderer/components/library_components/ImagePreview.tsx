@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { THUMBNAIL_TYPES } from "./LibrarySettings";
+import "../../scss/imagepreview.scss"
 
 interface Props {
   src: string;
@@ -17,6 +18,7 @@ export default class ImagePreview extends Component<Props, State> {
       return (
         <div>
           <img
+            draggable={false}
             style={{
               margin: 2,
               objectFit: "contain",
@@ -24,15 +26,15 @@ export default class ImagePreview extends Component<Props, State> {
               backgroundColor: this.props.noBlackBackground ? undefined : "black",
               width:
                 this.props.thumbnailType === "thumblarge"
-                  ? 120
+                  ? this.props.hdriType ? 250 : 120
                   : this.props.thumbnailType === "thumb"
-                    ? 80
+                    ? this.props.hdriType ? 120 : 80
                     : undefined,
               height:
                 this.props.thumbnailType === "thumblarge"
-                  ? this.props.hdriType ? 70 : 120
+                  ? this.props.hdriType ? 120 : 120
                   : this.props.thumbnailType === "thumb"
-                    ? this.props.hdriType ? 50 : 80
+                    ? this.props.hdriType ? 55 : 80
                     : undefined,
             }}
             src={this.props.src}
@@ -42,8 +44,6 @@ export default class ImagePreview extends Component<Props, State> {
               width: "100%",
               fontSize: 14,
               textAlign: "center",
-              paddingTop: 5,
-              paddingBottom: 5,
             }}
           >
             {this.props.title}
@@ -52,26 +52,29 @@ export default class ImagePreview extends Component<Props, State> {
       );
     } else {
       return (
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div className="imagePreview" style={{ display: "flex", alignItems: "center" }}>
           <img
             style={{
               objectFit: "contain",
-              width: 40,
+              width: this.props.hdriType ? 60 : 40,
               height: 40,
               backgroundColor: this.props.noBlackBackground ? undefined : "black",
             }}
             src={this.props.src}
           ></img>
-          <p
-            style={{
-              width: "100%",
-              paddingTop: 15,
-              paddingLeft: 10,
-              fontSize: 14,
-            }}
-          >
-            {this.props.title}
-          </p>
+          <div style={{ width: "100%", height: 40, paddingLeft: 10, }}>
+            <p
+              style={{
+                width: "100%",
+                paddingTop: 7,
+                paddingBottom: 7,
+                fontSize: 14,
+              }}
+            >
+              {this.props.title}
+            </p>
+          </div>
+
         </div>
       );
     }
