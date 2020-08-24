@@ -26,6 +26,7 @@ interface State {
   selectedThumbnail: THUMBNAIL_TYPES;
   libraryPreviewFiles: AssetPreviewFile[];
   projectPreviewFiles: AssetPreviewFile[];
+  selected: string;
 }
 
 class TexturesComponent extends Component<Props, State> {
@@ -33,6 +34,7 @@ class TexturesComponent extends Component<Props, State> {
     super(props);
 
     this.state = {
+      selected: "",
       searchText: "",
       selectedThumbnail: "thumb",
       libraryPreviewFiles: [],
@@ -59,6 +61,10 @@ class TexturesComponent extends Component<Props, State> {
   onChangeSearchText = (text: string) => {
     this.setState({ searchText: text });
   };
+
+  setSelected = (id: string) => {
+    this.setState({ selected: id })
+  }
 
   /**
    * Get all the icons of the project libraries textures to state
