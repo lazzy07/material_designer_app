@@ -4,6 +4,7 @@ import "../../scss/imagepreview.scss"
 import DraggableComponent from "./DraggableComponent";
 
 interface Props {
+  id: string;
   src: string;
   title: string;
   thumbnailType: THUMBNAIL_TYPES;
@@ -15,13 +16,13 @@ interface State { }
 
 export default class ImagePreview extends Component<Props, State> {
   onDragStart = () => {
-
+    console.log("DragStarted")
   }
 
   render() {
     if (this.props.thumbnailType !== "list") {
       return (
-        <DraggableComponent onDragStart={this.onDragStart}>
+        <DraggableComponent name={this.props.id} onDragStart={this.onDragStart}>
           <div style={{ cursor: "pointer" }}>
             <img
               draggable={false}
@@ -58,7 +59,7 @@ export default class ImagePreview extends Component<Props, State> {
       );
     } else {
       return (
-        <DraggableComponent onDragStart={this.onDragStart}>
+        <DraggableComponent name={this.props.id} onDragStart={this.onDragStart}>
           <div className="imagePreview" style={{ display: "flex", alignItems: "center", cursor: "poinnter" }}>
             <img
               style={{

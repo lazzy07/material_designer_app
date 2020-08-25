@@ -3,9 +3,9 @@ import InputBox from "../../form/InputBox";
 import DropFiles from "./editor_dependencies/common/DropFiles";
 import ScreenComponent from "../../common/ScreenComponent";
 
-interface Props {}
+interface Props { }
 
-interface State {}
+interface State { }
 
 export default class NodesScreen extends ScreenComponent<Props, State> {
   render() {
@@ -16,7 +16,7 @@ export default class NodesScreen extends ScreenComponent<Props, State> {
             id={"searchNodes"}
             value={""}
             placeHolder={"Search Nodes"}
-            onChange={() => {}}
+            onChange={() => { }}
           />
         </div>
         <DropFiles

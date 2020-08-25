@@ -108,6 +108,7 @@ class HDRIsComponent extends Component<Props, State> {
   renderLibraryPreviews = () => {
     return this.state.libraryPreviewFiles.map((ele) => {
       return <ImagePreview
+        id={ele.id}
         hdriType
         noBlackBackground
         thumbnailType={this.state.selectedThumbnail}
@@ -125,6 +126,7 @@ class HDRIsComponent extends Component<Props, State> {
         noBlackBackground
         thumbnailType={this.state.selectedThumbnail}
         key={ele.id}
+        id={ele.id}
         src={ele.data}
         title={ele.fileName}
       />;

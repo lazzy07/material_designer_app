@@ -17,6 +17,7 @@ export default class Preview3DScreen extends ScreenComponent<Props, State> {
           width: this.state.width,
           height: this.state.height
         }}
+        className="dropper"
       >
         <Preview3dMenu />
         <Preview3dComponent />

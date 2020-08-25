@@ -11,24 +11,17 @@ export default class DropFileComponent extends Component<Props> {
     this.props.onDropComplete(data)
   }
 
-  /**
-   * Alternative drop accept function
-   */
-  onDropCompleteAlt = () => {
-  }
-
   componentDidMount = () => {
 
   };
 
   componentWillUnmount() {
-
   }
 
 
   render() {
     return (
-      <div onDrop={this.onDropCompleteAlt}>
+      <div className="dropper">
         {this.props.children}
       </div>
     )

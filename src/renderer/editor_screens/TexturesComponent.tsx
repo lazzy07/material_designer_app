@@ -120,6 +120,7 @@ class TexturesComponent extends Component<Props, State> {
     return this.state.libraryPreviewFiles.map((ele) => {
       return (
         <ImagePreview
+          id={ele.id}
           thumbnailType={this.state.selectedThumbnail}
           key={ele.id}
           src={ele.data}
@@ -133,6 +134,7 @@ class TexturesComponent extends Component<Props, State> {
     return this.state.projectPreviewFiles.map((ele) => {
       return (
         <ImagePreview
+          id={ele.id}
           thumbnailType={this.state.selectedThumbnail}
           key={ele.id}
           src={ele.data}
