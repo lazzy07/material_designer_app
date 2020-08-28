@@ -16,7 +16,6 @@ interface State { }
 
 export default class ImagePreview extends Component<Props, State> {
   onDragStart = () => {
-    console.log("DragStarted")
   }
 
   render() {

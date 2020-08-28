@@ -10,22 +10,14 @@ export default class DraggableComponent extends Component<Props> {
 
   onDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     this.dragger = this.props.name;
-    this.props.onDragStart()
+    e.dataTransfer.setData("text/plain", "hello")
+    e.dataTransfer.dropEffect = "all"
+    this.props.onDragStart();
   }
-
-  componentDidMount = () => {
-    document.addEventListener("dragend", event => {
-      event.preventDefault();
-      if (this.dragger === this.props.name) {
-        this.dragger = ""
-        console.log((event.target as any).className.includes("dropper"))
-      }
-    })
-  };
 
   render() {
     return (
-      <div draggable onDragStart={e => this.onDragStart(e)}>
+      <div style={{}} draggable onDragStart={e => this.onDragStart(e)}>
         {this.props.children}
       </div>
     )

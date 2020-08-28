@@ -7,21 +7,26 @@ interface Props {
 }
 
 export default class DropFileComponent extends Component<Props> {
-  onDropComplete = (data: DraggableItem<any>) => {
-    this.props.onDropComplete(data)
+  ref: HTMLDivElement | null = null;
+
+  onDrop = () => {
+    console.log("Dropped")
+  }
+
+  dragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.dataTransfer!.dropEffect = "copy"
+    e.dataTransfer!.setData("text/plain", "hello")
   }
 
   componentDidMount = () => {
 
   };
 
-  componentWillUnmount() {
-  }
-
 
   render() {
     return (
-      <div className="dropper">
+      <div onDragOver={e => this.dragOver(e)} onDrop={this.onDrop} ref={ref => this.ref = ref}>
         {this.props.children}
       </div>
     )
