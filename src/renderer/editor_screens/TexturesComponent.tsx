@@ -129,7 +129,7 @@ class TexturesComponent extends Component<Props, State> {
   };
 
   renderImagePreviews = (ele: AssetPreviewFile) => {
-    console.log(ele)
+
     return (
       <DraggableComponent key={ele.id} data={{ itemType: "texture", item: ele }} name={ele.id}>
         <ImagePreview

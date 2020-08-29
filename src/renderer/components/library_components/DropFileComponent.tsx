@@ -13,8 +13,6 @@ interface State {
   acceptDrag: boolean;
 }
 
-let dragId = "";
-
 export default class DropFileComponent extends Component<Props, State> {
   ref: HTMLDivElement | null = null;
 
@@ -29,23 +27,25 @@ export default class DropFileComponent extends Component<Props, State> {
 
 
   onDrop = () => {
-    this.setState({
-      acceptDrag: true,
-    })
+    for (const i of this.props.dropType) {
+      if (i === this.state.draggedData?.itemType) {
+        this.setState({
+          acceptDrag: true,
+        })
+      }
+    }
+
 
     if (!IS_WEB) {
       const ipcRenderer = require("electron").ipcRenderer;
-      dragId = Date.now().toString();
-      ipcRenderer.send(IpcMessages.GET_DRAG_DATA, dragId);
+      ipcRenderer.send(IpcMessages.GET_DRAG_DATA);
     }
-
   }
 
   onDragEnter = (_: React.DragEvent<HTMLDivElement>) => {
     if (!IS_WEB) {
       const ipcRenderer = require("electron").ipcRenderer;
-      dragId = Date.now().toString();
-      ipcRenderer.send(IpcMessages.GET_DRAG_DATA, dragId);
+      ipcRenderer.send(IpcMessages.GET_DRAG_DATA);
     }
   }
 
@@ -62,6 +62,11 @@ export default class DropFileComponent extends Component<Props, State> {
     this.setState({
       draggedData: data
     })
+
+    if (this.state.acceptDrag) {
+      this.setState({ acceptDrag: false });
+      this.props.onDropComplete(data)
+    }
   }
 
   componentDidMount = () => {
@@ -81,7 +86,7 @@ export default class DropFileComponent extends Component<Props, State> {
 
   render() {
     return (
-      <div onDragEnter={e => this.onDragEnter(e)} onDragOver={e => this.dragOver(e)} onDrop={this.onDrop} ref={ref => this.ref = ref}>
+      <div style={{ width: "100%", height: "100%" }} onDragEnter={e => this.onDragEnter(e)} onDragOver={e => this.dragOver(e)} onDrop={this.onDrop} ref={ref => this.ref = ref}>
         {this.props.children}
       </div>
     )
