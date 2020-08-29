@@ -12,6 +12,7 @@ import { AssetPreviewFile } from "../../interfaces/AssetPreviewFile";
 import { PROJECT_HRIS_PATH, LOCAL_HDRIS_PATH } from "../constants/Path";
 import { readJsonFile, getPreviewFiles } from "../services/FileServices";
 import ImagePreview from "../components/library_components/ImagePreview";
+import DraggableComponent from "../components/library_components/DraggableComponent";
 
 interface Props {
   setImportFiles: (type: ImportTypes, files: File[]) => void;
@@ -107,31 +108,28 @@ class HDRIsComponent extends Component<Props, State> {
 
   renderLibraryPreviews = () => {
     return this.state.libraryPreviewFiles.map((ele) => {
-      return <ImagePreview
-        id={ele.id}
-        hdriType
-        noBlackBackground
-        thumbnailType={this.state.selectedThumbnail}
-        key={ele.id}
-        src={ele.data}
-        title={ele.fileName}
-      />;
+      return this.renderImagePreviews(ele)
     });
-  };
+  }
 
   renderProjectPreviews = () => {
     return this.state.projectPreviewFiles.map((ele) => {
-      return <ImagePreview
+      return this.renderImagePreviews(ele);
+    });
+  };
+
+  renderImagePreviews = (ele: AssetPreviewFile) => {
+    return <DraggableComponent key={ele.id} name={ele.id} data={{ itemType: "hdri", item: ele }}>
+      <ImagePreview
         hdriType
         noBlackBackground
         thumbnailType={this.state.selectedThumbnail}
-        key={ele.id}
         id={ele.id}
         src={ele.data}
         title={ele.fileName}
-      />;
-    });
-  };
+      />
+    </DraggableComponent>
+  }
 
   setSelectedThumbnailType = (type: THUMBNAIL_TYPES) => {
     this.setState({

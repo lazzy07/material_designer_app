@@ -456,9 +456,9 @@ class ImportScreen extends Component<Props, State> {
     this.saveLocalFile(targetPath);
   };
 
-  saveToCloudLibrary = () => {};
+  saveToCloudLibrary = () => { };
 
-  saveToCloudProject = () => {};
+  saveToCloudProject = () => { };
 
   saveAssets = () => {
     if (this.state.saveType === "Save to library") {

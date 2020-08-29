@@ -40,7 +40,7 @@ export const readJsonFile = <T>(filePath: string): Promise<T> => {
       if (err) {
         reject(err);
       } else {
-        resolve(JSON.parse(data.toString()));
+        resolve({ ...JSON.parse(data.toString()), filePath });
       }
     });
   });

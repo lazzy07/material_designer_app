@@ -2,6 +2,7 @@ import {
   openProjectScreen,
   newProjectScreen,
 } from "../../menus/editor_menu_actions/EditorMenuActions";
+import { IS_WEB } from "../../services/Webguard";
 
 export const startKeyboardListners = () => {
   window.addEventListener("keyup", (event) => {
@@ -18,12 +19,16 @@ const saveProjectListner = (event: KeyboardEvent) => {
 
 const openProjectListner = (event: KeyboardEvent) => {
   if (event.code === "KeyO" && event.ctrlKey == true) {
-    openProjectScreen();
+    if (!IS_WEB) {
+      openProjectScreen();
+    }
   }
 };
 
 const newProjectListner = (event: KeyboardEvent) => {
   if (event.code === "KeyN" && event.ctrlKey == true) {
-    newProjectScreen();
+    if (!IS_WEB) {
+      newProjectScreen();
+    }
   }
 };

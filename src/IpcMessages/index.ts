@@ -10,5 +10,9 @@ export const IpcMessages = {
   SUB_DATA_TO_MAIN: "sub data to main",
   UPDATE_TITLEBAR: "update titlebar",
   CLOSE_ALL_SUB_EDITORS: "close all sub editors",
-  OPEN_IMPORT_SCREEN: "open import screen"
+  OPEN_IMPORT_SCREEN: "open import screen",
+
+  DRAG_START: "on drag start",
+  GET_DRAG_DATA: "get drag data",
+  DRAG_DATA: "drag data",
 };

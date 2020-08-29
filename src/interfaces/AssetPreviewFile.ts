@@ -3,4 +3,5 @@ export interface AssetPreviewFile {
   fileName: string;
   data: string;
   fileType: string;
+  filePath?: string;
 }

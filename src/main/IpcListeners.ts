@@ -6,6 +6,9 @@ import { v4 } from "uuid";
 import { Config } from "golden-layout";
 import { getElement } from "../EditorElements";
 import { ElementsToLocalStorage } from "src/EditorElements/ElementsToLocalStorage";
+import { DraggableItem } from "../interfaces/DraggableItem";
+
+let draggingData: DraggableItem<any> | null = null;
 
 export const listenToMessages = (screens: Screens, url: string) => {
   ipcMain.on(IpcMessages.LOAD_LOGIN_PAGE, () => {
@@ -59,5 +62,13 @@ export const listenToMessages = (screens: Screens, url: string) => {
 
   ipcMain.on(IpcMessages.OPEN_IMPORT_SCREEN, () => {
     screens.importScreen.createScreen(screens.editorScreen);
+  });
+
+  ipcMain.on(IpcMessages.DRAG_START, (_, data: DraggableItem<any>) => {
+    draggingData = data;
+  });
+
+  ipcMain.on(IpcMessages.GET_DRAG_DATA, (event, data) => {
+    event.sender.send(IpcMessages.DRAG_DATA, draggingData);
   });
 };

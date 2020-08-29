@@ -14,6 +14,7 @@ import ImagePreview from "../components/library_components/ImagePreview";
 import LibrarySettings, {
   THUMBNAIL_TYPES,
 } from "../components/library_components/LibrarySettings";
+import DraggableComponent from "../components/library_components/DraggableComponent";
 
 interface Props {
   setImportFiles: (type: ImportTypes, files: File[]) => void;
@@ -83,7 +84,6 @@ class TexturesComponent extends Component<Props, State> {
             );
             fileData.push(data);
           }
-          console.log(fileData);
           this.setState({ libraryPreviewFiles: fileData });
         } catch (err) {
           //TODO:: Handle error
@@ -118,31 +118,29 @@ class TexturesComponent extends Component<Props, State> {
 
   renderLibraryPreviews = () => {
     return this.state.libraryPreviewFiles.map((ele) => {
-      return (
-        <ImagePreview
-          id={ele.id}
-          thumbnailType={this.state.selectedThumbnail}
-          key={ele.id}
-          src={ele.data}
-          title={ele.fileName}
-        />
-      );
+      return this.renderImagePreviews(ele)
     });
   };
 
   renderProjectPreviews = () => {
     return this.state.projectPreviewFiles.map((ele) => {
-      return (
+      return this.renderImagePreviews(ele)
+    });
+  };
+
+  renderImagePreviews = (ele: AssetPreviewFile) => {
+    console.log(ele)
+    return (
+      <DraggableComponent key={ele.id} data={{ itemType: "texture", item: ele }} name={ele.id}>
         <ImagePreview
           id={ele.id}
           thumbnailType={this.state.selectedThumbnail}
-          key={ele.id}
           src={ele.data}
           title={ele.fileName}
         />
-      );
-    });
-  };
+      </DraggableComponent>
+    );
+  }
 
   setSelectedThumbnailType = (type: THUMBNAIL_TYPES) => {
     this.setState({
