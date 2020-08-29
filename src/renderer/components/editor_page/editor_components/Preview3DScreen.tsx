@@ -23,7 +23,7 @@ export default class Preview3DScreen extends ScreenComponent<Props, State> {
         }}
       >
         <Preview3dMenu />
-        <Preview3dComponent />
+        <Preview3dComponent dimensions={{ width: this.state.width, height: this.state.height }} />
       </div>
     );
   }

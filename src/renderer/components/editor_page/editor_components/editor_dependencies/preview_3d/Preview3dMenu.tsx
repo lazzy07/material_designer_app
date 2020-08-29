@@ -100,7 +100,7 @@ const menu: ScreenMenu[] = [
 export default class Preview3dMenu extends Component {
   render() {
     return (
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%", zIndex: 400 }}>
         <Menubar menu={menu} />
       </div>
     );

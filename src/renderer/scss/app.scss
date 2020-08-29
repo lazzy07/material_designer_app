@@ -61,6 +61,11 @@ p {
   color: $FONT_COLOR;
 }
 
+canvas {
+  outline: none;
+  border: none;
+}
+
 @font-face {
   font-family: "adBold";
   src: url("../fonts/AdventPro-Bold.ttf");
