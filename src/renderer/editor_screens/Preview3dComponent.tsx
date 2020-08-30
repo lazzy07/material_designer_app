@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, Mesh, Material, MeshBasicMaterial, PMREMGenerator, Texture } from 'three'
+import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, Mesh, Material, MeshBasicMaterial, PMREMGenerator, Texture, DataTexture, DataTextureLoader, TextureLoader } from 'three'
+import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader';
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Path from "path";
@@ -91,28 +92,49 @@ export default class Preview3dComponent extends Component<Props, State> {
     }
   }
 
+  loadTextureToScene = (loader: DataTextureLoader, pathData: Path.ParsedPath) => {
+    loader.setPath(pathData.dir);
+    try {
+      loader.load(Path.join("/", pathData.base), (data) => {
+        this.envMap = new PMREMGenerator(this.renderer).fromEquirectangular(data).texture;
+        this.scene.environment = this.envMap;
+        this.scene.background = this.envMap;
+        localStorage.setItem("envMap", this.state.envMapPath);
+      })
+    } catch (err) {
+      //TODO:: Error handling
+      console.log(err);
+    }
+  }
+
   loadEnvironmentFile = (oldEnvMapPath: string) => {
     if (this.state.envMapPath !== oldEnvMapPath) {
       const pathData = Path.parse(this.state.envMapPath);
-      if (pathData.ext === ".hdr") {
+      const ext = pathData.ext;
+      if (ext === ".hdr") {
         const loader = new RGBELoader();
-        loader.setPath(pathData.dir);
-        try {
-          loader.load(Path.join("/", pathData.base), (data) => {
-            this.envMap = new PMREMGenerator(this.renderer).fromEquirectangular(data).texture;
-            this.scene.environment = this.envMap;
-            this.scene.background = this.envMap;
-          })
-        } catch (err) {
-          //TODO:: Error handling
-        }
+        this.loadTextureToScene(loader, pathData);
+      } else if (ext === ".exr") {
+        const loader = new EXRLoader();
+        this.loadTextureToScene(loader, pathData);
+      } else if (ext === ".png" || ext === ".jpeg" || ext === ".jpg") {
+        const loader = new TextureLoader();
+        this.loadTextureToScene(loader, pathData);
       }
+    }
+  }
+
+  loadLastLoadedHdri = () => {
+    const envMapPath = localStorage.getItem("envMap");
+    if (envMapPath) {
+      this.setState({ envMapPath })
     }
   }
 
   /** Renderer functionality end */
   componentDidMount = () => {
     this.initRenderer();
+    this.loadLastLoadedHdri();
   };
 
   componentDidUpdate = (oldProps: Props, oldState: State) => {
