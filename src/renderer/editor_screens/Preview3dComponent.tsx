@@ -1,18 +1,26 @@
 import React, { Component } from 'react'
+import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, Mesh, Material, MeshBasicMaterial, PMREMGenerator, Texture } from 'three'
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import Path from "path";
+
 import DropFileComponent from '../components/library_components/DropFileComponent'
 import { DRAGGABLE_ITEM_TYPE, DraggableItem } from '../../interfaces/DraggableItem'
 import { AssetPreviewFile } from '../../interfaces/AssetPreviewFile'
-import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, Mesh, Material, MeshBasicMaterial } from 'three'
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { defaultColors } from '../constants/Colors'
+import { getLocalAssetPath } from '../services/GetAsset'
 
 interface Props {
   dimensions: { width: number, height: number }
 }
 
+interface State {
+  envMapPath: string;
+}
+
 const accceptedDropFileTypes: DRAGGABLE_ITEM_TYPE[] = ["hdri"]
 const menuHeight = 32;
-export default class Preview3dComponent extends Component<Props> {
+export default class Preview3dComponent extends Component<Props, State> {
   rendererDom: HTMLDivElement | null = null;
   scene: Scene;
   camera: PerspectiveCamera;
@@ -20,9 +28,15 @@ export default class Preview3dComponent extends Component<Props> {
   mesh: Mesh;
   material: Material;
   controller: OrbitControls | null = null;
+  envMap: Texture | null = null;
 
   constructor(props: Props) {
-    super(props)
+    super(props);
+
+    this.state = {
+      envMapPath: "",
+    }
+
     const { width, height } = this.props.dimensions;
     this.scene = new Scene();
     this.camera = new PerspectiveCamera(75, width / (height - menuHeight), 0.1, 1000);
@@ -33,7 +47,16 @@ export default class Preview3dComponent extends Component<Props> {
   };
 
   handleDrop = (data: DraggableItem<AssetPreviewFile>) => {
-    console.log(data);
+    if (data.item.isLocal) {
+      getLocalAssetPath(data.item.id, data.item.filePath!).then(val => {
+        this.setState({
+          envMapPath: val
+        })
+      }).catch(err => {
+        //TODO:: Handle Error
+        console.log(err);
+      })
+    }
   }
 
   /** Renderer Functionality */
@@ -68,13 +91,34 @@ export default class Preview3dComponent extends Component<Props> {
     }
   }
 
+  loadEnvironmentFile = (oldEnvMapPath: string) => {
+    if (this.state.envMapPath !== oldEnvMapPath) {
+      const pathData = Path.parse(this.state.envMapPath);
+      if (pathData.ext === ".hdr") {
+        const loader = new RGBELoader();
+        loader.setPath(pathData.dir);
+        try {
+          loader.load(Path.join("/", pathData.base), (data) => {
+            this.envMap = new PMREMGenerator(this.renderer).fromEquirectangular(data).texture;
+            this.scene.environment = this.envMap;
+            this.scene.background = this.envMap;
+          })
+        } catch (err) {
+          //TODO:: Error handling
+        }
+      }
+    }
+  }
+
   /** Renderer functionality end */
   componentDidMount = () => {
     this.initRenderer();
   };
 
-  componentDidUpdate = (oldProps: Props) => {
+  componentDidUpdate = (oldProps: Props, oldState: State) => {
     this.updateRenderer(oldProps.dimensions);
+
+    this.loadEnvironmentFile(oldState.envMapPath)
   }
 
 

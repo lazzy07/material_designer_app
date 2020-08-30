@@ -4,4 +4,5 @@ export interface AssetPreviewFile {
   data: string;
   fileType: string;
   filePath?: string;
+  isLocal?: boolean;
 }
