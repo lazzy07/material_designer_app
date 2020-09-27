@@ -1,3 +1,5 @@
+import { GraphPackage } from "./GraphPackage";
+import { Graphs } from "./Graphs";
 import { Image } from "./Image";
 
 export interface Project {
@@ -6,7 +8,7 @@ export interface Project {
   fileName: string;
   currentGraph: string;
   description: string;
-  graphs: any[];
+  graphs: GraphPackage[];
   textures: Image[];
   preview: {
     subdivision: number;
