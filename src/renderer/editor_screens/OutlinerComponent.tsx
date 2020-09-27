@@ -3,6 +3,7 @@ import OutlinerController from '../components/outliner/OutlinerController'
 import { defaultColors } from '../constants/Colors'
 import { Store } from '../../redux/reducers';
 import { connect } from 'react-redux';
+import OutlinerTree from '../components/outliner_components/OutlinerTree';
 
 interface Props {
   dimensions: { width: number, height: number };
@@ -42,6 +43,7 @@ class OutlinerComponent extends Component<Props, State> {
           height: this.props.dimensions.height - 40,
           backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR
         }}>
+          <OutlinerTree />
         </div>
       </div>
     )

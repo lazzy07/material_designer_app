@@ -6,6 +6,7 @@ export type OutlinerTypes =
   | "shadergraph";
 
 export interface OutlinerElement {
+  id: string;
   type: OutlinerTypes;
   name: string;
   children: OutlinerElement[];
