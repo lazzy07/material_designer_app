@@ -11,6 +11,7 @@ export const getTreeData = (
     name: projectName,
     type: "project",
     children: [],
+    extended: true,
   };
 
   for (let pkg of graphs) {

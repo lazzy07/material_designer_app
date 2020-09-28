@@ -4,11 +4,12 @@ import { defaultColors } from '../constants/Colors'
 import { Store } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import OutlinerTree from '../components/outliner_components/OutlinerTree';
+import { GraphPackage } from '../../interfaces/GraphPackage';
 
 interface Props {
   dimensions: { width: number, height: number };
   fileName: string;
-  graphs: any[];
+  packages: GraphPackage[];
 }
 
 interface State {
@@ -53,7 +54,7 @@ class OutlinerComponent extends Component<Props, State> {
 const mapStateToProps = (state: Store) => {
   return {
     fileName: state.project.fileName,
-    graphs: state.project.graphs
+    packages: state.project.packages
   }
 }
 

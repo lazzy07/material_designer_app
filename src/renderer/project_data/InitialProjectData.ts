@@ -1,16 +1,17 @@
 import { Project } from "src/interfaces/Project";
+import { v4 } from "uuid";
 
 export const initialProjectData = (): Project => {
   return {
-    id: "",
+    id: v4(),
     filePath: "",
-    fileName: "",
-    graphs: [],
+    fileName: "Untitled",
+    packages: [],
     preview: {
       shape: "cube",
       subdivision: 100,
       wireframe: false,
-      exposure: 1
+      exposure: 1,
     },
     description: "",
     currentGraph: "",
@@ -18,6 +19,6 @@ export const initialProjectData = (): Project => {
     isCloud: false,
     isLocal: true,
     createdAt: Date.now(),
-    modifiedAt: Date.now()
+    modifiedAt: Date.now(),
   };
 };

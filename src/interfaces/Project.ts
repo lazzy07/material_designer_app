@@ -8,7 +8,7 @@ export interface Project {
   fileName: string;
   currentGraph: string;
   description: string;
-  graphs: GraphPackage[];
+  packages: GraphPackage[];
   textures: Image[];
   preview: {
     subdivision: number;

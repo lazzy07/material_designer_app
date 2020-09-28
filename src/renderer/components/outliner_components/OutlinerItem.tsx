@@ -1,4 +1,4 @@
-import { faArchive, faCopy, faFile, faProjectDiagram, faSquareRootAlt } from '@fortawesome/free-solid-svg-icons';
+import { faArchive, faCaretDown, faCaretRight, faCopy, faFile, faProjectDiagram, faSquareRootAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Component } from 'react'
 import { OutlinerElement } from '../../../interfaces/OutlinerTree'
@@ -13,11 +13,11 @@ export default class OutlinerItem extends Component<Props> {
       case "project":
         return 0;
       case "package":
-        return 10;
-      case "graph":
         return 20;
+      case "graph":
+        return 40;
       default:
-        return 30;
+        return 60;
     }
   }
 
@@ -42,7 +42,11 @@ export default class OutlinerItem extends Component<Props> {
 
   render() {
     return (
-      <div style={{ marginLeft: this.getMargin(), display: "flex", padding: 5 }}>
+      <div style={{ marginLeft: this.getMargin(), display: "flex", padding: 0 }}>
+        {(this.props.outlinerElement.type !== "shadergraph" && this.props.outlinerElement.type !== "datagraph") &&
+          <div style={{ paddingRight: 10 }}>
+            <FontAwesomeIcon icon={this.props.outlinerElement.extended ? faCaretDown : faCaretRight} />
+          </div>}
         <div style={{ paddingRight: 10 }}>
           {this.renderIcon()}
         </div>

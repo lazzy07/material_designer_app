@@ -10,4 +10,6 @@ export interface OutlinerElement {
   type: OutlinerTypes;
   name: string;
   children: OutlinerElement[];
+  selected?: boolean;
+  extended?: boolean;
 }
