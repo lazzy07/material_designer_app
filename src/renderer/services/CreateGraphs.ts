@@ -12,11 +12,12 @@ export const createPackage = (packageName = "Untitled"): GraphPackage => {
 };
 
 export const createGraph = (graphsName = "Untitled"): Graphs => {
+  const parentId = v4();
   return {
-    id: v4(),
+    id: parentId,
     name: graphsName,
-    shaderGraph: {},
-    dataGraph: {},
+    shaderGraph: { id: v4(), parentId, data: {} },
+    dataGraph: { id: v4(), parentId, data: {} },
   };
 };
 
@@ -32,11 +33,12 @@ export const injectGraph = (
   pkg: GraphPackage,
   graphs: Graphs
 ) => {
-  for (const i of project.packages) {
+  const { packages } = project;
+  for (const i of packages) {
     if (pkg.id === i.id) {
       pkg.graphs.push(graphs);
     }
   }
 
-  return [...project.packages];
+  return [...packages];
 };

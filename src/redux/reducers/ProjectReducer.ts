@@ -26,7 +26,7 @@ export const projectReducer = (
     case CHANGE_GRAPHS:
       return {
         ...state,
-        packages: action.payload,
+        packages: [...action.payload],
       };
 
     default:

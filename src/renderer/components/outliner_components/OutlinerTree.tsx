@@ -6,6 +6,7 @@ import { setSelected } from '../../../redux/actions/SystemActions';
 import { Store } from '../../../redux/reducers';
 import { getTreeData } from '../../services/GetProjectTree';
 import OutlinerItem from './OutlinerItem'
+import _ from "lodash"
 
 interface Props {
   project: Project;
@@ -30,6 +31,7 @@ class OutlinerTree extends Component<Props, State> {
 
   loadTree = () => {
     const treeData = getTreeData(this.props.project.id, this.props.project.fileName, this.props.project.packages);
+
     this.setState({
       treeData
     })
@@ -177,7 +179,7 @@ class OutlinerTree extends Component<Props, State> {
   }
 
   componentDidUpdate = (prevProps: Props) => {
-    if (JSON.stringify(this.props.project) !== JSON.stringify(prevProps.project)) {
+    if (!_.isEqual(prevProps.project, this.props.project)) {
       this.loadTree();
     }
   };

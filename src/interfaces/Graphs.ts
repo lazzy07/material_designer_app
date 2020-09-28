@@ -1,8 +1,11 @@
+import { DataGraph } from "./DataGraph";
+import { ShaderGraph } from "./ShaderGraph";
+
 export interface Graphs {
   id: string;
   name: string;
-  shaderGraph: any;
-  dataGraph: any;
+  shaderGraph: ShaderGraph;
+  dataGraph: DataGraph;
   createdAt?: Date;
   author?: string;
 }
