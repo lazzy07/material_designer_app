@@ -8,7 +8,7 @@ export const getTreeData = (
 ) => {
   let elements: OutlinerElement = {
     id: projectId,
-    name: projectName,
+    name: projectName.split(".")[0],
     type: "project",
     children: [],
     extended: true,

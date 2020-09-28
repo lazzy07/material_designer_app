@@ -86,6 +86,10 @@ canvas {
   cursor: pointer;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .clickable:hover {
   background-color: $IMPORTANT_BACKGROUND_COLOR;
 }

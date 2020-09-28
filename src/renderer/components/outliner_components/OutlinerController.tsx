@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faRecycle, faSync, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faFolderPlus, faPlus, faRecycle, faSync, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 export default class OutlinerController extends Component {
   render() {
     return (
@@ -13,6 +13,9 @@ export default class OutlinerController extends Component {
           display: "flex",
         }}
       >
+        <div className="clickable" style={{ padding: 5, marginRight: 5 }}>
+          <FontAwesomeIcon icon={faFolderPlus} />
+        </div>
         <div className="clickable" style={{ padding: 5, marginRight: 5 }}>
           <FontAwesomeIcon icon={faPlus} />
         </div>

@@ -1,0 +1,11 @@
+@import "./colors.scss";
+
+.treeItem {
+  cursor: pointer;
+}
+
+.treeItemActive {
+  cursor: pointer;
+  background-color: $FONT_COLOR;
+  color: $IMPORTANT_BACKGROUND_COLOR;
+}

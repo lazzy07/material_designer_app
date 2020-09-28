@@ -40,9 +40,13 @@ export default class OutlinerItem extends Component<Props> {
     return <FontAwesomeIcon icon={this.getIcon()} />
   }
 
+  addStyles = () => {
+    return this.props.outlinerElement.type === "datagraph" || this.props.outlinerElement.type === "shadergraph" ? this.props.outlinerElement.selected ? "treeItemActive" : "" : undefined;
+  }
+
   render() {
     return (
-      <div style={{ marginLeft: this.getMargin(), display: "flex", padding: 0 }}>
+      <div className={this.addStyles() + " treeItem"} style={{ marginLeft: this.getMargin(), display: "flex", padding: 0 }}>
         {(this.props.outlinerElement.type !== "shadergraph" && this.props.outlinerElement.type !== "datagraph") &&
           <div style={{ paddingRight: 10 }}>
             <FontAwesomeIcon icon={this.props.outlinerElement.extended ? faCaretDown : faCaretRight} />

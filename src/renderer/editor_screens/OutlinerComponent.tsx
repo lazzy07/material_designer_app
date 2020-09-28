@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import OutlinerController from '../components/outliner/OutlinerController'
+import OutlinerController from '../components/outliner_components/OutlinerController'
 import { defaultColors } from '../constants/Colors'
 import { Store } from '../../redux/reducers';
 import { connect } from 'react-redux';
 import OutlinerTree from '../components/outliner_components/OutlinerTree';
 import { GraphPackage } from '../../interfaces/GraphPackage';
+import "../scss/outliner.scss"
 
 interface Props {
   dimensions: { width: number, height: number };
@@ -17,22 +18,6 @@ interface State {
 }
 
 class OutlinerComponent extends Component<Props, State> {
-  createTree = () => {
-    if (this.props.fileName != "") {
-      return {
-        name: this.props.fileName,
-        toggled: true,
-        children: [
-          {
-            name: "Hello"
-          }
-        ]
-      }
-    } else {
-      return {};
-    }
-  }
-
   render() {
     return (
       <div>
