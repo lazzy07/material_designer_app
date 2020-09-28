@@ -5,6 +5,8 @@ import { OutlinerElement } from '../../../interfaces/OutlinerTree'
 
 interface Props {
   outlinerElement: OutlinerElement;
+  onClick: (id: string) => void;
+  onExtend: (id: string) => void;
 }
 
 export default class OutlinerItem extends Component<Props> {
@@ -41,22 +43,27 @@ export default class OutlinerItem extends Component<Props> {
   }
 
   addStyles = () => {
-    return this.props.outlinerElement.type === "datagraph" || this.props.outlinerElement.type === "shadergraph" ? this.props.outlinerElement.selected ? "treeItemActive" : "" : undefined;
+    console.log(this.props.outlinerElement.selected)
+    return this.props.outlinerElement.selected ? "treeItemActive" : "";
   }
 
   render() {
+    const { type, extended, id, name } = this.props.outlinerElement;
     return (
-      <div className={this.addStyles() + " treeItem"} style={{ marginLeft: this.getMargin(), display: "flex", padding: 0 }}>
-        {(this.props.outlinerElement.type !== "shadergraph" && this.props.outlinerElement.type !== "datagraph") &&
-          <div style={{ paddingRight: 10 }}>
-            <FontAwesomeIcon icon={this.props.outlinerElement.extended ? faCaretDown : faCaretRight} />
+      <div className={"treeItem"} style={{ marginLeft: this.getMargin(), display: "flex", padding: 0 }}>
+        {(type !== "shadergraph" && type !== "datagraph") &&
+          <div onClick={() => this.props.onExtend(id)} style={{ paddingRight: 10 }}>
+            <FontAwesomeIcon icon={extended ? faCaretDown : faCaretRight} />
           </div>}
-        <div style={{ paddingRight: 10 }}>
-          {this.renderIcon()}
+        <div onClick={() => this.props.onClick(id)} style={{ display: "flex" }}>
+          <div style={{ paddingRight: 5 }}>
+            {this.renderIcon()}
+          </div>
+          <div className={this.addStyles()} style={{ paddingLeft: 5, paddingRight: 5 }}>
+            {name}
+          </div>
         </div>
-        <div>
-          {this.props.outlinerElement.name}
-        </div>
+
       </div>
     )
   }

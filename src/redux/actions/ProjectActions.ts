@@ -11,7 +11,7 @@ export const openProject = (data: Project): Action => {
     payload: {
       ...data,
       modifiedAt: time,
-      savedAt: time
-    }
+      savedAt: time,
+    },
   };
 };

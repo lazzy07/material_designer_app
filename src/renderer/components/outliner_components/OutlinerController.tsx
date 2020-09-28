@@ -1,7 +1,27 @@
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolderPlus, faPlus, faRecycle, faSync, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-export default class OutlinerController extends Component {
+import { faFolderPlus, faPlus, faSync } from "@fortawesome/free-solid-svg-icons";
+import { createPackage, injectPackage } from '../../services/CreateGraphs';
+import { connect } from 'react-redux';
+import { Store } from '../../../redux/reducers';
+import { changeGraphData } from '../../../redux/actions/GraphActions';
+import { GraphPackage } from '../../../interfaces/GraphPackage';
+import { Project } from '../../../interfaces/Project';
+
+interface Props {
+  project: Project;
+  changeGraphData: (packages: GraphPackage[]) => void;
+}
+
+class OutlinerController extends Component<Props> {
+  addPackageToProject = () => {
+    this.props.changeGraphData(injectPackage(this.props.project, createPackage("Untitled")));
+  }
+
+  addGraphToPackage = () => {
+
+  }
+
   render() {
     return (
       <div
@@ -13,10 +33,10 @@ export default class OutlinerController extends Component {
           display: "flex",
         }}
       >
-        <div className="clickable" style={{ padding: 5, marginRight: 5 }}>
+        <div onClick={this.addPackageToProject} className="clickable" style={{ padding: 5, marginRight: 5 }}>
           <FontAwesomeIcon icon={faFolderPlus} />
         </div>
-        <div className="clickable" style={{ padding: 5, marginRight: 5 }}>
+        <div onClick={this.addGraphToPackage} className="clickable" style={{ padding: 5, marginRight: 5 }}>
           <FontAwesomeIcon icon={faPlus} />
         </div>
         <div className="clickable" style={{ padding: 5, marginRight: 20 }}>
@@ -26,3 +46,15 @@ export default class OutlinerController extends Component {
     )
   }
 }
+
+const mapStateToProps = (state: Store) => {
+  return {
+    project: state.project
+  }
+}
+
+const mapDispatchToProps = {
+  changeGraphData
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(OutlinerController);

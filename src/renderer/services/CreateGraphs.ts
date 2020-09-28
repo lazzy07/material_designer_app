@@ -20,11 +20,11 @@ export const createGraph = (graphsName = "Untitled"): Graphs => {
   };
 };
 
-export const injectPackage = (project: Project, pkg: GraphPackage): Project => {
-  return {
-    ...project,
-    packages: [...project.packages, pkg],
-  };
+export const injectPackage = (
+  project: Project,
+  pkg: GraphPackage
+): GraphPackage[] => {
+  return [...project.packages, pkg];
 };
 
 export const injectGraph = (
@@ -38,8 +38,5 @@ export const injectGraph = (
     }
   }
 
-  return {
-    ...project,
-    packages: [...project.packages],
-  };
+  return [...project.packages];
 };
