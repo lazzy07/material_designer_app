@@ -1,20 +1,31 @@
 import { ImportTypes } from "../../renderer/services/ImportImageData";
 import { ImportAssetFile } from "../../interfaces/ImportAssetFile";
 import { Action } from "../store";
-import { SET_IMPORT_FILES } from "../actions/SystemActions";
+import { SET_IMPORT_FILES, SET_SELECTED } from "../actions/SystemActions";
+import { OutlinerTypes } from "../../interfaces/OutlinerTree";
 
 export interface SystemReducer {
   importingAssets: {
     type: ImportTypes;
     assets: ImportAssetFile[];
   };
+  selectedItems: {
+    package: string;
+    graph: string;
+    graphType: OutlinerTypes;
+  };
 }
 
 const initialState: SystemReducer = {
   importingAssets: {
     type: "texture",
-    assets: []
-  }
+    assets: [],
+  },
+  selectedItems: {
+    package: "",
+    graph: "",
+    graphType: "shadergraph",
+  },
 };
 
 export const systemReducer = (
@@ -25,8 +36,27 @@ export const systemReducer = (
     case SET_IMPORT_FILES:
       return {
         ...state,
-        importingAssets: action.payload
+        importingAssets: action.payload,
       };
+    case SET_SELECTED:
+      if (action.payload.type === "graph") {
+        return {
+          ...state,
+          selectedItems: {
+            package: state.selectedItems.package,
+            graph: action.payload.id,
+            graphType: action.payload.graphType,
+          },
+        };
+      } else {
+        return {
+          ...state,
+          selectedItems: {
+            ...state.selectedItems,
+            package: action.payload.id,
+          },
+        };
+      }
     default:
       return state;
   }

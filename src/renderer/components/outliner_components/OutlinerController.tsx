@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolderPlus, faPlus, faSync } from "@fortawesome/free-solid-svg-icons";
-import { createPackage, injectPackage } from '../../services/CreateGraphs';
+import { createGraph, createPackage, injectGraph, injectPackage } from '../../services/CreateGraphs';
 import { connect } from 'react-redux';
 import { Store } from '../../../redux/reducers';
 import { changeGraphData } from '../../../redux/actions/GraphActions';
 import { GraphPackage } from '../../../interfaces/GraphPackage';
 import { Project } from '../../../interfaces/Project';
+import { getPackage } from '../../services/GetPackageData';
 
 interface Props {
   project: Project;
+  selectedPackage: string;
   changeGraphData: (packages: GraphPackage[]) => void;
 }
 
@@ -19,7 +21,11 @@ class OutlinerController extends Component<Props> {
   }
 
   addGraphToPackage = () => {
-
+    const pkg = getPackage(this.props.project, this.props.selectedPackage);
+    if (pkg) {
+      const packages = injectGraph(this.props.project, pkg, createGraph());
+      this.props.changeGraphData(packages);
+    }
   }
 
   render() {
@@ -49,7 +55,8 @@ class OutlinerController extends Component<Props> {
 
 const mapStateToProps = (state: Store) => {
   return {
-    project: state.project
+    project: state.project,
+    selectedPackage: state.system.selectedItems.package
   }
 }
 

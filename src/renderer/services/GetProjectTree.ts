@@ -28,12 +28,12 @@ export const getTreeData = (
         type: "graph",
         children: [],
       };
-      graphElem.children.push({
-        id: i.shaderGraph.id,
-        name: "Shader Graph",
-        type: "shadergraph",
-        children: [],
-      });
+      // graphElem.children.push({
+      //   id: i.shaderGraph.id,
+      //   name: "Shader Graph",
+      //   type: "shadergraph",
+      //   children: [],
+      // });
       graphElem.children.push({
         id: i.dataGraph.id,
         name: "Data Graph",

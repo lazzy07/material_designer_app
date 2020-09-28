@@ -1,15 +1,33 @@
-import { faArchive, faCaretDown, faCaretRight, faCopy, faFile, faProjectDiagram, faSquareRootAlt } from '@fortawesome/free-solid-svg-icons';
+import { faArchive, faBoxOpen, faCaretDown, faCaretRight, faCopy, faDiceD6, faFile, faProjectDiagram, faSquareRootAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Component } from 'react'
 import { OutlinerElement } from '../../../interfaces/OutlinerTree'
+import ContentEditable from 'react-contenteditable'
 
 interface Props {
   outlinerElement: OutlinerElement;
   onClick: (id: string) => void;
   onExtend: (id: string) => void;
+  onSubmitChangeName: (id: string, name: string) => void;
 }
 
-export default class OutlinerItem extends Component<Props> {
+interface State {
+  disabled: boolean;
+  value: string;
+}
+
+export default class OutlinerItem extends Component<Props, State> {
+  contentEditable = React.createRef<HTMLElement>();
+  constructor(props: Props) {
+    super(props)
+
+    this.state = {
+      disabled: true,
+      value: this.props.outlinerElement.name
+    };
+  };
+
+
   getMargin = () => {
     switch (this.props.outlinerElement.type) {
       case "project":
@@ -26,11 +44,11 @@ export default class OutlinerItem extends Component<Props> {
   getIcon = () => {
     switch (this.props.outlinerElement.type) {
       case "project":
-        return faArchive;
+        return faBoxOpen;
       case "package":
-        return faCopy;
+        return faArchive;
       case "graph":
-        return faFile;
+        return faProjectDiagram;
       case "shadergraph":
         return faProjectDiagram;
       case "datagraph":
@@ -43,12 +61,44 @@ export default class OutlinerItem extends Component<Props> {
   }
 
   addStyles = () => {
-    console.log(this.props.outlinerElement.selected)
     return this.props.outlinerElement.selected ? "treeItemActive" : "";
   }
 
+  onDoubleClick = () => {
+    if (this.props.outlinerElement.type === "package" || this.props.outlinerElement.type === "graph")
+      this.setState({
+        disabled: false
+      })
+
+    // setTimeout(() => {
+    //   if (document.activeElement !== this.ref) {
+    //     this.setState({
+    //       disabled: true
+    //     })
+    //   }
+    // }, 300)
+  }
+
+  onChange = (e: any) => {
+    if (this.props.outlinerElement.type === "package" || this.props.outlinerElement.type === "graph")
+      this.setState({ value: e.target.value })
+  }
+
+  onChangeFinished = () => {
+    this.setState({ disabled: true })
+
+    if (this.props.outlinerElement.name !== this.state.value)
+      if (this.state.value.length > 0) {
+        this.props.onSubmitChangeName(this.props.outlinerElement.id, this.state.value)
+      } else {
+        this.setState({
+          value: this.props.outlinerElement.name
+        })
+      }
+  }
+
   render() {
-    const { type, extended, id, name } = this.props.outlinerElement;
+    const { type, extended, id } = this.props.outlinerElement;
     return (
       <div className={"treeItem"} style={{ marginLeft: this.getMargin(), display: "flex", padding: 0 }}>
         {(type !== "shadergraph" && type !== "datagraph") &&
@@ -59,9 +109,16 @@ export default class OutlinerItem extends Component<Props> {
           <div style={{ paddingRight: 5 }}>
             {this.renderIcon()}
           </div>
-          <div className={this.addStyles()} style={{ paddingLeft: 5, paddingRight: 5 }}>
-            {name}
-          </div>
+          <ContentEditable
+            onBlur={this.onChangeFinished}
+            onClick={this.onDoubleClick}
+            className={this.addStyles()}
+            style={{ paddingLeft: 5, paddingRight: 5 }}
+            innerRef={this.contentEditable}
+            html={this.state.value}
+            onChange={this.onChange}
+            disabled={this.state.disabled}
+          />
         </div>
 
       </div>
