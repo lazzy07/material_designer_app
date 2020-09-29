@@ -105,7 +105,7 @@ export default class OutlinerItem extends Component<Props, State> {
           <div onClick={() => this.props.onExtend(id)} style={{ paddingRight: 10 }}>
             <FontAwesomeIcon icon={extended ? faCaretDown : faCaretRight} />
           </div>}
-        <div onClick={() => this.props.onClick(id)} style={{ display: "flex" }}>
+        <div onClick={() => { console.log(id); this.props.onClick(id); }} style={{ display: "flex" }}>
           <div style={{ paddingRight: 5 }}>
             {this.renderIcon()}
           </div>

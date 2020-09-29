@@ -34,11 +34,13 @@ export const injectGraph = (
   graphs: Graphs
 ) => {
   const { packages } = project;
+  let newPackages: GraphPackage[] = [];
   for (const i of packages) {
     if (pkg.id === i.id) {
-      pkg.graphs.push(graphs);
+      i.graphs.push(graphs);
     }
+    newPackages.push(i);
   }
 
-  return [...packages];
+  return newPackages;
 };

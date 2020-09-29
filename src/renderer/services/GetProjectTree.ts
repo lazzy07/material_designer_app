@@ -39,6 +39,8 @@ export const getTreeData = (
         name: "Data Graph",
         type: "datagraph",
         children: [],
+        selected: false,
+        extended: false,
       });
       packageElem.children.push(graphElem);
     }
