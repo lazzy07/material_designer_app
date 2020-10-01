@@ -12,7 +12,7 @@ export default class Menubar extends Component<Props, any> {
     return (
       <Mb
         itemHoverColor={defaultColors.IMPORTANT_BACKGROUND_COLOR}
-        style={{ backgroundColor: defaultColors.DEFAULT_BACKGROUND_COLOR }}
+        style={{ backgroundColor: defaultColors.DEFAULT_BACKGROUND_COLOR, zIndex: 100 }}
       >
         {renderScreenMenu(this.props.menu)}
       </Mb>

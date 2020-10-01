@@ -114,6 +114,7 @@
     "golden-layout": "^1.5.9",
     "jquery": "^3.4.1",
     "lodash": "^4.17.20",
+    "panzoom": "^9.2.5",
     "react": "^16.13.0",
     "react-animated-css": "^1.2.1",
     "react-apollo": "^3.1.3",

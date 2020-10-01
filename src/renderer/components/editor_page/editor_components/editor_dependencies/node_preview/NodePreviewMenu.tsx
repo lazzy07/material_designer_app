@@ -27,7 +27,7 @@ const menu: ScreenMenu[] = [
 export default class NodePreviewMenu extends Component {
   render() {
     return (
-      <div>
+      <div style={{ zIndex: 100000 }}>
         <Menubar menu={menu} />
       </div>
     );
