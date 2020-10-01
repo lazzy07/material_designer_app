@@ -16,6 +16,7 @@ interface Props {
   inputClasses?: string;
   onFocus?: () => void;
   onBlur?: () => void;
+  noPadding?: boolean;
 }
 
 interface State {
@@ -66,14 +67,13 @@ export default class InputBox extends Component<Props, State> {
         {this.props.label && (
           <div style={{ flex: 3 }} className={this.props.labelClasses}>
             <label
-              className={`inputlabel ${
-                !error
-                  ? this.props.disabled
-                    ? "disabledText"
-                    : ""
-                  : "errorText"
-              }`}
-              style={{ paddingRight: 10 }}
+              className={`inputlabel ${!error
+                ? this.props.disabled
+                  ? "disabledText"
+                  : ""
+                : "errorText"
+                }`}
+              style={{ paddingRight: !this.props.noPadding ? 10 : undefined, }}
               htmlFor={this.props.id}
             >
               {this.props.label}
@@ -84,8 +84,8 @@ export default class InputBox extends Component<Props, State> {
           style={{
             flex: 9,
             position: "relative",
-            paddingBottom: 16,
-            marginBottom: 5
+            paddingBottom: !this.props.noPadding ? 16 : undefined,
+            marginBottom: !this.props.noPadding ? 5 : undefined
           }}
           className={this.props.inputClasses}
         >

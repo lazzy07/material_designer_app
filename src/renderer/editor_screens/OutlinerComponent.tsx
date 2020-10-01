@@ -11,7 +11,6 @@ import OutlinerItem from '../components/outliner_components/OutlinerItem';
 import { getTreeData } from '../services/GetProjectTree';
 import _ from "lodash"
 
-
 interface Props {
   dimensions: { width: number, height: number };
   project: Project;
@@ -22,6 +21,8 @@ interface Props {
 
 interface State {
   treeData: OutlinerElement;
+  selectedItem: string;
+  selectedType: OutlinerTypes;
 }
 
 class OutlinerComponent extends Component<Props, State> {
@@ -30,6 +31,8 @@ class OutlinerComponent extends Component<Props, State> {
 
     this.state = {
       treeData: { id: "", name: "Untitled", children: [], type: "project" },
+      selectedType: "project",
+      selectedItem: ""
     };
   };
 
@@ -79,6 +82,8 @@ class OutlinerComponent extends Component<Props, State> {
           //Clicked on a package
           i.selected = true;
           this.props.setSelected("package", "shadergraph", id);
+
+          this.setState({ selectedType: "package" });
         }
 
 
@@ -89,6 +94,8 @@ class OutlinerComponent extends Component<Props, State> {
             j.selected = true;
             this.props.setSelected("package", "shadergraph", i.id);
             this.props.setSelected("graph", "shadergraph", id);
+
+            this.setState({ selectedType: "graph" });
           }
 
           for (let k of j.children) {
@@ -99,13 +106,16 @@ class OutlinerComponent extends Component<Props, State> {
 
               this.props.setSelected("package", "datagraph", i.id);
               this.props.setSelected("graph", i.type, id);
+
+              this.setState({ selectedType: "datagraph" });
             }
           }
         }
       }
 
       this.setState({
-        treeData
+        treeData,
+        selectedItem: id
       })
     }
   }
@@ -148,50 +158,29 @@ class OutlinerComponent extends Component<Props, State> {
     }
   }
 
-  onChangeName = (id: string, name: string) => {
-    let { treeData } = this.state;
-
-    if (treeData) {
-      for (let pkg of treeData.children) {
-        if (pkg.id === id) {
-          pkg.name = name;
-          return;
-        }
-        for (let graph of pkg.children) {
-          graph.name = name;
-          return;
-        }
-      }
-
-      this.setState({
-        treeData
-      })
-    }
-  }
-
   renderTree = () => {
     let renderQueue: JSX.Element[] = [];
     const { treeData } = this.state;
     if (treeData) {
       renderQueue.push(
-        <OutlinerItem onSubmitChangeName={this.onChangeName} onExtend={this.onExtendItem} onClick={this.onClickItem} key={treeData.id} outlinerElement={treeData} />
+        <OutlinerItem onExtend={this.onExtendItem} onClick={this.onClickItem} key={treeData.id} outlinerElement={treeData} />
       )
       // Packages
       for (let i of treeData.children) {
         renderQueue.push(
-          <OutlinerItem onSubmitChangeName={this.onChangeName} onExtend={this.onExtendItem} onClick={this.onClickItem} key={i.id} outlinerElement={i} />
+          <OutlinerItem onExtend={this.onExtendItem} onClick={this.onClickItem} key={i.id} outlinerElement={i} />
         )
 
         if (i.extended) {
           //Graphs
           for (let j of i.children) {
             renderQueue.push(
-              <OutlinerItem onSubmitChangeName={this.onChangeName} onExtend={this.onExtendItem} onClick={this.onClickItem} key={j.id} outlinerElement={j} />
+              <OutlinerItem onExtend={this.onExtendItem} onClick={this.onClickItem} key={j.id} outlinerElement={j} />
             )
             if (j.extended) {
               for (const k of j.children) {
                 renderQueue.push(
-                  <OutlinerItem onSubmitChangeName={this.onChangeName} onExtend={this.onExtendItem} onClick={this.onClickItem} key={k.id} outlinerElement={k} />
+                  <OutlinerItem onExtend={this.onExtendItem} onClick={this.onClickItem} key={k.id} outlinerElement={k} />
                 )
               }
             }
@@ -212,12 +201,29 @@ class OutlinerComponent extends Component<Props, State> {
       shouldUpdate = true;
     }
 
+    if (prevProps.project.filePath !== this.props.project.filePath) {
+      shouldUpdate = true;
+    }
+
     for (const i of prevProps.project.packages) {
       for (const j of this.state.treeData.children) {
         if (i.id === j.id) {
-          if (i.graphs.length !== j.children.length) {
-            console.log(i)
+          if (i.name !== j.name) {
             shouldUpdate = true;
+          }
+          if (i.graphs.length !== j.children.length) {
+            shouldUpdate = true;
+          }
+          if (i.name !== j.name) {
+            shouldUpdate = true;
+          }
+
+          for (const graphs of i.graphs) {
+            for (const prev of j.children) {
+              if (graphs.id === prev.id)
+                if (graphs.name !== prev.name)
+                  shouldUpdate = true;
+            }
           }
         }
       }
@@ -235,12 +241,12 @@ class OutlinerComponent extends Component<Props, State> {
   render() {
     return (
       <div>
-        <OutlinerController />
+        <OutlinerController selectedItem={this.state.selectedItem} selectedType={this.state.selectedType} />
         <div style={{
           marginBottom: 20,
           margin: 10,
           width: this.props.dimensions.width - 20,
-          height: this.props.dimensions.height - 40,
+          height: this.props.dimensions.height - 55,
           backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR,
           overflow: "auto"
         }}>
