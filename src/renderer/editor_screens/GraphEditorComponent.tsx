@@ -4,6 +4,7 @@ import { createGrid } from '../services/CreateGrid'
 import Rete from "../../packages/rete-1.4.4";
 import ConnectionPlugin from "../../packages/connection-plugin-0.6.0"
 import ReactRenderPlugin from "../../packages/react-render-plugin-0.2.1";
+import NumComponent from '../../Nodes/NumComponent';
 
 
 interface Props {
@@ -14,10 +15,21 @@ export default class GraphEditorComponent extends Component<Props> {
   private ref = React.createRef<HTMLDivElement>();
 
   componentDidMount = () => {
+    const engine = new Rete.Engine('demo@0.1.0');
     const editor = new Rete.NodeEditor("materialdesigner@1.0.0", this.ref.current!);
 
     editor.use(ConnectionPlugin);
     editor.use(ReactRenderPlugin);
+
+
+    const numComponent = new NumComponent();
+    editor.register(numComponent);
+    engine.register(numComponent);
+
+    editor.on(["process", "nodecreated", "noderemoved", "connectioncreated", "connectionremoved"], async () => {
+      await engine.abort();
+      await engine.process(editor.toJSON());
+    });
   };
 
 
@@ -29,7 +41,9 @@ export default class GraphEditorComponent extends Component<Props> {
         width: "100%",
       }}>
         <div ref={this.ref} style={{ width: this.props.dimensions.width, height: this.props.dimensions.height }}></div>
-        {createGrid(defaultColors.DEFAULT_BACKGROUND_COLOR, this.props.dimensions.width, this.props.dimensions.height, 1.5, 10, 10)}
+        <div style={{ position: "absolute", width: this.props.dimensions.width, height: this.props.dimensions.height, top: 0 }}>
+          {createGrid(defaultColors.DEFAULT_BACKGROUND_COLOR, this.props.dimensions.width, this.props.dimensions.height, 1.5, 10, 10)}
+        </div>
       </div>
     )
   }
