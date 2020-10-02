@@ -20,7 +20,7 @@ export default class NodePreviewComponent extends Component<Props, State> {
 
   render() {
     return (
-      <div style={{ outline: "none", backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR, width: this.props.dimensions.width, height: this.props.dimensions.height - 30, overflow: "hidden", zIndex: -10000000 }}>
+      <div style={{ outline: "none", width: this.props.dimensions.width, height: this.props.dimensions.height - 30, overflow: "hidden", borderTop: "2px solid " + defaultColors.IMPORTANT_BACKGROUND_COLOR }}>
         <img ref={this.ref} alt="" src={"https://picsum.photos/1200"} height={300} style={{ overflow: "auto" }} />
       </div>
     )

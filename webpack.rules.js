@@ -30,7 +30,7 @@ module.exports = rules = [
       }]
   },
   {
-      test: /\.(scss|css)$/,
+      test: /\.(scss|css|sass)$/,
       use: ["style-loader", "css-loader", "sass-loader"],
   },
   {
@@ -47,4 +47,11 @@ module.exports = rules = [
           name: "[path][name].[ext]",
       },
   },
+  {
+    test: /\.(js|jsx)$/,
+    exclude: /node_modules/,
+    use: {
+      loader: "babel-loader"
+    }
+  }
 ];

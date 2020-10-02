@@ -23,7 +23,8 @@ export const renderScreenMenu = (menu: ScreenMenu[]) => {
           style={{
             color: defaultColors.FONT_COLOR,
             paddingLeft: 20,
-            paddingTop: 5
+            paddingTop: 5,
+            zIndex: 10000,
           }}
           activeColor={defaultColors.DEFAULT_BACKGROUND_COLOR}
           action={ele.onClick || undefined}
@@ -38,7 +39,8 @@ export const renderScreenMenu = (menu: ScreenMenu[]) => {
           style={{
             backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR,
             border: "1px solid " + defaultColors.BORDER_COLOR,
-            boxShadow: "2px 1px 1px rgba(0,0,0,0.1)"
+            boxShadow: "2px 1px 1px rgba(0,0,0,0.1)",
+            zIndex: 10000
           }}
           key={id}
         >
