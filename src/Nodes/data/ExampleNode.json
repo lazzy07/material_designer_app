@@ -1,0 +1,19 @@
+{
+  "id": "examplenode",
+  "name": "Exampe Node",
+  "type": "generator",
+  "library": {
+    "name": "core",
+    "id": "",
+    "version": "^1.0.0"
+  },
+  "function": "helloWorld",
+  "inputs": [{
+    "name": "Hello",
+    "type": "grayscale"
+  }],
+  "outputs": [{
+    "name": "Image",
+    "type": "color"
+  }]
+}

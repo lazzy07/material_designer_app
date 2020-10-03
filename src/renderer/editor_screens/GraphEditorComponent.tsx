@@ -4,7 +4,7 @@ import { createGrid } from '../services/CreateGrid'
 import Rete from "../../packages/rete-1.4.4";
 import ConnectionPlugin from "../../packages/connection-plugin-0.6.0"
 import ReactRenderPlugin from "../../packages/react-render-plugin-0.2.1";
-import NumComponent from '../../Nodes/NumComponent';
+import NumComponent from '../../nodes/NumComponent';
 
 
 interface Props {
