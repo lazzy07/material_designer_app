@@ -2,10 +2,6 @@ import { ipcMain } from "electron";
 import { IpcMessages } from "../IpcMessages";
 import { Screens } from "./main";
 import { SubEditorScreen } from "./windows/SubEditorScreen";
-import { v4 } from "uuid";
-import { Config } from "golden-layout";
-import { getElement } from "../EditorElements";
-import { ElementsToLocalStorage } from "src/EditorElements/ElementsToLocalStorage";
 import { DraggableItem } from "../interfaces/DraggableItem";
 
 let draggingData: DraggableItem<any> | null = null;
@@ -35,13 +31,13 @@ export const listenToMessages = (screens: Screens, url: string) => {
     screens.newProjectScreen.window?.close();
   });
 
-  ipcMain.on(IpcMessages.OPEN_SUB_EDITOR_PAGE, (event, arg) => {
+  ipcMain.on(IpcMessages.OPEN_SUB_EDITOR_PAGE, (_, arg) => {
     const newWindow = new SubEditorScreen(arg.id, url, arg.layout);
     screens.subEditorScreens.push(newWindow);
     newWindow.createScreen(screens.editorScreen);
   });
 
-  ipcMain.on(IpcMessages.SUB_EDITOR_TO_MAIN, (event, arg) => {
+  ipcMain.on(IpcMessages.SUB_EDITOR_TO_MAIN, (_, arg) => {
     screens.editorScreen.window?.webContents.send(
       IpcMessages.SUB_DATA_TO_MAIN,
       arg

@@ -15,6 +15,7 @@ import fs from "fs";
 import { SAVE_DEFAULT_PATH } from "../common_constants/path";
 import { SubEditorScreen } from "./windows/SubEditorScreen";
 import { ImportScreen } from "./windows/ImportScreen";
+import Path from "path";
 
 let store: any;
 
@@ -67,6 +68,11 @@ app.on("ready", () => {
     if (!exists) {
       console.log("SAVE_DEFAULT_PATH created");
       fs.mkdirSync(path);
+    }
+
+    const files = fs.readdirSync(Path.join(__dirname, "nodes"));
+    for (const filePath of files) {
+      fs.copyFile(filePath, Path.join(path, "nodes"), () => {});
     }
   } catch (err) {
     console.log(err);
