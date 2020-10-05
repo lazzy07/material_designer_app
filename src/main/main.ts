@@ -70,11 +70,30 @@ app.on("ready", () => {
       fs.mkdirSync(path);
     }
 
-    const files = fs.readdirSync(Path.join(__dirname, "nodes"));
+    const libPath = Path.join(
+      app.getPath("appData"),
+      "material_designer",
+      "library",
+      "nodes"
+    );
+
+    const src = Path.join(__dirname, "nodes");
+    const files = fs.readdirSync(src);
+    const nodePathExists = fs.existsSync(libPath);
+
+    if (!nodePathExists) fs.mkdirSync(libPath);
     for (const filePath of files) {
-      fs.copyFile(filePath, Path.join(path, "nodes"), () => {});
+      fs.copyFile(
+        Path.join(src, filePath),
+        Path.join(libPath, filePath),
+        (err) => {
+          //TODO:: Handle error
+          console.log(err);
+        }
+      );
     }
   } catch (err) {
+    //TODO: Handle Error
     console.log(err);
   }
 
