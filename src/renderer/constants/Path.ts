@@ -18,16 +18,9 @@ export const APP_DATA_PATH = path.join(
 
 export const LOCAL_LIBRARY_PATH = path.join(APP_DATA_PATH, "library");
 
+export const LOCAL_NODES_PATH = path.join(LOCAL_LIBRARY_PATH, "node");
 export const LOCAL_TEXTURES_PATH = path.join(LOCAL_LIBRARY_PATH, "texture");
-
 export const LOCAL_HDRIS_PATH = path.join(LOCAL_LIBRARY_PATH, "hdri");
-
-export const LOCAL_TEXTURE_DATA_FILE = path.join(
-  LOCAL_LIBRARY_PATH,
-  "texture.matdll"
-);
-
-const getProjectPath = () => {};
 
 export const PROJECT_LIBRARY_PATH = () =>
   store.getState().project.filePath
@@ -42,4 +35,9 @@ export const PROJECT_TEXTURES_PATH = () =>
 export const PROJECT_HRIS_PATH = () =>
   store.setState().project.filePath
     ? path.join(store.getState().project.filePath, "library", "hdri")
+    : "";
+
+export const PROJECT_NODES_PATH = () =>
+  store.setState().project.filePath
+    ? path.join(store.getState().project.filePath, "library", "node")
     : "";

@@ -26,7 +26,7 @@ module.exports = {
         extensions: ['.js', '.ts', '.tsx', '.jsx', '.json']
     },
     plugins: [
-        new CopyWebpackPlugin([{from: "public/loading", to: "loading"}, {from: "node_modules/7zip/7zip-lite", to: "7zip-lite"}, {from: "src/nodes/data", to: "nodes"}]),
+        new CopyWebpackPlugin([{from: "public/loading", to: "loading"}, {from: "node_modules/7zip/7zip-lite", to: "7zip-lite"}, {from: "src/nodes/data", to: "node"}]),
         new ForkTsCheckerWebpackPlugin({async: true})
     ]
 };

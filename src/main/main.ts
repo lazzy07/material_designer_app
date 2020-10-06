@@ -74,10 +74,10 @@ app.on("ready", () => {
       app.getPath("appData"),
       "material_designer",
       "library",
-      "nodes"
+      "node"
     );
 
-    const src = Path.join(__dirname, "nodes");
+    const src = Path.join(__dirname, "node");
     const files = fs.readdirSync(src);
     const nodePathExists = fs.existsSync(libPath);
 
