@@ -1,6 +1,5 @@
-import React, { Component } from "react";
-import InputBox from "../../form/InputBox";
-import DropFiles from "./editor_dependencies/common/DropFiles";
+import React from "react";
+import NodesComponent from "../../../editor_screens/NodesComponent";
 import ScreenComponent from "../../common/ScreenComponent";
 
 interface Props { }
@@ -11,25 +10,7 @@ export default class NodesScreen extends ScreenComponent<Props, State> {
   render() {
     return (
       <div>
-        <div style={{ paddingLeft: "25px", paddingTop: "10px" }}>
-          <InputBox
-            id={"searchNodes"}
-            value={""}
-            placeHolder={"Search Nodes"}
-            onChange={() => { }}
-          />
-        </div>
-        <DropFiles
-          accept={["image/jpeg", "image/png", "image/jpg"]}
-          onAccept={e => console.log(e)}
-        >
-          <div
-            style={{
-              width: this.state.width,
-              height: this.state.height
-            }}
-          ></div>
-        </DropFiles>
+        <NodesComponent dimensions={{ height: this.state.height, width: this.state.width }} />
       </div>
     );
   }

@@ -3,6 +3,9 @@ import { LOCAL_NODES_PATH, PROJECT_NODES_PATH } from '../constants/Path'
 import { getAllFiles, readJsonFile } from '../services/FileServices';
 import Path from 'path';
 import { NodeData } from '../../interfaces/NodeData';
+import NodePreviewItem from '../components/library_components/NodePreviewItem';
+import DropFiles from '../components/editor_page/editor_components/editor_dependencies/common/DropFiles';
+import InputBox from '../components/form/InputBox';
 
 interface State {
   localNodes: NodeData[];
@@ -10,6 +13,7 @@ interface State {
 }
 
 interface Props {
+  dimensions: { height: number, width: number }
 }
 
 class NodesComponent extends Component<Props, State> {
@@ -74,10 +78,43 @@ class NodesComponent extends Component<Props, State> {
     })
   }
 
+  renderNode = (nodeData: NodeData[], keyPrefix: string) => {
+    return nodeData.map((ele, index) => {
+      return <NodePreviewItem key={keyPrefix + index} data={ele} />
+    })
+  }
+
+  componentDidMount = () => {
+    this.readLocalLibrary();
+    this.readProjectLibrary();
+  };
+
+
   render() {
     return (
       <div>
-
+        <div style={{ paddingLeft: "25px", paddingTop: "10px" }}>
+          <InputBox
+            id={"searchNodes"}
+            value={""}
+            placeHolder={"Search Nodes"}
+            onChange={() => { }}
+          />
+        </div>
+        <DropFiles
+          accept={["image/jpeg", "image/png", "image/jpg"]}
+          onAccept={e => console.log(e)}
+        >
+          <div
+            style={{
+              width: this.props.dimensions.width,
+              height: this.props.dimensions.height
+            }}
+          >
+            {this.renderNode(this.state.localNodes, "local")}
+            {this.renderNode(this.state.projectNodes, "project")}
+          </div>
+        </DropFiles>
       </div>
     )
   }

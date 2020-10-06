@@ -1,1 +1,7 @@
-export type NODE_TYPES = "generator" | "process.grayscale" | "process.color";
+export type NODE_TYPES =
+  | "generator.color"
+  | "generator.grayscale"
+  | "process.grayscale"
+  | "process.color"
+  | "output.color"
+  | "output.grayscale";

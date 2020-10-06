@@ -1,7 +1,7 @@
 {
   "id": "examplenode",
   "name": "Exampe Node",
-  "type": "generator",
+  "type": "generator.grayscale",
   "library": {
     "name": "core",
     "id": "",

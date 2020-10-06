@@ -6,7 +6,13 @@ export const colors = {
   LIGHTEST_GREY: "#b3b6b6",
   WHITE_GREY: "#cfd5d6",
   RED: "#e8232d",
-  CYAN: "#009688"
+  CYAN: "#009688",
+  PINK: "#E91E63",
+  GREEN: "#8BC34A",
+  DEEP_ORANGE: "#FF5722",
+  PANDA_CYAN: "#00BCD4",
+  DEEP_PURPLE: "#673AB7",
+  PANDA_RED: "#F44336",
 };
 
 export const defaultColors = {
@@ -18,5 +24,12 @@ export const defaultColors = {
   PRIMARY_COLOR: colors.CYAN,
   DISABLED_FONT_COLOR: colors.LIGHTER_GREY,
   HOVER_COLOR: colors.LIGHTER_GREY,
-  BORDER_COLOR: colors.LIGHT_GREY
+  BORDER_COLOR: colors.LIGHT_GREY,
+
+  GENERATOR_COLOR: colors.PINK,
+  GENERATOR_GRAYSCALE: colors.GREEN,
+  PROCESS_COLOR: colors.DEEP_ORANGE,
+  PROCESS_GRAYSCALE: colors.PANDA_CYAN,
+  OUTPUT_COLOR: colors.DEEP_PURPLE,
+  OUTPUT_GRAYSCALE: colors.PANDA_RED,
 };
