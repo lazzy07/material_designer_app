@@ -33,11 +33,11 @@ export const PROJECT_TEXTURES_PATH = () =>
     : "";
 
 export const PROJECT_HRIS_PATH = () =>
-  store.setState().project.filePath
+  store.getState().project.filePath
     ? path.join(store.getState().project.filePath, "library", "hdri")
     : "";
 
 export const PROJECT_NODES_PATH = () =>
-  store.setState().project.filePath
+  store.getState().project.filePath
     ? path.join(store.getState().project.filePath, "library", "node")
     : "";

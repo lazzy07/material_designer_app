@@ -1,5 +1,5 @@
 import { NODE_TYPES } from "../NodeTypes";
-import NodeLibrary from "../node_libraries/NodeLibrary";
+import NodeLibrary from "./NodeLibrary";
 import Input from "./Input";
 import Output from "./Output";
 

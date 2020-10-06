@@ -105,6 +105,7 @@ class NodesComponent extends Component<Props, State> {
           accept={["image/jpeg", "image/png", "image/jpg"]}
           onAccept={e => console.log(e)}
         >
+
           <div
             style={{
               width: this.props.dimensions.width,

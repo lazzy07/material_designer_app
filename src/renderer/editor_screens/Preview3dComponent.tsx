@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, Mesh, Material, MeshBasicMaterial, PMREMGenerator, Texture, DataTexture, DataTextureLoader, TextureLoader } from 'three'
+import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, Mesh, Material, MeshBasicMaterial, PMREMGenerator, Texture, DataTextureLoader, TextureLoader } from 'three'
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader';
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
