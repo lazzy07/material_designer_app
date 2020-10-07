@@ -12,11 +12,12 @@ import {
 } from "../../packages/rete-1.4.4/core/data";
 import NodeClass from "./NodeClass";
 import { v4 } from "uuid";
+import ImageController from "./controls/ImageController";
 
-export default class NodeComponent<T> extends Component {
-  nodeClass: NodeClass<T>;
+export default class NodeComponent extends Component {
+  nodeClass: NodeClass;
 
-  constructor(nodeClass: NodeClass<T>) {
+  constructor(nodeClass: NodeClass) {
     super(nodeClass.id);
     this.nodeClass = nodeClass;
   }
@@ -31,6 +32,13 @@ export default class NodeComponent<T> extends Component {
       const output = new Output(v4(), i.title, new Socket(i.title));
       node.addOutput(output);
     }
+
+    let controller = new ImageController(
+      this.nodeClass.id,
+      this.nodeClass.id,
+      this.nodeClass.name
+    );
+    node.addControl(controller);
   }
 
   worker(node: NodeData, inputs: WorkerInputs, outputs: WorkerOutputs) {}

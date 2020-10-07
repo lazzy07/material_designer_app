@@ -3,6 +3,16 @@ import Output from "../nodes/classes/OutputConnection";
 import { NODE_TYPES } from "../nodes/NodeTypes";
 import { FunctionLibraryData } from "./FunctionLibraryData";
 
+export interface NodeDataParameters {
+  type: string;
+  values: number[];
+}
+
+export interface NodeParameters {
+  parameters: NodeDataParameters[];
+  data: any;
+}
+
 export interface NodeData {
   id: string;
   name: string;
@@ -11,4 +21,5 @@ export interface NodeData {
   function: string;
   inputs: Input[];
   outputs: Output[];
+  data: NodeParameters;
 }

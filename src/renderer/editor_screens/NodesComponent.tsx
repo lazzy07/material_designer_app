@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { LOCAL_NODES_PATH, PROJECT_NODES_PATH } from '../constants/Path'
-import { getAllFiles, readJsonFile } from '../services/FileServices';
-import Path from 'path';
 import { NodeData } from '../../interfaces/NodeData';
 import NodePreviewItem from '../components/library_components/NodePreviewItem';
 import DropFiles from '../components/editor_page/editor_components/editor_dependencies/common/DropFiles';
 import InputBox from '../components/form/InputBox';
+import { getAllNodes } from '../services/NodeServices';
 
 interface State {
   localNodes: NodeData[];
@@ -31,7 +30,7 @@ class NodesComponent extends Component<Props, State> {
     const NODES_PATH = LOCAL_NODES_PATH;
 
     try {
-      const data = await this.getAllNodes(NODES_PATH);
+      const data = await getAllNodes(NODES_PATH);
 
       this.setState({
         localNodes: data
@@ -47,7 +46,7 @@ class NodesComponent extends Component<Props, State> {
 
     if (NODES_PATH) {
       try {
-        const data = await this.getAllNodes(NODES_PATH);
+        const data = await getAllNodes(NODES_PATH);
 
         this.setState({
           projectNodes: data
@@ -57,25 +56,6 @@ class NodesComponent extends Component<Props, State> {
         console.log(err);
       }
     }
-  }
-
-  getAllNodes = (path: string): Promise<NodeData[]> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const files = await getAllFiles(path);
-        let nodeData: NodeData[] = [];
-
-        for (const file of files) {
-          const filePath = Path.join(path, file);
-          const data: NodeData = await readJsonFile(filePath);
-          nodeData.push(data);
-        }
-
-        resolve(nodeData);
-      } catch (err) {
-        reject(err);
-      }
-    })
   }
 
   renderNode = (nodeData: NodeData[], keyPrefix: string) => {
