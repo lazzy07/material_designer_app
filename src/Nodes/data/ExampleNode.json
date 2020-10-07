@@ -15,5 +15,8 @@
   "outputs": [{
     "name": "Image",
     "type": "color"
-  }]
+  }],
+  "data": {
+
+  }
 }

@@ -1,15 +1,16 @@
 import { NODE_TYPES } from "../NodeTypes";
 import NodeLibrary from "./NodeLibrary";
-import Input from "./Input";
-import Output from "./Output";
+import Input from "./InputConnection";
+import Output from "./OutputConnection";
 
-export default class NodeClass {
+export default class NodeClass<T> {
   id: string;
   name: string;
   type: NODE_TYPES;
   library: NodeLibrary;
   inputs: Input[];
   outputs: Output[];
+  data: T;
 
   constructor(
     id: string,
@@ -17,7 +18,8 @@ export default class NodeClass {
     type: NODE_TYPES,
     library: NodeLibrary,
     inputs: Input[],
-    outputs: Output[]
+    outputs: Output[],
+    data: T
   ) {
     this.id = id;
     this.name = name;
@@ -25,5 +27,6 @@ export default class NodeClass {
     this.library = library;
     this.inputs = inputs;
     this.outputs = outputs;
+    this.data = data;
   }
 }

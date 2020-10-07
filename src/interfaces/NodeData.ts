@@ -1,5 +1,5 @@
-import Input from "../nodes/classes/Input";
-import Output from "../nodes/classes/Output";
+import Input from "../nodes/classes/InputConnection";
+import Output from "../nodes/classes/OutputConnection";
 import { NODE_TYPES } from "../nodes/NodeTypes";
 import { FunctionLibraryData } from "./FunctionLibraryData";
 
