@@ -2,14 +2,16 @@ import React, { Component } from 'react'
 import { defaultColors } from '../constants/Colors'
 import { createGrid } from '../services/CreateGrid'
 import Rete, { NodeEditor } from "../../packages/rete-1.4.4";
-import ConnectionPlugin from "../../packages/connection-plugin-0.6.0"
-import ReactRenderPlugin from "../../packages/react-render-plugin-0.2.1";
 import DropFileComponent from '../components/library_components/DropFileComponent';
 import { DraggableItem } from '../../interfaces/DraggableItem';
 import { NodeData } from '../../interfaces/NodeData';
 import { EDITOR_VERSION, ENGINE_VERSION } from '../constants/Versions';
 import { getAllNodes } from '../services/NodeServices';
 import { LOCAL_NODES_PATH, PROJECT_NODES_PATH } from '../constants/Path';
+import ConnectionPlugin from "../../packages/connection-plugin-0.6.0"
+import ReactRenderPlugin from "../../packages/react-render-plugin-0.2.1";
+import AreaPlugin from "../../packages/area-plugin";
+
 
 import NodeClass from '../../nodes/classes/NodeClass';
 import NodeComponent from '../../nodes/classes/NodeComponent';
@@ -45,6 +47,7 @@ export default class GraphEditorComponent extends Component<Props, State> {
 
     this.editor.use(ConnectionPlugin);
     this.editor.use(ReactRenderPlugin);
+    this.editor.use(AreaPlugin as any);
 
     this.editor.on(["process", "nodecreated", "noderemoved", "connectioncreated", "connectionremoved"], async () => {
       await this.engine.abort();
