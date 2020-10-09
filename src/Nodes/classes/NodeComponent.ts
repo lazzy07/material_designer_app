@@ -23,6 +23,9 @@ export default class NodeComponent extends Component {
         i.title,
         i.type === "grayscale" ? GRAYSCALE_SOCKET : COLOR_SOCKET
       );
+
+      node.meta.type = this.nodeClass.type;
+
       node.addInput(input);
     }
 

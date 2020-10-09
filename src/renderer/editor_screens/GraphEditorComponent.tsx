@@ -49,8 +49,8 @@ export default class GraphEditorComponent extends Component<Props, State> {
     this.editor.use(ConnectionPlugin);
     this.editor.use(ReactRenderPlugin, { component: MaterialNode });
     this.editor.use(AreaPlugin as any);
-    this.editor.view.area.el.style.height = "10000000px"
-    this.editor.view.area.el.style.width = "10000000px"
+    this.editor.view.area.el.style.height = "1000000000px"
+    this.editor.view.area.el.style.width = "1000000000px"
 
     this.editor.on(["process", "nodecreated", "noderemoved", "connectioncreated", "connectionremoved"], async () => {
       await this.engine.abort();
@@ -125,12 +125,12 @@ export default class GraphEditorComponent extends Component<Props, State> {
     return (
       <DropFileComponent dropType={["node"]} onDropComplete={(item) => this.onNodeDropped(item)}>
         <div style={{
-          backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR,
+          backgroundColor: defaultColors.GRAPH_EDITOR_BACKGRUND_COLOR,
           height: "100%",
           width: "100%",
         }}>
-          <div style={{ position: "absolute", width, height, top: 0 }}>
-            {createGrid(defaultColors.DEFAULT_BACKGROUND_COLOR, width, height, 1.5, 10, 10)}
+          <div style={{ position: "absolute", width, height, top: 30 }}>
+            {createGrid(defaultColors.GRAPH_EDITOR_GRID_COLOR, width, height, 1.5, 10, 10)}
           </div>
           <div ref={this.ref} style={{ width, height }}></div>
         </div>

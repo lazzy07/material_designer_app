@@ -1,5 +1,5 @@
 import { Titlebar, Color, TitlebarOptions } from "custom-electron-titlebar";
-import { colors } from "../constants/Colors";
+import { colors, defaultColors } from "../constants/Colors";
 import { ipcRenderer } from "electron";
 import { IpcMessages } from "../../IpcMessages";
 import { EditorMenu } from "../menus/EditorMenu";
@@ -9,11 +9,11 @@ export class Titleb {
   private menu: Electron.Menu | undefined;
   constructor(options?: any) {
     this.titlebar = new Titlebar({
-      backgroundColor: Color.fromHex(colors.DARKER_GREY),
+      backgroundColor: Color.fromHex(defaultColors.IMPORTANT_BACKGROUND_COLOR),
       // shadow: true,
       unfocusEffect: true,
       titleHorizontalAlignment: "center",
-      ...options
+      ...options,
     });
   }
 

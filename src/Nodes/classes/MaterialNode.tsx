@@ -1,7 +1,9 @@
 import React from "react";
-import { Node, Control, Socket } from "../../packages/react-render-plugin-0.2.1";
+import { Control, Socket } from "../../packages/react-render-plugin-0.2.1";
 import "../../packages/react-render-plugin-0.2.1/styles.sass"
+import { defaultColors } from "../../renderer/constants/Colors";
 import "../../renderer/scss/nodes.scss"
+import { getNodeColor } from "../../renderer/services/NodeColors";
 
 export default class MaterialNode extends React.Component {
   state: any;
@@ -18,7 +20,7 @@ export default class MaterialNode extends React.Component {
       outputs: Array.from(node.outputs.values()),
       controls: Array.from(node.controls.values()),
       inputs: Array.from(node.inputs.values()),
-      selected: editor.selected.contains(node) ? 'selected' : ''
+      selected: editor.selected.contains(node) ? 'selected' : '',
     }
   }
 
@@ -27,23 +29,70 @@ export default class MaterialNode extends React.Component {
   render() {
     const { node, bindSocket, bindControl } = this.props;
     const { outputs, controls, inputs, selected } = this.state;
+
+    const { type } = node.meta;
+    const color = getNodeColor(type);
+    const borderRadius = 12;
     return (
-      <div className={`_node ${selected} ${node.meta.type}`}>
-        <div className="title">{node.name}</div>
-        {/* Outputs */}
-        {outputs.map(output => (
-          <div className={`output ${output.socket.name}`} key={output.key}>
-            <div className={`output-title ${output.socket.name}-title`}>
-              {output.name}
+      <div
+        className={`_node ${selected} ${node.meta.type}`}
+        style={{
+          backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR,
+          minWidth: 180,
+          borderRadius,
+          borderTop: `0px solid black`,
+          borderLeft: selected ? `2px solid ${color}` : undefined,
+          borderRight: selected ? `2px solid ${color}` : undefined,
+          borderBottom: selected ? `2px solid ${color}` : undefined,
+          boxShadow: selected ? `0 0 6px 6px ${color}30` : undefined,
+        }}
+      >
+        <div
+          style={{
+            color: defaultColors.NODE_HEADER_FONT_COLOR,
+            backgroundColor: color,
+            borderTopRightRadius: borderRadius - 3,
+            borderTopLeftRadius: borderRadius - 3,
+            padding: 10,
+            fontWeight: "bolder",
+            fontSize: 20
+          }}
+        >
+          {node.name}
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 5, paddingBottom: 5 }}>
+          {/* Inputs */}
+          {inputs.map(input => (
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Socket
+                type="input"
+                socket={input.socket}
+                io={input}
+                innerRef={bindSocket}
+              />
+              {!input.showControl() && (
+                <div style={{ fontWeight: "bolder" }}>
+                  {input.name}
+                </div>
+              )}
             </div>
-            <Socket
-              type="output"
-              socket={output.socket}
-              io={output}
-              innerRef={bindSocket}
-            />
-          </div>
-        ))}
+          ))}
+          {/* Outputs */}
+          {outputs.map(output => (
+            <div key={output.key} style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ fontWeight: "bolder" }}>
+                {output.name}
+              </div>
+              <Socket
+                type="output"
+                socket={output.socket}
+                io={output}
+                innerRef={bindSocket}
+              />
+            </div>
+          ))}
+        </div>
+
         {/* Controls */}
         {controls.map(control => (
           <Control
@@ -52,29 +101,6 @@ export default class MaterialNode extends React.Component {
             control={control}
             innerRef={bindControl}
           />
-        ))}
-        {/* Inputs */}
-        {inputs.map(input => (
-          <div className={`input ${input.socket.name}`} key={input.key}>
-            <Socket
-              type="input"
-              socket={input.socket}
-              io={input}
-              innerRef={bindSocket}
-            />
-            {!input.showControl() && (
-              <div className={`input-title ${input.socket.name}-title`}>
-                {input.name}
-              </div>
-            )}
-            {input.showControl() && (
-              <Control
-                className="input-control"
-                control={input.control}
-                innerRef={bindControl}
-              />
-            )}
-          </div>
         ))}
       </div>
     );
