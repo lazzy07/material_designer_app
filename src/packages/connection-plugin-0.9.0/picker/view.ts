@@ -11,6 +11,7 @@ export class PickerView {
     private editorView: EditorView
   ) {
     this.el = document.createElement("div");
+    this.el.style.position = "absolute";
     this.editorView.area.appendChild(this.el);
   }
 

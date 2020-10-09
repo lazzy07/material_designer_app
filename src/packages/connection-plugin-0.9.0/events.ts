@@ -1,8 +1,4 @@
-import { FlowParams } from "./flow";
-import { Connection } from "../rete-1.4.4";
-export interface FlowElement extends Element {
-  _reteConnectionPlugin: FlowParams;
-}
+import { Connection, Input, Output } from "../rete-1.4.4";
 
 declare module "../rete-1.4.4/events" {
   interface EventsTypes {
@@ -11,5 +7,8 @@ declare module "../rete-1.4.4/events" {
       connection: Connection;
       d: string;
     };
+    connectiondrop: Input | Output;
+    connectionpick: Input | Output;
+    resetconnection: void;
   }
 }

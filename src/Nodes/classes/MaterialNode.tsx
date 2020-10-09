@@ -1,15 +1,25 @@
 import React from "react";
 import { Node, Control, Socket } from "../../packages/react-render-plugin-0.2.1";
-import "../../css/node.css";
+import "../../packages/react-render-plugin-0.2.1/styles.sass"
+import "../../renderer/scss/nodes.scss"
 
-export class MaterialNode extends Node {
+export default class MaterialNode extends React.Component {
   state: any;
   props: any;
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
 
     this.state = {};
+  }
+
+  static getDerivedStateFromProps({ node, editor }) {
+    return {
+      outputs: Array.from(node.outputs.values()),
+      controls: Array.from(node.controls.values()),
+      inputs: Array.from(node.inputs.values()),
+      selected: editor.selected.contains(node) ? 'selected' : ''
+    }
   }
 
   componentDidMount() { }

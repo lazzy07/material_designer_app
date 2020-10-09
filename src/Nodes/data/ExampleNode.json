@@ -3,18 +3,18 @@
   "name": "Exampe Node",
   "type": "generator.grayscale",
   "library": {
-    "name": "core",
+    "title": "core",
     "id": "",
     "version": "^1.0.0"
   },
   "function": "helloWorld",
   "inputs": [{
-    "name": "Hello",
+    "title": "Hello",
     "type": "grayscale"
   }],
   "outputs": [{
-    "name": "Image",
-    "type": "color"
+    "title": "Image",
+    "type": "grayscale"
   }],
   "data": {
     "parameters": [],
