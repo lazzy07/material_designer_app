@@ -1,44 +1,9 @@
-export const colors = {
-  LIGHT_GREY: "#364346",
-  DARK_GREY: "#293538",
-  PANDA_DARK_GRAY: "#2d3a3d",
-  DARKER_GREY: "#20292b",
-  LIGHTER_GREY: "#5a6f72",
-  LIGHTEST_GREY: "#b3b6b6",
-  WHITE_GREY: "#cfd5d6",
-  WHITE: "#ffffff",
-  RED: "#e8232d",
-  CYAN: "#009688",
-  PINK: "#E91E63",
-  GREEN: "#8BC34A",
-  DEEP_ORANGE: "#FF5722",
-  PANDA_CYAN: "#00BCD4",
-  DEEP_PURPLE: "#673AB7",
-  PANDA_RED: "#F44336",
+import styles from "../scss/colors.scss";
 
-  DARKER_BLUE: "#1a202c",
-  DARK_BLUE: "#212b3b",
+export const colors = {
+  ...styles,
 };
 
 export const defaultColors = {
-  DEFAULT_BACKGROUND_COLOR: colors.DARK_GREY,
-  IMPORTANT_BACKGROUND_COLOR: colors.DARKER_GREY,
-  FONT_COLOR: colors.LIGHTEST_GREY,
-  IMPORTANT_FONT_COLOR: colors.WHITE_GREY,
-  ERROR_COLOR: colors.RED,
-  PRIMARY_COLOR: colors.CYAN,
-  DISABLED_FONT_COLOR: colors.LIGHTER_GREY,
-  HOVER_COLOR: colors.LIGHTER_GREY,
-  BORDER_COLOR: colors.LIGHT_GREY,
-
-  GRAPH_EDITOR_BACKGRUND_COLOR: colors.PANDA_DARK_GRAY,
-  GRAPH_EDITOR_GRID_COLOR: colors.LIGHT_GREY,
-
-  GENERATOR_COLOR: colors.PINK,
-  GENERATOR_GRAYSCALE: colors.GREEN,
-  PROCESS_COLOR: colors.DEEP_ORANGE,
-  PROCESS_GRAYSCALE: colors.PANDA_CYAN,
-  OUTPUT_COLOR: colors.DEEP_PURPLE,
-  OUTPUT_GRAYSCALE: colors.PANDA_RED,
-  NODE_HEADER_FONT_COLOR: colors.WHITE,
+  ...styles,
 };

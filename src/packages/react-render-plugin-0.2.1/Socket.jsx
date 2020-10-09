@@ -21,6 +21,7 @@ export class Socket extends React.Component {
           height: 15,
           borderRadius: 0,
           borderWidth: 0,
+          boxShadow: `0 0 1px 1px ${color}30`,
         }}
         title={socket.name}
         ref={(el) => this.createRef(el)} // force update for new IO with a same key

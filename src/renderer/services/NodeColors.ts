@@ -1,3 +1,4 @@
+import { CONNECTION_TYPES } from "../../nodes/ConnectionTypes";
 import { NODE_TYPES } from "../../nodes/NodeTypes";
 import { defaultColors } from "../constants/Colors";
 
@@ -15,5 +16,14 @@ export const getNodeColor = (nodeType: NODE_TYPES) => {
       return defaultColors.PROCESS_COLOR;
     case "process.grayscale":
       return defaultColors.PROCESS_GRAYSCALE;
+  }
+};
+
+export const getNodeConnectionColors = (connectionType: CONNECTION_TYPES) => {
+  switch (connectionType) {
+    case "color":
+      return defaultColors.COLOR_CONNECTION_COLOR;
+    case "grayscale":
+      return defaultColors.GRAYSCALE_CONNETION_COLOR;
   }
 };

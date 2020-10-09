@@ -3,7 +3,7 @@ import { Control, Socket } from "../../packages/react-render-plugin-0.2.1";
 import "../../packages/react-render-plugin-0.2.1/styles.sass"
 import { defaultColors } from "../../renderer/constants/Colors";
 import "../../renderer/scss/nodes.scss"
-import { getNodeColor } from "../../renderer/services/NodeColors";
+import { getNodeColor, getNodeConnectionColors } from "../../renderer/services/NodeColors";
 
 export default class MaterialNode extends React.Component {
   state: any;
@@ -33,6 +33,7 @@ export default class MaterialNode extends React.Component {
     const { type } = node.meta;
     const color = getNodeColor(type);
     const borderRadius = 12;
+
     return (
       <div
         className={`_node ${selected} ${node.meta.type}`}
@@ -53,7 +54,7 @@ export default class MaterialNode extends React.Component {
             backgroundColor: color,
             borderTopRightRadius: borderRadius - 3,
             borderTopLeftRadius: borderRadius - 3,
-            padding: 10,
+            padding: 7,
             fontWeight: "bolder",
             fontSize: 20
           }}
@@ -62,35 +63,43 @@ export default class MaterialNode extends React.Component {
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 5, paddingBottom: 5 }}>
           {/* Inputs */}
-          {inputs.map(input => (
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <Socket
-                type="input"
-                socket={input.socket}
-                io={input}
-                innerRef={bindSocket}
-              />
-              {!input.showControl() && (
-                <div style={{ fontWeight: "bolder" }}>
-                  {input.name}
-                </div>
-              )}
-            </div>
-          ))}
-          {/* Outputs */}
-          {outputs.map(output => (
-            <div key={output.key} style={{ display: "flex", alignItems: "center" }}>
-              <div style={{ fontWeight: "bolder" }}>
-                {output.name}
+          {inputs.map((input, index) => {
+            const connectionColor = getNodeConnectionColors(input.key);
+            return (
+              <div key={index} style={{ display: "flex", alignItems: "center" }}>
+                <Socket
+                  type="input"
+                  color={connectionColor}
+                  socket={input.socket}
+                  io={input}
+                  innerRef={bindSocket}
+                />
+                {!input.showControl() && (
+                  <div style={{ fontWeight: "bolder" }}>
+                    {input.name}
+                  </div>
+                )}
               </div>
-              <Socket
-                type="output"
-                socket={output.socket}
-                io={output}
-                innerRef={bindSocket}
-              />
-            </div>
-          ))}
+            )
+          })}
+          {/* Outputs */}
+          {outputs.map(output => {
+            const connectionColor = getNodeConnectionColors(output.key);
+            return (
+              <div key={output.key} style={{ display: "flex", alignItems: "center" }}>
+                <div style={{ fontWeight: "bolder" }}>
+                  {output.name}
+                </div>
+                <Socket
+                  type="output"
+                  color={connectionColor}
+                  socket={output.socket}
+                  io={output}
+                  innerRef={bindSocket}
+                />
+              </div>
+            )
+          })}
         </div>
 
         {/* Controls */}
