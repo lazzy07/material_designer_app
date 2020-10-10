@@ -8,7 +8,7 @@ import { EDITOR_VERSION, ENGINE_VERSION } from '../constants/Versions';
 import { getAllNodes } from '../services/NodeServices';
 import { LOCAL_NODES_PATH, PROJECT_NODES_PATH } from '../constants/Path';
 
-import Rete, { NodeEditor } from "../../packages/rete-1.4.4";
+import Rete, { Node, NodeEditor } from "../../packages/rete-1.4.4";
 import ConnectionPlugin from "../../packages/connection-plugin-0.9.0"
 import ReactRenderPlugin from "../../packages/react-render-plugin-0.2.1";
 import AreaPlugin from "../../packages/area-plugin";
@@ -16,7 +16,7 @@ import AreaPlugin from "../../packages/area-plugin";
 import NodeClass from '../../nodes/classes/NodeClass';
 import NodeComponent from '../../nodes/classes/NodeComponent';
 import MaterialNode from '../../nodes/classes/MaterialNode';
-import ContextMenu from '../components/node_editor/ContextMenu';
+import ContextMenu, { CONTEXT_MENU_TYPE } from '../components/node_editor/ContextMenu';
 import { ipcRenderer } from 'electron';
 import { IS_WEB } from '../services/Webguard';
 import { IpcMessages } from '../../IpcMessages';
@@ -31,12 +31,17 @@ interface State {
   nodeComponents: NodeComponent[];
   localLibNodes: NodeData[];
   localProjNodes: NodeData[];
+  contextMenuType: CONTEXT_MENU_TYPE;
+  selectedNode: Node | null;
 }
 
 export default class GraphEditorComponent extends Component<Props, State> {
   private ref = React.createRef<HTMLDivElement>();
   engine = new Rete.Engine("materialdesigner@" + ENGINE_VERSION);
   editor: NodeEditor | null = null;
+  timeOut: NodeJS.Timeout | null = null;
+  dropTimeout: NodeJS.Timeout | null = null;
+
   mouse: Mouse = { x: 0, y: 0 };
   contextMenuPos: Mouse = { x: 0, y: 0 };
 
@@ -46,15 +51,20 @@ export default class GraphEditorComponent extends Component<Props, State> {
     this.state = {
       nodeComponents: [],
       localLibNodes: [],
-      localProjNodes: []
+      localProjNodes: [],
+      contextMenuType: "editor",
+      selectedNode: null
     };
   };
 
 
   onNodeDropped = (item: DraggableItem<NodeData>) => {
-    this.contextMenuPos = this.mouse;
-    //Simulate menu item click
-    this.onContextMenuItemClick(item.item);
+    this.dropTimeout = setTimeout(() => {
+      this.contextMenuPos = this.mouse;
+      //Simulate menu item click
+      this.onContextMenuItemClick(item.item);
+    }, 300)
+
   }
 
   createEditor = () => {
@@ -75,8 +85,26 @@ export default class GraphEditorComponent extends Component<Props, State> {
     this.editor.on("mousemove", (mouse) => {
       this.mouse = mouse;
     })
-
-
+    let canPropagate = true;
+    this.editor.on("contextmenu", (e) => {
+      if (e.node) {
+        this.timeOut = setTimeout(() => {
+          canPropagate = true;
+        }, 300)
+        canPropagate = false;
+        this.setState({
+          selectedNode: e.node,
+          contextMenuType: "node"
+        })
+      } else {
+        if (canPropagate) {
+          this.setState({
+            selectedNode: null,
+            contextMenuType: "editor"
+          })
+        }
+      }
+    })
   }
 
   readLocalLibraryNodes = async () => {
@@ -139,7 +167,6 @@ export default class GraphEditorComponent extends Component<Props, State> {
         })
 
         this.readNodesAndRegister();
-
         const node = await this.state.nodeComponents[0].createNode();
         const node2 = await this.state.nodeComponents[0].createNode();
         node.position = [1000000 / 2 + 1000, 1000000 / 2 + 1000];
@@ -166,10 +193,29 @@ export default class GraphEditorComponent extends Component<Props, State> {
     }
   }
 
+  onClickDeleteNode = (node: Node) => {
+    this.editor?.removeNode(node);
+  }
+
+  onClickCopyNode = (node: Node) => {
+    this.editor?.addNode(node);
+
+  }
+
   componentDidMount = async () => {
     this.createEditor();
     this.listenToNodeData();
   };
+
+  componentWillUnmount() {
+    if (this.timeOut) {
+      clearTimeout(this.timeOut);
+    }
+
+    if (this.dropTimeout) {
+      clearTimeout(this.dropTimeout);
+    }
+  }
 
   render() {
     const { width, height } = this.props.dimensions;
@@ -177,9 +223,13 @@ export default class GraphEditorComponent extends Component<Props, State> {
     return (
       <DropFileComponent dropType={["node"]} onDropComplete={(item) => this.onNodeDropped(item)}>
         <ContextMenu
+          selectedNode={this.state.selectedNode}
+          selectedType={this.state.contextMenuType}
           localLibraryNodes={this.state.localLibNodes}
           localProjectNodes={this.state.localProjNodes}
           onClickAction={this.onContextMenuItemClick}
+          onClickDelete={this.onClickDeleteNode}
+          onClickCopy={this.onClickCopyNode}
         >
           <div style={{
             backgroundColor: defaultColors.GRAPH_EDITOR_BACKGRUND_COLOR,

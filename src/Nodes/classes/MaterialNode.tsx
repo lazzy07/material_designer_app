@@ -62,7 +62,7 @@ export default class MaterialNode extends React.Component {
         >
           {node.name}
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 8, paddingBottom: 8 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 6, paddingBottom: 6 }}>
           {/* Inputs */}
           {inputs.map((input, index) => {
             const connectionColor = getNodeConnectionColors(input.key);

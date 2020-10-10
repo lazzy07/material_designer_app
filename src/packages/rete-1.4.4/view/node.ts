@@ -72,7 +72,6 @@ export class NodeView extends Emitter<EventsTypes> {
 
     onSelect(e: MouseEvent) {
         const payload = { node: this.node, accumulate: e.ctrlKey, e };
-    
         this.onStart();
         this.trigger('multiselectnode', payload);
         this.trigger('selectnode', payload);

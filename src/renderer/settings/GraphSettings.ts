@@ -6,5 +6,5 @@ export default class GraphSettings {
   static graphConnectionStrokeWidth = 2;
   static canvasSize = {x: 1000000, y: 1000000}
   static startTransformPos: Transform = {x: -GraphSettings.canvasSize.x/4, y: -GraphSettings.canvasSize.y/4, k: 0.5};
-  static mouseControllerType: MOUSE_CONTROLLER_TYPE = "mousepad";
+  static mouseControllerType: MOUSE_CONTROLLER_TYPE = "mouse";
 }
