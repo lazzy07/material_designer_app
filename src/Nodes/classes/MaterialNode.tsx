@@ -62,7 +62,7 @@ export default class MaterialNode extends React.Component {
         >
           {node.name}
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 5, paddingBottom: 5 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 8, paddingBottom: 8 }}>
           {/* Inputs */}
           {inputs.map((input, index) => {
             const connectionColor = getNodeConnectionColors(input.key);
@@ -76,7 +76,7 @@ export default class MaterialNode extends React.Component {
                   innerRef={bindSocket}
                 />
                 {!input.showControl() && (
-                  <div style={{ fontWeight: "bolder" }}>
+                  <div style={{ fontWeight: "bolder", fontSize: 17 }}>
                     {input.name}
                   </div>
                 )}
@@ -87,8 +87,8 @@ export default class MaterialNode extends React.Component {
           {outputs.map(output => {
             const connectionColor = getNodeConnectionColors(output.key);
             return (
-              <div key={output.key} style={{ display: "flex", alignItems: "center" }}>
-                <div style={{ fontWeight: "bolder" }}>
+              <div key={output.key} style={{ display: "flex", alignItems: "center", paddingTop: 5, paddingBottom: 5 }}>
+                <div style={{ fontWeight: "bolder", fontSize: 17 }}>
                   {output.name}
                 </div>
                 <Socket

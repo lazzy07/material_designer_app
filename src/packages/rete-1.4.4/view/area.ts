@@ -2,16 +2,17 @@ import { Drag } from './drag';
 import { Emitter } from '../core/emitter';
 import { EventsTypes } from '../events';
 import { Zoom } from './zoom';
+import GraphSettings from '../../../renderer/settings/GraphSettings';
 
 export interface Transform { k: number; x: number; y: number }
 export interface Mouse { x: number; y: number }
-export type ZoomSource = 'wheel' | 'touch' | 'dblclick';
+export type ZoomSource = 'wheel' // | 'touch' | 'dblclick';
 
 export class Area extends Emitter<EventsTypes> {
 
     el: HTMLElement;
     container: HTMLElement;
-    transform: Transform = { k: 1, x: 0, y: 0 };
+    transform: Transform = GraphSettings.startTransformPos;
     mouse: Mouse = { x: 0, y: 0 }
     
     private _startPosition: Transform | null = null
@@ -27,7 +28,7 @@ export class Area extends Emitter<EventsTypes> {
         el.style.transformOrigin = '0 0';
 
         this._zoom = new Zoom(container, el, 0.1, this.onZoom.bind(this));
-        this._drag = new Drag(container, this.onTranslate.bind(this), this.onStart.bind(this));
+        this._drag = new Drag(container, this.onTranslate.bind(this), this.onStart.bind(this),()=>{} ,true);
 
         emitter.on('destroy', () => {
             this._zoom.destroy();

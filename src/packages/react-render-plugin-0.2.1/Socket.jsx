@@ -17,8 +17,8 @@ export class Socket extends React.Component {
         className={`socket ${kebab(socket.name)}`}
         style={{
           backgroundColor: color,
-          width: 15,
-          height: 15,
+          width: 20,
+          height: 20,
           borderRadius: 0,
           borderWidth: 0,
           boxShadow: `0 0 1px 1px ${color}30`,

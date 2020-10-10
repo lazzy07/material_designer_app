@@ -20,6 +20,8 @@ import ContextMenu from '../components/node_editor/ContextMenu';
 import { ipcRenderer } from 'electron';
 import { IS_WEB } from '../services/Webguard';
 import { IpcMessages } from '../../IpcMessages';
+import GraphSettings from '../settings/GraphSettings';
+import { Mouse } from '../../packages/rete-1.4.4/view/area';
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -35,6 +37,8 @@ export default class GraphEditorComponent extends Component<Props, State> {
   private ref = React.createRef<HTMLDivElement>();
   engine = new Rete.Engine("materialdesigner@" + ENGINE_VERSION);
   editor: NodeEditor | null = null;
+  mouse: Mouse = { x: 0, y: 0 };
+  contextMenuPos: Mouse = { x: 0, y: 0 };
 
   constructor(props: Props) {
     super(props)
@@ -48,7 +52,9 @@ export default class GraphEditorComponent extends Component<Props, State> {
 
 
   onNodeDropped = (item: DraggableItem<NodeData>) => {
-    console.log(item)
+    this.contextMenuPos = this.mouse;
+    //Simulate menu item click
+    this.onContextMenuItemClick(item.item);
   }
 
   createEditor = () => {
@@ -56,14 +62,21 @@ export default class GraphEditorComponent extends Component<Props, State> {
 
     this.editor.use(ConnectionPlugin);
     this.editor.use(ReactRenderPlugin, { component: MaterialNode });
-    this.editor.use(AreaPlugin as any);
-    this.editor.view.area.el.style.height = "1000000000px"
-    this.editor.view.area.el.style.width = "1000000000px"
+    this.editor.use(AreaPlugin as any, { scaleExtent: { min: 0.3, max: 1.5 } });
+    this.editor.view.area.el.style.height = GraphSettings.canvasSize.y + "px";
+    this.editor.view.area.el.style.width = GraphSettings.canvasSize.x + "px";
+
 
     this.editor.on(["process", "nodecreated", "noderemoved", "connectioncreated", "connectionremoved"], async () => {
       await this.engine.abort();
       await this.engine.process(this.editor!.toJSON());
     });
+
+    this.editor.on("mousemove", (mouse) => {
+      this.mouse = mouse;
+    })
+
+
   }
 
   readLocalLibraryNodes = async () => {
@@ -129,11 +142,27 @@ export default class GraphEditorComponent extends Component<Props, State> {
 
         const node = await this.state.nodeComponents[0].createNode();
         const node2 = await this.state.nodeComponents[0].createNode();
-        node.position = [0, 0];
-        node2.position = [100, 100];
+        node.position = [1000000 / 2 + 1000, 1000000 / 2 + 1000];
+        node2.position = [1000000 / 2, 1000000 / 2];
         this.editor?.addNode(node);
         this.editor?.addNode(node2);
+
+        AreaPlugin.zoomAt(this.editor, this.editor?.nodes[0]);
       })
+    }
+  }
+
+  onCallContextMenu = () => {
+    this.contextMenuPos = this.mouse;
+  }
+
+  onContextMenuItemClick = async (item: NodeData) => {
+    for (const node of this.state.nodeComponents) {
+      if (node.nodeClass.id === item.id) {
+        const newNode = await node.createNode();
+        newNode.position = [this.contextMenuPos.x, this.contextMenuPos.y];
+        this.editor?.addNode(newNode);
+      }
     }
   }
 
@@ -150,6 +179,7 @@ export default class GraphEditorComponent extends Component<Props, State> {
         <ContextMenu
           localLibraryNodes={this.state.localLibNodes}
           localProjectNodes={this.state.localProjNodes}
+          onClickAction={this.onContextMenuItemClick}
         >
           <div style={{
             backgroundColor: defaultColors.GRAPH_EDITOR_BACKGRUND_COLOR,
@@ -159,7 +189,7 @@ export default class GraphEditorComponent extends Component<Props, State> {
             <div style={{ position: "absolute", width, height, top: 30 }}>
               {createGrid(defaultColors.GRAPH_EDITOR_GRID_COLOR, width, height, 1.5, 10, 10)}
             </div>
-            <div ref={this.ref} style={{ width, height }}></div>
+            <div onContextMenu={this.onCallContextMenu} ref={this.ref} style={{ width, height }}></div>
           </div>
         </ContextMenu>
       </DropFileComponent>

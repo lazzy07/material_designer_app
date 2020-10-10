@@ -1,0 +1,1 @@
+export type MOUSE_CONTROLLER_TYPE = "mousepad" | "mouse";

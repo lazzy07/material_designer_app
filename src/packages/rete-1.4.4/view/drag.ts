@@ -1,3 +1,4 @@
+import GraphSettings from '../../../renderer/settings/GraphSettings';
 import { listenWindow } from './utils';
 
 export class Drag {
@@ -5,16 +6,18 @@ export class Drag {
     pointerStart: [number, number] | null;
     el: HTMLElement;
     destroy: () => void;
+    isArea: boolean = false;
 
     constructor(
         el: HTMLElement,
         private onTranslate = (_x: number, _y: number, _e: PointerEvent) => {},
         private onStart = (_e: PointerEvent) => {},
-        private onDrag = (_e: PointerEvent) => {}
+        private onDrag = (_e: PointerEvent) => {},
+        isArea?: boolean
     ) {
         this.pointerStart = null;
         this.el = el;
-
+        this.isArea = !!isArea;
         this.el.style.touchAction = 'none';
         this.el.addEventListener('pointerdown', this.down.bind(this));
 
@@ -25,7 +28,16 @@ export class Drag {
     }
 
     down(e: PointerEvent) {
-        if ((e.pointerType === 'mouse') && (e.button !== 0)) return;
+        if(this.isArea){
+            if(GraphSettings.mouseControllerType === "mouse"){
+                if ((e.pointerType === 'mouse') && (e.button !== 1)) return;
+            }else{
+                if ((e.pointerType === 'mouse') && (e.button !== 0)) return;
+            }
+        }else{
+            if ((e.pointerType === 'mouse') && (e.button !== 0)) return;
+        }
+
         e.stopPropagation();
         this.pointerStart = [e.pageX, e.pageY]
 

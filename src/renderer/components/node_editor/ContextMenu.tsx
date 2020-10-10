@@ -6,6 +6,7 @@ import { renderScreenMenu, ScreenMenu } from '../../services/RenderMenu'
 interface Props {
   localLibraryNodes: NodeData[];
   localProjectNodes: NodeData[];
+  onClickAction: (nodeData: NodeData) => void;
 }
 
 export default class ContextMenu extends Component<Props> {
@@ -18,7 +19,7 @@ export default class ContextMenu extends Component<Props> {
       let j: ScreenMenu = {
         label: i.name,
         type: "item",
-        onClick: this.onClick
+        onClick: () => this.onClick(i)
       }
 
       screenMenu.push(j);
@@ -27,8 +28,9 @@ export default class ContextMenu extends Component<Props> {
     return [{ type: "menu", label: "context", content: screenMenu }]
   }
 
-  onClick = () => {
-    this.ref.current.close()
+  onClick = (nodeData: NodeData) => {
+    this.ref.current.close();
+    this.props.onClickAction(nodeData);
   }
 
 
