@@ -19,5 +19,7 @@ export const IpcMessages = {
   LOAD_LOCAL_PROJECT_NODES: "load local project data",
   LOAD_LOCAL_LIBRARY_NODES: "load local library nodes",
   REFRESH_LOCAL_LIBRARY_NODES: "refresh local library nodes",
-  REFRESH_LOCAL_PROJECT_NODES: "refresh local project nodes"
+  REFRESH_LOCAL_PROJECT_NODES: "refresh local project nodes",
+  GET_ALL_LOCAL_NODE_DATA: "get all local node data",
+  RETURN_GET_ALL_LOCAL_NODE_DATA: "return get all local node data"
 };

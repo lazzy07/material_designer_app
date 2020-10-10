@@ -16,6 +16,10 @@ import AreaPlugin from "../../packages/area-plugin";
 import NodeClass from '../../nodes/classes/NodeClass';
 import NodeComponent from '../../nodes/classes/NodeComponent';
 import MaterialNode from '../../nodes/classes/MaterialNode';
+import ContextMenu from '../components/node_editor/ContextMenu';
+import { ipcRenderer } from 'electron';
+import { IS_WEB } from '../services/Webguard';
+import { IpcMessages } from '../../IpcMessages';
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -23,6 +27,8 @@ interface Props {
 
 interface State {
   nodeComponents: NodeComponent[];
+  localLibNodes: NodeData[];
+  localProjNodes: NodeData[];
 }
 
 export default class GraphEditorComponent extends Component<Props, State> {
@@ -34,7 +40,9 @@ export default class GraphEditorComponent extends Component<Props, State> {
     super(props)
 
     this.state = {
-      nodeComponents: []
+      nodeComponents: [],
+      localLibNodes: [],
+      localProjNodes: []
     };
   };
 
@@ -91,8 +99,8 @@ export default class GraphEditorComponent extends Component<Props, State> {
   }
 
   readNodesAndRegister = async () => {
-    const localData = await this.readLocalLibraryNodes();
-    const projectData = await this.readProjectLibraryNodes();
+    const localData = this.state.localLibNodes;
+    const projectData = this.state.localProjNodes;
 
     if (localData) {
       for (const i of localData) {
@@ -107,16 +115,31 @@ export default class GraphEditorComponent extends Component<Props, State> {
     }
   }
 
+  listenToNodeData = () => {
+    ipcRenderer.send(IpcMessages.GET_ALL_LOCAL_NODE_DATA);
+
+    if (!IS_WEB) {
+      ipcRenderer.on(IpcMessages.RETURN_GET_ALL_LOCAL_NODE_DATA, async (_, data) => {
+        this.setState({
+          localLibNodes: data.library,
+          localProjNodes: data.project
+        })
+
+        this.readNodesAndRegister();
+
+        const node = await this.state.nodeComponents[0].createNode();
+        const node2 = await this.state.nodeComponents[0].createNode();
+        node.position = [0, 0];
+        node2.position = [100, 100];
+        this.editor?.addNode(node);
+        this.editor?.addNode(node2);
+      })
+    }
+  }
+
   componentDidMount = async () => {
     this.createEditor();
-
-    await this.readNodesAndRegister();
-    const node = await this.state.nodeComponents[0].createNode();
-    const node2 = await this.state.nodeComponents[0].createNode();
-    node.position = [0, 0];
-    node2.position = [100, 100];
-    this.editor?.addNode(node);
-    this.editor?.addNode(node2);
+    this.listenToNodeData();
   };
 
   render() {
@@ -124,16 +147,21 @@ export default class GraphEditorComponent extends Component<Props, State> {
 
     return (
       <DropFileComponent dropType={["node"]} onDropComplete={(item) => this.onNodeDropped(item)}>
-        <div style={{
-          backgroundColor: defaultColors.GRAPH_EDITOR_BACKGRUND_COLOR,
-          height: "100%",
-          width: "100%",
-        }}>
-          <div style={{ position: "absolute", width, height, top: 30 }}>
-            {createGrid(defaultColors.GRAPH_EDITOR_GRID_COLOR, width, height, 1.5, 10, 10)}
+        <ContextMenu
+          localLibraryNodes={this.state.localLibNodes}
+          localProjectNodes={this.state.localProjNodes}
+        >
+          <div style={{
+            backgroundColor: defaultColors.GRAPH_EDITOR_BACKGRUND_COLOR,
+            height: "100%",
+            width: "100%",
+          }}>
+            <div style={{ position: "absolute", width, height, top: 30 }}>
+              {createGrid(defaultColors.GRAPH_EDITOR_GRID_COLOR, width, height, 1.5, 10, 10)}
+            </div>
+            <div ref={this.ref} style={{ width, height }}></div>
           </div>
-          <div ref={this.ref} style={{ width, height }}></div>
-        </div>
+        </ContextMenu>
       </DropFileComponent>
     )
   }

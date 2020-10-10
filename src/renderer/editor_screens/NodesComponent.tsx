@@ -52,11 +52,15 @@ class NodesComponent extends Component<Props, State> {
     this.readProjectLibrary();
 
     ipcRenderer.on(IpcMessages.REFRESH_LOCAL_LIBRARY_NODES, (_, data) => {
-      console.log(data);
+      this.setState({
+        localNodes: data
+      })
     })
 
     ipcRenderer.on(IpcMessages.REFRESH_LOCAL_PROJECT_NODES, (_, data) => {
-      console.log(data);
+      this.setState({
+        projectNodes: data
+      })
     })
   };
 

@@ -1,0 +1,23 @@
+{
+  "id": "examplenode2",
+  "name": "Exampe Node 2",
+  "type": "generator.color",
+  "library": {
+    "title": "core",
+    "id": "",
+    "version": "^1.0.0"
+  },
+  "function": "helloWorld2",
+  "inputs": [{
+    "title": "Hello2",
+    "type": "color"
+  }],
+  "outputs": [{
+    "title": "Image",
+    "type": "color"
+  }],
+  "data": {
+    "parameters": [],
+    "data": {}
+  }
+}
