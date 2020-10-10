@@ -15,4 +15,9 @@ export const IpcMessages = {
   DRAG_START: "on drag start",
   GET_DRAG_DATA: "get drag data",
   DRAG_DATA: "drag data",
+
+  LOAD_LOCAL_PROJECT_NODES: "load local project data",
+  LOAD_LOCAL_LIBRARY_NODES: "load local library nodes",
+  REFRESH_LOCAL_LIBRARY_NODES: "refresh local library nodes",
+  REFRESH_LOCAL_PROJECT_NODES: "refresh local project nodes"
 };

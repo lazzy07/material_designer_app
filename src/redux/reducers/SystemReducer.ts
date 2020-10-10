@@ -50,8 +50,8 @@ export const systemReducer = (
             package: state.selectedItems.package,
             graph: action.payload.id,
             graphType: action.payload.graphType,
-            node: state.selectedItems.node,
-            previewNode: state.selectedItems.previewNode
+            node: "",
+            previewNode: ""
           },
         };
       } else {
@@ -60,6 +60,8 @@ export const systemReducer = (
           selectedItems: {
             ...state.selectedItems,
             package: action.payload.id,
+            node: "",
+            previewNode: ""
           },
         };
       }

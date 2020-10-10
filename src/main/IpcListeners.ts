@@ -3,6 +3,7 @@ import { IpcMessages } from "../IpcMessages";
 import { Screens } from "./main";
 import { SubEditorScreen } from "./windows/SubEditorScreen";
 import { DraggableItem } from "../interfaces/DraggableItem";
+import NodeLibrary from "./workers/NodeLibrary";
 
 let draggingData: DraggableItem<any> | null = null;
 
@@ -64,7 +65,17 @@ export const listenToMessages = (screens: Screens, url: string) => {
     draggingData = data;
   });
 
-  ipcMain.on(IpcMessages.GET_DRAG_DATA, (event, data) => {
+  ipcMain.on(IpcMessages.GET_DRAG_DATA, (event, _) => {
     event.sender.send(IpcMessages.DRAG_DATA, draggingData);
   });
+
+  ipcMain.on(IpcMessages.LOAD_LOCAL_LIBRARY_NODES, (_, data) => {
+    const library = new NodeLibrary();
+    library.loadLocalNodeLibrary(data);
+  })
+
+  ipcMain.on(IpcMessages.LOAD_LOCAL_PROJECT_NODES, (_, data) => {
+    const library = new NodeLibrary();
+    library.loadProjectNodeLibrary(data);
+  })
 };

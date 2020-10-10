@@ -1,10 +1,11 @@
 import { ImportTypes } from "../../renderer/services/ImportImageData";
 import { v4 } from "uuid";
-import { Action } from "redux";
 import { OutlinerTypes } from "../../interfaces/OutlinerTree";
 
 export const SET_IMPORT_FILES = "set import files";
 export const SET_SELECTED = "set selected";
+export const SET_SELECTED_NODE = "set selected node";
+export const SET_PREVIEW_NODE = "set preview node";
 
 export const setImportFiles = (type: ImportTypes, files: File[]) => {
   return {
@@ -38,3 +39,17 @@ export const setSelected = (
     },
   };
 };
+
+export const setSelectedNode = (id: string) => {
+  return {
+    type: SET_SELECTED_NODE,
+    payload: id
+  }
+}
+
+export const setPreviewNode = (id: string) => {
+  return {
+    type: SET_PREVIEW_NODE,
+    paload: id
+  }
+}

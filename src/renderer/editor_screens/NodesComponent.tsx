@@ -5,6 +5,8 @@ import NodePreviewItem from '../components/library_components/NodePreviewItem';
 import DropFiles from '../components/editor_page/editor_components/editor_dependencies/common/DropFiles';
 import InputBox from '../components/form/InputBox';
 import { getAllNodes } from '../services/NodeServices';
+import { ipcRenderer } from 'electron';
+import { IpcMessages } from '../../IpcMessages';
 
 interface State {
   localNodes: NodeData[];
@@ -28,33 +30,14 @@ class NodesComponent extends Component<Props, State> {
 
   readLocalLibrary = async () => {
     const NODES_PATH = LOCAL_NODES_PATH;
-
-    try {
-      const data = await getAllNodes(NODES_PATH);
-
-      this.setState({
-        localNodes: data
-      })
-    } catch (err) {
-      //TODO:: Handle error
-      console.log(err);
-    }
+    ipcRenderer.send(IpcMessages.LOAD_LOCAL_LIBRARY_NODES, NODES_PATH);
   }
 
   readProjectLibrary = async () => {
     const NODES_PATH = PROJECT_NODES_PATH();
 
     if (NODES_PATH) {
-      try {
-        const data = await getAllNodes(NODES_PATH);
-
-        this.setState({
-          projectNodes: data
-        })
-      } catch (err) {
-        //TODO:: Handle Error
-        console.log(err);
-      }
+      ipcRenderer.send(IpcMessages.LOAD_LOCAL_PROJECT_NODES, NODES_PATH);
     }
   }
 
@@ -67,6 +50,14 @@ class NodesComponent extends Component<Props, State> {
   componentDidMount = () => {
     this.readLocalLibrary();
     this.readProjectLibrary();
+
+    ipcRenderer.on(IpcMessages.REFRESH_LOCAL_LIBRARY_NODES, (_, data) => {
+      console.log(data);
+    })
+
+    ipcRenderer.on(IpcMessages.REFRESH_LOCAL_PROJECT_NODES, (_, data) => {
+      console.log(data);
+    })
   };
 
 
