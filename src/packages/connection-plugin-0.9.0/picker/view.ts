@@ -48,6 +48,6 @@ export class PickerView {
   renderConnection(io: Output | Input) {
     const d = renderPathData(this.emitter, this.getPoints(io));
 
-    renderConnection({ el: this.el, d });
+    renderConnection({ el: this.el, d, io });
   }
 }

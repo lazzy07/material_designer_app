@@ -8,7 +8,7 @@ export default class ImageControllerRenderer extends Component<any, any> {
   render() {
     return (
       <div>
-        <h1>Hello</h1>
+        <img alt="" src={"https://picsum.photos/1200"} width="180px" />
       </div>
     )
   }

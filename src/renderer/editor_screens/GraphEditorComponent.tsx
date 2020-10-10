@@ -56,6 +56,10 @@ export default class GraphEditorComponent extends Component<Props, State> {
       await this.engine.abort();
       await this.engine.process(this.editor!.toJSON());
     });
+
+    this.editor.on("connectionpick", (el) => {
+      console.log(el);
+    })
   }
 
   readLocalLibraryNodes = async () => {

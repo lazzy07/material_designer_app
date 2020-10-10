@@ -13,6 +13,8 @@ export interface SystemReducer {
     package: string;
     graph: string;
     graphType: OutlinerTypes;
+    node: string;
+    previewNode: string;
   };
 }
 
@@ -25,6 +27,8 @@ const initialState: SystemReducer = {
     package: "",
     graph: "",
     graphType: "shadergraph",
+    node: "",
+    previewNode: ""
   },
 };
 
@@ -46,6 +50,8 @@ export const systemReducer = (
             package: state.selectedItems.package,
             graph: action.payload.id,
             graphType: action.payload.graphType,
+            node: state.selectedItems.node,
+            previewNode: state.selectedItems.previewNode
           },
         };
       } else {

@@ -40,7 +40,8 @@ export default class MaterialNode extends React.Component {
         style={{
           backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR,
           minWidth: 180,
-          borderRadius,
+          borderTopLeftRadius: borderRadius,
+          borderTopRightRadius: borderRadius,
           borderTop: `0px solid black`,
           borderLeft: selected ? `2px solid ${color}` : undefined,
           borderRight: selected ? `2px solid ${color}` : undefined,
@@ -52,8 +53,8 @@ export default class MaterialNode extends React.Component {
           style={{
             color: defaultColors.NODE_HEADER_FONT_COLOR,
             backgroundColor: color,
-            borderTopRightRadius: borderRadius - 3,
-            borderTopLeftRadius: borderRadius - 3,
+            borderTopRightRadius: borderRadius ? borderRadius - 3 : 0,
+            borderTopLeftRadius: borderRadius ? borderRadius - 3 : 0,
             padding: 7,
             fontWeight: "bolder",
             fontSize: 20

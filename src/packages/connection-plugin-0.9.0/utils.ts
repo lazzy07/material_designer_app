@@ -1,4 +1,6 @@
-import { Emitter, Connection } from "../rete-1.4.4";
+import { getNodeConnectionColors } from "../../renderer/services/NodeColors";
+import GraphSettings from "../../renderer/settings/GraphSettings";
+import { Emitter, Connection, Input, Output } from "../rete-1.4.4";
 import { EventsTypes } from "../rete-1.4.4/events";
 
 function toTrainCase(str: string) {
@@ -29,10 +31,9 @@ export function renderPathData(
   connection?: Connection
 ) {
   const data = { points, connection, d: "" };
-
   emitter.trigger("connectionpath", data);
 
-  return data.d || defaultPath(points, 0.4);
+  return data.d || defaultPath(points, GraphSettings.graphConnectionCurvature);
 }
 
 export function updateConnection({ el, d }: { el: HTMLElement; d: string }) {
@@ -46,10 +47,12 @@ export function updateConnection({ el, d }: { el: HTMLElement; d: string }) {
 export function renderConnection({
   el,
   d,
+  io,
   connection,
 }: {
   el: HTMLElement;
   d: string;
+  io?: Input | Output;
   connection?: Connection;
 }) {
   const classed = !connection
@@ -66,6 +69,13 @@ export function renderConnection({
 
   svg.classList.add("connection", ...classed);
   path.classList.add("main-path");
+
+  if (io) path.style.stroke = getNodeConnectionColors(io.key as any);
+  if (connection)
+    path.style.stroke = getNodeConnectionColors(connection.input.key as any);
+
+  path.style.strokeWidth =
+    GraphSettings.graphConnectionStrokeWidth.toString() + "px";
   path.setAttribute("d", d);
 
   svg.appendChild(path);
