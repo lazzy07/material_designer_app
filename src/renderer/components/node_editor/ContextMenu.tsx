@@ -1,7 +1,7 @@
 import { faCopy, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Component } from 'react'
-import { ContextMenu as CM, Menu, Item } from "react-desktop-menus"
+import { ContextMenu as CM } from "../../../packages/react-context-menu"
 import { NodeData } from '../../../interfaces/NodeData'
 import { Node } from '../../../packages/rete-1.4.4';
 import { defaultColors } from '../../constants/Colors';
@@ -59,19 +59,24 @@ export default class ContextMenu extends Component<Props> {
   }
 
   onClick = (nodeData: NodeData) => {
-    this.ref.current.close();
+    this.ref.current!.close();
     this.props.onClickAction(nodeData);
   }
 
   onClickCopy = () => {
-    this.ref.current.close();
+    this.ref.current!.close();
     this.props.onClickCopy(this.props.selectedNode!)
   }
 
   onClickDelete = () => {
-    this.ref.current.close();
+    this.ref.current!.close();
     this.props.onClickDelete(this.props.selectedNode!)
   }
+
+  componentDidMount = () => {
+    this.ref.current!.handleClickDoc();
+  };
+
 
   render() {
     return (

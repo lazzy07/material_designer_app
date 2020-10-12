@@ -40,7 +40,6 @@ export default class GraphEditorComponent extends Component<Props, State> {
   engine = new Rete.Engine("materialdesigner@" + ENGINE_VERSION);
   editor: NodeEditor | null = null;
   timeOut: NodeJS.Timeout | null = null;
-  dropTimeout: NodeJS.Timeout | null = null;
 
   mouse: Mouse = { x: 0, y: 0 };
   contextMenuPos: Mouse = { x: 0, y: 0 };
@@ -59,12 +58,9 @@ export default class GraphEditorComponent extends Component<Props, State> {
 
 
   onNodeDropped = (item: DraggableItem<NodeData>) => {
-    this.dropTimeout = setTimeout(() => {
-      this.contextMenuPos = this.mouse;
-      //Simulate menu item click
-      this.onContextMenuItemClick(item.item);
-    }, 300)
 
+    //Simulate menu item click
+    this.onContextMenuItemClick(item.item);
   }
 
   createEditor = () => {
@@ -85,8 +81,15 @@ export default class GraphEditorComponent extends Component<Props, State> {
     this.editor.on("mousemove", (mouse) => {
       this.mouse = mouse;
     })
+    this.editor.view.area.el.addEventListener("drop", (e) => {
+      this.contextMenuPos = { x: e.offsetX, y: e.offsetY }
+    })
+    this.selectContextMenuType();
+  }
+
+  selectContextMenuType = () => {
     let canPropagate = true;
-    this.editor.on("contextmenu", (e) => {
+    this.editor?.on("contextmenu", (e) => {
       if (e.node) {
         this.timeOut = setTimeout(() => {
           canPropagate = true;
@@ -174,7 +177,7 @@ export default class GraphEditorComponent extends Component<Props, State> {
         this.editor?.addNode(node);
         this.editor?.addNode(node2);
 
-        AreaPlugin.zoomAt(this.editor, this.editor?.nodes[0]);
+        // AreaPlugin.zoomAt(this.editor);
       })
     }
   }
@@ -187,6 +190,7 @@ export default class GraphEditorComponent extends Component<Props, State> {
     for (const node of this.state.nodeComponents) {
       if (node.nodeClass.id === item.id) {
         const newNode = await node.createNode();
+        console.log(this.contextMenuPos)
         newNode.position = [this.contextMenuPos.x, this.contextMenuPos.y];
         this.editor?.addNode(newNode);
       }
@@ -202,19 +206,24 @@ export default class GraphEditorComponent extends Component<Props, State> {
 
   }
 
+  // Since we forcibly open context menu the mouse values are not correct, so correct values can be found in the event
+  listenToNodeMenuOpen = () => {
+    window.addEventListener("openmenu", (e: any) => {
+      this.contextMenuPos = e.detail.mouse;
+    })
+  }
+
   componentDidMount = async () => {
     this.createEditor();
     this.listenToNodeData();
+    this.listenToNodeMenuOpen()
   };
 
   componentWillUnmount() {
     if (this.timeOut) {
       clearTimeout(this.timeOut);
     }
-
-    if (this.dropTimeout) {
-      clearTimeout(this.dropTimeout);
-    }
+    this.editor?.view.area.el.removeEventListener("drop", () => { })
   }
 
   render() {
