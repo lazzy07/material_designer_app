@@ -22,6 +22,7 @@ import { IS_WEB } from '../services/Webguard';
 import { IpcMessages } from '../../IpcMessages';
 import GraphSettings from '../settings/GraphSettings';
 import { Mouse } from '../../packages/rete-1.4.4/view/area';
+import { CREATE_NODE_BY_DRAGGING } from '../../packages/connection-plugin-0.9.0/windowevents';
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -196,8 +197,7 @@ export default class GraphEditorComponent extends Component<Props, State> {
         this.editor?.addNode(newNode);
 
         if (this.createNodeByDraggingToSpace) {
-          const nodeView = this.editor?.view.nodes.get(newNode);
-          const event = new CustomEvent("createnodebydragging", { detail: { view: nodeView, node: newNode } });
+          const event = new CustomEvent(CREATE_NODE_BY_DRAGGING, { detail: { node: newNode } });
           window.dispatchEvent(event);
           this.createNodeByDraggingToSpace = false;
         }

@@ -57,12 +57,10 @@ function install(editor: NodeEditor) {
 
   window.addEventListener(CREATE_NODE_BY_DRAGGING, (e: any) => {
     const node: Node = e.detail.node;
-    const view: NodeView = e.detail.view;
 
     node.inputs.forEach(ele => {
       if(flowParams?.output){
         if(ele.key === flowParams.output.key){
-          // flow.complete({input: ele, output: flowParams.output});
           editor.connect(flowParams.output, ele)
         }
       }

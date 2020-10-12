@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import ReactDOM from "react-dom"
 import PropTypes from "prop-types"
+import { CLOSE_MENU, OPEN_MENU } from "../connection-plugin-0.9.0/windowevents";
 
 class ContextMenu extends Component {
   dispatchCloseMenu = false;
@@ -21,7 +22,7 @@ class ContextMenu extends Component {
     this.setState({ display : false });
 
     if(this.dispatchCloseMenu){
-      const event = new CustomEvent("closemenu");
+      const event = new CustomEvent(CLOSE_MENU);
       window.dispatchEvent(event);
       this.dispatchCloseMenu = false;
     }
@@ -104,13 +105,13 @@ class ContextMenu extends Component {
   }
   
   componentDidMount = () => {
-    window.addEventListener("openmenu", this.handleOpenMenu)
+    window.addEventListener(OPEN_MENU, this.handleOpenMenu)
   };
   
 
   componentWillUnmount() {
     this.removeEventListeners()
-    window.removeEventListener("openmenu", this.handleOpenMenu)
+    window.removeEventListener(OPEN_MENU, this.handleOpenMenu)
   }
 
   handlePreventDefault(e) { e.preventDefault() }
