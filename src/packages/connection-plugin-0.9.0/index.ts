@@ -1,4 +1,4 @@
-import { NodeEditor } from "../rete-1.4.4";
+import { NodeEditor, Node } from "../rete-1.4.4";
 import {
   renderConnection,
   renderPathData,
@@ -9,6 +9,8 @@ import { Picker } from "./picker";
 import { Flow, FlowParams } from "./flow";
 import "./events";
 import "./index.sass";
+import { NodeView } from './../rete-1.4.4/view/node';
+import { CLOSE_MENU, CREATE_NODE_BY_DRAGGING, OPEN_MENU } from "./windowevents";
 
 function install(editor: NodeEditor) {
   editor.bind("connectionpath");
@@ -20,16 +22,15 @@ function install(editor: NodeEditor) {
   const flow = new Flow(picker);
   const socketsParams = new WeakMap<Element, FlowParams>();
   let flowElement: Element | null = null;
-  function pointerDown(this: HTMLElement, e: PointerEvent) {
-    const flowParams = socketsParams.get(this);
+  let flowParams: FlowParams | undefined;
 
+  function pointerDown(this: HTMLElement, e: PointerEvent) {
+    flowParams = socketsParams.get(this);
     if (flowParams) {
       const { input, output } = flowParams;
-
       editor.view.container.dispatchEvent(new PointerEvent("pointermove", e));
       e.preventDefault();
       e.stopPropagation();
-      console.log("clicked")
       flow.start({ input, output }, input || output);
     }
   }
@@ -39,28 +40,43 @@ function install(editor: NodeEditor) {
     if (picker.io) {
       editor.trigger("connectiondrop", picker.io);
     }
-    if (flowEl) {
-      flowElement = flowEl;
-      if((flowEl.className as any).baseVal === "main-path"){
-        picker.view.shouldUpdate = false;
 
-        const mouse = picker.view.editorView.area.mouse;
-        const event = new CustomEvent("openmenu", {detail: {event: e, mouse} });
-        console.log("event dispatched")
-        // (event as any).mouse = mouse;
-        window.dispatchEvent(event);
+    if (flowEl) {
+        flowElement = flowEl;
+        if((flowEl.className as any).baseVal === "main-path"){
+          picker.view.shouldUpdate = false;
+
+          const mouse = picker.view.editorView.area.mouse;
+          const event = new CustomEvent(OPEN_MENU, {detail: {event: e, mouse} });
+          window.dispatchEvent(event);
       }else{
         flow.complete(getMapItemRecursively(socketsParams, flowEl) || {});
       }
     }
   }
 
-  window.addEventListener("blur", (e) => {
+  window.addEventListener(CREATE_NODE_BY_DRAGGING, (e: any) => {
+    const node: Node = e.detail.node;
+    const view: NodeView = e.detail.view;
+
+    node.inputs.forEach(ele => {
+      if(flowParams?.output){
+        if(ele.key === flowParams.output.key){
+          // flow.complete({input: ele, output: flowParams.output});
+          editor.connect(flowParams.output, ele)
+        }
+      }
+    })
+  })
+
+
+
+  window.addEventListener("blur", (_) => {
     picker.view.shouldUpdate = true;
     flow.complete(getMapItemRecursively(socketsParams, flowElement!) || {});
   });
 
-  window.addEventListener("closemenu", () => {
+  window.addEventListener(CLOSE_MENU, () => {
     picker.view.shouldUpdate = true;
     flow.complete(getMapItemRecursively(socketsParams, flowElement!) || {});
   })

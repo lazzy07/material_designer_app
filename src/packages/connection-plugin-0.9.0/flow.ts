@@ -5,7 +5,7 @@ export type FlowParams = { input?: Input; output?: Output };
 
 export class Flow {
   private picker: Picker;
-  private target?: IO | null;
+  target?: IO | null;
 
   constructor(picker: Picker) {
     this.picker = picker;

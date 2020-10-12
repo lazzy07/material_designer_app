@@ -3,7 +3,7 @@ import { PickerView } from "./view";
 
 export class Picker {
   private editor: NodeEditor;
-  private _io: Output | Input | null = null;
+  _io: Output | Input | null = null;
   public view: PickerView;
 
   constructor(editor: NodeEditor) {

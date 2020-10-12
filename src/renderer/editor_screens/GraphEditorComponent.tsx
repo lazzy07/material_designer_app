@@ -41,6 +41,7 @@ export default class GraphEditorComponent extends Component<Props, State> {
   editor: NodeEditor | null = null;
   timeOut: NodeJS.Timeout | null = null;
 
+  createNodeByDraggingToSpace = false;
   mouse: Mouse = { x: 0, y: 0 };
   contextMenuPos: Mouse = { x: 0, y: 0 };
 
@@ -68,10 +69,9 @@ export default class GraphEditorComponent extends Component<Props, State> {
 
     this.editor.use(ConnectionPlugin);
     this.editor.use(ReactRenderPlugin, { component: MaterialNode });
-    this.editor.use(AreaPlugin as any, { scaleExtent: { min: 0.3, max: 1.5 } });
+    this.editor.use(AreaPlugin as any, { scaleExtent: { min: 0.1, max: 1.5 } });
     this.editor.view.area.el.style.height = GraphSettings.canvasSize.y + "px";
     this.editor.view.area.el.style.width = GraphSettings.canvasSize.x + "px";
-
 
     this.editor.on(["process", "nodecreated", "noderemoved", "connectioncreated", "connectionremoved"], async () => {
       await this.engine.abort();
@@ -172,11 +172,13 @@ export default class GraphEditorComponent extends Component<Props, State> {
         this.readNodesAndRegister();
         const node = await this.state.nodeComponents[0].createNode();
         const node2 = await this.state.nodeComponents[0].createNode();
-        node.position = [1000000 / 2 + 1000, 1000000 / 2 + 1000];
+
+
+
+        node.position = [1000000 / 2 + 500, 1000000 / 2 + 500];
         node2.position = [1000000 / 2, 1000000 / 2];
         this.editor?.addNode(node);
         this.editor?.addNode(node2);
-
         // AreaPlugin.zoomAt(this.editor);
       })
     }
@@ -190,9 +192,15 @@ export default class GraphEditorComponent extends Component<Props, State> {
     for (const node of this.state.nodeComponents) {
       if (node.nodeClass.id === item.id) {
         const newNode = await node.createNode();
-        console.log(this.contextMenuPos)
         newNode.position = [this.contextMenuPos.x, this.contextMenuPos.y];
         this.editor?.addNode(newNode);
+
+        if (this.createNodeByDraggingToSpace) {
+          const nodeView = this.editor?.view.nodes.get(newNode);
+          const event = new CustomEvent("createnodebydragging", { detail: { view: nodeView, node: newNode } });
+          window.dispatchEvent(event);
+          this.createNodeByDraggingToSpace = false;
+        }
       }
     }
   }
@@ -210,6 +218,8 @@ export default class GraphEditorComponent extends Component<Props, State> {
   listenToNodeMenuOpen = () => {
     window.addEventListener("openmenu", (e: any) => {
       this.contextMenuPos = e.detail.mouse;
+
+      this.createNodeByDraggingToSpace = true;
     })
   }
 
