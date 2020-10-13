@@ -11,6 +11,7 @@ import "./events";
 import "./index.sass";
 import { NodeView } from './../rete-1.4.4/view/node';
 import { CLOSE_MENU, CREATE_NODE_BY_DRAGGING, OPEN_MENU } from "./windowevents";
+import { Mouse } from "../rete-1.4.4/view/area";
 
 function install(editor: NodeEditor) {
   editor.bind("connectionpath");
@@ -23,10 +24,12 @@ function install(editor: NodeEditor) {
   const socketsParams = new WeakMap<Element, FlowParams>();
   let flowElement: Element | null = null;
   let flowParams: FlowParams | undefined;
+  let mousePos: Mouse = {x: 0, y:0};
+  let prevMousePos: Mouse = {x: 10, y: 10}
 
   function pointerDown(this: HTMLElement, e: PointerEvent) {
     flowParams = socketsParams.get(this);
-    console.log("pointer down")
+    mousePos = {x: e.clientX, y: e.clientY}
     if (flowParams) {
       const { input, output } = flowParams;
       editor.view.container.dispatchEvent(new PointerEvent("pointermove", e));
@@ -37,24 +40,34 @@ function install(editor: NodeEditor) {
   }
 
   function pointerUp(this: Window, e: PointerEvent) {
-    console.log("pointer up")
+    const currentMousePos: Mouse = {x: e.clientX, y: e.clientY};
+
     const flowEl = document.elementFromPoint(e.clientX, e.clientY);
     if (picker.io) {
       editor.trigger("connectiondrop", picker.io);
     }
 
     if (flowEl) {
-        flowElement = flowEl;
-        if((flowEl.className as any).baseVal === "main-path"){
+      flowElement = flowEl;
+      if((flowEl.className as any).baseVal === "main-path"){
+        if(prevMousePos.x > 0 && prevMousePos.y > 0){
           picker.view.shouldUpdate = false;
 
           const mouse = picker.view.editorView.area.mouse;
           const event = new CustomEvent(OPEN_MENU, {detail: {event: e, mouse} });
           window.dispatchEvent(event);
+        }else{
+          flow.complete(getMapItemRecursively(socketsParams, flowEl) || {});
+        }
       }else{
         flow.complete(getMapItemRecursively(socketsParams, flowEl) || {});
       }
     }
+
+    const x = Math.abs(currentMousePos.x - mousePos.x);
+    const y = Math.abs(currentMousePos.y - mousePos.y);
+    
+    prevMousePos = {x, y};
   }
 
   window.addEventListener(CREATE_NODE_BY_DRAGGING, (e: any) => {

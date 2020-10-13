@@ -6,7 +6,7 @@ import GraphSettings from '../../../renderer/settings/GraphSettings';
 
 export interface Transform { k: number; x: number; y: number }
 export interface Mouse { x: number; y: number }
-export type ZoomSource = 'wheel' // | 'touch' | 'dblclick';
+export type ZoomSource = 'wheel' | 'touch' | 'dblclick';
 
 export class Area extends Emitter<EventsTypes> {
 

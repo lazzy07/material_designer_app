@@ -19,7 +19,7 @@ export class Zoom {
 
         container.addEventListener('wheel', this.wheel.bind(this));
         container.addEventListener('pointerdown', this.down.bind(this));
-        container.addEventListener('dblclick', this.dblclick.bind(this));
+        //container.addEventListener('dblclick', this.dblclick.bind(this));
 
         const destroyMove = listenWindow('pointermove', this.move.bind(this));
         const destroyUp = listenWindow('pointerup', this.end.bind(this));
