@@ -16,8 +16,8 @@ export const createGraph = (graphsName = "Untitled"): Graphs => {
   return {
     id: parentId,
     name: graphsName,
-    shaderGraph: { id: v4(), parentId, data: {} },
-    dataGraph: { id: v4(), parentId, data: {} },
+    shaderGraph: { parentId, data: {} },
+    dataGraph: { parentId, data: {} },
   };
 };
 

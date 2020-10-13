@@ -6,7 +6,6 @@ export interface Project {
   id: string;
   filePath: string;
   fileName: string;
-  currentGraph: string;
   description: string;
   packages: GraphPackage[];
   textures: Image[];

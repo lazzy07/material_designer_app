@@ -20,6 +20,8 @@ export const getTreeData = (
       name: pkg.name,
       type: "package",
       children: [],
+      selected: false,
+      extended: true
     };
     for (let i of pkg.graphs) {
       let graphElem: OutlinerElement = {
@@ -27,6 +29,8 @@ export const getTreeData = (
         name: i.name,
         type: "graph",
         children: [],
+        selected: false,
+        extended: true
       };
       // graphElem.children.push({
       //   id: i.shaderGraph.id,
@@ -35,12 +39,11 @@ export const getTreeData = (
       //   children: [],
       // });
       graphElem.children.push({
-        id: i.dataGraph.id,
+        id: i.id + "data",
         name: "Data Graph",
         type: "datagraph",
         children: [],
-        selected: false,
-        extended: false,
+        selected: false
       });
       packageElem.children.push(graphElem);
     }
