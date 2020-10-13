@@ -26,6 +26,7 @@ function install(editor: NodeEditor) {
 
   function pointerDown(this: HTMLElement, e: PointerEvent) {
     flowParams = socketsParams.get(this);
+    console.log("pointer down")
     if (flowParams) {
       const { input, output } = flowParams;
       editor.view.container.dispatchEvent(new PointerEvent("pointermove", e));
@@ -36,6 +37,7 @@ function install(editor: NodeEditor) {
   }
 
   function pointerUp(this: Window, e: PointerEvent) {
+    console.log("pointer up")
     const flowEl = document.elementFromPoint(e.clientX, e.clientY);
     if (picker.io) {
       editor.trigger("connectiondrop", picker.io);
