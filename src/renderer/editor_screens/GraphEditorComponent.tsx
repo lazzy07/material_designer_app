@@ -174,8 +174,6 @@ export default class GraphEditorComponent extends Component<Props, State> {
         const node = await this.state.nodeComponents[0].createNode();
         const node2 = await this.state.nodeComponents[0].createNode();
 
-
-
         node.position = [1000000 / 2 + 500, 1000000 / 2 + 500];
         node2.position = [1000000 / 2, 1000000 / 2];
         this.editor?.addNode(node);

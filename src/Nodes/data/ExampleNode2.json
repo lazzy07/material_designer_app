@@ -2,6 +2,7 @@
   "id": "examplenode2",
   "name": "Exampe Node 2",
   "type": "generator.color",
+  "graphType": "shadergraph",
   "library": {
     "title": "core",
     "id": "",

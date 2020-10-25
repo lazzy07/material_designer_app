@@ -2,6 +2,7 @@
   "id": "examplenode",
   "name": "Exampe Node",
   "type": "generator.grayscale",
+  "graphType": "shadergraph",
   "library": {
     "title": "core",
     "id": "",

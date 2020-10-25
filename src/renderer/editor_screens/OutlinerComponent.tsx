@@ -81,7 +81,7 @@ class OutlinerComponent extends Component<Props, State> {
         if (id === i.id) {
           //Clicked on a package
           i.selected = true;
-          this.props.setSelected("package", "shadergraph", id);
+          this.props.setSelected("package", "package", id);
 
           this.setState({ selectedType: "package" });
         }
@@ -103,9 +103,8 @@ class OutlinerComponent extends Component<Props, State> {
             if (id === k.id) {
               //clicked on a datagraph
               k.selected = true;
-
               this.props.setSelected("package", "datagraph", i.id);
-              this.props.setSelected("graph", i.type, id);
+              this.props.setSelected("graph", "datagraph", j.id);
 
               this.setState({ selectedType: "datagraph" });
             }

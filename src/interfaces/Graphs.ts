@@ -9,3 +9,5 @@ export interface Graphs {
   createdAt?: Date;
   author?: string;
 }
+
+export type GRAPH_TYPES = "datagraph" | "shadergraph";
