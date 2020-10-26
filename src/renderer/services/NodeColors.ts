@@ -25,5 +25,15 @@ export const getNodeConnectionColors = (connectionType: CONNECTION_TYPES) => {
       return defaultColors.COLOR_CONNECTION_COLOR;
     case "grayscale":
       return defaultColors.GRAYSCALE_CONNETION_COLOR;
+    case "float":
+      return defaultColors.FLOAT_CONECTION_COLOR;
+    case "int":
+      return defaultColors.INT_CONNECTION_COLOR;
+    case "float_vec2":
+      return defaultColors.FLOATVEC2_CONNECTION_COLOR;
+    case "int_vec2":
+      return defaultColors.INTVEC2_CONNECTION_COLOR;
+    case "colorpick":
+      return defaultColors.COLORPICK_CONNECTION_COLOR;
   }
 };

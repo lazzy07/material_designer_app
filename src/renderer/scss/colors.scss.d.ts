@@ -45,6 +45,11 @@ export interface globalScss {
 
   GRAYSCALE_CONNETION_COLOR: string;
   COLOR_CONNECTION_COLOR: string;
+  FLOAT_CONECTION_COLOR: string;
+  INT_CONNECTION_COLOR: string;
+  COLORPICK_CONNECTION_COLOR: string;
+  FLOATVEC2_CONNECTION_COLOR: string;
+  INTVEC2_CONNECTION_COLOR: string;
 }
 
 export const styles: globalScss;
