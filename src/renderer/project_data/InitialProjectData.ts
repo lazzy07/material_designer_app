@@ -2,31 +2,11 @@ import { Project } from "src/interfaces/Project";
 import { v4 } from "uuid";
 
 export const initialProjectData = (): Project => {
-  const parentId = v4();
   return {
     id: v4(),
     filePath: "",
     fileName: "Untitled",
-    packages: [
-      {
-        id: v4(),
-        name: "Default Package",
-        graphs: [
-          {
-            id: parentId,
-            name: "Default graph",
-            dataGraph: {
-              parentId,
-              data: {}
-            },
-            shaderGraph: {
-              parentId,
-              data: {}
-            },
-          }
-        ],
-      }
-    ],
+    packages: [],
     preview: {
       shape: "cube",
       subdivision: 100,

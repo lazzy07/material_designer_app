@@ -14,6 +14,9 @@ import _ from "lodash"
 interface Props {
   dimensions: { width: number, height: number };
   project: Project;
+  selectedPackage: string;
+  selectedGraph: string;
+  selectedGraphType: OutlinerTypes;
   setSelected: (type: "graph" | "package",
     graphType: OutlinerTypes,
     id: string) => void;
@@ -261,7 +264,10 @@ class OutlinerComponent extends Component<Props, State> {
 
 const mapStateToProps = (state: Store) => {
   return {
-    project: state.project
+    project: state.project,
+    selectedPackage: state.system.selectedItems.package,
+    selectedGraph: state.system.selectedItems.graph,
+    selectedGraphType: state.system.selectedItems.graphType
   }
 }
 
