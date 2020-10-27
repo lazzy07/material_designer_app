@@ -31,8 +31,10 @@ interface Props {
 
 interface State {
   nodeComponents: NodeComponent[];
-  localLibNodes: NodeData[];
-  localProjNodes: NodeData[];
+  localLibShaderNodes: NodeData[];
+  localProjShaderNodes: NodeData[];
+  localLibDataNodes: NodeData[];
+  localProjDataNodes: NodeData[];
   contextMenuType: CONTEXT_MENU_TYPE;
   selectedNode: Node | null;
 }
@@ -55,8 +57,10 @@ class GraphEditorComponent extends Component<Props, State> {
 
     this.state = {
       nodeComponents: [],
-      localLibNodes: [],
-      localProjNodes: [],
+      localLibShaderNodes: [],
+      localProjShaderNodes: [],
+      localLibDataNodes: [],
+      localProjDataNodes: [],
       contextMenuType: "editor",
       selectedNode: null
     };
@@ -72,7 +76,6 @@ class GraphEditorComponent extends Component<Props, State> {
   createEditor = (ref: React.RefObject<HTMLDivElement>) => {
     const editor = new Rete.NodeEditor("materialdesigner@" + EDITOR_VERSION, ref.current!);
     editor.use(ConnectionPlugin)
-
     editor.use(ReactRenderPlugin, { component: MaterialNode });
     editor.use(AreaPlugin as any, { scaleExtent: { min: 0.1, max: 1.5 } });
 
@@ -136,26 +139,6 @@ class GraphEditorComponent extends Component<Props, State> {
     })
   }
 
-  readLocalLibraryNodes = async () => {
-    try {
-      const data = await getAllNodes(LOCAL_NODES_PATH);
-      return data;
-    } catch (err) {
-      //TODO:: Handle error
-      console.log(err);
-    }
-  }
-
-  readProjectLibraryNodes = async () => {
-    try {
-      const data = await getAllNodes(PROJECT_NODES_PATH());
-      return data;
-    } catch (err) {
-      //TODO:: Handle error
-      console.log(err);
-    }
-  }
-
   registerNode = (nodeData: NodeData) => {
     const component = new NodeClass(nodeData);
     const nodeComponent = new NodeComponent(component);
@@ -165,33 +148,66 @@ class GraphEditorComponent extends Component<Props, State> {
     this.setState({
       nodeComponents
     })
-    this.shaderEditor?.register(nodeComponent);
+    if (nodeData.graphType === "shadergraph") {
+      this.shaderEditor?.register(nodeComponent);
+    } else if (nodeData.graphType === "datagraph") {
+      this.dataGraphEditor?.register(nodeComponent);
+    }
+  }
+
+  registerNodes = (data: NodeData[]) => {
+    if (data) {
+      for (const i of data) {
+        this.registerNode(i);
+      }
+    }
   }
 
   readNodesAndRegister = async () => {
-    const localData = this.state.localLibNodes;
-    const projectData = this.state.localProjNodes;
+    const localShaderNodes = this.state.localLibShaderNodes;
+    const projectShaderNodes = this.state.localProjShaderNodes;
 
-    if (localData) {
-      for (const i of localData) {
-        this.registerNode(i);
-      }
-    }
+    const localDataNodes = this.state.localLibDataNodes;
+    const projectDataNodes = this.state.localProjDataNodes;
 
-    if (projectData) {
-      for (const i of projectData) {
-        this.registerNode(i);
-      }
-    }
+    this.registerNodes(localShaderNodes);
+    this.registerNodes(projectShaderNodes);
+    this.registerNodes(localDataNodes);
+    this.registerNodes(projectDataNodes);
   }
 
   listenToNodeData = () => {
     if (!IS_WEB) {
       ipcRenderer.send(IpcMessages.GET_ALL_LOCAL_NODE_DATA);
       ipcRenderer.on(IpcMessages.RETURN_GET_ALL_LOCAL_NODE_DATA, async (_, data) => {
+        let libraryShaderNodes: NodeData[] = [];
+        let libraryDataNodes: NodeData[] = [];
+        let projectShaderNodes: NodeData[] = [];
+        let projectDataNodes: NodeData[] = [];
+
+        if (data.library) {
+          for (const i of data.library) {
+            if (i.graphType === "shadergraph") {
+              libraryShaderNodes.push(i);
+            } else {
+              libraryDataNodes.push(i);
+            }
+          }
+        }
+        if (data.projct) {
+          for (const i of data.project) {
+            if (i.graphType === "shadergraph") {
+              projectShaderNodes.push(i)
+            } else {
+              projectShaderNodes.push(i)
+            }
+          }
+        }
         this.setState({
-          localLibNodes: data.library,
-          localProjNodes: data.project
+          localLibShaderNodes: libraryShaderNodes,
+          localProjShaderNodes: projectShaderNodes,
+          localLibDataNodes: libraryDataNodes,
+          localProjDataNodes: projectDataNodes
         })
 
         this.readNodesAndRegister();
@@ -265,8 +281,8 @@ class GraphEditorComponent extends Component<Props, State> {
         <ContextMenu
           selectedNode={this.state.selectedNode}
           selectedType={this.state.contextMenuType}
-          localLibraryNodes={this.state.localLibNodes}
-          localProjectNodes={this.state.localProjNodes}
+          localLibraryNodes={this.props.isShadergraph ? this.state.localLibShaderNodes : this.state.localLibDataNodes}
+          localProjectNodes={this.props.isShadergraph ? this.state.localProjShaderNodes : this.state.localProjDataNodes}
           onClickAction={this.onContextMenuItemClick}
           onClickDelete={this.onClickDeleteNode}
           onClickCopy={this.onClickCopyNode}
