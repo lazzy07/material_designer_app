@@ -55,8 +55,10 @@ class OutlinerComponent extends Component<Props, State> {
           for (let k of i.children) {
             //Graphs
             for (let l of j.children) {
-              k.selected = l.selected;
-              k.extended = l.extended;
+              if (k.id === l.id) {
+                k.selected = l.selected;
+                k.extended = l.extended;
+              }
             }
           }
         }

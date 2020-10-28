@@ -5,8 +5,6 @@ import DropFileComponent from '../components/library_components/DropFileComponen
 import { DraggableItem } from '../../interfaces/DraggableItem';
 import { NodeData } from '../../interfaces/NodeData';
 import { EDITOR_VERSION, ENGINE_VERSION } from '../constants/Versions';
-import { getAllNodes } from '../services/NodeServices';
-import { LOCAL_NODES_PATH, PROJECT_NODES_PATH } from '../constants/Path';
 import Rete, { Node, NodeEditor } from "../../packages/rete-1.4.4";
 import ConnectionPlugin from "../../packages/connection-plugin-0.9.0"
 import ReactRenderPlugin from "../../packages/react-render-plugin-0.2.1";
@@ -268,7 +266,8 @@ class GraphEditorComponent extends Component<Props, State> {
     if (this.timeOut) {
       clearTimeout(this.timeOut);
     }
-    this.shaderEditor?.view.area.el.removeEventListener("drop", () => { })
+    this.shaderEditor?.view.area.el.removeEventListener("drop", () => { });
+    this.dataGraphEditor?.view.area.el.removeEventListener("drop", () => { });
   }
 
   render() {

@@ -143,7 +143,7 @@ class OutlinerController extends Component<Props, State> {
           <div onClick={this.addPackageToProject} className="clickable" style={{ padding: 5, marginRight: 5 }}>
             <FontAwesomeIcon icon={faFolderPlus} />
           </div>
-          <div onClick={this.addGraphToPackage} className="clickable" style={{ padding: 5, marginRight: 5 }}>
+          <div onClick={this.addGraphToPackage} className={this.props.selectedPackage ? "clickable" : ""} style={{ padding: 5, marginRight: 5, opacity: this.props.selectedPackage ? undefined : 0.3 }}>
             <FontAwesomeIcon icon={faPlus} />
           </div>
 
@@ -164,7 +164,7 @@ class OutlinerController extends Component<Props, State> {
 const mapStateToProps = (state: Store) => {
   return {
     project: state.project,
-    selectedPackage: state.system.selectedItems.package
+    selectedPackage: state.system.selectedItems.package,
   }
 }
 
