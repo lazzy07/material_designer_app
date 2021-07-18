@@ -48,9 +48,9 @@ export default class Button extends Component<Props, State> {
           border:
             this.props.noBorder || this.props.disabled
               ? undefined
-              : `2px solid ${colors.LIGHT_GREY}`,
+              : `2px solid ${defaultColors.BORDER_COLOR}`,
           cursor: !this.props.disabled ? "pointer" : undefined,
-          opacity: this.props.disabled ? 0.3 : undefined
+          opacity: this.props.disabled ? 0.3 : undefined,
         }}
       >
         {this.props.loading ? (
@@ -62,7 +62,7 @@ export default class Button extends Component<Props, State> {
                 ? defaultColors.DISABLED_FONT_COLOR
                 : undefined,
               display: "flex",
-              justifyContent: "center"
+              justifyContent: "center",
             }}
           >
             {this.props.icon ? (

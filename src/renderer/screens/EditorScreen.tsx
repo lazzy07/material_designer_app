@@ -19,7 +19,7 @@ import NodePropsScreen from "../components/editor_page/editor_components/NodePro
 import GraphPropsScreen from "../components/editor_page/editor_components/GraphPropsScreen";
 import { Dimensions } from "../../interfaces/Dimensions";
 
-interface Props { }
+interface Props {}
 
 interface State {
   loading: boolean;

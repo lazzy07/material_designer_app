@@ -1,5 +1,5 @@
-import { Titlebar, Color, TitlebarOptions } from "custom-electron-titlebar";
-import { colors, defaultColors } from "../constants/Colors";
+import { Titlebar, Color } from "custom-electron-titlebar";
+import { defaultColors } from "../constants/Colors";
 import { ipcRenderer } from "electron";
 import { IpcMessages } from "../../IpcMessages";
 import { EditorMenu } from "../menus/EditorMenu";
