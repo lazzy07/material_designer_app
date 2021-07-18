@@ -61,6 +61,10 @@ export const listenToMessages = (screens: Screens, url: string) => {
     screens.importScreen.createScreen(screens.editorScreen);
   });
 
+  ipcMain.on(IpcMessages.OPEN_THEME_SCREEN, () => {
+    screens.themeScreen.createScreen(screens.editorScreen);
+  });
+
   ipcMain.on(IpcMessages.DRAG_START, (_, data: DraggableItem<any>) => {
     draggingData = data;
   });
@@ -72,17 +76,20 @@ export const listenToMessages = (screens: Screens, url: string) => {
   ipcMain.on(IpcMessages.LOAD_LOCAL_LIBRARY_NODES, (_, data) => {
     const library = new NodeLibrary();
     library.loadLocalNodeLibrary(data);
-  })
+  });
 
   ipcMain.on(IpcMessages.LOAD_LOCAL_PROJECT_NODES, (_, data) => {
     const library = new NodeLibrary();
-    if(data){
+    if (data) {
       library.loadProjectNodeLibrary(data);
     }
-  })
+  });
 
   ipcMain.on(IpcMessages.GET_ALL_LOCAL_NODE_DATA, (event) => {
     const library = new NodeLibrary();
-    event.sender.send(IpcMessages.RETURN_GET_ALL_LOCAL_NODE_DATA, {library: library.getLibraryNodes(), project: library.getProjectNodes()})
-  })
+    event.sender.send(IpcMessages.RETURN_GET_ALL_LOCAL_NODE_DATA, {
+      library: library.getLibraryNodes(),
+      project: library.getProjectNodes(),
+    });
+  });
 };

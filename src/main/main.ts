@@ -16,6 +16,7 @@ import { SAVE_DEFAULT_PATH } from "../common_constants/path";
 import { SubEditorScreen } from "./windows/SubEditorScreen";
 import { ImportScreen } from "./windows/ImportScreen";
 import Path from "path";
+import { ThemeScreen } from "./windows/ThemeScreen";
 
 let store: any;
 
@@ -27,6 +28,7 @@ export interface Screens {
   saveProjectScreen: SaveProjectScreen;
   subEditorScreens: SubEditorScreen[];
   importScreen: ImportScreen;
+  themeScreen: ThemeScreen;
 }
 
 export const screens: Screens = {
@@ -37,6 +39,7 @@ export const screens: Screens = {
   saveProjectScreen: new SaveProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY),
   subEditorScreens: [],
   importScreen: new ImportScreen(MAIN_WINDOW_WEBPACK_ENTRY),
+  themeScreen: new ThemeScreen(MAIN_WINDOW_WEBPACK_ENTRY),
 };
 
 if (require("electron-squirrel-startup")) {

@@ -20,6 +20,7 @@ import { remote, ipcRenderer } from "electron";
 import { ElementsToLocalStorage } from "../EditorElements/ElementsToLocalStorage";
 import { IpcMessages } from "../IpcMessages";
 import ImportHot from "./ImportHot";
+import ThemeScreenHot from "./ThemeScreenHot";
 
 let titlebar: Titleb;
 
@@ -38,7 +39,7 @@ switch (windowType) {
   case "main":
     titlebar = new Titleb({
       icon: getStaticPath("/dependencies/img/icon_32x32.png"),
-      shadow: false
+      shadow: false,
     });
     element = (
       <div>
@@ -54,7 +55,7 @@ switch (windowType) {
       icon: getStaticPath("/dependencies/img/icon_32x32.png"),
       menu: null,
       maximizable: false,
-      titleHorizontalAlignment: "center"
+      titleHorizontalAlignment: "center",
     });
     titlebar.getTitlebar().updateTitle("Login - Material Designer");
 
@@ -66,7 +67,7 @@ switch (windowType) {
       menu: null,
       maximizable: false,
       titleHorizontalAlignment: "center",
-      minimizable: false
+      minimizable: false,
     });
     titlebar.getTitlebar().updateTitle("Open Project");
     element = <OpenProjectHot />;
@@ -78,7 +79,7 @@ switch (windowType) {
       menu: null,
       maximizable: false,
       titleHorizontalAlignment: "center",
-      minimizable: false
+      minimizable: false,
     });
     titlebar.getTitlebar().updateTitle("New Project");
     element = <NewProjectHot />;
@@ -90,7 +91,7 @@ switch (windowType) {
       menu: null,
       maximizable: false,
       titleHorizontalAlignment: "center",
-      minimizable: false
+      minimizable: false,
     });
     titlebar.getTitlebar().updateTitle("Import Assets - Material designer");
     element = <ImportHot />;
@@ -103,7 +104,7 @@ switch (windowType) {
       closeable: false,
       maximizable: false,
       titleHorizontalAlignment: "center",
-      minimizable: false
+      minimizable: false,
     });
     titlebar.getTitlebar().updateTitle("Save Project");
     element = <SaveProjectHot />;
@@ -112,7 +113,7 @@ switch (windowType) {
     titlebar = new Titleb({
       icon: getStaticPath("/dependencies/img/icon_32x32.png"),
       menu: null,
-      titleHorizontalAlignment: "center"
+      titleHorizontalAlignment: "center",
     });
     // console.log(id);
     // titlebar.setMenu(menu);
@@ -121,6 +122,19 @@ switch (windowType) {
       ipcRenderer.send(IpcMessages.UPDATE_TITLEBAR);
     });
     element = <App />;
+    break;
+
+  case "theme":
+    titlebar = new Titleb({
+      icon: getStaticPath("/dependencies/img/icon_32x32.png"),
+      menu: null,
+      closeable: false,
+      maximizable: false,
+      titleHorizontalAlignment: "center",
+      minimizable: false,
+    });
+    titlebar.getTitlebar().updateTitle("Theme Manager");
+    element = <ThemeScreenHot />;
     break;
 }
 

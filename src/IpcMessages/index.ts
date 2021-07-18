@@ -11,6 +11,7 @@ export const IpcMessages = {
   UPDATE_TITLEBAR: "update titlebar",
   CLOSE_ALL_SUB_EDITORS: "close all sub editors",
   OPEN_IMPORT_SCREEN: "open import screen",
+  OPEN_THEME_SCREEN: "open theme screen",
 
   DRAG_START: "on drag start",
   GET_DRAG_DATA: "get drag data",
@@ -21,5 +22,5 @@ export const IpcMessages = {
   REFRESH_LOCAL_LIBRARY_NODES: "refresh local library nodes",
   REFRESH_LOCAL_PROJECT_NODES: "refresh local project nodes",
   GET_ALL_LOCAL_NODE_DATA: "get all local node data",
-  RETURN_GET_ALL_LOCAL_NODE_DATA: "return get all local node data"
+  RETURN_GET_ALL_LOCAL_NODE_DATA: "return get all local node data",
 };
