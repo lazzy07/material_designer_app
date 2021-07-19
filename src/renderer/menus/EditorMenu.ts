@@ -4,7 +4,8 @@ import {
   newProjectScreen,
   openLoginScreen,
   onClickWindow,
-  onClickDefaultWindow
+  onClickDefaultWindow,
+  openPreferencesScreen,
 } from "./editor_menu_actions/EditorMenuActions";
 import { getActiveItems } from "../../main_services/ActiveElementTypes";
 import { allElements } from "./../../EditorElements/index";
@@ -41,30 +42,28 @@ const isChecked = (title: string): boolean => {
 };
 
 const getAllWindowElements = (): MenuItemConstructorOptions[] => {
-  return allElements.map(
-    (ele): MenuItemConstructorOptions => {
-      const checked = isChecked(ele.title);
-      return {
-        label: ele.title,
-        type: "checkbox",
-        checked,
-        enabled: !checked,
-        click: () => onClickWindow(ele, checked)
-      };
-    }
-  );
+  return allElements.map((ele): MenuItemConstructorOptions => {
+    const checked = isChecked(ele.title);
+    return {
+      label: ele.title,
+      type: "checkbox",
+      checked,
+      enabled: !checked,
+      click: () => onClickWindow(ele, checked),
+    };
+  });
 };
 
 const renderWindowMenuElements = (): MenuItemConstructorOptions[] => {
   return [
     {
       label: "Reset to Default",
-      click: () => onClickDefaultWindow()
+      click: () => onClickDefaultWindow(),
     },
     {
-      type: "separator"
+      type: "separator",
     },
-    ...getAllWindowElements()
+    ...getAllWindowElements(),
   ];
 };
 
@@ -75,32 +74,36 @@ const getMenu = (): MenuItemConstructorOptions[] => [
       {
         label: "New",
         accelerator: "CommandOrControl+N",
-        click: () => newProjectScreen()
+        click: () => newProjectScreen(),
       },
       {
         label: "Open",
         accelerator: "CommandOrControl+O",
-        click: () => openProjectScreen()
-      }
-    ]
+        click: () => openProjectScreen(),
+      },
+      {
+        label: "Preferences",
+        click: () => openPreferencesScreen(),
+      },
+    ],
   },
   {
     label: "Edit",
-    role: "editMenu"
+    role: "editMenu",
   },
   {
     label: "Cloud",
     submenu: [
       {
         label: "Login",
-        click: () => openLoginScreen()
-      }
-    ]
+        click: () => openLoginScreen(),
+      },
+    ],
   },
   {
     label: "Windows",
-    submenu: renderWindowMenuElements()
-  }
+    submenu: renderWindowMenuElements(),
+  },
 ];
 
 export class EditorMenu {

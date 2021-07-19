@@ -61,7 +61,7 @@ export const listenToMessages = (screens: Screens, url: string) => {
     screens.importScreen.createScreen(screens.editorScreen);
   });
 
-  ipcMain.on(IpcMessages.OPEN_THEME_SCREEN, () => {
+  ipcMain.on(IpcMessages.OPEN_PREFERENCES_SCREEN, () => {
     screens.themeScreen.createScreen(screens.editorScreen);
   });
 

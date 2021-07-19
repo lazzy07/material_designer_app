@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export default class ThemeScreen extends Component {
+export default class PreferencesScreen extends Component {
   render() {
     return <div>Theme Screen</div>;
   }

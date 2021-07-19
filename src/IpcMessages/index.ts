@@ -11,7 +11,7 @@ export const IpcMessages = {
   UPDATE_TITLEBAR: "update titlebar",
   CLOSE_ALL_SUB_EDITORS: "close all sub editors",
   OPEN_IMPORT_SCREEN: "open import screen",
-  OPEN_THEME_SCREEN: "open theme screen",
+  OPEN_PREFERENCES_SCREEN: "open preferences screen",
 
   DRAG_START: "on drag start",
   GET_DRAG_DATA: "get drag data",

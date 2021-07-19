@@ -20,7 +20,7 @@ import { remote, ipcRenderer } from "electron";
 import { ElementsToLocalStorage } from "../EditorElements/ElementsToLocalStorage";
 import { IpcMessages } from "../IpcMessages";
 import ImportHot from "./ImportHot";
-import ThemeScreenHot from "./ThemeScreenHot";
+import PreferencesScreenHot from "./PreferencesScreenHot";
 
 let titlebar: Titleb;
 
@@ -115,8 +115,6 @@ switch (windowType) {
       menu: null,
       titleHorizontalAlignment: "center",
     });
-    // console.log(id);
-    // titlebar.setMenu(menu);
     remote.getCurrentWindow().on("close", () => {
       ElementsToLocalStorage.removeData(id);
       ipcRenderer.send(IpcMessages.UPDATE_TITLEBAR);
@@ -124,17 +122,17 @@ switch (windowType) {
     element = <App />;
     break;
 
-  case "theme":
+  case "preferences":
     titlebar = new Titleb({
       icon: getStaticPath("/dependencies/img/icon_32x32.png"),
       menu: null,
-      closeable: false,
+      closeable: true,
       maximizable: false,
       titleHorizontalAlignment: "center",
       minimizable: false,
     });
-    titlebar.getTitlebar().updateTitle("Theme Manager");
-    element = <ThemeScreenHot />;
+    titlebar.getTitlebar().updateTitle("Preferences Manager");
+    element = <PreferencesScreenHot />;
     break;
 }
 
@@ -150,9 +148,6 @@ const render = () =>
 
 render();
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.register();
 
 export { titlebar, rStore };

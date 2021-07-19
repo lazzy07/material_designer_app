@@ -14,6 +14,10 @@ export const openLoginScreen = () => {
   ipcRenderer.send(IpcMessages.LOAD_LOGIN_PAGE);
 };
 
+export const openPreferencesScreen = () => {
+  ipcRenderer.send(IpcMessages.OPEN_PREFERENCES_SCREEN);
+};
+
 export const onClickWindow = (element: EditorElement, checked: boolean) => {
   if (!checked) {
     const event = new CustomEvent("addNewTab", { detail: { element } });

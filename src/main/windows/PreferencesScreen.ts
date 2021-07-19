@@ -1,7 +1,7 @@
 import { BrowserWindow } from "electron";
 import { EditorScreen } from "./EditorScreen";
 
-export class ThemeScreen {
+export class PreferencesScreen {
   window: BrowserWindow | null = null;
   private url = "";
   constructor(url: string) {
@@ -11,8 +11,8 @@ export class ThemeScreen {
   createScreen(editorScreen: EditorScreen) {
     this.window = new BrowserWindow({
       parent: editorScreen.window!,
-      width: 700,
-      height: 650,
+      width: 850,
+      height: 550,
       modal: true,
       resizable: false,
       frame: false,
@@ -25,7 +25,7 @@ export class ThemeScreen {
     this.window.webContents.on("did-frame-finish-load", () => {
       this.window!.webContents.openDevTools({ mode: "detach" });
     });
-    this.window.loadURL(this.url + "?theme");
+    this.window.loadURL(this.url + "?preferences");
 
     this.window.once("ready-to-show", () => {
       this.window?.show();
