@@ -1,0 +1,14 @@
+@import "./colors.scss";
+
+.preferences-side-nav-item {
+  background-color: $IMPORTANT_BACKGROUND_COLOR;
+}
+
+.preferences-side-nav-item:hover {
+  background-color: $HOVER_COLOR;
+}
+
+.preferences-side-nav-item-selected {
+  background-color: $PRIMARY_COLOR;
+  color: $IMPORTANT_FONT_COLOR;
+}
