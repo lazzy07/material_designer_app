@@ -23,7 +23,7 @@ interface State {
   selected: string;
 }
 
-export default class PreferencesScreen extends Component<undefined, State> {
+export default class PreferencesScreen extends Component<any, State> {
   constructor(props: undefined) {
     super(props);
 
@@ -70,6 +70,30 @@ export default class PreferencesScreen extends Component<undefined, State> {
             <div className="col-9" style={{ padding: 10 }}>
               {this.renderSelected()}
             </div>
+          </div>
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            bottom: 10,
+            left: 20,
+            display: "flex",
+          }}
+        >
+          <img
+            src="/main_window/dependencies/img/icon_trans.png"
+            alt=""
+            style={{ width: "50px", height: "40px", paddingRight: 10 }}
+          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <div style={{ fontSize: 12 }}>Material Designer</div>
+            <div style={{ fontSize: 10 }}>Created by Cyborg Studios</div>
           </div>
         </div>
       </div>

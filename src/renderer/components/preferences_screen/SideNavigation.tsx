@@ -16,7 +16,7 @@ export default class SideNavigation extends Component<Props> {
             : "preferences-side-nav-item"
         }
         key={key}
-        style={{ padding: 5, paddingLeft: 10 }}
+        style={{ padding: 5, paddingLeft: 10, cursor: "pointer" }}
         onClick={() => this.props.setSelected(ele)}
       >
         <div style={{ fontWeight: "bolder" }}>{ele}</div>

@@ -1,7 +1,10 @@
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../public/index.scss";
 import "./scss/app.scss";
 import "animate.css/animate.min.css";
+import "./scss/overridecolors.scss";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";

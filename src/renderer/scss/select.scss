@@ -1,0 +1,11 @@
+@import "colors.scss";
+
+.matd-select {
+  div {
+    color: $IMPORTANT_FONT_COLOR;
+    background-color: $IMPORTANT_BACKGROUND_COLOR;
+    border-radius: 0;
+    border-color: $BORDER_COLOR;
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
