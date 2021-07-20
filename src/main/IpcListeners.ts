@@ -62,7 +62,17 @@ export const listenToMessages = (screens: Screens, url: string) => {
   });
 
   ipcMain.on(IpcMessages.OPEN_PREFERENCES_SCREEN, () => {
-    screens.themeScreen.createScreen(screens.editorScreen);
+    screens.preferencesScreen.createScreen(screens.editorScreen);
+  });
+
+  ipcMain.on(IpcMessages.OPEN_COLORPICKER, (emitter, data) => {
+    let screen: any;
+    if (data.window === "editor") {
+      screen = screens.editorScreen;
+    } else if (data.window === "preferences") {
+      screen = screens.preferencesScreen;
+    }
+    screens.colorPickerScreen.createScreen(screen);
   });
 
   ipcMain.on(IpcMessages.DRAG_START, (_, data: DraggableItem<any>) => {

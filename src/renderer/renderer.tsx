@@ -24,6 +24,7 @@ import { ElementsToLocalStorage } from "../EditorElements/ElementsToLocalStorage
 import { IpcMessages } from "../IpcMessages";
 import ImportHot from "./ImportHot";
 import PreferencesScreenHot from "./PreferencesScreenHot";
+import ColorPickerHot from "./ColorPickerHot";
 
 let titlebar: Titleb;
 
@@ -136,6 +137,18 @@ switch (windowType) {
     });
     titlebar.getTitlebar().updateTitle("Preferences Manager");
     element = <PreferencesScreenHot />;
+    break;
+  case "colorpicker":
+    titlebar = new Titleb({
+      icon: getStaticPath("/dependencies/img/icon_32x32.png"),
+      menu: null,
+      closeable: true,
+      maximizable: false,
+      titleHorizontalAlignment: "center",
+      minimizable: false,
+    });
+    titlebar.getTitlebar().updateTitle("Color Picker");
+    element = <ColorPickerHot />;
     break;
 }
 

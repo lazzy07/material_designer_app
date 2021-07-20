@@ -17,6 +17,7 @@ import { SubEditorScreen } from "./windows/SubEditorScreen";
 import { ImportScreen } from "./windows/ImportScreen";
 import Path from "path";
 import { PreferencesScreen } from "./windows/PreferencesScreen";
+import { ColorPickerScreen } from "./windows/ColorPicker";
 
 let store: any;
 
@@ -28,7 +29,8 @@ export interface Screens {
   saveProjectScreen: SaveProjectScreen;
   subEditorScreens: SubEditorScreen[];
   importScreen: ImportScreen;
-  themeScreen: PreferencesScreen;
+  preferencesScreen: PreferencesScreen;
+  colorPickerScreen: ColorPickerScreen;
 }
 
 export const screens: Screens = {
@@ -39,7 +41,8 @@ export const screens: Screens = {
   saveProjectScreen: new SaveProjectScreen(MAIN_WINDOW_WEBPACK_ENTRY),
   subEditorScreens: [],
   importScreen: new ImportScreen(MAIN_WINDOW_WEBPACK_ENTRY),
-  themeScreen: new PreferencesScreen(MAIN_WINDOW_WEBPACK_ENTRY),
+  preferencesScreen: new PreferencesScreen(MAIN_WINDOW_WEBPACK_ENTRY),
+  colorPickerScreen: new ColorPickerScreen(MAIN_WINDOW_WEBPACK_ENTRY),
 };
 
 if (require("electron-squirrel-startup")) {

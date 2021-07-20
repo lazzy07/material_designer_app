@@ -6,6 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import React, { Component } from "react";
 import Button from "../../form/Button";
+import ColorSelect from "../../form/ColorSelect";
 import Select from "../../form/Select";
 
 export default class Theme extends Component {
@@ -22,8 +23,16 @@ export default class Theme extends Component {
               { label: "bcd", value: "abc" },
             ]}
           />
+          <div>
+            <ColorSelect
+              id="color1"
+              screen="preferences"
+              color="#e8232d"
+              onChange={() => {}}
+              title="Font Color"
+            />
+          </div>
         </div>
-
         <div
           style={{
             position: "absolute",

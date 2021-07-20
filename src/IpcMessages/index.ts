@@ -23,4 +23,9 @@ export const IpcMessages = {
   REFRESH_LOCAL_PROJECT_NODES: "refresh local project nodes",
   GET_ALL_LOCAL_NODE_DATA: "get all local node data",
   RETURN_GET_ALL_LOCAL_NODE_DATA: "return get all local node data",
+
+  OPEN_COLORPICKER: "open color picker",
+  SET_COLORPICKER_DATA(id: string) {
+    return "color_picker " + id;
+  },
 };
