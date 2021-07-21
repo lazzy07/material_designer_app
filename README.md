@@ -1,4 +1,4 @@
-# Material Desigener App
+# Material Designer App
 
 This is the material designer app repository, here you can use this to create procedural textures and under the hood this project uses the material designer library, which is available from [here](https://github.com/lazzy07/material_designer_library).
 
