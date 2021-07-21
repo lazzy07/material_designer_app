@@ -11,8 +11,8 @@ import "../scss/preferences.scss";
 
 const NAVIGATION_ITEMS = [
   "General",
-  "Theme",
-  "Node Theme",
+  "Edit Themes",
+  "Edit Node Themes",
   "System",
   "Developer",
   "Addons",
@@ -36,9 +36,9 @@ export default class PreferencesScreen extends Component<any, State> {
     switch (this.state.selected) {
       case "General":
         return <General />;
-      case "Theme":
+      case "Edit Themes":
         return <Theme />;
-      case "Node Theme":
+      case "Edit Node Themes":
         return <NodeTheme />;
       case "System":
         return <System />;

@@ -21,11 +21,12 @@ export default class ColorPickerScreen extends Component<Props, State> {
     super(props);
 
     this.state = {
-      color: "#ffffff",
+      color: this.props.prevColor,
     };
   }
 
   componentDidMount() {
+    console.log(this.props.prevColor);
     this.setState({ color: this.props.prevColor });
     const ref = ReactDOM.findDOMNode(this.ref.current);
 

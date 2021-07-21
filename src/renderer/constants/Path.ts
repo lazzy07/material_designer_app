@@ -21,6 +21,12 @@ export const LOCAL_LIBRARY_PATH = path.join(APP_DATA_PATH, "library");
 export const LOCAL_NODES_PATH = path.join(LOCAL_LIBRARY_PATH, "node");
 export const LOCAL_TEXTURES_PATH = path.join(LOCAL_LIBRARY_PATH, "texture");
 export const LOCAL_HDRIS_PATH = path.join(LOCAL_LIBRARY_PATH, "hdri");
+export const LOCAL_UI_THEME_PATH = path.join(LOCAL_LIBRARY_PATH, "theme", "ui");
+export const LOCAL_NODE_THEME_PATH = path.join(
+  LOCAL_LIBRARY_PATH,
+  "theme",
+  "node"
+);
 
 export const PROJECT_LIBRARY_PATH = () =>
   store.getState().project.filePath
