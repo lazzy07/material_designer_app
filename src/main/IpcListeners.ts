@@ -80,6 +80,12 @@ export const listenToMessages = (screens: Screens, url: string) => {
     screens.colorPickerScreen.createScreen(screen);
   });
 
+  ipcMain.on(IpcMessages.SET_COLORPICKER_DATA, (_, data) => {
+    if (colorRef) {
+      colorRef?.sender.send("color_picker" + colorId, data);
+    }
+  });
+
   ipcMain.on(IpcMessages.DRAG_START, (_, data: DraggableItem<any>) => {
     draggingData = data;
   });

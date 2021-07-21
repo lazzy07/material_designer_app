@@ -25,6 +25,12 @@ export default class ColorSelect extends Component<Props> {
     }
   };
 
+  componentDidMount() {
+    ipcRenderer.on("color_picker" + this.props.id, (e, data) => {
+      this.props.onChange(data.color);
+    });
+  }
+
   render() {
     return (
       <div style={{ display: "flex", marginTop: 5, marginBottom: 5 }}>

@@ -28,7 +28,7 @@ export default class Theme extends Component {
               id="color1"
               screen="preferences"
               color="#e8232d"
-              onChange={() => {}}
+              onChange={(val) => console.log(val)}
               title="Font Color"
             />
           </div>
