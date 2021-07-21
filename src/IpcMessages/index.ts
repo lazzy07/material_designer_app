@@ -25,7 +25,5 @@ export const IpcMessages = {
   RETURN_GET_ALL_LOCAL_NODE_DATA: "return get all local node data",
 
   OPEN_COLORPICKER: "open color picker",
-  SET_COLORPICKER_DATA(id: string) {
-    return "color_picker " + id;
-  },
+  SET_COLORPICKER_DATA: "set color picker data",
 };

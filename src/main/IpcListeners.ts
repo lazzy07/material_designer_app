@@ -6,6 +6,8 @@ import { DraggableItem } from "../interfaces/DraggableItem";
 import NodeLibrary from "./workers/NodeLibrary";
 
 let draggingData: DraggableItem<any> | null = null;
+let colorRef: Electron.IpcMainEvent | null = null;
+let colorId = "";
 
 export const listenToMessages = (screens: Screens, url: string) => {
   ipcMain.on(IpcMessages.LOAD_LOGIN_PAGE, () => {
@@ -67,11 +69,14 @@ export const listenToMessages = (screens: Screens, url: string) => {
 
   ipcMain.on(IpcMessages.OPEN_COLORPICKER, (emitter, data) => {
     let screen: any;
+    colorRef = emitter;
+    colorId = data.id;
     if (data.window === "editor") {
       screen = screens.editorScreen;
     } else if (data.window === "preferences") {
       screen = screens.preferencesScreen;
     }
+    screens.colorPickerScreen.color = data.color;
     screens.colorPickerScreen.createScreen(screen);
   });
 

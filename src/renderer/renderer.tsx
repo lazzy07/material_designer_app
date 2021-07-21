@@ -139,6 +139,7 @@ switch (windowType) {
     element = <PreferencesScreenHot />;
     break;
   case "colorpicker":
+    const color = window.location.href.split("?")[2];
     titlebar = new Titleb({
       icon: getStaticPath("/dependencies/img/icon_32x32.png"),
       menu: null,
@@ -148,7 +149,7 @@ switch (windowType) {
       minimizable: false,
     });
     titlebar.getTitlebar().updateTitle("Color Picker");
-    element = <ColorPickerHot />;
+    element = <ColorPickerHot color={color} />;
     break;
 }
 

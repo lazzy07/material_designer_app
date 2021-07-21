@@ -20,6 +20,7 @@ export default class ColorSelect extends Component<Props> {
       ipcRenderer.send(IpcMessages.OPEN_COLORPICKER, {
         id: this.props.id,
         window: this.props.screen,
+        color: this.props.color,
       });
     }
   };

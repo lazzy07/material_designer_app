@@ -3,11 +3,13 @@ import React from "react";
 import { Switch, Route, MemoryRouter } from "react-router-dom";
 import ColorPickerScreen from "./screens/ColorPickerScreen";
 
-export default hot(() => {
+export default hot((props: { color: string }) => {
   return (
     <MemoryRouter>
       <Switch>
-        <Route path="/" component={ColorPickerScreen} />
+        <Route path="/">
+          <ColorPickerScreen prevColor={props.color} />
+        </Route>
       </Switch>
     </MemoryRouter>
   );
