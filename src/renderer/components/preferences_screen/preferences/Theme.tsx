@@ -120,23 +120,31 @@ export default class Theme extends Component<any, State> {
     this.setState({ data: { ...this.state.data, [key]: val } });
   };
 
+  getSelected = () => {
+    const ele = this.state.themes.find((e) => e.id === this.state.selected);
+    if (ele) {
+      return { label: ele.fileName, value: ele.id };
+    } else {
+      return { label: "No file found", value: "0" };
+    }
+  };
+
   componentDidMount() {
     this.getAllThemes();
   }
 
   render() {
-    console.log(this.state.themes);
     return (
       <div style={{ height: "90vh" }}>
         <div className="container-fluid">
           <div>Select a theme or create a one</div>
           <Select
             onChange={() => {}}
-            value={{ label: "abc", value: "abc" }}
-            options={[
-              { label: "abc", value: "bcd" },
-              { label: "bcd", value: "abc" },
-            ]}
+            value={this.getSelected()}
+            options={this.state.themes.map((ele) => ({
+              label: ele.fileName,
+              value: ele.id,
+            }))}
           />
           <div style={{ paddingLeft: 18, paddingTop: 20 }}>
             <InputBox
