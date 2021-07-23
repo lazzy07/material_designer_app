@@ -85,6 +85,7 @@ export default class Theme extends Component<any, State> {
         this.state.data.id + ".matdutheme"
       );
       fs.writeFileSync(file, JSON.stringify(this.state.data));
+      this.getAllThemes();
     }
   };
 
@@ -114,6 +115,8 @@ export default class Theme extends Component<any, State> {
     }
 
     this.setState({ themes: fileData });
+
+    return fileData;
   };
 
   setColorData = (key: string, val: string) => {
@@ -129,7 +132,24 @@ export default class Theme extends Component<any, State> {
     }
   };
 
+  onSelect = (e: { label: string; value: string }) => {
+    this.setState({ selected: e.value });
+
+    const theme = this.state.themes.find((ele) => {
+      return ele.id === e.value;
+    });
+
+    if (theme) {
+      this.setState({ data: { ...this.state.data, ...theme } });
+    }
+  };
+
   componentDidMount() {
+    if (!IS_WEB) {
+      if (!fs.existsSync(this.themePath)) {
+        fs.mkdirSync(this.themePath, { recursive: true });
+      }
+    }
     this.getAllThemes();
   }
 
@@ -139,7 +159,7 @@ export default class Theme extends Component<any, State> {
         <div className="container-fluid">
           <div>Select a theme or create a one</div>
           <Select
-            onChange={() => {}}
+            onChange={this.onSelect}
             value={this.getSelected()}
             options={this.state.themes.map((ele) => ({
               label: ele.fileName,
