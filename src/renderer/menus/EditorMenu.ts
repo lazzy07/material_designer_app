@@ -10,6 +10,7 @@ import {
 import { getActiveItems } from "../../main_services/ActiveElementTypes";
 import { allElements } from "./../../EditorElements/index";
 import { ElementsToLocalStorage } from "../../EditorElements/ElementsToLocalStorage";
+import DeveloperSettings from "../settings/DeveloperSettings";
 const { Menu } = remote;
 
 const isChecked = (title: string): boolean => {
@@ -110,7 +111,21 @@ export class EditorMenu {
   private menu: MenuP = new Menu();
 
   buildMenu = () => {
-    this.menu = Menu.buildFromTemplate(getMenu());
+    const menu = getMenu();
+
+    if (DeveloperSettings.developerMode) {
+      menu.push({
+        label: "Developer",
+        submenu: [
+          {
+            label: "Kernel Node Editor",
+            click: () => {},
+          },
+        ],
+      });
+    }
+
+    this.menu = Menu.buildFromTemplate(menu);
     return this.menu;
   };
 }

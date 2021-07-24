@@ -1,7 +1,7 @@
 {
   "name": "material_designer",
   "productName": "Material Designer",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Material Designer The Texture Editor",
   "main": "./.webpack/main",
   "scripts": {
@@ -16,7 +16,7 @@
     "name": "lazzy07",
     "email": "222lasantha@gmail.com"
   },
-  "license": "MIT",
+  "license": "Attribution-NonCommercial-NoDerivs 3.0 Unported",
   "config": {
     "forge": {
       "packagerConfig": {},

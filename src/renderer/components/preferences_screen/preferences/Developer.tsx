@@ -15,6 +15,7 @@ export default class Developer extends Component {
   };
 
   render() {
+    console.log(DeveloperSettings);
     return (
       <div>
         <div className="container-fluid">

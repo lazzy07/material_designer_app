@@ -1,5 +1,5 @@
 import { IS_WEB } from "../services/Webguard";
-import DeveloperSettings from "./DeveloperSettings";
+import DeveloperSettings, { setDeveloperSettings } from "./DeveloperSettings";
 import GraphSettings from "./GraphSettings";
 
 export default class Settings {
@@ -15,7 +15,7 @@ export default class Settings {
       const developerSettings = localStorage.getItem("developerSettings");
       if (developerSettings) {
         const jsonDevSettings = JSON.parse(developerSettings);
-        DeveloperSettings.developerMode = jsonDevSettings.developerMode;
+        setDeveloperSettings(jsonDevSettings);
       }
     }
   };
