@@ -25,12 +25,9 @@ import { IpcMessages } from "../IpcMessages";
 import ImportHot from "./ImportHot";
 import PreferencesScreenHot from "./PreferencesScreenHot";
 import ColorPickerHot from "./ColorPickerHot";
+import { ThemeManager } from "./constants/Colors";
 
 let titlebar: Titleb;
-
-console.log(
-  '👋 This message is being logged by "renderer.tsx", included via webpack'
-);
 const lastPart = window.location.href.split("?")[1];
 const windowType = lastPart.split("&")[0];
 const id = lastPart.split("&")[1];
@@ -38,6 +35,7 @@ let element: any;
 
 const em = new EditorMenu();
 const menu = em.buildMenu();
+ThemeManager.initTheme();
 
 switch (windowType) {
   case "main":

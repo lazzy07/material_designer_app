@@ -17,8 +17,8 @@ import fs from "fs";
 
 interface State {
   data: {
-    id: string;
-    fileName: string;
+    nodeId: string;
+    nodeFileName: string;
     GENERATOR_COLOR: string;
     GENERATOR_GRAYSCALE: string;
     PROCESS_COLOR: string;
@@ -28,6 +28,8 @@ interface State {
     GRAPH_EDITOR_BACKGRUND_COLOR: string;
     GRAPH_EDITOR_GRID_COLOR: string;
     NODE_HEADER_FONT_COLOR: string;
+    NODE_BODY_BACKGROUND_COLOR: string;
+    NODE_BODY_FONT_COLOR: string;
     GRAYSCALE_CONNETION_COLOR: string;
     COLOR_CONNECTION_COLOR: string;
     FLOAT_CONECTION_COLOR: string;
@@ -50,6 +52,8 @@ const defaultTheme = {
   GRAPH_EDITOR_BACKGRUND_COLOR: "#2d3a3d",
   GRAPH_EDITOR_GRID_COLOR: "#364346",
   NODE_HEADER_FONT_COLOR: "#ffffff",
+  NODE_BODY_BACKGROUND_COLOR: "#20292b",
+  NODE_BODY_FONT_COLOR: "#b3b6b6",
   GRAYSCALE_CONNETION_COLOR: "#b3b6b6",
   COLOR_CONNECTION_COLOR: "#ffa500",
   FLOAT_CONECTION_COLOR: "#8bc34a",
@@ -66,7 +70,7 @@ export default class NodeTheme extends Component<any, State> {
     super(props);
 
     this.state = {
-      data: { id: "", fileName: "", ...defaultTheme },
+      data: { nodeId: "", nodeFileName: "", ...defaultTheme },
       themes: [],
       selected: "",
     };
@@ -96,7 +100,7 @@ export default class NodeTheme extends Component<any, State> {
 
       const file = Path.join(
         this.themePath,
-        this.state.data.id + ".matdutheme"
+        this.state.data.nodeId + ".matdntheme"
       );
       fs.writeFileSync(file, JSON.stringify(this.state.data));
       this.getAllThemes();
@@ -142,7 +146,7 @@ export default class NodeTheme extends Component<any, State> {
     if (ele) {
       return { label: ele.fileName, value: ele.id };
     } else {
-      return { label: "No file found", value: "0" };
+      return { label: "No file selected", value: "0" };
     }
   };
 
@@ -189,7 +193,7 @@ export default class NodeTheme extends Component<any, State> {
               onChange={(key, val) => {
                 this.setColorData(key, val);
               }}
-              value={this.state.data.fileName}
+              value={this.state.data.nodeFileName}
               placeHolder="Enter a theme name"
             />
           </div>
@@ -289,6 +293,28 @@ export default class NodeTheme extends Component<any, State> {
                       this.setColorData("NODE_HEADER_FONT_COLOR", val)
                     }
                     title="Header Font Color"
+                  />
+                </div>
+                <div className="col-6">
+                  <ColorSelect
+                    id="NODE_BODY_BACKGROUND_COLOR"
+                    screen="preferences"
+                    color={this.state.data.NODE_BODY_BACKGROUND_COLOR}
+                    onChange={(val) =>
+                      this.setColorData("NODE_BODY_BACKGROUND_COLOR", val)
+                    }
+                    title="Node Body Background"
+                  />
+                </div>
+                <div className="col-6">
+                  <ColorSelect
+                    id="NODE_BODY_FONT_COLOR"
+                    screen="preferences"
+                    color={this.state.data.NODE_BODY_FONT_COLOR}
+                    onChange={(val) =>
+                      this.setColorData("NODE_BODY_FONT_COLOR", val)
+                    }
+                    title="Node Body Font"
                   />
                 </div>
                 <div className="col-6">

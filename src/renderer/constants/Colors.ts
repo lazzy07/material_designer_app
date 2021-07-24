@@ -4,7 +4,9 @@ export let colors = {
   ...styles,
 };
 
-export const defaultColors = {
+export let defaultColors = {
+  id: "0",
+  fileName: "Default Theme",
   DEFAULT_BACKGROUND_COLOR: "#293538",
   IMPORTANT_BACKGROUND_COLOR: "#20292b",
   FONT_COLOR: "#b3b6b6",
@@ -15,6 +17,8 @@ export const defaultColors = {
   HOVER_COLOR: "#5a6f72",
   BORDER_COLOR: "#364346",
 
+  nodeId: "0",
+  nodeFIleName: "Default Theme",
   GENERATOR_COLOR: "#e91e63",
   GENERATOR_GRAYSCALE: "#8bc34a",
   PROCESS_COLOR: "#ff5722",
@@ -24,6 +28,8 @@ export const defaultColors = {
   GRAPH_EDITOR_BACKGRUND_COLOR: "#2d3a3d",
   GRAPH_EDITOR_GRID_COLOR: "#364346",
   NODE_HEADER_FONT_COLOR: "#ffffff",
+  NODE_BODY_BACKGROUND_COLOR: "#20292b",
+  NODE_BODY_FONT_COLOR: "#b3b6b6",
   GRAYSCALE_CONNETION_COLOR: "#b3b6b6",
   COLOR_CONNECTION_COLOR: "#ffa500",
   FLOAT_CONECTION_COLOR: "#8bc34a",
@@ -35,7 +41,12 @@ export const defaultColors = {
 
 export class ThemeManager {
   static initTheme = () => {
-    localStorage.getItem("theme");
+    let theme = localStorage.getItem("theme");
+
+    if (theme) {
+      let themeJson = JSON.parse(theme);
+      ThemeManager.loadTheme(themeJson);
+    }
   };
 
   static setColor = (key: string, val: string) => {
@@ -47,9 +58,13 @@ export class ThemeManager {
     }
   };
 
-  static saveTheme = () => {
-    localStorage.setItem("theme", JSON.stringify(colors));
+  static loadTheme = (themeData: any) => {
+    for (let [key, value] of Object.entries(themeData)) {
+      ThemeManager.setColor(key, value as string);
+    }
   };
 
-  static loadThemeFromFile = () => {};
+  static saveTheme = () => {
+    localStorage.setItem("theme", JSON.stringify(defaultColors));
+  };
 }

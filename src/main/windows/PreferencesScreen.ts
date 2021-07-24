@@ -12,7 +12,7 @@ export class PreferencesScreen {
     this.window = new BrowserWindow({
       parent: editorScreen.window!,
       width: 850,
-      height: 550,
+      height: 600,
       modal: true,
       resizable: false,
       frame: false,

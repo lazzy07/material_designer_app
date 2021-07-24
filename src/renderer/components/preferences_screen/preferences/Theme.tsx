@@ -128,7 +128,7 @@ export default class Theme extends Component<any, State> {
     if (ele) {
       return { label: ele.fileName, value: ele.id };
     } else {
-      return { label: "No file found", value: "0" };
+      return { label: "No file selected", value: "0" };
     }
   };
 
