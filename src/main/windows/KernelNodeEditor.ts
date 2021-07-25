@@ -12,6 +12,8 @@ export class KernelNodeEditor {
     this.window = new BrowserWindow({
       width: 950,
       height: 700,
+      minWidth: 600,
+      minHeight: 400,
       modal: false,
       resizable: true,
       frame: false,
