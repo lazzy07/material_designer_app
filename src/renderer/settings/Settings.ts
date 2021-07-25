@@ -1,6 +1,9 @@
+import {
+  setGraphSettings,
+  setDeveloperSettings,
+} from "../../redux/actions/PreferencesActions";
+import { store } from "../../redux/store";
 import { IS_WEB } from "../services/Webguard";
-import DeveloperSettings, { setDeveloperSettings } from "./DeveloperSettings";
-import GraphSettings from "./GraphSettings";
 
 export default class Settings {
   static initSettings = () => {
@@ -15,7 +18,7 @@ export default class Settings {
       const developerSettings = localStorage.getItem("developerSettings");
       if (developerSettings) {
         const jsonDevSettings = JSON.parse(developerSettings);
-        setDeveloperSettings(jsonDevSettings);
+        store.dispatch(setDeveloperSettings(jsonDevSettings));
       }
     }
   };
@@ -27,27 +30,16 @@ export default class Settings {
       const graphSettings = localStorage.getItem("graphSettings");
       if (graphSettings) {
         const jsonDevSettings = JSON.parse(graphSettings);
-        DeveloperSettings.developerMode = jsonDevSettings.developerMode;
+        store.dispatch(setGraphSettings(jsonDevSettings));
       }
     }
   };
 
   static saveSettings = () => {
-    const str = JSON.stringify(DeveloperSettings);
+    const str = JSON.stringify(store.getState().preferences.developerSettings);
     localStorage.setItem("developerSettings", str);
 
-    Settings.setTransformPos();
-    const str2 = JSON.stringify(GraphSettings);
+    const str2 = JSON.stringify(store.getState().preferences.graphSettings);
     localStorage.setItem("graphSettings", str2);
-  };
-
-  private static setTransformPos = () => {
-    const data = {
-      x: -GraphSettings.canvasSize.x / 4,
-      y: -GraphSettings.canvasSize.y / 4,
-      k: 0.5,
-    };
-
-    GraphSettings.startTransformPos = data;
   };
 }

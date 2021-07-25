@@ -6,7 +6,7 @@ import {
 } from "../actions/PreferencesActions";
 import { Action } from "../store";
 
-interface PreferencesReducer {
+export interface PreferencesReducer {
   graphSettings: GraphSettings;
   developerSettings: DeveloperSettings;
 }
@@ -28,7 +28,7 @@ const initPreferences: PreferencesReducer = {
   },
 };
 
-export const preferenceReducer = (
+export const preferencesReducer = (
   state = initPreferences,
   action: Action
 ): PreferencesReducer => {

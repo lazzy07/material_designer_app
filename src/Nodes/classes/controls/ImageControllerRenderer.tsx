@@ -1,15 +1,13 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 export default class ImageControllerRenderer extends Component<any, any> {
-  componentDidMount = () => {
-    console.log(this.props);
-  };
+  componentDidMount = () => {};
 
   render() {
     return (
       <div>
         <img alt="" src={"https://picsum.photos/1200"} width="180px" />
       </div>
-    )
+    );
   }
 }

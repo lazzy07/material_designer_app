@@ -1,5 +1,5 @@
+import { store } from "../../redux/store";
 import { getNodeConnectionColors } from "../../renderer/services/NodeColors";
-import GraphSettings from "../../renderer/settings/GraphSettings";
 import { Emitter, Connection, Input, Output } from "../rete-1.4.4";
 import { EventsTypes } from "../rete-1.4.4/events";
 
@@ -33,7 +33,13 @@ export function renderPathData(
   const data = { points, connection, d: "" };
   emitter.trigger("connectionpath", data);
 
-  return data.d || defaultPath(points, GraphSettings.graphConnectionCurvature);
+  return (
+    data.d ||
+    defaultPath(
+      points,
+      store.getState().preferences.graphSettings.graphConnectionCurvature
+    )
+  );
 }
 
 export function updateConnection({ el, d }: { el: HTMLElement; d: string }) {
@@ -75,7 +81,9 @@ export function renderConnection({
     path.style.stroke = getNodeConnectionColors(connection.input.key as any);
 
   path.style.strokeWidth =
-    GraphSettings.graphConnectionStrokeWidth.toString() + "px";
+    store
+      .getState()
+      .preferences.graphSettings.graphConnectionStrokeWidth.toString() + "px";
   path.setAttribute("d", d);
 
   svg.appendChild(path);

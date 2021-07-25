@@ -1,26 +1,28 @@
-import React, { Component } from 'react'
-import { defaultColors } from '../constants/Colors'
-import { createGrid } from '../services/CreateGrid'
-import DropFileComponent from '../components/library_components/DropFileComponent';
-import { DraggableItem } from '../../interfaces/DraggableItem';
-import { NodeData } from '../../interfaces/NodeData';
-import { EDITOR_VERSION, ENGINE_VERSION } from '../constants/Versions';
+import React, { Component } from "react";
+import { defaultColors } from "../constants/Colors";
+import { createGrid } from "../services/CreateGrid";
+import DropFileComponent from "../components/library_components/DropFileComponent";
+import { DraggableItem } from "../../interfaces/DraggableItem";
+import { NodeData } from "../../interfaces/NodeData";
+import { EDITOR_VERSION, ENGINE_VERSION } from "../constants/Versions";
 import Rete, { Node, NodeEditor } from "../../packages/rete-1.4.4";
-import ConnectionPlugin from "../../packages/connection-plugin-0.9.0"
+import ConnectionPlugin from "../../packages/connection-plugin-0.9.0";
 import ReactRenderPlugin from "../../packages/react-render-plugin-0.2.1";
 import AreaPlugin from "../../packages/area-plugin";
-import NodeClass from '../../nodes/classes/NodeClass';
-import NodeComponent from '../../nodes/classes/NodeComponent';
-import MaterialNode from '../../nodes/classes/MaterialNode';
-import ContextMenu, { CONTEXT_MENU_TYPE } from '../components/node_editor/ContextMenu';
-import { ipcRenderer } from 'electron';
-import { IS_WEB } from '../services/Webguard';
-import { IpcMessages } from '../../IpcMessages';
-import GraphSettings from '../settings/GraphSettings';
-import { Mouse } from '../../packages/rete-1.4.4/view/area';
-import { CREATE_NODE_BY_DRAGGING } from '../../packages/connection-plugin-0.9.0/windowevents';
-import { connect } from 'react-redux';
-import { Store } from '../../redux/reducers';
+import NodeClass from "../../nodes/classes/NodeClass";
+import NodeComponent from "../../nodes/classes/NodeComponent";
+import MaterialNode from "../../nodes/classes/MaterialNode";
+import ContextMenu, {
+  CONTEXT_MENU_TYPE,
+} from "../components/node_editor/ContextMenu";
+import { ipcRenderer } from "electron";
+import { IS_WEB } from "../services/Webguard";
+import { IpcMessages } from "../../IpcMessages";
+import { Mouse } from "../../packages/rete-1.4.4/view/area";
+import { CREATE_NODE_BY_DRAGGING } from "../../packages/connection-plugin-0.9.0/windowevents";
+import { connect } from "react-redux";
+import { Store } from "../../redux/reducers";
+import { store } from "../../redux/store";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -51,7 +53,7 @@ class GraphEditorComponent extends Component<Props, State> {
   contextMenuPos: Mouse = { x: 0, y: 0 };
 
   constructor(props: Props) {
-    super(props)
+    super(props);
 
     this.state = {
       nodeComponents: [],
@@ -60,59 +62,80 @@ class GraphEditorComponent extends Component<Props, State> {
       localLibDataNodes: [],
       localProjDataNodes: [],
       contextMenuType: "editor",
-      selectedNode: null
+      selectedNode: null,
     };
-  };
-
-
-  onNodeDropped = (item: DraggableItem<NodeData>) => {
-
-    //Simulate menu item click
-    this.onContextMenuItemClick(item.item);
   }
 
+  onNodeDropped = (item: DraggableItem<NodeData>) => {
+    //Simulate menu item click
+    this.onContextMenuItemClick(item.item);
+  };
+
   createEditor = (ref: React.RefObject<HTMLDivElement>) => {
-    const editor = new Rete.NodeEditor("materialdesigner@" + EDITOR_VERSION, ref.current!);
-    editor.use(ConnectionPlugin)
+    const editor = new Rete.NodeEditor(
+      "materialdesigner@" + EDITOR_VERSION,
+      ref.current!
+    );
+    editor.use(ConnectionPlugin);
     editor.use(ReactRenderPlugin, { component: MaterialNode });
     editor.use(AreaPlugin as any, { scaleExtent: { min: 0.1, max: 1.5 } });
 
-    editor.view.area.el.style.height = GraphSettings.canvasSize.y + "px";
-    editor.view.area.el.style.width = GraphSettings.canvasSize.x + "px";
+    editor.view.area.el.style.height =
+      store.getState().preferences.graphSettings.canvasSize.y + "px";
+    editor.view.area.el.style.width =
+      store.getState().preferences.graphSettings.canvasSize.x + "px";
 
     editor.view.area.el.addEventListener("drop", (e) => {
-      this.contextMenuPos = { x: e.offsetX, y: e.offsetY }
-    })
+      this.contextMenuPos = { x: e.offsetX, y: e.offsetY };
+    });
 
     return editor;
-  }
+  };
 
   createShaderEditor = () => {
     this.shaderEditor = this.createEditor(this.shaderDomRef);
 
-    this.shaderEditor.on(["process", "nodecreated", "noderemoved", "connectioncreated", "connectionremoved"], async () => {
-      await this.engine.abort();
-      await this.engine.process(this.shaderEditor!.toJSON());
-    });
+    this.shaderEditor.on(
+      [
+        "process",
+        "nodecreated",
+        "noderemoved",
+        "connectioncreated",
+        "connectionremoved",
+      ],
+      async () => {
+        await this.engine.abort();
+        await this.engine.process(this.shaderEditor!.toJSON());
+      }
+    );
 
     this.shaderEditor.on("mousemove", (mouse) => {
       this.mouse = mouse;
-    })
+    });
     this.selectContextMenuType();
-  }
+  };
 
   createDataGraphEditor = () => {
     this.dataGraphEditor = this.createEditor(this.dataDomRef);
 
-    this.dataGraphEditor.on(["process", "nodecreated", "noderemoved", "connectioncreated", "connectionremoved"], async () => {
-      await this.engine.abort();
-      await this.engine.process(this.dataGraphEditor!.toJSON());
-    });
+    this.dataGraphEditor.on(
+      [
+        "process",
+        "nodecreated",
+        "noderemoved",
+        "connectioncreated",
+        "connectionremoved",
+      ],
+      async () => {
+        await this.engine.abort();
+        await this.engine.process(this.dataGraphEditor!.toJSON());
+      }
+    );
 
     this.dataGraphEditor.on("mousemove", (mouse) => {
       this.mouse = mouse;
-    })
-  }
+    });
+  };
 
   selectContextMenuType = () => {
     let canPropagate = true;
@@ -120,22 +143,22 @@ class GraphEditorComponent extends Component<Props, State> {
       if (e.node) {
         this.timeOut = setTimeout(() => {
           canPropagate = true;
-        }, 300)
+        }, 300);
         canPropagate = false;
         this.setState({
           selectedNode: e.node,
-          contextMenuType: "node"
-        })
+          contextMenuType: "node",
+        });
       } else {
         if (canPropagate) {
           this.setState({
             selectedNode: null,
-            contextMenuType: "editor"
-          })
+            contextMenuType: "editor",
+          });
         }
       }
-    })
-  }
+    });
+  };
 
   registerNode = (nodeData: NodeData) => {
     const component = new NodeClass(nodeData);
@@ -144,14 +167,14 @@ class GraphEditorComponent extends Component<Props, State> {
     let nodeComponents = [...this.state.nodeComponents, nodeComponent];
 
     this.setState({
-      nodeComponents
-    })
+      nodeComponents,
+    });
     if (nodeData.graphType === "shadergraph") {
       this.shaderEditor?.register(nodeComponent);
     } else if (nodeData.graphType === "datagraph") {
       this.dataGraphEditor?.register(nodeComponent);
     }
-  }
+  };
 
   registerNodes = (data: NodeData[]) => {
     if (data) {
@@ -159,7 +182,7 @@ class GraphEditorComponent extends Component<Props, State> {
         this.registerNode(i);
       }
     }
-  }
+  };
 
   readNodesAndRegister = async () => {
     const localShaderNodes = this.state.localLibShaderNodes;
@@ -172,57 +195,60 @@ class GraphEditorComponent extends Component<Props, State> {
     this.registerNodes(projectShaderNodes);
     this.registerNodes(localDataNodes);
     this.registerNodes(projectDataNodes);
-  }
+  };
 
   listenToNodeData = () => {
     if (!IS_WEB) {
       ipcRenderer.send(IpcMessages.GET_ALL_LOCAL_NODE_DATA);
-      ipcRenderer.on(IpcMessages.RETURN_GET_ALL_LOCAL_NODE_DATA, async (_, data) => {
-        let libraryShaderNodes: NodeData[] = [];
-        let libraryDataNodes: NodeData[] = [];
-        let projectShaderNodes: NodeData[] = [];
-        let projectDataNodes: NodeData[] = [];
+      ipcRenderer.on(
+        IpcMessages.RETURN_GET_ALL_LOCAL_NODE_DATA,
+        async (_, data) => {
+          let libraryShaderNodes: NodeData[] = [];
+          let libraryDataNodes: NodeData[] = [];
+          let projectShaderNodes: NodeData[] = [];
+          let projectDataNodes: NodeData[] = [];
 
-        if (data.library) {
-          for (const i of data.library) {
-            if (i.graphType === "shadergraph") {
-              libraryShaderNodes.push(i);
-            } else {
-              libraryDataNodes.push(i);
+          if (data.library) {
+            for (const i of data.library) {
+              if (i.graphType === "shadergraph") {
+                libraryShaderNodes.push(i);
+              } else {
+                libraryDataNodes.push(i);
+              }
             }
           }
-        }
-        if (data.projct) {
-          for (const i of data.project) {
-            if (i.graphType === "shadergraph") {
-              projectShaderNodes.push(i)
-            } else {
-              projectShaderNodes.push(i)
+          if (data.projct) {
+            for (const i of data.project) {
+              if (i.graphType === "shadergraph") {
+                projectShaderNodes.push(i);
+              } else {
+                projectShaderNodes.push(i);
+              }
             }
           }
+          this.setState({
+            localLibShaderNodes: libraryShaderNodes,
+            localProjShaderNodes: projectShaderNodes,
+            localLibDataNodes: libraryDataNodes,
+            localProjDataNodes: projectDataNodes,
+          });
+
+          this.readNodesAndRegister();
+          const node = await this.state.nodeComponents[0].createNode();
+          const node2 = await this.state.nodeComponents[0].createNode();
+
+          node.position = [1000000 / 2 + 500, 1000000 / 2 + 500];
+          node2.position = [1000000 / 2, 1000000 / 2];
+          this.shaderEditor?.addNode(node);
+          this.shaderEditor?.addNode(node2);
         }
-        this.setState({
-          localLibShaderNodes: libraryShaderNodes,
-          localProjShaderNodes: projectShaderNodes,
-          localLibDataNodes: libraryDataNodes,
-          localProjDataNodes: projectDataNodes
-        })
-
-        this.readNodesAndRegister();
-        const node = await this.state.nodeComponents[0].createNode();
-        const node2 = await this.state.nodeComponents[0].createNode();
-
-        node.position = [1000000 / 2 + 500, 1000000 / 2 + 500];
-        node2.position = [1000000 / 2, 1000000 / 2];
-        this.shaderEditor?.addNode(node);
-        this.shaderEditor?.addNode(node2);
-      })
+      );
     }
-  }
+  };
 
   onCallContextMenu = () => {
     this.contextMenuPos = this.mouse;
-  }
+  };
 
   onContextMenuItemClick = async (item: NodeData) => {
     for (const node of this.state.nodeComponents) {
@@ -232,80 +258,114 @@ class GraphEditorComponent extends Component<Props, State> {
         this.shaderEditor?.addNode(newNode);
 
         if (this.createNodeByDraggingToSpace) {
-          const event = new CustomEvent(CREATE_NODE_BY_DRAGGING, { detail: { node: newNode } });
+          const event = new CustomEvent(CREATE_NODE_BY_DRAGGING, {
+            detail: { node: newNode },
+          });
           window.dispatchEvent(event);
           this.createNodeByDraggingToSpace = false;
         }
       }
     }
-  }
+  };
 
   onClickDeleteNode = (node: Node) => {
     this.shaderEditor?.removeNode(node);
-  }
+  };
 
   onClickCopyNode = (node: Node) => {
     this.shaderEditor?.addNode(node);
-  }
+  };
 
   // Since we forcibly open context menu the mouse values are not correct, so correct values can be found in the event
   listenToNodeMenuOpen = () => {
     window.addEventListener("openmenu", (e: any) => {
       this.contextMenuPos = e.detail.mouse;
       this.createNodeByDraggingToSpace = true;
-    })
-  }
+    });
+  };
 
   componentDidMount = async () => {
     this.createShaderEditor();
     this.listenToNodeData();
-    this.listenToNodeMenuOpen()
+    this.listenToNodeMenuOpen();
   };
 
   componentWillUnmount() {
     if (this.timeOut) {
       clearTimeout(this.timeOut);
     }
-    this.shaderEditor?.view.area.el.removeEventListener("drop", () => { });
-    this.dataGraphEditor?.view.area.el.removeEventListener("drop", () => { });
+    this.shaderEditor?.view.area.el.removeEventListener("drop", () => {});
+    this.dataGraphEditor?.view.area.el.removeEventListener("drop", () => {});
   }
 
   render() {
     const { width, height } = this.props.dimensions;
-    const shaderDom = <div onContextMenu={this.onCallContextMenu} ref={this.shaderDomRef} style={{ width, height }}></div>;
-    const dataDom = <div onContextMenu={this.onCallContextMenu} ref={this.dataDomRef} style={{ width, height }}></div>;
+    const shaderDom = (
+      <div
+        onContextMenu={this.onCallContextMenu}
+        ref={this.shaderDomRef}
+        style={{ width, height }}
+      ></div>
+    );
+    const dataDom = (
+      <div
+        onContextMenu={this.onCallContextMenu}
+        ref={this.dataDomRef}
+        style={{ width, height }}
+      ></div>
+    );
 
     return (
-      <DropFileComponent dropType={["node"]} onDropComplete={(item) => this.onNodeDropped(item)}>
+      <DropFileComponent
+        dropType={["node"]}
+        onDropComplete={(item) => this.onNodeDropped(item)}
+      >
         <ContextMenu
           selectedNode={this.state.selectedNode}
           selectedType={this.state.contextMenuType}
-          localLibraryNodes={this.props.isShadergraph ? this.state.localLibShaderNodes : this.state.localLibDataNodes}
-          localProjectNodes={this.props.isShadergraph ? this.state.localProjShaderNodes : this.state.localProjDataNodes}
+          localLibraryNodes={
+            this.props.isShadergraph
+              ? this.state.localLibShaderNodes
+              : this.state.localLibDataNodes
+          }
+          localProjectNodes={
+            this.props.isShadergraph
+              ? this.state.localProjShaderNodes
+              : this.state.localProjDataNodes
+          }
           onClickAction={this.onContextMenuItemClick}
           onClickDelete={this.onClickDeleteNode}
           onClickCopy={this.onClickCopyNode}
         >
-          <div style={{
-            backgroundColor: defaultColors.GRAPH_EDITOR_BACKGRUND_COLOR,
-            height: "100%",
-            width: "100%",
-          }}>
+          <div
+            style={{
+              backgroundColor: defaultColors.GRAPH_EDITOR_BACKGRUND_COLOR,
+              height: "100%",
+              width: "100%",
+            }}
+          >
             <div style={{ position: "absolute", width, height, top: 30 }}>
-              {createGrid(defaultColors.GRAPH_EDITOR_GRID_COLOR, width, height, 1.5, 10, 10)}
+              {createGrid(
+                defaultColors.GRAPH_EDITOR_GRID_COLOR,
+                width,
+                height,
+                1.5,
+                10,
+                10
+              )}
             </div>
             {this.props.isShadergraph ? shaderDom : dataDom}
           </div>
         </ContextMenu>
       </DropFileComponent>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state: Store) => {
   return {
-    isShadergraph: state.system.selectedItems.graphType === "shadergraph"
-  }
-}
+    isShadergraph: state.system.selectedItems.graphType === "shadergraph",
+  };
+};
 
-export default connect(mapStateToProps)(GraphEditorComponent)
+export default connect(mapStateToProps)(GraphEditorComponent);

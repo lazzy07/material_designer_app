@@ -10,7 +10,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "../serviceWorker";
 import { Provider } from "react-redux";
-import { rendererStore } from "../redux/store";
+import { rendererStore, store } from "../redux/store";
 import LoginHot from "./LoginHot";
 import { Titleb } from "./titlebars/Titleb";
 import { EditorMenu } from "./menus/EditorMenu";
@@ -37,7 +37,6 @@ let element: any;
 const em = new EditorMenu();
 const menu = em.buildMenu();
 ThemeManager.initTheme();
-Settings.initSettings();
 
 switch (windowType) {
   case "main":
@@ -154,7 +153,7 @@ switch (windowType) {
 }
 
 const rStore = rendererStore();
-
+Settings.initSettings();
 const render = () =>
   ReactDOM.render(
     <AppContainer>

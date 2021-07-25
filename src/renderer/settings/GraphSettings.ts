@@ -21,4 +21,4 @@ let GraphSettings: GraphSettingsInterface = {
   mouseControllerType: "mouse",
 };
 
-export default GraphSettings;
+// export default GraphSettings;

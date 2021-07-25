@@ -25,7 +25,7 @@ export const setGraphSettings = (settings: GraphSettings) => {
 
 export const setDeveloperSettings = (data: DeveloperSettings) => {
   return {
-    action: SET_DEVELOPER_SETTINGS,
+    type: SET_DEVELOPER_SETTINGS,
     payload: data,
   };
 };

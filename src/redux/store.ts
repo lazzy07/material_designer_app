@@ -23,7 +23,7 @@ export interface Action {
 
 let initialState = {};
 
-export let store: any;
+export let store: Store<any, any>;
 
 export const rendererStore = (): Store => {
   const initialState = getInitialStateRenderer();
