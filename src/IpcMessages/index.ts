@@ -12,6 +12,7 @@ export const IpcMessages = {
   CLOSE_ALL_SUB_EDITORS: "close all sub editors",
   OPEN_IMPORT_SCREEN: "open import screen",
   OPEN_PREFERENCES_SCREEN: "open preferences screen",
+  OPEN_KERNEL_NODE_EDITOR: "open kernel node editor",
 
   DRAG_START: "on drag start",
   GET_DRAG_DATA: "get drag data",

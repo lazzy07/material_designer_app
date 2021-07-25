@@ -10,7 +10,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "../serviceWorker";
 import { Provider } from "react-redux";
-import { rendererStore, store } from "../redux/store";
+import { rendererStore } from "../redux/store";
 import LoginHot from "./LoginHot";
 import { Titleb } from "./titlebars/Titleb";
 import { EditorMenu } from "./menus/EditorMenu";
@@ -26,14 +26,14 @@ import ImportHot from "./ImportHot";
 import PreferencesScreenHot from "./PreferencesScreenHot";
 import ColorPickerHot from "./ColorPickerHot";
 import { ThemeManager } from "./constants/Colors";
-import Settings from "./settings/Settings";
+import { Preferences } from "./services/Preferences";
+import KernelNodeEditorHot from "./KernelNodeEditorHot";
 
 let titlebar: Titleb;
 const lastPart = window.location.href.split("?")[1];
 const windowType = lastPart.split("&")[0];
 const id = lastPart.split("&")[1];
 let element: any;
-
 const em = new EditorMenu();
 const menu = em.buildMenu();
 ThemeManager.initTheme();
@@ -124,7 +124,6 @@ switch (windowType) {
     });
     element = <App />;
     break;
-
   case "preferences":
     titlebar = new Titleb({
       icon: getStaticPath("/dependencies/img/icon_32x32.png"),
@@ -150,10 +149,23 @@ switch (windowType) {
     titlebar.getTitlebar().updateTitle("Color Picker");
     element = <ColorPickerHot color={color} />;
     break;
+
+  case "kernelnodeeditor":
+    titlebar = new Titleb({
+      icon: getStaticPath("/dependencies/img/icon_32x32.png"),
+      menu: null,
+      closeable: true,
+      maximizable: true,
+      titleHorizontalAlignment: "center",
+      minimizable: true,
+    });
+    titlebar.getTitlebar().updateTitle("Kernel Node Editor");
+    element = <KernelNodeEditorHot />;
+    break;
 }
 
 const rStore = rendererStore();
-Settings.initSettings();
+Preferences.initPreferences();
 const render = () =>
   ReactDOM.render(
     <AppContainer>

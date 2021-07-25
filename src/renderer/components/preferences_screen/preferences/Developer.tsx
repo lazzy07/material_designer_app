@@ -1,22 +1,22 @@
 import React, { Component } from "react";
-import DeveloperSettings from "../../../settings/DeveloperSettings";
-import Settings from "../../../settings/Settings";
+import { connect } from "react-redux";
+import { DeveloperSettings } from "../../../../interfaces/DeveloperSettings";
+import { setDeveloperSettings } from "../../../../redux/actions/PreferencesActions";
+import { Store } from "../../../../redux/reducers";
 import Checkbox from "../../form/Checkbox";
 
-export default class Developer extends Component {
-  state = {
-    ...DeveloperSettings,
-  };
+interface Props {
+  developerSettings: DeveloperSettings;
+  setDeveloperSettings: (settings: DeveloperSettings) => void;
+}
 
+class Developer extends Component<Props> {
   onChange = (key: string, val: any) => {
-    DeveloperSettings[key] = val;
-    this.setState({ [key]: val });
-    Settings.saveSettings();
+    this.props.setDeveloperSettings({
+      ...this.props.developerSettings,
+      [key]: val,
+    });
   };
-
-  componentDidMount() {
-    this.setState(DeveloperSettings);
-  }
 
   render() {
     return (
@@ -27,9 +27,12 @@ export default class Developer extends Component {
           </div>
           <Checkbox
             label="Developer Mode"
-            checked={this.state.developerMode}
+            checked={this.props.developerSettings.developerMode}
             onClick={() =>
-              this.onChange("developerMode", !DeveloperSettings.developerMode)
+              this.onChange(
+                "developerMode",
+                !this.props.developerSettings.developerMode
+              )
             }
           />
           <div className="helper-text">
@@ -42,3 +45,15 @@ export default class Developer extends Component {
     );
   }
 }
+
+const mapStateToProps = (state: Store) => {
+  return {
+    developerSettings: state.preferences.developerSettings,
+  };
+};
+
+const mapDispatchToProps = {
+  setDeveloperSettings,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Developer);

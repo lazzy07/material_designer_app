@@ -17,6 +17,7 @@ export const setGraphSettings = (settings: GraphSettings) => {
 
   edited.startTransformPos = data;
 
+  localStorage.setItem("graphSettings", JSON.stringify(edited));
   return {
     type: SET_GRAPH_SETTINGS,
     payload: edited,
@@ -24,6 +25,7 @@ export const setGraphSettings = (settings: GraphSettings) => {
 };
 
 export const setDeveloperSettings = (data: DeveloperSettings) => {
+  localStorage.setItem("developerSettings", JSON.stringify(data));
   return {
     type: SET_DEVELOPER_SETTINGS,
     payload: data,
