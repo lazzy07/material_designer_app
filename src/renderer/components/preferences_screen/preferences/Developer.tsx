@@ -14,12 +14,17 @@ export default class Developer extends Component {
     Settings.saveSettings();
   };
 
+  componentDidMount() {
+    this.setState(DeveloperSettings);
+  }
+
   render() {
-    console.log(DeveloperSettings);
     return (
       <div>
         <div className="container-fluid">
-          <div>Set developer mode, to activate developer options</div>
+          <div style={{ paddingBottom: "10px" }}>
+            Set developer mode, to activate developer options
+          </div>
           <Checkbox
             label="Developer Mode"
             checked={this.state.developerMode}
