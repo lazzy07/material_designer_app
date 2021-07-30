@@ -4,6 +4,12 @@ import { GoldenLayoutComponent } from "../components/editor_page/golden_layout/G
 import { defaultColors } from "../constants/Colors";
 import BottomStatus from "../components/editor_page/BottomStatus";
 import { KERNEL_NODE_LAYOUT } from "../components/editor_page/golden_layout/KernelNodeEditorLayout";
+import KernelExplorer from "../kernelnode_editor_screens/KernelExplorerScreen";
+import PreviewGraphScreen from "../kernelnode_editor_screens/PreviewGraphScreen";
+import PreviewScreen from "../kernelnode_editor_screens/PreviewScreen";
+import FunctionsScreen from "../kernelnode_editor_screens/FunctionsScreen";
+import KernelScreen from "../kernelnode_editor_screens/KernelScreen";
+import DatagraphScreen from "../kernelnode_editor_screens/DatagraphScreen";
 
 interface Props {}
 
@@ -17,6 +23,8 @@ export default class KernelNodeEditor extends Component<any, State> {
   settings: any;
   config: any;
   currentLayout: any;
+  resizeTimer: any;
+
   layout: any = KERNEL_NODE_LAYOUT;
 
   constructor(props: Props) {
@@ -37,6 +45,13 @@ export default class KernelNodeEditor extends Component<any, State> {
       this.currentLayout.updateSize(window.innerWidth, window.innerHeight - 63);
   };
 
+  componentDidMount() {
+    window.addEventListener("resize", (e) => {
+      clearTimeout(this.resizeTimer);
+      this.resizeTimer = setTimeout(this.doneResizing, 100);
+    });
+  }
+
   render() {
     return (
       <div
@@ -47,6 +62,7 @@ export default class KernelNodeEditor extends Component<any, State> {
       >
         <div>
           <GoldenLayoutComponent
+            noPopout
             htmlAttrs={{
               style: {
                 height: this.state.dimensions.height - 53,
@@ -60,6 +76,8 @@ export default class KernelNodeEditor extends Component<any, State> {
               settings: {
                 showPopoutIcon: false,
                 constrainDragToContainer: false,
+                showMaximiseIcon: false,
+                showCloseIcon: false,
                 ...this.settings,
               },
               ...this.config,
@@ -67,15 +85,12 @@ export default class KernelNodeEditor extends Component<any, State> {
             }}
             registerComponents={(myLayout) => {
               this.currentLayout = myLayout;
-              myLayout.registerComponent("nodes", NodesScreen);
-              myLayout.registerComponent("hdris", HdrisScreen);
-              myLayout.registerComponent("textures", TexturesScreen);
-              myLayout.registerComponent("preview3d", Preview3DScreen);
-              myLayout.registerComponent("graphEditor", GraphEditorScreen);
-              myLayout.registerComponent("nodePreview", NodePreviewScreen);
-              myLayout.registerComponent("outliner", OutlinerScreen);
-              myLayout.registerComponent("nodeProps", NodePropsScreen);
-              myLayout.registerComponent("graphProps", GraphPropsScreen);
+              myLayout.registerComponent("kernelexplorer", KernelExplorer);
+              myLayout.registerComponent("previewscreen", PreviewScreen);
+              myLayout.registerComponent("previewgraph", PreviewGraphScreen);
+              myLayout.registerComponent("functions", FunctionsScreen);
+              myLayout.registerComponent("kernel", KernelScreen);
+              myLayout.registerComponent("datagraph", DatagraphScreen);
             }}
           />
         </div>

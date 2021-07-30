@@ -35,14 +35,14 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
   }
 
   componentRender(reactComponentHandler) {
-    this.setState(state => {
+    this.setState((state) => {
       let newRenderPanels = new Set(state.renderPanels);
       newRenderPanels.add(reactComponentHandler);
       return { renderPanels: newRenderPanels };
     });
   }
   componentDestroy(reactComponentHandler) {
-    this.setState(state => {
+    this.setState((state) => {
       let newRenderPanels = new Set(state.renderPanels);
       newRenderPanels.delete(reactComponentHandler);
       return { renderPanels: newRenderPanels };
@@ -124,20 +124,20 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
               type: "row",
               content: [
                 {
-                  ...getElement(stack._activeContentItem.config.title)!
-                }
-              ]
-            }
+                  ...getElement(stack._activeContentItem.config.title)!,
+                },
+              ],
+            },
           ],
           settings: {
             showPopoutIcon: false,
-            constrainDragToContainer: false
-          }
+            constrainDragToContainer: false,
+          },
         };
         ElementsToLocalStorage.addData(id, layout);
         ipcRenderer.send(IpcMessages.OPEN_SUB_EDITOR_PAGE, {
           id,
-          layout
+          layout,
         });
       }
       stack._activeContentItem.remove();
@@ -150,14 +150,15 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
 
     const lastPart = window.location.href.split("?")[1];
     const screenId = lastPart.split("&")[1];
+    if (!this.props.noPopout) {
+      if (!screenId || screenId === "main")
+        stack.header.controlsContainer.prepend(popoutButton);
+      else stack.header.controlsContainer.prepend(popinButton);
 
-    if (!screenId || screenId === "main")
-      stack.header.controlsContainer.prepend(popoutButton);
-    else stack.header.controlsContainer.prepend(popinButton);
+      this.popinButtonArithmetic(popinButton, screenId, stack);
 
-    this.popinButtonArithmetic(popinButton, screenId, stack);
-
-    this.popoutButtonArithmetic(popoutButton, screenId, stack);
+      this.popoutButtonArithmetic(popoutButton, screenId, stack);
+    }
   };
 
   componentDidMount() {
@@ -186,7 +187,7 @@ export class GoldenLayoutComponent extends React.Component<any, any> {
     }
 
     if (!IS_WEB && this.goldenLayoutInstance) {
-      this.goldenLayoutInstance.on("stackCreated", stack => {
+      this.goldenLayoutInstance.on("stackCreated", (stack) => {
         this.onStackCreated(stack);
       });
     }
@@ -215,7 +216,7 @@ class ReactComponentHandlerPatched extends ReactComponentHandler {
     //the following method is absolute copy of the original, provided to prevent depenency on window.React
     var defaultProps = {
       glEventHub: this._container.layoutManager.eventHub,
-      glContainer: this._container
+      glContainer: this._container,
     };
     var props = $.extend(defaultProps, this._container._config.props);
     return React.createElement(this._reactClass, props);
