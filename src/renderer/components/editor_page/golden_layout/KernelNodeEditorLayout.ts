@@ -1,3 +1,5 @@
+import { KernelNodeExplorer } from "../../../../kernel_node_editor_elements";
+
 export const KERNEL_NODE_LAYOUT = [
   {
     type: "row",
@@ -5,7 +7,7 @@ export const KERNEL_NODE_LAYOUT = [
       {
         width: 20,
         type: "column",
-        content: [],
+        content: [KernelNodeExplorer],
       },
     ],
   },
