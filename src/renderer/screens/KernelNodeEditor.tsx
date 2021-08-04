@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Dimensions } from "../../interfaces/Dimensions";
-import { GoldenLayoutComponent } from "../components/editor_page/golden_layout/GoldenLayoutComponent";
+import { GoldenLayoutComponent } from "../components/editor_page/golden_layout/GoldenLayoutComponent2";
 import { defaultColors } from "../constants/Colors";
 import BottomStatus from "../components/editor_page/BottomStatus";
 import { KERNEL_NODE_LAYOUT } from "../components/editor_page/golden_layout/KernelNodeEditorLayout";
