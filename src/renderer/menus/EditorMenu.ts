@@ -10,9 +10,7 @@ import {
 import { getActiveItems } from "../../main_services/ActiveElementTypes";
 import { allElements } from "./../../EditorElements/index";
 import { ElementsToLocalStorage } from "../../EditorElements/ElementsToLocalStorage";
-import { store } from "../../redux/store";
 import { DeveloperSettings } from "../../interfaces/DeveloperSettings";
-import { openKernelNodeEditor } from "./editor_menu_actions/DeveloperMenuActions";
 const { Menu } = remote;
 
 const isChecked = (title: string): boolean => {
@@ -120,12 +118,7 @@ export class EditorMenu {
       if (developerSettings.developerMode) {
         menu.push({
           label: "Developer",
-          submenu: [
-            {
-              label: "Kernel Node Editor",
-              click: openKernelNodeEditor,
-            },
-          ],
+          submenu: [],
         });
       }
     }
