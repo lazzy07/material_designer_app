@@ -67,10 +67,6 @@ export const listenToMessages = (screens: Screens, url: string) => {
     screens.preferencesScreen.createScreen(screens.editorScreen);
   });
 
-  ipcMain.on(IpcMessages.OPEN_KERNEL_NODE_EDITOR, () => {
-    screens.kernelNodeEditor.createScreen();
-  });
-
   ipcMain.on(IpcMessages.OPEN_COLORPICKER, (emitter, data) => {
     let screen: any;
     colorRef = emitter;

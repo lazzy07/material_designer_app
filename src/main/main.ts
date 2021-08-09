@@ -18,7 +18,6 @@ import { ImportScreen } from "./windows/ImportScreen";
 import Path from "path";
 import { PreferencesScreen } from "./windows/PreferencesScreen";
 import { ColorPickerScreen } from "./windows/ColorPicker";
-import { KernelNodeEditor } from "./windows/KernelNodeEditor";
 
 let store: any;
 
@@ -32,7 +31,6 @@ export interface Screens {
   importScreen: ImportScreen;
   preferencesScreen: PreferencesScreen;
   colorPickerScreen: ColorPickerScreen;
-  kernelNodeEditor: KernelNodeEditor;
 }
 
 export const screens: Screens = {
@@ -45,7 +43,6 @@ export const screens: Screens = {
   importScreen: new ImportScreen(MAIN_WINDOW_WEBPACK_ENTRY),
   preferencesScreen: new PreferencesScreen(MAIN_WINDOW_WEBPACK_ENTRY),
   colorPickerScreen: new ColorPickerScreen(MAIN_WINDOW_WEBPACK_ENTRY),
-  kernelNodeEditor: new KernelNodeEditor(MAIN_WINDOW_WEBPACK_ENTRY),
 };
 
 if (require("electron-squirrel-startup")) {

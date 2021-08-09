@@ -27,7 +27,6 @@ import PreferencesScreenHot from "./PreferencesScreenHot";
 import ColorPickerHot from "./ColorPickerHot";
 import { ThemeManager } from "./constants/Colors";
 import { Preferences } from "./services/Preferences";
-import KernelNodeEditorHot from "./KernelNodeEditorHot";
 
 let titlebar: Titleb;
 const lastPart = window.location.href.split("?")[1];
@@ -148,19 +147,6 @@ switch (windowType) {
     });
     titlebar.getTitlebar().updateTitle("Color Picker");
     element = <ColorPickerHot color={color} />;
-    break;
-
-  case "kernelnodeeditor":
-    titlebar = new Titleb({
-      icon: getStaticPath("/dependencies/img/icon_32x32.png"),
-      menu: null,
-      closeable: true,
-      maximizable: true,
-      titleHorizontalAlignment: "center",
-      minimizable: true,
-    });
-    titlebar.getTitlebar().updateTitle("Kernel Node Editor");
-    element = <KernelNodeEditorHot />;
     break;
 }
 
