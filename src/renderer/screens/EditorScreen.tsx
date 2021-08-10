@@ -18,6 +18,10 @@ import OutlinerScreen from "../components/editor_page/editor_components/Outliner
 import NodePropsScreen from "../components/editor_page/editor_components/NodePropsScreen";
 import GraphPropsScreen from "../components/editor_page/editor_components/GraphPropsScreen";
 import { Dimensions } from "../../interfaces/Dimensions";
+import KernelEditorScreen from "../components/editor_page/editor_components/KernelEditorScreen";
+import InputOutputScreen from "../components/editor_page/editor_components/InputOutputScreen";
+import CompilerOutputScreen from "../components/editor_page/editor_components/CompilerOutputScreen";
+import FunctionEditorScreen from "../components/editor_page/editor_components/FunctionEditorScreen";
 
 interface Props {}
 
@@ -167,6 +171,16 @@ export default class EditorScreen extends Component<Props, State> {
               myLayout.registerComponent("outliner", OutlinerScreen);
               myLayout.registerComponent("nodeProps", NodePropsScreen);
               myLayout.registerComponent("graphProps", GraphPropsScreen);
+              myLayout.registerComponent("kernelEditor", KernelEditorScreen);
+              myLayout.registerComponent(
+                "functionsEditor",
+                FunctionEditorScreen
+              );
+              myLayout.registerComponent("inputOutput", InputOutputScreen);
+              myLayout.registerComponent(
+                "compilerOutput",
+                CompilerOutputScreen
+              );
             }}
           />
         </div>

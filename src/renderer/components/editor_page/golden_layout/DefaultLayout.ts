@@ -7,7 +7,11 @@ import {
   GraphEditor,
   Outliner,
   NodeProps,
-  GraphProps
+  GraphProps,
+  CompilerOutput,
+  FunctionsEditor,
+  InputOutputEditor,
+  KernelEditor,
 } from "../../../../EditorElements";
 
 export const DEFAULT_LAYOUT = [
@@ -20,9 +24,9 @@ export const DEFAULT_LAYOUT = [
         content: [
           {
             type: "stack",
-            content: [NodeLibrary, HdriLibrary, TextureLibrary]
-          }
-        ]
+            content: [NodeLibrary, HdriLibrary, TextureLibrary],
+          },
+        ],
       },
       {
         //Viewers
@@ -32,14 +36,26 @@ export const DEFAULT_LAYOUT = [
           {
             height: 45,
             type: "row",
-            content: [Preview3D, NodePreview]
+            content: [Preview3D, NodePreview],
           },
           {
             height: 55,
             type: "row",
-            content: [GraphEditor]
-          }
-        ]
+
+            content: [
+              {
+                type: "stack",
+                content: [
+                  GraphEditor,
+                  FunctionsEditor,
+                  KernelEditor,
+                  InputOutputEditor,
+                  CompilerOutput,
+                ],
+              },
+            ],
+          },
+        ],
       },
       {
         // outliner and options
@@ -49,17 +65,17 @@ export const DEFAULT_LAYOUT = [
           {
             type: "stack",
             height: 35,
-            content: [Outliner]
+            content: [Outliner],
           },
           {
             height: 65,
             type: "stack",
-            content: [NodeProps, GraphProps]
-          }
-        ]
-      }
-    ]
-  }
+            content: [NodeProps, GraphProps],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 // {

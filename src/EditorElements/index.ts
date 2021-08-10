@@ -93,6 +93,10 @@ export const allElements = [
   Outliner,
   NodeProps,
   GraphProps,
+  KernelEditor,
+  FunctionsEditor,
+  CompilerOutput,
+  InputOutputEditor,
 ];
 
 export const getElement = (title: string) => {
