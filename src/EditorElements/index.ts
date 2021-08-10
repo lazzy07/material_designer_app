@@ -59,6 +59,30 @@ export const GraphProps: EditorElement = {
   component: "graphProps",
 };
 
+export const KernelEditor: EditorElement = {
+  title: "Kernel Editor",
+  type: "react-component",
+  component: "kernelEditor",
+};
+
+export const FunctionsEditor: EditorElement = {
+  title: "Functions Editor",
+  type: "react-component",
+  component: "functionsEditor",
+};
+
+export const InputOutputEditor: EditorElement = {
+  title: "Input/Output",
+  type: "react-component",
+  component: "inputOutput",
+};
+
+export const CompilerOutput: EditorElement = {
+  title: "Compiler Output",
+  type: "react-component",
+  component: "compilerOutput",
+};
+
 export const allElements = [
   NodeLibrary,
   HdriLibrary,
