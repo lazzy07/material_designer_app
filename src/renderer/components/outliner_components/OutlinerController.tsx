@@ -1,15 +1,25 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faFolderPlus, faPen, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { createGraph, createPackage, injectGraph, injectPackage } from '../../services/CreateGraphs';
-import { connect } from 'react-redux';
-import { Store } from '../../../redux/reducers';
-import { changeGraphData } from '../../../redux/actions/GraphActions';
-import { GraphPackage } from '../../../interfaces/GraphPackage';
-import { Project } from '../../../interfaces/Project';
-import { getPackage } from '../../services/GetPackageData';
-import InputBox from '../form/InputBox';
-import { OutlinerTypes } from '../../../interfaces/OutlinerTree';
+import {
+  faCheck,
+  faFolderPlus,
+  faPen,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  createGraph,
+  createPackage,
+  injectGraph,
+  injectPackage,
+} from "../../services/CreateGraphs";
+import { connect } from "react-redux";
+import { Store } from "../../../redux/reducers";
+import { changeGraphData } from "../../../redux/actions/GraphActions";
+import { GraphPackage } from "../../../interfaces/GraphPackage";
+import { Project } from "../../../interfaces/Project";
+import { getPackage } from "../../services/GetPackageData";
+import InputBox from "../form/InputBox";
+import { OutlinerTypes } from "../../../interfaces/OutlinerTree";
 
 interface Props {
   selectedItem: string;
@@ -26,18 +36,19 @@ interface State {
 
 class OutlinerController extends Component<Props, State> {
   constructor(props: Props) {
-    super(props)
+    super(props);
 
     this.state = {
       disabled: true,
-      selectedName: ""
+      selectedName: "",
     };
-  };
-
+  }
 
   addPackageToProject = () => {
-    this.props.changeGraphData(injectPackage(this.props.project, createPackage("Untitled")));
-  }
+    this.props.changeGraphData(
+      injectPackage(this.props.project, createPackage("Untitled"))
+    );
+  };
 
   addGraphToPackage = () => {
     const pkg = getPackage(this.props.project, this.props.selectedPackage);
@@ -45,22 +56,22 @@ class OutlinerController extends Component<Props, State> {
       const packages = injectGraph(this.props.project, pkg, createGraph());
       this.props.changeGraphData(packages);
     }
-  }
+  };
 
   getSelectedItemName = () => {
     const { project } = this.props;
     const selected = this.props.selectedItem;
     if (selected === project.id) {
       this.setState({
-        selectedName: project.fileName.split(".")[0]
-      })
+        selectedName: project.fileName.split(".")[0],
+      });
     }
 
     for (const pkg of project.packages) {
       if (pkg.id === selected) {
         this.setState({
-          selectedName: pkg.name
-        })
+          selectedName: pkg.name,
+        });
 
         return;
       }
@@ -68,8 +79,8 @@ class OutlinerController extends Component<Props, State> {
       for (const graph of pkg.graphs) {
         if (graph.id === selected) {
           this.setState({
-            selectedName: graph.name
-          })
+            selectedName: graph.name,
+          });
 
           return;
         }
@@ -77,9 +88,9 @@ class OutlinerController extends Component<Props, State> {
     }
 
     this.setState({
-      selectedName: ""
-    })
-  }
+      selectedName: "",
+    });
+  };
 
   changeName = () => {
     let { packages } = this.props.project;
@@ -99,31 +110,34 @@ class OutlinerController extends Component<Props, State> {
     }
 
     this.props.changeGraphData(packages);
-  }
+  };
 
   onClickEditButton = () => {
     if (!this.state.disabled) {
       //Change names
-      this.changeName()
+      this.changeName();
     }
 
     this.setState({
-      disabled: !this.state.disabled
-    })
-  }
+      disabled: !this.state.disabled,
+    });
+  };
 
   onChangeName = (val: string) => {
     this.setState({
-      selectedName: val
-    })
-  }
+      selectedName: val,
+    });
+  };
 
   componentDidUpdate = (prevProps: Props) => {
     if (prevProps.selectedItem !== this.props.selectedItem) {
-      if (this.props.selectedType === "graph" || this.props.selectedType === "package")
+      if (
+        this.props.selectedType === "materialgraph" ||
+        this.props.selectedType === "package"
+      )
         this.setState({
-          disabled: true
-        })
+          disabled: true,
+        });
       this.getSelectedItemName();
     }
   };
@@ -140,24 +154,47 @@ class OutlinerController extends Component<Props, State> {
             display: "flex",
           }}
         >
-          <div onClick={this.addPackageToProject} className="clickable" style={{ padding: 5, marginRight: 5 }}>
+          <div
+            onClick={this.addPackageToProject}
+            className="clickable"
+            style={{ padding: 5, marginRight: 5 }}
+          >
             <FontAwesomeIcon icon={faFolderPlus} />
           </div>
-          <div onClick={this.addGraphToPackage} className={this.props.selectedPackage ? "clickable" : ""} style={{ padding: 5, marginRight: 5, opacity: this.props.selectedPackage ? undefined : 0.3 }}>
+          <div
+            onClick={this.addGraphToPackage}
+            className={this.props.selectedPackage ? "clickable" : ""}
+            style={{
+              padding: 5,
+              marginRight: 5,
+              opacity: this.props.selectedPackage ? undefined : 0.3,
+            }}
+          >
             <FontAwesomeIcon icon={faPlus} />
           </div>
-
         </div>
-        <div style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
-          <div className="clickable" onClick={this.onClickEditButton} style={{ padding: 5, marginRight: 18, fontSize: 12 }}>
+        <div
+          style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
+        >
+          <div
+            className="clickable"
+            onClick={this.onClickEditButton}
+            style={{ padding: 5, marginRight: 18, fontSize: 12 }}
+          >
             <FontAwesomeIcon icon={this.state.disabled ? faPen : faCheck} />
           </div>
           <div style={{}}>
-            <InputBox id={"input_graph"} value={this.state.selectedName} onChange={(_, val) => this.onChangeName(val)} disabled={this.state.disabled} noPadding />
+            <InputBox
+              id={"input_graph"}
+              value={this.state.selectedName}
+              onChange={(_, val) => this.onChangeName(val)}
+              disabled={this.state.disabled}
+              noPadding
+            />
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -165,11 +202,11 @@ const mapStateToProps = (state: Store) => {
   return {
     project: state.project,
     selectedPackage: state.system.selectedItems.package,
-  }
-}
+  };
+};
 
 const mapDispatchToProps = {
-  changeGraphData
-}
+  changeGraphData,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(OutlinerController);

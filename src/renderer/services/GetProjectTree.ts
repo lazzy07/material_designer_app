@@ -21,16 +21,16 @@ export const getTreeData = (
       type: "package",
       children: [],
       selected: false,
-      extended: true
+      extended: true,
     };
     for (let i of pkg.graphs) {
       let graphElem: OutlinerElement = {
         id: i.id,
         name: i.name,
-        type: "graph",
+        type: "materialgraph",
         children: [],
         selected: false,
-        extended: true
+        extended: true,
       };
       // graphElem.children.push({
       //   id: i.shaderGraph.id,
@@ -43,7 +43,7 @@ export const getTreeData = (
         name: "Data Graph",
         type: "datagraph",
         children: [],
-        selected: false
+        selected: false,
       });
       packageElem.children.push(graphElem);
     }

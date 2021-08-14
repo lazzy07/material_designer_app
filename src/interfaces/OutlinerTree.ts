@@ -1,9 +1,10 @@
 export type OutlinerTypes =
   | "project"
   | "package"
-  | "graph"
+  | "materialgraph"
   | "datagraph"
-  | "shadergraph";
+  | "shadergraph"
+  | "kernelgraph";
 
 export interface OutlinerElement {
   id: string;

@@ -1,25 +1,27 @@
-import React, { Component } from 'react'
-import OutlinerController from '../components/outliner_components/OutlinerController'
-import { defaultColors } from '../constants/Colors'
-import { Store } from '../../redux/reducers';
-import { connect } from 'react-redux';
-import "../scss/outliner.scss"
-import { Project } from '../../interfaces/Project';
-import { OutlinerElement, OutlinerTypes } from '../../interfaces/OutlinerTree';
-import { setSelected } from '../../redux/actions/SystemActions';
-import OutlinerItem from '../components/outliner_components/OutlinerItem';
-import { getTreeData } from '../services/GetProjectTree';
-import _ from "lodash"
+import React, { Component } from "react";
+import OutlinerController from "../components/outliner_components/OutlinerController";
+import { defaultColors } from "../constants/Colors";
+import { Store } from "../../redux/reducers";
+import { connect } from "react-redux";
+import "../scss/outliner.scss";
+import { Project } from "../../interfaces/Project";
+import { OutlinerElement, OutlinerTypes } from "../../interfaces/OutlinerTree";
+import { setSelected } from "../../redux/actions/SystemActions";
+import OutlinerItem from "../components/outliner_components/OutlinerItem";
+import { getTreeData } from "../services/GetProjectTree";
+import _ from "lodash";
 
 interface Props {
-  dimensions: { width: number, height: number };
+  dimensions: { width: number; height: number };
   project: Project;
   selectedPackage: string;
   selectedGraph: string;
   selectedGraphType: OutlinerTypes;
-  setSelected: (type: "graph" | "package",
+  setSelected: (
+    type: "graph" | "package",
     graphType: OutlinerTypes,
-    id: string) => void;
+    id: string
+  ) => void;
 }
 
 interface State {
@@ -30,18 +32,21 @@ interface State {
 
 class OutlinerComponent extends Component<Props, State> {
   constructor(props: Props) {
-    super(props)
+    super(props);
 
     this.state = {
       treeData: { id: "", name: "Untitled", children: [], type: "project" },
       selectedType: "project",
-      selectedItem: ""
+      selectedItem: "",
     };
-  };
-
+  }
 
   loadTree = () => {
-    let treeData = getTreeData(this.props.project.id, this.props.project.fileName, this.props.project.packages);
+    let treeData = getTreeData(
+      this.props.project.id,
+      this.props.project.fileName,
+      this.props.project.packages
+    );
 
     if (this.state.treeData.id === treeData.id) {
       for (let i of treeData.children) {
@@ -66,9 +71,9 @@ class OutlinerComponent extends Component<Props, State> {
     }
 
     this.setState({
-      treeData
-    })
-  }
+      treeData,
+    });
+  };
 
   onClickItem = (id: string) => {
     let { treeData } = this.state;
@@ -91,7 +96,6 @@ class OutlinerComponent extends Component<Props, State> {
           this.setState({ selectedType: "package" });
         }
 
-
         for (let j of i.children) {
           j.selected = false;
           if (id === j.id) {
@@ -100,7 +104,7 @@ class OutlinerComponent extends Component<Props, State> {
             this.props.setSelected("package", "shadergraph", i.id);
             this.props.setSelected("graph", "shadergraph", id);
 
-            this.setState({ selectedType: "graph" });
+            this.setState({ selectedType: "materialgraph" });
           }
 
           for (let k of j.children) {
@@ -119,10 +123,10 @@ class OutlinerComponent extends Component<Props, State> {
 
       this.setState({
         treeData,
-        selectedItem: id
-      })
+        selectedItem: id,
+      });
     }
-  }
+  };
 
   onExtendItem = (id: string) => {
     const { treeData } = this.state;
@@ -140,7 +144,6 @@ class OutlinerComponent extends Component<Props, State> {
           i.extended = !i.extended;
         }
 
-
         for (let j of i.children) {
           if (id === j.id) {
             //Clicked on a graph
@@ -157,35 +160,57 @@ class OutlinerComponent extends Component<Props, State> {
       }
 
       this.setState({
-        treeData
-      })
+        treeData,
+      });
     }
-  }
+  };
 
   renderTree = () => {
     let renderQueue: JSX.Element[] = [];
     const { treeData } = this.state;
     if (treeData) {
       renderQueue.push(
-        <OutlinerItem onExtend={this.onExtendItem} onClick={this.onClickItem} key={treeData.id} outlinerElement={treeData} />
-      )
+        <OutlinerItem
+          onExtend={this.onExtendItem}
+          onClick={this.onClickItem}
+          key={treeData.id}
+          outlinerElement={treeData}
+        />
+      );
       // Packages
       for (let i of treeData.children) {
         renderQueue.push(
-          <OutlinerItem onExtend={this.onExtendItem} onClick={this.onClickItem} key={i.id} outlinerElement={i} />
-        )
+          <OutlinerItem
+            onExtend={this.onExtendItem}
+            onClick={this.onClickItem}
+            key={i.id}
+            outlinerElement={i}
+          />
+        );
 
         if (i.extended) {
           //Graphs
           for (let j of i.children) {
-            renderQueue.push(
-              <OutlinerItem onExtend={this.onExtendItem} onClick={this.onClickItem} key={j.id} outlinerElement={j} />
-            )
-            if (j.extended) {
-              for (const k of j.children) {
-                renderQueue.push(
-                  <OutlinerItem onExtend={this.onExtendItem} onClick={this.onClickItem} key={k.id} outlinerElement={k} />
-                )
+            if (j.type === "materialgraph") {
+              renderQueue.push(
+                <OutlinerItem
+                  onExtend={this.onExtendItem}
+                  onClick={this.onClickItem}
+                  key={j.id}
+                  outlinerElement={j}
+                />
+              );
+              if (j.extended) {
+                for (const k of j.children) {
+                  renderQueue.push(
+                    <OutlinerItem
+                      onExtend={this.onExtendItem}
+                      onClick={this.onClickItem}
+                      key={k.id}
+                      outlinerElement={k}
+                    />
+                  );
+                }
               }
             }
           }
@@ -193,7 +218,7 @@ class OutlinerComponent extends Component<Props, State> {
       }
     }
     return renderQueue;
-  }
+  };
 
   componentDidUpdate = (prevProps: Props) => {
     let shouldUpdate = false;
@@ -201,7 +226,9 @@ class OutlinerComponent extends Component<Props, State> {
       shouldUpdate = true;
     }
 
-    if (prevProps.project.packages.length !== this.props.project.packages.length) {
+    if (
+      prevProps.project.packages.length !== this.props.project.packages.length
+    ) {
       shouldUpdate = true;
     }
 
@@ -225,18 +252,15 @@ class OutlinerComponent extends Component<Props, State> {
           for (const graphs of i.graphs) {
             for (const prev of j.children) {
               if (graphs.id === prev.id)
-                if (graphs.name !== prev.name)
-                  shouldUpdate = true;
+                if (graphs.name !== prev.name) shouldUpdate = true;
             }
           }
         }
       }
     }
 
-    if (shouldUpdate)
-      this.loadTree();
+    if (shouldUpdate) this.loadTree();
   };
-
 
   componentDidMount = () => {
     this.loadTree();
@@ -245,38 +269,38 @@ class OutlinerComponent extends Component<Props, State> {
   render() {
     return (
       <div>
-        <OutlinerController selectedItem={this.state.selectedItem} selectedType={this.state.selectedType} />
-        <div style={{
-          marginBottom: 20,
-          margin: 10,
-          width: this.props.dimensions.width - 20,
-          height: this.props.dimensions.height - 55,
-          backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR,
-          overflow: "auto"
-        }}>
-          <div style={{ padding: 5 }}>
-            {this.renderTree()}
-          </div>
+        <OutlinerController
+          selectedItem={this.state.selectedItem}
+          selectedType={this.state.selectedType}
+        />
+        <div
+          style={{
+            marginBottom: 20,
+            margin: 10,
+            width: this.props.dimensions.width - 20,
+            height: this.props.dimensions.height - 55,
+            backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR,
+            overflow: "auto",
+          }}
+        >
+          <div style={{ padding: 5 }}>{this.renderTree()}</div>
         </div>
       </div>
-    )
+    );
   }
 }
-
 
 const mapStateToProps = (state: Store) => {
   return {
     project: state.project,
     selectedPackage: state.system.selectedItems.package,
     selectedGraph: state.system.selectedItems.graph,
-    selectedGraphType: state.system.selectedItems.graphType
-  }
-}
+    selectedGraphType: state.system.selectedItems.graphType,
+  };
+};
 
 const mapDispatchToProps = {
-  setSelected
-}
+  setSelected,
+};
 
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(OutlinerComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(OutlinerComponent);

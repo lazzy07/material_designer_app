@@ -1,7 +1,14 @@
-import { faArchive, faBoxOpen, faCaretDown, faCaretRight, faProjectDiagram, faSquareRootAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { Component } from 'react'
-import { OutlinerElement } from '../../../interfaces/OutlinerTree'
+import {
+  faArchive,
+  faBoxOpen,
+  faCaretDown,
+  faCaretRight,
+  faProjectDiagram,
+  faSquareRootAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { Component } from "react";
+import { OutlinerElement } from "../../../interfaces/OutlinerTree";
 
 interface Props {
   outlinerElement: OutlinerElement;
@@ -20,12 +27,12 @@ export default class OutlinerItem extends Component<Props, State> {
         return 0;
       case "package":
         return 20;
-      case "graph":
+      case "materialgraph":
         return 40;
       default:
         return 60;
     }
-  }
+  };
 
   getIcon = () => {
     switch (this.props.outlinerElement.type) {
@@ -33,46 +40,63 @@ export default class OutlinerItem extends Component<Props, State> {
         return faBoxOpen;
       case "package":
         return faArchive;
-      case "graph":
+      case "materialgraph":
         return faProjectDiagram;
       case "shadergraph":
         return faProjectDiagram;
       case "datagraph":
         return faSquareRootAlt;
+      default:
+        return faBoxOpen;
     }
-  }
+  };
 
   renderIcon = () => {
-    return <FontAwesomeIcon icon={this.getIcon()} />
-  }
+    return <FontAwesomeIcon icon={this.getIcon()} />;
+  };
 
   addStyles = () => {
     return this.props.outlinerElement.selected ? "treeItemActive" : "";
-  }
+  };
 
   onChange = (e: any) => {
-    if (this.props.outlinerElement.type === "package" || this.props.outlinerElement.type === "graph")
-      this.setState({ value: e.target.value })
-  }
+    if (
+      this.props.outlinerElement.type === "package" ||
+      this.props.outlinerElement.type === "materialgraph"
+    )
+      this.setState({ value: e.target.value });
+  };
 
   render() {
     const { type, extended, id, name } = this.props.outlinerElement;
     return (
-      <div className={"treeItem"} style={{ marginLeft: this.getMargin(), display: "flex", padding: 0 }}>
-        {(type !== "shadergraph" && type !== "datagraph") &&
-          <div onClick={() => this.props.onExtend(id)} style={{ paddingRight: 10 }}>
+      <div
+        className={"treeItem"}
+        style={{ marginLeft: this.getMargin(), display: "flex", padding: 0 }}
+      >
+        {type !== "shadergraph" && type !== "datagraph" && (
+          <div
+            onClick={() => this.props.onExtend(id)}
+            style={{ paddingRight: 10 }}
+          >
             <FontAwesomeIcon icon={extended ? faCaretDown : faCaretRight} />
-          </div>}
-        <div onClick={() => { this.props.onClick(id); }} style={{ display: "flex" }}>
-          <div style={{ paddingRight: 5 }}>
-            {this.renderIcon()}
           </div>
-          <div className={this.addStyles()} style={{ paddingLeft: 5, paddingRight: 5 }}>
+        )}
+        <div
+          onClick={() => {
+            this.props.onClick(id);
+          }}
+          style={{ display: "flex" }}
+        >
+          <div style={{ paddingRight: 5 }}>{this.renderIcon()}</div>
+          <div
+            className={this.addStyles()}
+            style={{ paddingLeft: 5, paddingRight: 5 }}
+          >
             {name}
           </div>
         </div>
-
       </div>
-    )
+    );
   }
 }
