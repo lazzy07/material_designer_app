@@ -1,6 +1,6 @@
 import { GraphPackage } from "../../interfaces/GraphPackage";
 import { v4 } from "uuid";
-import { Graphs } from "../../interfaces/Graphs";
+import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { Project } from "../../interfaces/Project";
 
 export const createPackage = (packageName = "Untitled"): GraphPackage => {
@@ -11,13 +11,18 @@ export const createPackage = (packageName = "Untitled"): GraphPackage => {
   };
 };
 
-export const createGraph = (graphsName = "Untitled"): Graphs => {
+export const createGraph = (
+  graphsName = "Untitled",
+  type: GRAPH_TYPES = "shadergraph"
+): Graphs => {
   const parentId = v4();
   return {
     id: parentId,
     name: graphsName,
+    type: type,
     shaderGraph: { parentId, data: {} },
     dataGraph: { parentId, data: {} },
+    kernelGraph: { parentId, data: {} },
   };
 };
 

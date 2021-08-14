@@ -2,9 +2,12 @@ import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheck,
+  faCode,
   faFolderPlus,
   faPen,
   faPlus,
+  faProjectDiagram,
+  faSquareRootAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   createGraph,
@@ -20,6 +23,10 @@ import { Project } from "../../../interfaces/Project";
 import { getPackage } from "../../services/GetPackageData";
 import InputBox from "../form/InputBox";
 import { OutlinerTypes } from "../../../interfaces/OutlinerTree";
+import { Menu, MenuItem } from "react-desktop-menus";
+import { ScreenMenu } from "../../services/RenderMenu";
+import Menubar from "../common/MenuBar";
+import { defaultColors } from "../../constants/Colors";
 
 interface Props {
   selectedItem: string;
@@ -53,7 +60,11 @@ class OutlinerController extends Component<Props, State> {
   addGraphToPackage = () => {
     const pkg = getPackage(this.props.project, this.props.selectedPackage);
     if (pkg) {
-      const packages = injectGraph(this.props.project, pkg, createGraph());
+      const packages = injectGraph(
+        this.props.project,
+        pkg,
+        createGraph("Undefined", "shadergraph")
+      );
       this.props.changeGraphData(packages);
     }
   };
@@ -129,6 +140,53 @@ class OutlinerController extends Component<Props, State> {
     });
   };
 
+  renderAddMenu = () => {
+    const addGraphMenu: ScreenMenu[] = [
+      {
+        label: (<FontAwesomeIcon icon={faPlus} />) as any,
+        type: "menu",
+        content: [
+          {
+            label: "Shader Graph",
+            icon: (
+              <FontAwesomeIcon
+                icon={faProjectDiagram}
+                style={{ color: defaultColors.FONT_COLOR }}
+              />
+            ),
+            type: "item",
+          },
+          {
+            label: "Data Graph",
+            icon: (
+              <FontAwesomeIcon
+                icon={faSquareRootAlt}
+                style={{ color: defaultColors.FONT_COLOR }}
+              />
+            ),
+            type: "item",
+          },
+          {
+            label: "Kernel Graph",
+            icon: (
+              <FontAwesomeIcon
+                icon={faCode}
+                style={{ color: defaultColors.FONT_COLOR }}
+              />
+            ),
+            type: "item",
+          },
+        ],
+      },
+    ];
+
+    return <Menubar menu={addGraphMenu} />;
+  };
+
+  openAddGrphMenu = () => {
+    //this.addGraphToPackage
+  };
+
   componentDidUpdate = (prevProps: Props) => {
     if (prevProps.selectedItem !== this.props.selectedItem) {
       if (
@@ -161,8 +219,8 @@ class OutlinerController extends Component<Props, State> {
           >
             <FontAwesomeIcon icon={faFolderPlus} />
           </div>
-          <div
-            onClick={this.addGraphToPackage}
+          {/* <div
+            onClick={this.openAddGrphMenu}
             className={this.props.selectedPackage ? "clickable" : ""}
             style={{
               padding: 5,
@@ -171,8 +229,9 @@ class OutlinerController extends Component<Props, State> {
             }}
           >
             <FontAwesomeIcon icon={faPlus} />
-          </div>
+          </div> */}
         </div>
+        {this.renderAddMenu()}
         <div
           style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
         >

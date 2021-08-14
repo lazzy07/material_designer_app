@@ -3,6 +3,8 @@ import { Menu } from "react-desktop-menus";
 import { MenuItem } from "react-desktop-menus";
 import { defaultColors } from "../constants/Colors";
 import { v4 } from "uuid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
 
 export interface ScreenMenu {
   type: "menu" | "item";
@@ -40,7 +42,7 @@ export const renderScreenMenu = (menu: ScreenMenu[]) => {
             backgroundColor: defaultColors.IMPORTANT_BACKGROUND_COLOR,
             border: "1px solid " + defaultColors.BORDER_COLOR,
             boxShadow: "2px 1px 1px rgba(0,0,0,0.1)",
-            zIndex: 10000
+            zIndex: 10000,
           }}
           key={id}
         >

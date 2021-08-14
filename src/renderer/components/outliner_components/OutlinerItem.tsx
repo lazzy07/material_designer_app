@@ -3,6 +3,7 @@ import {
   faBoxOpen,
   faCaretDown,
   faCaretRight,
+  faCode,
   faProjectDiagram,
   faSquareRootAlt,
 } from "@fortawesome/free-solid-svg-icons";
@@ -46,8 +47,8 @@ export default class OutlinerItem extends Component<Props, State> {
         return faProjectDiagram;
       case "datagraph":
         return faSquareRootAlt;
-      default:
-        return faBoxOpen;
+      case "kernelgraph":
+        return faCode;
     }
   };
 

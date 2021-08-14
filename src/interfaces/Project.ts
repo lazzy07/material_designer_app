@@ -1,5 +1,4 @@
 import { GraphPackage } from "./GraphPackage";
-import { Graphs } from "./Graphs";
 import { Image } from "./Image";
 
 export interface Project {

@@ -1,13 +1,17 @@
+import { Author } from "./Author";
 import { DataGraph } from "./DataGraph";
+import { KernelGraph } from "./KernelGraph";
 import { ShaderGraph } from "./ShaderGraph";
 
 export interface Graphs {
   id: string;
   name: string;
-  shaderGraph: ShaderGraph;
-  dataGraph: DataGraph;
+  type: GRAPH_TYPES;
+  kernelGraph?: KernelGraph;
+  shaderGraph?: ShaderGraph;
+  dataGraph?: DataGraph;
   createdAt?: Date;
-  author?: string;
+  author?: Author;
 }
 
-export type GRAPH_TYPES = "datagraph" | "shadergraph";
+export type GRAPH_TYPES = "datagraph" | "shadergraph" | "kernelgraph";
