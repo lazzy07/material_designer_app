@@ -1,8 +1,13 @@
 import React from "react";
+import KernelEditorComponent from "../../../editor_screens/KernelEditorComponent";
 import ScreenComponent from "../../common/ScreenComponent";
 
 export default class KernelEditorScreen extends ScreenComponent {
   render() {
-    return <div>Kernel Editor Screen</div>;
+    return (
+      <div>
+        <KernelEditorComponent height={this.state.height} />
+      </div>
+    );
   }
 }
