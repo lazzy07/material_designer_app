@@ -5,7 +5,11 @@ interface State {
   src: string;
 }
 
-export default class FunctionEditorComponent extends Component<any, State> {
+interface Props {
+  height: number;
+}
+
+export default class FunctionEditorComponent extends Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -24,10 +28,10 @@ export default class FunctionEditorComponent extends Component<any, State> {
     return (
       <div>
         <MonacoEditor
-          height="200px"
+          height={this.props.height}
           width="100%"
           language="cpp"
-          theme="va-dark"
+          theme="vs-dark"
           value={this.state.src}
           onChange={this.onChangeCode}
         />
