@@ -14,7 +14,7 @@ export default class KernelEditorComponent extends Component<Props, State> {
     super(props);
 
     this.state = {
-      src: "//Enter your kernel code here",
+      src: "//Enter your kernel code here\n",
     };
   }
 
