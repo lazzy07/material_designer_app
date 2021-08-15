@@ -9,6 +9,7 @@ import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
 export interface ScreenMenu {
   type: "menu" | "item";
   label: string;
+  disabled?: boolean;
   onClick?: () => void;
   content?: ScreenMenu[];
   icon?: any;
@@ -21,6 +22,7 @@ export const renderScreenMenu = (menu: ScreenMenu[]) => {
       return (
         <MenuItem
           key={id}
+          disabled={ele.disabled}
           label={ele.label}
           style={{
             color: defaultColors.FONT_COLOR,

@@ -30,6 +30,10 @@ export default class OutlinerItem extends Component<Props, State> {
         return 20;
       case "materialgraph":
         return 40;
+      case "kernelgraph":
+        return 40;
+      case "datagraph":
+        return 40;
       default:
         return 60;
     }
@@ -70,6 +74,7 @@ export default class OutlinerItem extends Component<Props, State> {
 
   render() {
     const { type, extended, id, name } = this.props.outlinerElement;
+    console.log(type);
     return (
       <div
         className={"treeItem"}
