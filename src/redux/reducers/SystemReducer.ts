@@ -2,7 +2,7 @@ import { ImportTypes } from "../../renderer/services/ImportImageData";
 import { ImportAssetFile } from "../../interfaces/ImportAssetFile";
 import { Action } from "../store";
 import { SET_IMPORT_FILES, SET_SELECTED } from "../actions/SystemActions";
-import { OutlinerTypes } from "../../interfaces/OutlinerTree";
+import { OutlinerTypes } from "../../interfaces/OutlinerTypes";
 
 export interface SystemReducer {
   importingAssets: {
@@ -28,7 +28,7 @@ const initialState: SystemReducer = {
     graph: "",
     graphType: "shadergraph",
     node: "",
-    previewNode: ""
+    previewNode: "",
   },
 };
 
@@ -51,7 +51,7 @@ export const systemReducer = (
             graph: action.payload.id,
             graphType: action.payload.graphType,
             node: "",
-            previewNode: ""
+            previewNode: "",
           },
         };
       } else {
@@ -61,7 +61,7 @@ export const systemReducer = (
             ...state.selectedItems,
             package: action.payload.id,
             node: "",
-            previewNode: ""
+            previewNode: "",
           },
         };
       }

@@ -1,6 +1,6 @@
 import { ImportTypes } from "../../renderer/services/ImportImageData";
 import { v4 } from "uuid";
-import { OutlinerTypes } from "../../interfaces/OutlinerTree";
+import { OutlinerTypes } from "../../interfaces/OutlinerTypes";
 
 export const SET_IMPORT_FILES = "set import files";
 export const SET_SELECTED = "set selected";
@@ -43,13 +43,13 @@ export const setSelected = (
 export const setSelectedNode = (id: string) => {
   return {
     type: SET_SELECTED_NODE,
-    payload: id
-  }
-}
+    payload: id,
+  };
+};
 
 export const setPreviewNode = (id: string) => {
   return {
     type: SET_PREVIEW_NODE,
-    paload: id
-  }
-}
+    paload: id,
+  };
+};
