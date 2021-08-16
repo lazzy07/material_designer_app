@@ -2,6 +2,8 @@
 export interface PackageElement {
   id: string;
   name: string;
-  contentType: "package" | "graph";
+  contentType: PACKAGE_CONTENT_TYPE;
   children: PackageElement[];
 }
+
+export type PACKAGE_CONTENT_TYPE = "package" | "graph";

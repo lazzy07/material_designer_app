@@ -11,14 +11,17 @@ import {
   faCode,
   faFolder,
   faFolderOpen,
+  faPen,
   faProjectDiagram,
   faSquareRootAlt,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { PackageElement } from "../../interfaces/PackageElement";
 import { Graphs } from "../../interfaces/Graphs";
 import { ScreenMenu } from "../services/RenderMenu";
 import OutlinerContextMenu from "../components/outliner/OutlinerContextMenu";
 import { defaultColors } from "../constants/Colors";
+import { getPackageElementById } from "../services/GetPackageElement";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -35,7 +38,8 @@ interface Props {
 
 interface State {
   expanded: string[];
-  rightClicked: TreeNodeInfo | null;
+  rightClicked: string | null;
+  clicked: string | null;
 }
 
 class OutlinerComponent extends Component<Props, State> {
@@ -45,57 +49,166 @@ class OutlinerComponent extends Component<Props, State> {
     this.state = {
       expanded: [],
       rightClicked: null,
+      clicked: null,
     };
   }
 
-  contextMenu: ScreenMenu[] = [
-    {
-      type: "menu",
-      label: "context",
-      content: [
-        {
-          label: "Add Package",
-          type: "item",
-          icon: (
-            <FontAwesomeIcon
-              icon={faFolder}
-              style={{ color: defaultColors.FONT_COLOR }}
-            />
-          ),
-        },
-        {
-          label: "Create Shader Graph",
-          type: "item",
-          icon: (
-            <FontAwesomeIcon
-              icon={faProjectDiagram}
-              style={{ color: defaultColors.FONT_COLOR }}
-            />
-          ),
-        },
-        {
-          label: "Create Data Graph",
-          type: "item",
-          icon: (
-            <FontAwesomeIcon
-              icon={faSquareRootAlt}
-              style={{ color: defaultColors.FONT_COLOR }}
-            />
-          ),
-        },
-        {
-          label: "Create Kernel Graph",
-          type: "item",
-          icon: (
-            <FontAwesomeIcon
-              icon={faCode}
-              style={{ color: defaultColors.FONT_COLOR }}
-            />
-          ),
-        },
-      ],
-    },
-  ];
+  getContextMenu = (): ScreenMenu[] => {
+    if (this.state.rightClicked) {
+      const elem = getPackageElementById(this.state.rightClicked);
+      if (elem) {
+        if (elem.contentType === "project") {
+          return [
+            {
+              type: "menu",
+              label: "context",
+              content: [
+                {
+                  label: "Add Package",
+                  type: "item",
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faFolder}
+                      style={{ color: defaultColors.FONT_COLOR }}
+                    />
+                  ),
+                },
+                {
+                  label: "Create Shader Graph",
+                  type: "item",
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faProjectDiagram}
+                      style={{ color: defaultColors.FONT_COLOR }}
+                    />
+                  ),
+                },
+                {
+                  label: "Create Data Graph",
+                  type: "item",
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faSquareRootAlt}
+                      style={{ color: defaultColors.FONT_COLOR }}
+                    />
+                  ),
+                },
+                {
+                  label: "Create Kernel Graph",
+                  type: "item",
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faCode}
+                      style={{ color: defaultColors.FONT_COLOR }}
+                    />
+                  ),
+                },
+              ],
+            },
+          ];
+        } else if (elem.contentType === "package") {
+          return [
+            {
+              type: "menu",
+              label: "context",
+              content: [
+                {
+                  label: "Add Package",
+                  type: "item",
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faFolder}
+                      style={{ color: defaultColors.FONT_COLOR }}
+                    />
+                  ),
+                },
+                {
+                  label: "Create Shader Graph",
+                  type: "item",
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faProjectDiagram}
+                      style={{ color: defaultColors.FONT_COLOR }}
+                    />
+                  ),
+                },
+                {
+                  label: "Create Data Graph",
+                  type: "item",
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faSquareRootAlt}
+                      style={{ color: defaultColors.FONT_COLOR }}
+                    />
+                  ),
+                },
+                {
+                  label: "Create Kernel Graph",
+                  type: "item",
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faCode}
+                      style={{ color: defaultColors.FONT_COLOR }}
+                    />
+                  ),
+                },
+                {
+                  label: "Rename",
+                  type: "item",
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faPen}
+                      style={{ color: defaultColors.FONT_COLOR }}
+                    />
+                  ),
+                },
+                {
+                  label: "Remove",
+                  type: "item",
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      style={{ color: defaultColors.FONT_COLOR }}
+                    />
+                  ),
+                },
+              ],
+            },
+          ];
+        } else {
+          return [
+            {
+              type: "menu",
+              label: "context",
+              content: [
+                {
+                  label: "Rename",
+                  type: "item",
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faPen}
+                      style={{ color: defaultColors.FONT_COLOR }}
+                    />
+                  ),
+                },
+                {
+                  label: "Remove",
+                  type: "item",
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      style={{ color: defaultColors.FONT_COLOR }}
+                    />
+                  ),
+                },
+              ],
+            },
+          ];
+        }
+      }
+    }
+    return [];
+  };
 
   outlinerRecursive = (packages: PackageElement[]) => {
     let treeData: TreeNodeInfo<{}>[] = [];
@@ -105,7 +218,7 @@ class OutlinerComponent extends Component<Props, State> {
           id: pkg.id,
           label: pkg.name,
           isExpanded: this.state.expanded.includes(pkg.id),
-          isSelected: this.props.selectedPackage === pkg.id,
+          isSelected: this.state.clicked === pkg.id,
           hasCaret: true,
           icon: <FontAwesomeIcon icon={faFolder} style={{ marginRight: 10 }} />,
           childNodes: [],
@@ -126,7 +239,7 @@ class OutlinerComponent extends Component<Props, State> {
           id: graph.id,
           label: graph.name,
           isExpanded: this.state.expanded.includes(graph.id),
-          isSelected: this.props.selectedPackage === graph.id,
+          isSelected: this.state.clicked === graph.id,
           hasCaret: true,
           childNodes: [],
         };
@@ -138,7 +251,7 @@ class OutlinerComponent extends Component<Props, State> {
             );
             graphOutlinerElem.id = graph.shaderGraph!.id;
             graphOutlinerElem.isSelected =
-              this.props.selectedGraph === graph.shaderGraph!.id;
+              this.state.clicked === graph.shaderGraph!.id;
             graphOutlinerElem.childNodes = [
               {
                 id: graph.dataGraph!.id,
@@ -151,7 +264,7 @@ class OutlinerComponent extends Component<Props, State> {
             graphOutlinerElem.icon = <FontAwesomeIcon icon={faCode} />;
             graphOutlinerElem.id = graph.kernelGraph!.id;
             graphOutlinerElem.isSelected =
-              this.props.selectedGraph === graph.kernelGraph!.id;
+              this.state.clicked === graph.kernelGraph!.id;
             graphOutlinerElem.childNodes = [
               {
                 id: graph.dataGraph!.id,
@@ -164,7 +277,7 @@ class OutlinerComponent extends Component<Props, State> {
             graphOutlinerElem.hasCaret = false;
             graphOutlinerElem.id = graph.dataGraph!.id;
             graphOutlinerElem.isSelected =
-              this.props.selectedGraph === graph.dataGraph!.id;
+              this.state.clicked === graph.dataGraph!.id;
         }
 
         treeData.push(graphOutlinerElem);
@@ -181,6 +294,7 @@ class OutlinerComponent extends Component<Props, State> {
         id: this.props.project.id,
         label: this.props.project.fileName,
         isExpanded: this.state.expanded.includes(this.props.project.id),
+        isSelected: this.state.clicked === this.props.project.id,
         hasCaret: true,
         icon: <FontAwesomeIcon icon={faArchive} style={{ marginRight: 10 }} />,
         childNodes: [],
@@ -191,7 +305,9 @@ class OutlinerComponent extends Component<Props, State> {
     return outliner;
   };
 
-  handleNodeClick = (node: TreeNodeInfo) => {};
+  handleNodeClick = (node: TreeNodeInfo) => {
+    this.setState({ clicked: node.id as string });
+  };
 
   handleNodeExapnd = (node: TreeNodeInfo) => {
     const expanded = [...this.state.expanded];
@@ -214,12 +330,15 @@ class OutlinerComponent extends Component<Props, State> {
     nodePath: number[],
     e: React.MouseEvent<HTMLElement>
   ) => {
-    this.setState({ rightClicked: node });
+    this.setState({
+      rightClicked: node.id as string,
+      clicked: node.id as string,
+    });
   };
 
   render() {
     return (
-      <OutlinerContextMenu contextMenu={this.contextMenu}>
+      <OutlinerContextMenu contextMenu={this.getContextMenu()}>
         <div>
           <Tree
             onNodeExpand={this.handleNodeExapnd}
