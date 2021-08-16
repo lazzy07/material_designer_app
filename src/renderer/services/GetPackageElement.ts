@@ -8,11 +8,13 @@ import { rStore } from "../renderer";
 
 export const getPackageElementById = (
   id: string
-): {
-  contentType: PACKAGE_CONTENT_TYPE | "project";
-  graphType: GRAPH_TYPES;
-  data?: PackageElement;
-} | null => {
+):
+  | {
+      contentType: PACKAGE_CONTENT_TYPE | "project";
+      graphType: GRAPH_TYPES;
+      data?: PackageElement;
+    }
+  | undefined => {
   const project = rStore.getState().project as ProjectReducer;
 
   if (project.id === id) {
@@ -28,21 +30,17 @@ export const getPackageElementById = (
       };
     }
   }
-
-  return null;
 };
 
 const searchPackages = (
   packages: PackageElement[],
   id: string
-): PackageElement | null => {
+): PackageElement | undefined => {
   for (const pkg of packages) {
-    if (pkg.id) {
+    if (pkg.id === id) {
       return pkg;
     } else {
       return searchPackages(pkg.children, id);
     }
   }
-
-  return null;
 };

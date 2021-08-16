@@ -9,6 +9,10 @@ interface Props {
 export default class OutlinerContextMenu extends Component<Props> {
   ref = React.createRef<ContextMenu>();
 
+  closeMenu = () => {
+    this.ref.current!.close();
+  };
+
   componentDidMount = () => {
     this.ref.current!.handleClickDoc();
   };

@@ -22,6 +22,11 @@ import { ScreenMenu } from "../services/RenderMenu";
 import OutlinerContextMenu from "../components/outliner/OutlinerContextMenu";
 import { defaultColors } from "../constants/Colors";
 import { getPackageElementById } from "../services/GetPackageElement";
+import { createRef } from "react";
+import {
+  addNewPackage,
+  createPackage,
+} from "../services/ProjectPackageManagement";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -43,6 +48,8 @@ interface State {
 }
 
 class OutlinerComponent extends Component<Props, State> {
+  ref = createRef<OutlinerContextMenu>();
+
   constructor(props: Props) {
     super(props);
 
@@ -52,6 +59,31 @@ class OutlinerComponent extends Component<Props, State> {
       clicked: null,
     };
   }
+
+  closeMenu = () => {
+    this.ref.current!.closeMenu();
+  };
+
+  addPackage = () => {
+    const rightClicked = this.state.rightClicked;
+    if (rightClicked) {
+      const elem = getPackageElementById(rightClicked);
+      if (elem) {
+        addNewPackage(
+          rightClicked,
+          createPackage(),
+          elem.contentType === "project"
+        );
+        if (!this.state.expanded.includes(rightClicked)) {
+          const expanded = this.state.expanded;
+          expanded.push(rightClicked);
+          this.setState({ expanded });
+        }
+      }
+    }
+
+    this.closeMenu();
+  };
 
   getContextMenu = (): ScreenMenu[] => {
     if (this.state.rightClicked) {
@@ -72,6 +104,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
+                  onClick: this.addPackage,
                 },
                 {
                   label: "Create Shader Graph",
@@ -121,6 +154,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
+                  onClick: this.addPackage,
                 },
                 {
                   label: "Create Shader Graph",
@@ -338,7 +372,7 @@ class OutlinerComponent extends Component<Props, State> {
 
   render() {
     return (
-      <OutlinerContextMenu contextMenu={this.getContextMenu()}>
+      <OutlinerContextMenu ref={this.ref} contextMenu={this.getContextMenu()}>
         <div>
           <Tree
             onNodeExpand={this.handleNodeExapnd}
