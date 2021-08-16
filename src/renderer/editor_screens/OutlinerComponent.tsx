@@ -8,9 +8,14 @@ import { TreeNodeInfo, Tree } from "@blueprintjs/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArchive,
+  faCode,
   faFolder,
   faFolderOpen,
+  faProjectDiagram,
+  faSquareRootAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import { PackageElement } from "../../interfaces/PackageElement";
+import { Graphs } from "../../interfaces/Graphs";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -38,6 +43,83 @@ class OutlinerComponent extends Component<Props, State> {
     };
   }
 
+  outlinerRecursive = (packages: PackageElement[]) => {
+    let treeData: TreeNodeInfo<{}>[] = [];
+    for (const pkg of packages) {
+      if (pkg.contentType === "package") {
+        let pkgOutlinerElem: TreeNodeInfo = {
+          id: pkg.id,
+          label: pkg.name,
+          isExpanded: this.state.expanded.includes(pkg.id),
+          isSelected: this.props.selectedPackage === pkg.id,
+          hasCaret: true,
+          icon: <FontAwesomeIcon icon={faFolder} style={{ marginRight: 10 }} />,
+          childNodes: [],
+        };
+
+        if (pkgOutlinerElem.isExpanded) {
+          pkgOutlinerElem.icon = (
+            <FontAwesomeIcon icon={faFolderOpen} style={{ marginRight: 10 }} />
+          );
+        }
+
+        pkgOutlinerElem.childNodes = this.outlinerRecursive(pkg.children);
+
+        treeData!.push(pkgOutlinerElem);
+      } else {
+        const graph = pkg as Graphs;
+        let graphOutlinerElem: TreeNodeInfo = {
+          id: graph.id,
+          label: graph.name,
+          isExpanded: this.state.expanded.includes(graph.id),
+          isSelected: this.props.selectedPackage === graph.id,
+          hasCaret: true,
+          childNodes: [],
+        };
+
+        switch (graph.type) {
+          case "shadergraph":
+            graphOutlinerElem.icon = (
+              <FontAwesomeIcon icon={faProjectDiagram} />
+            );
+            graphOutlinerElem.id = graph.shaderGraph!.id;
+            graphOutlinerElem.isSelected =
+              this.props.selectedGraph === graph.shaderGraph!.id;
+            graphOutlinerElem.childNodes = [
+              {
+                id: graph.dataGraph!.id,
+                label: "Data Graph",
+                icon: <FontAwesomeIcon icon={faSquareRootAlt} />,
+              },
+            ];
+
+          case "kernelgraph":
+            graphOutlinerElem.icon = <FontAwesomeIcon icon={faCode} />;
+            graphOutlinerElem.id = graph.kernelGraph!.id;
+            graphOutlinerElem.isSelected =
+              this.props.selectedGraph === graph.kernelGraph!.id;
+            graphOutlinerElem.childNodes = [
+              {
+                id: graph.dataGraph!.id,
+                label: "Data Graph",
+                icon: <FontAwesomeIcon icon={faSquareRootAlt} />,
+              },
+            ];
+          case "datagraph":
+            graphOutlinerElem.icon = <FontAwesomeIcon icon={faSquareRootAlt} />;
+            graphOutlinerElem.hasCaret = false;
+            graphOutlinerElem.id = graph.dataGraph!.id;
+            graphOutlinerElem.isSelected =
+              this.props.selectedGraph === graph.dataGraph!.id;
+        }
+
+        treeData.push(graphOutlinerElem);
+      }
+    }
+
+    return treeData;
+  };
+
   projectToOutliner = () => {
     const packages = this.props.project.packages;
     let outliner: TreeNodeInfo[] = [
@@ -52,32 +134,7 @@ class OutlinerComponent extends Component<Props, State> {
     ];
 
     let projectChilds = outliner[0].childNodes;
-
-    //loop through packages
-    for (const pkg of packages) {
-      let pkgOutlinerElem = {
-        id: pkg.id,
-        label: pkg.name,
-        isExpanded: this.state.expanded.includes(pkg.id),
-        isSelected: this.props.selectedPackage === pkg.id,
-        hasCaret: true,
-        icon: <FontAwesomeIcon icon={faFolder} style={{ marginRight: 10 }} />,
-        childNodes: [],
-      };
-
-      if (pkgOutlinerElem.isExpanded) {
-        pkgOutlinerElem.icon = (
-          <FontAwesomeIcon icon={faFolderOpen} style={{ marginRight: 10 }} />
-        );
-      }
-
-      projectChilds!.push(pkgOutlinerElem);
-
-      let pkgChilds = projectChilds![projectChilds!.length - 1];
-      //loop through graphs
-      for (const graph of pkg.children) {
-      }
-    }
+    projectChilds = this.outlinerRecursive(packages);
     return outliner;
   };
 
