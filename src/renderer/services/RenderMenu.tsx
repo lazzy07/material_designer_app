@@ -1,10 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import { Menu } from "react-desktop-menus";
 import { MenuItem } from "react-desktop-menus";
 import { defaultColors } from "../constants/Colors";
 import { v4 } from "uuid";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
 
 export interface ScreenMenu {
   type: "menu" | "item";

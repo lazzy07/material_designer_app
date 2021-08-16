@@ -16,6 +16,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { PackageElement } from "../../interfaces/PackageElement";
 import { Graphs } from "../../interfaces/Graphs";
+import { ScreenMenu } from "../services/RenderMenu";
+import OutlinerContextMenu from "../components/outliner/OutlinerContextMenu";
+import { defaultColors } from "../constants/Colors";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -32,6 +35,7 @@ interface Props {
 
 interface State {
   expanded: string[];
+  rightClicked: TreeNodeInfo | null;
 }
 
 class OutlinerComponent extends Component<Props, State> {
@@ -40,8 +44,58 @@ class OutlinerComponent extends Component<Props, State> {
 
     this.state = {
       expanded: [],
+      rightClicked: null,
     };
   }
+
+  contextMenu: ScreenMenu[] = [
+    {
+      type: "menu",
+      label: "context",
+      content: [
+        {
+          label: "Add Package",
+          type: "item",
+          icon: (
+            <FontAwesomeIcon
+              icon={faFolder}
+              style={{ color: defaultColors.FONT_COLOR }}
+            />
+          ),
+        },
+        {
+          label: "Create Shader Graph",
+          type: "item",
+          icon: (
+            <FontAwesomeIcon
+              icon={faProjectDiagram}
+              style={{ color: defaultColors.FONT_COLOR }}
+            />
+          ),
+        },
+        {
+          label: "Create Data Graph",
+          type: "item",
+          icon: (
+            <FontAwesomeIcon
+              icon={faSquareRootAlt}
+              style={{ color: defaultColors.FONT_COLOR }}
+            />
+          ),
+        },
+        {
+          label: "Create Kernel Graph",
+          type: "item",
+          icon: (
+            <FontAwesomeIcon
+              icon={faCode}
+              style={{ color: defaultColors.FONT_COLOR }}
+            />
+          ),
+        },
+      ],
+    },
+  ];
 
   outlinerRecursive = (packages: PackageElement[]) => {
     let treeData: TreeNodeInfo<{}>[] = [];
@@ -133,8 +187,7 @@ class OutlinerComponent extends Component<Props, State> {
       },
     ];
 
-    let projectChilds = outliner[0].childNodes;
-    projectChilds = this.outlinerRecursive(packages);
+    outliner[0].childNodes = this.outlinerRecursive(packages);
     return outliner;
   };
 
@@ -161,20 +214,22 @@ class OutlinerComponent extends Component<Props, State> {
     nodePath: number[],
     e: React.MouseEvent<HTMLElement>
   ) => {
-    console.log(node);
+    this.setState({ rightClicked: node });
   };
 
   render() {
     return (
-      <div>
-        <Tree
-          onNodeExpand={this.handleNodeExapnd}
-          onNodeCollapse={this.handleNodeCollapse}
-          onNodeClick={this.handleNodeClick}
-          contents={this.projectToOutliner()}
-          onNodeContextMenu={this.handleNodeRightClick}
-        />
-      </div>
+      <OutlinerContextMenu contextMenu={this.contextMenu}>
+        <div>
+          <Tree
+            onNodeExpand={this.handleNodeExapnd}
+            onNodeCollapse={this.handleNodeCollapse}
+            onNodeClick={this.handleNodeClick}
+            contents={this.projectToOutliner()}
+            onNodeContextMenu={this.handleNodeRightClick}
+          />
+        </div>
+      </OutlinerContextMenu>
     );
   }
 }
