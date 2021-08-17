@@ -41,6 +41,17 @@ const searchPackages = (
     if (pkg.id === id) {
       return pkg;
     }
+    if (pkg.contentType === "graph") {
+      const graph = pkg as Graphs;
+
+      if (
+        graph.kernelGraph!.id === id ||
+        graph.shaderGraph!.id === id ||
+        graph.dataGraph!.id === id
+      ) {
+        return graph!;
+      }
+    }
     if (pkg.children.length > 0) {
       const newpkg = searchPackages(pkg.children, id);
       if (newpkg) return newpkg;

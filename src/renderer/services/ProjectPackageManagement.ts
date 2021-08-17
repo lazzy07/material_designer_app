@@ -1,4 +1,5 @@
 import { v4 } from "uuid";
+import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { PackageElement } from "../../interfaces/PackageElement";
 import { changeGraphData } from "../../redux/actions/GraphActions";
 import { ProjectReducer } from "../../redux/reducers/ProjectReducer";
@@ -11,6 +12,40 @@ export const createPackage = (name: string = "Untitled"): PackageElement => {
     name,
     contentType: "package",
     children: [],
+  };
+};
+
+export const createGraph = (
+  type: GRAPH_TYPES,
+  name: string = "Untitled"
+): Graphs => {
+  const id = v4();
+
+  return {
+    id,
+    contentType: "graph",
+    name,
+    children: [],
+    type,
+    createdAt: new Date(),
+    dataGraph: {
+      id: v4(),
+      data: {},
+      parentId: id,
+      createdAt: new Date(),
+    },
+    kernelGraph: {
+      id: v4(),
+      data: {},
+      parentId: id,
+      createdAt: new Date(),
+    },
+    shaderGraph: {
+      id: v4(),
+      data: {},
+      parentId: id,
+      createdAt: new Date(),
+    },
   };
 };
 
@@ -60,7 +95,32 @@ export const addNewPackage = (
   }
 };
 
-export const addNewGraph = (parentId: string) => {};
+export const addNewGraph = (
+  parentId: string,
+  graphData: Graphs,
+  isRoot: boolean = false
+) => {
+  const item = getPackageElementById(parentId);
+
+  if (item) {
+    if (item.contentType !== "graph") {
+      const currentState = getCurrentProject().packages;
+
+      if (isRoot) {
+        const packages = rStore.getState().project.packages;
+        packages.push(graphData);
+        rStore.dispatch(changeGraphData(packages));
+        return;
+      }
+
+      const ref = getPackageElement(parentId, currentState);
+      if (ref) {
+        ref.children.push(graphData);
+        rStore.dispatch(changeGraphData(currentState));
+      }
+    }
+  }
+};
 
 export const deletePackage = () => {};
 

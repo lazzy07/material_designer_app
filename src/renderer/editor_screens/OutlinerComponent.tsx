@@ -17,14 +17,16 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { PackageElement } from "../../interfaces/PackageElement";
-import { Graphs } from "../../interfaces/Graphs";
+import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { ScreenMenu } from "../services/RenderMenu";
 import OutlinerContextMenu from "../components/outliner/OutlinerContextMenu";
 import { defaultColors } from "../constants/Colors";
 import { getPackageElementById } from "../services/GetPackageElement";
 import { createRef } from "react";
 import {
+  addNewGraph,
   addNewPackage,
+  createGraph,
   createPackage,
 } from "../services/ProjectPackageManagement";
 
@@ -85,9 +87,31 @@ class OutlinerComponent extends Component<Props, State> {
     this.closeMenu();
   };
 
+  addGraph = (graphType: GRAPH_TYPES) => {
+    const rightClicked = this.state.rightClicked;
+    if (rightClicked) {
+      const elem = getPackageElementById(rightClicked);
+      if (elem) {
+        addNewGraph(
+          rightClicked,
+          createGraph(graphType),
+          elem.contentType === "project"
+        );
+        if (!this.state.expanded.includes(rightClicked)) {
+          const expanded = this.state.expanded;
+          expanded.push(rightClicked);
+          this.setState({ expanded });
+        }
+      }
+    }
+
+    this.closeMenu();
+  };
+
   getContextMenu = (): ScreenMenu[] => {
     if (this.state.rightClicked) {
       const elem = getPackageElementById(this.state.rightClicked);
+      console.log(elem);
       if (elem) {
         if (elem.contentType === "project") {
           return [
@@ -115,6 +139,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
+                  onClick: () => this.addGraph("shadergraph"),
                 },
                 {
                   label: "Create Data Graph",
@@ -125,6 +150,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
+                  onClick: () => this.addGraph("datagraph"),
                 },
                 {
                   label: "Create Kernel Graph",
@@ -135,6 +161,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
+                  onClick: () => this.addGraph("kernelgraph"),
                 },
               ],
             },
@@ -165,6 +192,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
+                  onClick: () => this.addGraph("shadergraph"),
                 },
                 {
                   label: "Create Data Graph",
@@ -175,6 +203,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
+                  onClick: () => this.addGraph("datagraph"),
                 },
                 {
                   label: "Create Kernel Graph",
@@ -185,6 +214,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
+                  onClick: () => this.addGraph("kernelgraph"),
                 },
                 {
                   label: "Rename",
@@ -281,37 +311,70 @@ class OutlinerComponent extends Component<Props, State> {
         switch (graph.type) {
           case "shadergraph":
             graphOutlinerElem.icon = (
-              <FontAwesomeIcon icon={faProjectDiagram} />
+              <FontAwesomeIcon
+                icon={faProjectDiagram}
+                style={{ marginRight: 10 }}
+              />
             );
             graphOutlinerElem.id = graph.shaderGraph!.id;
             graphOutlinerElem.isSelected =
               this.state.clicked === graph.shaderGraph!.id;
+            graphOutlinerElem.isExpanded = this.state.expanded.includes(
+              graph.shaderGraph!.id
+            );
             graphOutlinerElem.childNodes = [
               {
                 id: graph.dataGraph!.id,
                 label: "Data Graph",
-                icon: <FontAwesomeIcon icon={faSquareRootAlt} />,
+                isSelected: this.state.clicked === graph.dataGraph!.id,
+                icon: (
+                  <FontAwesomeIcon
+                    icon={faSquareRootAlt}
+                    style={{ marginRight: 10 }}
+                  />
+                ),
               },
             ];
+            break;
 
           case "kernelgraph":
-            graphOutlinerElem.icon = <FontAwesomeIcon icon={faCode} />;
+            graphOutlinerElem.icon = (
+              <FontAwesomeIcon icon={faCode} style={{ marginRight: 10 }} />
+            );
             graphOutlinerElem.id = graph.kernelGraph!.id;
             graphOutlinerElem.isSelected =
               this.state.clicked === graph.kernelGraph!.id;
+            graphOutlinerElem.isExpanded = this.state.expanded.includes(
+              graph.kernelGraph!.id
+            );
+
             graphOutlinerElem.childNodes = [
               {
                 id: graph.dataGraph!.id,
                 label: "Data Graph",
-                icon: <FontAwesomeIcon icon={faSquareRootAlt} />,
+                icon: (
+                  <FontAwesomeIcon
+                    icon={faSquareRootAlt}
+                    style={{ marginRight: 10 }}
+                  />
+                ),
+                isSelected: this.state.clicked === graph.dataGraph!.id,
               },
             ];
+            break;
+
           case "datagraph":
-            graphOutlinerElem.icon = <FontAwesomeIcon icon={faSquareRootAlt} />;
+            graphOutlinerElem.icon = (
+              <FontAwesomeIcon
+                icon={faSquareRootAlt}
+                style={{ marginRight: 10 }}
+              />
+            );
             graphOutlinerElem.hasCaret = false;
             graphOutlinerElem.id = graph.dataGraph!.id;
             graphOutlinerElem.isSelected =
               this.state.clicked === graph.dataGraph!.id;
+            break;
         }
 
         treeData.push(graphOutlinerElem);
@@ -327,7 +390,7 @@ class OutlinerComponent extends Component<Props, State> {
       {
         id: this.props.project.id,
         label: this.props.project.fileName,
-        isExpanded: this.state.expanded.includes(this.props.project.id),
+        isExpanded: true,
         isSelected: this.state.clicked === this.props.project.id,
         hasCaret: true,
         icon: <FontAwesomeIcon icon={faArchive} style={{ marginRight: 10 }} />,
