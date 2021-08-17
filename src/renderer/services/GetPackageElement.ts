@@ -19,17 +19,18 @@ export const getPackageElementById = (
 
   if (project.id === id) {
     return { contentType: "project", graphType: "datagraph" };
-  } else {
-    const data = searchPackages(project.packages, id);
-
-    if (data) {
-      return {
-        contentType: data.contentType,
-        graphType: (data as Graphs).type,
-        data,
-      };
-    }
   }
+
+  const data = searchPackages(project.packages, id);
+  if (data) {
+    return {
+      contentType: data.contentType,
+      graphType: (data as Graphs).type,
+      data,
+    };
+  }
+
+  return undefined;
 };
 
 const searchPackages = (
@@ -37,10 +38,13 @@ const searchPackages = (
   id: string
 ): PackageElement | undefined => {
   for (const pkg of packages) {
+    console.log(pkg.id, id);
     if (pkg.id === id) {
       return pkg;
-    } else {
-      return searchPackages(pkg.children, id);
+    }
+    if (pkg.children.length > 0) {
+      const newpkg = searchPackages(pkg.children, id);
+      if (newpkg) return newpkg;
     }
   }
 };

@@ -24,11 +24,12 @@ export const getPackageElement = (
   packages: PackageElement[]
 ): PackageElement | undefined => {
   for (const pkg of packages) {
-    console.log(pkg, id);
     if (pkg.id === id) {
       return pkg;
-    } else {
-      return getPackageElement(id, pkg.children);
+    }
+    if (pkg.children.length > 0) {
+      const newelem = getPackageElement(id, pkg.children);
+      if (newelem) return newelem;
     }
   }
 };
