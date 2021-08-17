@@ -38,7 +38,6 @@ const searchPackages = (
   id: string
 ): PackageElement | undefined => {
   for (const pkg of packages) {
-    console.log(pkg.id, id);
     if (pkg.id === id) {
       return pkg;
     }
