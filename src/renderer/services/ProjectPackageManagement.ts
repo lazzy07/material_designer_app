@@ -125,8 +125,32 @@ export const addNewGraph = (
 export const deletePackage = (id: string) => {
   const elem = getPackageElementById(id);
   if (elem) {
-    if ((elem!.contentType = "graph")) {
-    } else {
+    const project: ProjectReducer = rStore.getState().project;
+    const packages = project.packages;
+
+    if (project.id == elem.parentId) {
+      const ref = packages;
+
+      const children: PackageElement[] = [];
+      for (const i of ref) {
+        if (i.id !== elem.data!.id) {
+          children.push(i);
+        }
+      }
+      rStore.dispatch(changeGraphData(children));
+    }
+
+    const ref = getPackageElement(elem.parentId!, packages);
+    const children: PackageElement[] = [];
+    if (ref) {
+      for (const i of ref!.children) {
+        if (i.id !== elem.data!.id) {
+          children.push(i);
+        }
+      }
+
+      ref.children = children;
+      rStore.dispatch(changeGraphData(packages));
     }
   }
 };

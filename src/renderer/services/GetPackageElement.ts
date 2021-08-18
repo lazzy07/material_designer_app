@@ -13,6 +13,7 @@ export const getPackageElementById = (
       contentType: PACKAGE_CONTENT_TYPE | "project";
       graphType: GRAPH_TYPES;
       data?: PackageElement;
+      parentId?: string;
     }
   | undefined => {
   const project = rStore.getState().project as ProjectReducer;
@@ -21,12 +22,13 @@ export const getPackageElementById = (
     return { contentType: "project", graphType: "datagraph" };
   }
 
-  const data = searchPackages(project.packages, id);
+  const data = searchPackages(project.packages, id, project.id);
   if (data) {
     return {
-      contentType: data.contentType,
-      graphType: (data as Graphs).type,
-      data,
+      contentType: data.package.contentType,
+      graphType: (data.package as Graphs).type,
+      parentId: data.parentId,
+      data: data.package,
     };
   }
 
@@ -35,11 +37,12 @@ export const getPackageElementById = (
 
 const searchPackages = (
   packages: PackageElement[],
-  id: string
-): PackageElement | undefined => {
+  id: string,
+  parentId: string
+): { package: PackageElement; parentId: string } | undefined => {
   for (const pkg of packages) {
     if (pkg.id === id) {
-      return pkg;
+      return { package: pkg, parentId };
     }
     if (pkg.contentType === "graph") {
       const graph = pkg as Graphs;
@@ -49,11 +52,11 @@ const searchPackages = (
         graph.shaderGraph!.id === id ||
         graph.dataGraph!.id === id
       ) {
-        return graph!;
+        return { package: graph, parentId };
       }
     }
     if (pkg.children.length > 0) {
-      const newpkg = searchPackages(pkg.children, id);
+      const newpkg = searchPackages(pkg.children, id, pkg.id);
       if (newpkg) return newpkg;
     }
   }

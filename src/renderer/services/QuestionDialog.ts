@@ -6,7 +6,7 @@ export const showDialogBox = (
 ): Promise<MessageBoxReturnValue> => {
   return new Promise(async (resolve, reject) => {
     try {
-      let res;
+      let res: MessageBoxReturnValue;
 
       if (pinWindow) {
         res = await remote.dialog.showMessageBox(
