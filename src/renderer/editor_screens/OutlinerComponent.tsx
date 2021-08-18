@@ -28,7 +28,9 @@ import {
   addNewPackage,
   createGraph,
   createPackage,
+  deletePackage,
 } from "../services/ProjectPackageManagement";
+import { showDialogBox } from "../services/QuestionDialog";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -108,10 +110,35 @@ class OutlinerComponent extends Component<Props, State> {
     this.closeMenu();
   };
 
+  removePackage = async (type: string) => {
+    {
+      const rightClicked = this.state.rightClicked;
+      this.closeMenu();
+
+      if (rightClicked) {
+        const elem = getPackageElementById(rightClicked);
+        if (elem) {
+          const val = await showDialogBox(
+            {
+              message: `Are you sure you want to delete this ${type}?`,
+              type: "warning",
+              buttons: ["Delete", "Cancel"],
+              title: "Are you sure?",
+            },
+            true
+          );
+
+          if (val.response === 0) {
+            deletePackage(rightClicked);
+          }
+        }
+      }
+    }
+  };
+
   getContextMenu = (): ScreenMenu[] => {
     if (this.state.rightClicked) {
       const elem = getPackageElementById(this.state.rightClicked);
-      console.log(elem);
       if (elem) {
         if (elem.contentType === "project") {
           return [
@@ -235,6 +262,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
+                  onClick: () => this.removePackage("package"),
                 },
               ],
             },
@@ -264,6 +292,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
+                  onClick: () => this.removePackage("graph"),
                 },
               ],
             },

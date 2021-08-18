@@ -122,6 +122,11 @@ export const addNewGraph = (
   }
 };
 
-export const deletePackage = () => {};
-
-export const deleteGraph = () => {};
+export const deletePackage = (id: string) => {
+  const elem = getPackageElementById(id);
+  if (elem) {
+    if ((elem!.contentType = "graph")) {
+    } else {
+    }
+  }
+};
