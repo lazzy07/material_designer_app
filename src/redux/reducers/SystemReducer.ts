@@ -42,26 +42,15 @@ export const systemReducer = (
         importingAssets: action.payload,
       };
     case SET_SELECTED:
-      if (action.payload.type === "graph") {
-        return {
-          ...state,
-          selectedItems: {
-            graph: action.payload.id,
-            graphType: action.payload.graphType,
-            node: "",
-            previewNode: "",
-          },
-        };
-      } else {
-        return {
-          ...state,
-          selectedItems: {
-            ...state.selectedItems,
-            node: "",
-            previewNode: "",
-          },
-        };
-      }
+      return {
+        ...state,
+        selectedItems: {
+          graph: action.payload.id,
+          graphType: action.payload.graphType,
+          node: "",
+          previewNode: "",
+        },
+      };
     default:
       return state;
   }

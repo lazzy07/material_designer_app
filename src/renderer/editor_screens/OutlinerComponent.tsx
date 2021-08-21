@@ -39,7 +39,7 @@ interface Props {
   project: Project;
   selectedGraph: string;
   selectedGraphType: GRAPH_TYPES;
-  setSelected: (graphType: OutlinerTypes, id: string) => void;
+  setSelected: (graphType: GRAPH_TYPES, id: string) => void;
 }
 
 interface State {
@@ -526,6 +526,17 @@ class OutlinerComponent extends Component<Props, State> {
     if (elem) {
       if (elem.contentType === "package") {
         this.setState({ edit: id as string, name: elem.data?.name! });
+      } else if (elem.contentType === "graph") {
+        const graph = elem.data as Graphs;
+        let type: GRAPH_TYPES;
+        if (graph.dataGraph!.id === id) {
+          type = "datagraph";
+        } else if (graph.kernelGraph?.id === id) {
+          type = "kernelgraph";
+        } else {
+          type = "shadergraph";
+        }
+        this.props.setSelected(type, elem.data!.id);
       }
     }
   };
