@@ -4,11 +4,12 @@ import { connect } from "react-redux";
 import { Project } from "../../interfaces/Project";
 import { OutlinerTypes } from "../../interfaces/OutlinerTypes";
 import { setSelected } from "../../redux/actions/SystemActions";
-import { TreeNodeInfo, Tree } from "@blueprintjs/core";
+import { TreeNodeInfo, Tree, EditableText } from "@blueprintjs/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArchive,
   faCode,
+  faEye,
   faFolder,
   faFolderOpen,
   faPen,
@@ -29,26 +30,24 @@ import {
   createGraph,
   createPackage,
   deletePackage,
+  editPackageName,
 } from "../services/ProjectPackageManagement";
 import { showDialogBox } from "../services/QuestionDialog";
 
 interface Props {
   dimensions: { width: number; height: number };
   project: Project;
-  selectedPackage: string;
   selectedGraph: string;
-  selectedGraphType: OutlinerTypes;
-  setSelected: (
-    type: "graph" | "package",
-    graphType: OutlinerTypes,
-    id: string
-  ) => void;
+  selectedGraphType: GRAPH_TYPES;
+  setSelected: (graphType: OutlinerTypes, id: string) => void;
 }
 
 interface State {
   expanded: string[];
   rightClicked: string | null;
   clicked: string | null;
+  edit: string | null;
+  name: string; //edit package graph name
 }
 
 class OutlinerComponent extends Component<Props, State> {
@@ -61,6 +60,8 @@ class OutlinerComponent extends Component<Props, State> {
       expanded: [],
       rightClicked: null,
       clicked: null,
+      edit: null,
+      name: "",
     };
   }
 
@@ -134,6 +135,59 @@ class OutlinerComponent extends Component<Props, State> {
         }
       }
     }
+  };
+
+  onClickRename = () => {
+    this.closeMenu();
+    const rightClicked = this.state.rightClicked;
+
+    if (rightClicked) {
+      const elem = getPackageElementById(rightClicked);
+      if (elem) {
+        this.setState({ edit: elem.data!.id, name: elem.data?.name! });
+      }
+    }
+  };
+
+  onCancelEditing = () => {
+    this.setState({ edit: null, name: "" });
+  };
+
+  onConfirmEditing = () => {
+    const elem = getPackageElementById(this.state.edit!);
+    if (elem && this.state.name.length > 0) {
+      editPackageName(this.state.edit!, this.state.name);
+    }
+    this.setState({ edit: null, name: "" });
+  };
+
+  onChangeName = (value: string) => {
+    this.setState({ name: value });
+  };
+
+  renderOutlinerLabel = (name: string, id: string) => {
+    const elem = getPackageElementById(id);
+    return this.state.edit === id ? (
+      <div>
+        <EditableText
+          maxLength={50}
+          confirmOnEnterKey
+          selectAllOnFocus
+          isEditing
+          value={this.state.name}
+          onChange={this.onChangeName}
+          onCancel={this.onCancelEditing}
+          onConfirm={this.onConfirmEditing}
+        />
+      </div>
+    ) : (
+      <div>
+        {name}{" "}
+        {this.props.selectedGraph === elem?.data?.id && (
+          <FontAwesomeIcon icon={faEye} />
+        )}
+      </div>
+    );
   };
 
   getContextMenu = (): ScreenMenu[] => {
@@ -252,6 +306,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
+                  onClick: this.onClickRename,
                 },
                 {
                   label: "Remove",
@@ -282,6 +337,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
+                  onClick: this.onClickRename,
                 },
                 {
                   label: "Remove",
@@ -309,7 +365,7 @@ class OutlinerComponent extends Component<Props, State> {
       if (pkg.contentType === "package") {
         let pkgOutlinerElem: TreeNodeInfo = {
           id: pkg.id,
-          label: pkg.name,
+          label: this.renderOutlinerLabel(pkg.name, pkg.id),
           isExpanded: this.state.expanded.includes(pkg.id),
           isSelected: this.state.clicked === pkg.id,
           hasCaret: true,
@@ -330,7 +386,7 @@ class OutlinerComponent extends Component<Props, State> {
         const graph = pkg as Graphs;
         let graphOutlinerElem: TreeNodeInfo = {
           id: graph.id,
-          label: graph.name,
+          label: this.renderOutlinerLabel(graph.name, graph.id),
           isExpanded: this.state.expanded.includes(graph.id),
           isSelected: this.state.clicked === graph.id,
           hasCaret: true,
@@ -462,6 +518,18 @@ class OutlinerComponent extends Component<Props, State> {
     });
   };
 
+  handleNodeDoubleClick = (node: TreeNodeInfo) => {
+    const id = node.id;
+
+    const elem = getPackageElementById(id as string);
+
+    if (elem) {
+      if (elem.contentType === "package") {
+        this.setState({ edit: id as string, name: elem.data?.name! });
+      }
+    }
+  };
+
   render() {
     return (
       <OutlinerContextMenu ref={this.ref} contextMenu={this.getContextMenu()}>
@@ -470,6 +538,7 @@ class OutlinerComponent extends Component<Props, State> {
             onNodeExpand={this.handleNodeExapnd}
             onNodeCollapse={this.handleNodeCollapse}
             onNodeClick={this.handleNodeClick}
+            onNodeDoubleClick={this.handleNodeDoubleClick}
             contents={this.projectToOutliner()}
             onNodeContextMenu={this.handleNodeRightClick}
           />
@@ -482,7 +551,6 @@ class OutlinerComponent extends Component<Props, State> {
 const mapStateToProps = (state: Store) => {
   return {
     project: state.project,
-    selectedPackage: state.system.selectedItems.package,
     selectedGraph: state.system.selectedItems.graph,
     selectedGraphType: state.system.selectedItems.graphType,
   };

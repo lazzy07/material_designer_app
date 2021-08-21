@@ -154,3 +154,14 @@ export const deletePackage = (id: string) => {
     }
   }
 };
+
+export const editPackageName = (id: string, name: string) => {
+  const project: ProjectReducer = rStore.getState().project;
+  const packages = project.packages;
+
+  const ref = getPackageElement(id, packages);
+  if (ref) {
+    ref.name = name;
+    rStore.dispatch(changeGraphData(packages));
+  }
+};

@@ -25,16 +25,11 @@ export const setImportFiles = (type: ImportTypes, files: File[]) => {
   };
 };
 
-export const setSelected = (
-  type: "graph" | "package",
-  graphType: OutlinerTypes,
-  id: string
-) => {
+export const setSelected = (graphType: OutlinerTypes, id: string) => {
   return {
     type: SET_SELECTED,
     payload: {
       id,
-      type,
       graphType,
     },
   };
