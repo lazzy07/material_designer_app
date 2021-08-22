@@ -1,6 +1,6 @@
 import { ImportTypes } from "../../renderer/services/ImportImageData";
 import { v4 } from "uuid";
-import { OutlinerTypes } from "../../interfaces/OutlinerTree";
+import { GRAPH_TYPES } from "../../interfaces/Graphs";
 
 export const SET_IMPORT_FILES = "set import files";
 export const SET_SELECTED = "set selected";
@@ -25,16 +25,11 @@ export const setImportFiles = (type: ImportTypes, files: File[]) => {
   };
 };
 
-export const setSelected = (
-  type: "graph" | "package",
-  graphType: OutlinerTypes,
-  id: string
-) => {
+export const setSelected = (graphType: GRAPH_TYPES, id: string) => {
   return {
     type: SET_SELECTED,
     payload: {
       id,
-      type,
       graphType,
     },
   };
@@ -43,13 +38,13 @@ export const setSelected = (
 export const setSelectedNode = (id: string) => {
   return {
     type: SET_SELECTED_NODE,
-    payload: id
-  }
-}
+    payload: id,
+  };
+};
 
 export const setPreviewNode = (id: string) => {
   return {
     type: SET_PREVIEW_NODE,
-    paload: id
-  }
-}
+    paload: id,
+  };
+};

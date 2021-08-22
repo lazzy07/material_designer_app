@@ -1,12 +1,12 @@
-import { GraphPackage } from "./GraphPackage";
 import { Image } from "./Image";
+import { PackageElement } from "./PackageElement";
 
 export interface Project {
   id: string;
   filePath: string;
   fileName: string;
   description: string;
-  packages: GraphPackage[];
+  packages: PackageElement[];
   textures: Image[];
   preview: {
     subdivision: number;

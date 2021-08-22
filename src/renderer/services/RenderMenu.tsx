@@ -1,14 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
 import { Menu } from "react-desktop-menus";
 import { MenuItem } from "react-desktop-menus";
 import { defaultColors } from "../constants/Colors";
 import { v4 } from "uuid";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faNewspaper } from "@fortawesome/free-solid-svg-icons";
 
 export interface ScreenMenu {
   type: "menu" | "item";
   label: string;
+  disabled?: boolean;
   onClick?: () => void;
   content?: ScreenMenu[];
   icon?: any;
@@ -21,6 +20,7 @@ export const renderScreenMenu = (menu: ScreenMenu[]) => {
       return (
         <MenuItem
           key={id}
+          disabled={ele.disabled}
           label={ele.label}
           style={{
             color: defaultColors.FONT_COLOR,

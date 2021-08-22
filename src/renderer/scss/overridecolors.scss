@@ -2,3 +2,21 @@
 
 $pt-intent-primary: $PRIMARY_COLOR;
 $pt-app-background-color: $DEFAULT_BACKGROUND_COLOR;
+$pt-icon-color-selected: $PRIMARY_COLOR;
+$pt-dark-icon-color-selected: $PRIMARY_COLOR;
+
+.bp3-tree-node.bp3-tree-node-selected > .bp3-tree-node-content {
+  background-color: $PRIMARY_COLOR;
+}
+
+.bp3-editable-text-editing {
+  background-color: $DEFAULT_BACKGROUND_COLOR;
+
+  ::before {
+    background-color: $DEFAULT_BACKGROUND_COLOR;
+  }
+
+  input {
+    background-color: $DEFAULT_BACKGROUND_COLOR;
+  }
+}
