@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 
-export default class Button extends Component {
+interface Props {
+  title: string;
+}
+
+export default class Button extends Component<Props> {
   render() {
-    return <div>Button</div>;
+    return (
+      <div>
+        <button className="gcp-button">{this.props.title}</button>
+      </div>
+    );
   }
 }

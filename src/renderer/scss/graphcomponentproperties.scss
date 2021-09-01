@@ -1,0 +1,56 @@
+@import "./colors.scss";
+
+.gcp-button {
+  background-color: $IMPORTANT_BACKGROUND_COLOR;
+  border: 0;
+  color: $FONT_COLOR;
+  padding: 8px 15px;
+  margin: 5px;
+}
+
+.gcp-button:hover {
+  background-color: $HOVER_COLOR;
+  color: $IMPORTANT_FONT_COLOR;
+}
+
+.gcp-button:active {
+  background-color: $BORDER_COLOR;
+  color: $IMPORTANT_FONT_COLOR;
+}
+
+.gcp-button:focus {
+  border: none;
+  outline: none;
+}
+
+.gcp-inputnumber {
+  margin: 5px;
+}
+
+.gcp-inputnumber {
+  input {
+    background-color: $IMPORTANT_BACKGROUND_COLOR;
+    color: $FONT_COLOR;
+  }
+
+  input:focus {
+    box-shadow: none;
+  }
+
+  button {
+    background-color: $IMPORTANT_BACKGROUND_COLOR !important;
+    background-image: none !important;
+
+    span {
+      color: $IMPORTANT_FONT_COLOR !important;
+    }
+  }
+
+  button:active {
+    background-color: $HOVER_COLOR !important;
+  }
+
+  button:focus {
+    outline: none;
+  }
+}
