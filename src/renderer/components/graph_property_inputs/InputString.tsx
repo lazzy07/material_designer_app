@@ -1,7 +1,14 @@
+import { InputGroup } from "@blueprintjs/core";
 import React, { Component } from "react";
 
-export default class InputString extends Component {
+interface Props {}
+
+export default class InputString extends Component<Props> {
   render() {
-    return <div>InputString</div>;
+    return (
+      <div>
+        <InputGroup className="gcp-inputstring" />
+      </div>
+    );
   }
 }

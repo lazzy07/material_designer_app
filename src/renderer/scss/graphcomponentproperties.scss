@@ -54,3 +54,16 @@
     outline: none;
   }
 }
+
+.gcp-inputstring {
+  input {
+    background-color: $IMPORTANT_BACKGROUND_COLOR;
+    margin: 5px;
+    caret-color: $IMPORTANT_FONT_COLOR;
+    color: $IMPORTANT_FONT_COLOR;
+  }
+
+  input:focus {
+    box-shadow: none;
+  }
+}
