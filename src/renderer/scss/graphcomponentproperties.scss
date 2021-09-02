@@ -68,7 +68,13 @@
   }
 }
 
+.bp3-control.bp3-switch .bp3-control-indicator::before {
+  background-color: $IMPORTANT_FONT_COLOR;
+}
+
 .gcp-switch {
+  margin: 5px;
+
   input:focus {
     box-shadow: none;
     outline: none;
@@ -85,4 +91,21 @@
   input:checked ~ .bp3-control-indicator::before {
     background-color: $IMPORTANT_FONT_COLOR !important;
   }
+}
+
+.gcp-slider1 {
+  margin: 5px;
+  color: $IMPORTANT_FONT_COLOR;
+
+  .bp3-slider-progress {
+    background-color: $IMPORTANT_BACKGROUND_COLOR !important;
+  }
+
+  .bp3-intent-primary {
+    background-color: $PRIMARY_COLOR !important;
+  }
+}
+
+.gcp-slider2 {
+  margin: 5px;
 }

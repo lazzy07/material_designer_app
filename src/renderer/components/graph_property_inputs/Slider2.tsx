@@ -1,7 +1,12 @@
+import { RangeSlider } from "@blueprintjs/core";
 import React, { Component } from "react";
 
 export default class Slider2 extends Component {
   render() {
-    return <div>Slider2</div>;
+    return (
+      <div>
+        <RangeSlider className="gcp-slider2" />
+      </div>
+    );
   }
 }
