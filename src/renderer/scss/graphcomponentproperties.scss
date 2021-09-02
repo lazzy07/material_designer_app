@@ -67,3 +67,22 @@
     box-shadow: none;
   }
 }
+
+.gcp-switch {
+  input:focus {
+    box-shadow: none;
+    outline: none;
+  }
+
+  input:checked ~ .bp3-control-indicator {
+    background-color: $PRIMARY_COLOR !important;
+  }
+
+  input ~ .bp3-control-indicator {
+    background-color: $IMPORTANT_BACKGROUND_COLOR !important;
+  }
+
+  input:checked ~ .bp3-control-indicator::before {
+    background-color: $IMPORTANT_FONT_COLOR !important;
+  }
+}
