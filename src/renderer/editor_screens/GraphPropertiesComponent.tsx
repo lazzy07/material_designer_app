@@ -7,6 +7,8 @@ import InputString from "../components/graph_property_inputs/InputString";
 import Slider1 from "../components/graph_property_inputs/Slider1";
 import Slider2 from "../components/graph_property_inputs/Slider2";
 import Switch from "../components/graph_property_inputs/Switch";
+import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
+import ColorPicker1 from "../components/graph_property_inputs/ColorPicker1";
 import "../scss/graphcomponentproperties.scss";
 
 export default class GraphPropertiesComponent extends Component {
@@ -21,6 +23,8 @@ export default class GraphPropertiesComponent extends Component {
         <Slider2 />
         <InputAndSlider1 />
         <InputAndSlider2 />
+        <ColorPicker3 id="hel" />
+        <ColorPicker1 value={128} />
       </div>
     );
   }
