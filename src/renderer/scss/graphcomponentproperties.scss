@@ -104,8 +104,43 @@
   .bp3-intent-primary {
     background-color: $PRIMARY_COLOR !important;
   }
+
+  .bp3-slider-handle {
+    background-color: $IMPORTANT_FONT_COLOR !important;
+    background-image: none !important;
+  }
+
+  .bp3-slider-label {
+    color: $IMPORTANT_FONT_COLOR !important;
+  }
+
+  .bp3-slider-handle .bp3-slider-label {
+    background-color: $IMPORTANT_BACKGROUND_COLOR !important;
+  }
 }
 
 .gcp-slider2 {
   margin: 5px;
+  color: $IMPORTANT_FONT_COLOR;
+
+  .bp3-slider-progress {
+    background-color: $IMPORTANT_BACKGROUND_COLOR !important;
+  }
+
+  .bp3-intent-primary {
+    background-color: $PRIMARY_COLOR !important;
+  }
+
+  .bp3-slider-handle {
+    background-color: $IMPORTANT_FONT_COLOR !important;
+    background-image: none !important;
+  }
+
+  .bp3-slider-label {
+    color: $IMPORTANT_FONT_COLOR !important;
+  }
+
+  .bp3-slider-handle .bp3-slider-label {
+    background-color: $IMPORTANT_BACKGROUND_COLOR !important;
+  }
 }

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Button from "../components/graph_property_inputs/Button";
+import InputAndSlider1 from "../components/graph_property_inputs/InputAndSlider1";
+import InputAndSlider2 from "../components/graph_property_inputs/InputAndSlider2";
 import InputNumber from "../components/graph_property_inputs/InputNumber";
 import InputString from "../components/graph_property_inputs/InputString";
 import Slider1 from "../components/graph_property_inputs/Slider1";
@@ -17,6 +19,8 @@ export default class GraphPropertiesComponent extends Component {
         <Switch />
         <Slider1 />
         <Slider2 />
+        <InputAndSlider1 />
+        <InputAndSlider2 />
       </div>
     );
   }

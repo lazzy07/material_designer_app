@@ -5,7 +5,7 @@ export default class Slider2 extends Component {
   render() {
     return (
       <div>
-        <RangeSlider className="gcp-slider2" />
+        <RangeSlider className="gcp-slider2" value={[3, 7]} />
       </div>
     );
   }

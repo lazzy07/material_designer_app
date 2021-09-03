@@ -5,7 +5,11 @@ export default class InputNumber extends Component {
   render() {
     return (
       <div>
-        <NumericInput className="gcp-inputnumber" />
+        <NumericInput
+          fill
+          className="gcp-inputnumber"
+          style={{ width: "100%" }}
+        />
       </div>
     );
   }
