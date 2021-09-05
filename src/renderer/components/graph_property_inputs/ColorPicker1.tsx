@@ -23,6 +23,16 @@ export default class ColrPicker1 extends Component<Props, State> {
     };
   }
 
+  handleClick = () => {
+    const ref = this.ref.current!;
+  };
+
+  handleRelease = () => {};
+
+  handleDrag = () => {};
+
+  handleMouseLeave = () => {};
+
   componentDidMount() {
     const ref = this.ref.current!;
     this.setState({ width: ref.offsetWidth - MARGIN * 2 });
@@ -30,7 +40,19 @@ export default class ColrPicker1 extends Component<Props, State> {
     new ResizeObserver(() => {
       this.setState({ width: ref.offsetWidth - MARGIN * 2 });
     }).observe(this.ref.current!);
+
+    ref.addEventListener("mousedown", this.handleClick);
+    ref.addEventListener("mouseup", this.handleRelease);
+    ref.addEventListener("mouseleave", this.handleMouseLeave);
   }
+
+  componentWillUnmount = () => {
+    const ref = this.ref.current!;
+
+    ref.removeEventListener("mousedown", this.handleClick);
+    ref.removeEventListener("mouseup", this.handleRelease);
+    ref.removeEventListener("mouseleave", this.handleMouseLeave);
+  };
 
   render() {
     return (
