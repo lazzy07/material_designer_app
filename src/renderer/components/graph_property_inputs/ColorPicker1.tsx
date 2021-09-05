@@ -1,6 +1,7 @@
+import { Slider } from "@blueprintjs/core";
 import React, { Component, createRef } from "react";
-import ResizeObserver from "resize-observer-polyfill";
 import { defaultColors } from "../../constants/Colors";
+import InputNumber from "./InputNumber";
 
 interface State {
   width: number;
@@ -8,91 +9,54 @@ interface State {
 
 interface Props {
   value: number;
+  id: string;
 }
 
-const MARGIN = 10;
+export default class ColorPicker1 extends Component<Props, State> {
+  ref = createRef<Slider>();
 
-export default class ColrPicker1 extends Component<Props, State> {
-  ref = createRef<HTMLDivElement>();
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      width: 0,
-    };
-  }
-
-  handleClick = () => {
-    const ref = this.ref.current!;
+  setBackgroundColor = () => {
+    const ref = this.ref!.current!;
   };
-
-  handleRelease = () => {};
-
-  handleDrag = () => {};
-
-  handleMouseLeave = () => {};
 
   componentDidMount() {
-    const ref = this.ref.current!;
-    this.setState({ width: ref.offsetWidth - MARGIN * 2 });
-
-    new ResizeObserver(() => {
-      this.setState({ width: ref.offsetWidth - MARGIN * 2 });
-    }).observe(this.ref.current!);
-
-    ref.addEventListener("mousedown", this.handleClick);
-    ref.addEventListener("mouseup", this.handleRelease);
-    ref.addEventListener("mouseleave", this.handleMouseLeave);
+    this.setBackgroundColor();
   }
-
-  componentWillUnmount = () => {
-    const ref = this.ref.current!;
-
-    ref.removeEventListener("mousedown", this.handleClick);
-    ref.removeEventListener("mouseup", this.handleRelease);
-    ref.removeEventListener("mouseleave", this.handleMouseLeave);
-  };
 
   render() {
     return (
-      <div style={{ margin: 5, position: "relative" }}>
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          alignItems: "center",
+          margin: 5,
+          minWidth: "250px",
+        }}
+      >
         <div
-          ref={this.ref}
           style={{
+            flex: 1,
             width: "100%",
-            minWidth: "120px",
-            height: "6px",
-            marginLeft: MARGIN,
-            marginRight: MARGIN,
-            background: "linear-gradient(to right, black, white)",
-          }}
-        ></div>
-        <div
-          style={{
-            position: "absolute",
-            height: "10px",
-            width: "10px",
-            top: 6,
-            left: MARGIN - 5,
-            backgroundColor: defaultColors.FONT_COLOR,
-            transformOrigin: "center",
-            transform: "rotate(45deg)",
-          }}
-        ></div>
-        <div
-          style={{
-            position: "absolute",
-            height: "14px",
-            width: "14px",
-            border: "2px solid " + defaultColors.FONT_COLOR,
-            top: 10,
-            left: MARGIN - 7,
-            transformOrigin: "center",
+            height: "30px",
+            border: `2px solid ${defaultColors.IMPORTANT_BACKGROUND_COLOR}`,
             backgroundColor: `rgb(${this.props.value}, ${this.props.value}, ${this.props.value})`,
-            cursor: "pointer",
           }}
         ></div>
+        <div style={{ flex: 9, paddingRight: "15px" }}>
+          <Slider
+            className="gcp-grayscaleslider"
+            ref={this.ref}
+            min={0}
+            max={255}
+            value={this.props.value}
+            labelValues={[]}
+            showTrackFill={false}
+          />
+        </div>
+        <div style={{ flex: 2 }}>
+          <InputNumber />
+        </div>
       </div>
     );
   }

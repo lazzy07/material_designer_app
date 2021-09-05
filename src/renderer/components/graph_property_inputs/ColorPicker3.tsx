@@ -5,7 +5,7 @@ interface Props {
   id: string;
 }
 
-export default class ColrPicker3 extends Component<Props> {
+export default class ColorPicker3 extends Component<Props> {
   render() {
     return (
       <div>
