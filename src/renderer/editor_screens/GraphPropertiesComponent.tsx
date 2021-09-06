@@ -10,12 +10,13 @@ import Switch from "../components/graph_property_inputs/Switch";
 import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
 import ColorPicker1 from "../components/graph_property_inputs/ColorPicker1";
 import "../scss/graphcomponentproperties.scss";
+import Lut1 from "../components/graph_property_inputs/Lut1";
 
 export default class GraphPropertiesComponent extends Component {
   render() {
     return (
       <div>
-        <Button title="Hello Wolrd" />
+        {/* <Button title="Hello Wolrd" />
         <InputNumber />
         <InputString />
         <Switch />
@@ -23,8 +24,9 @@ export default class GraphPropertiesComponent extends Component {
         <Slider2 />
         <InputAndSlider1 />
         <InputAndSlider2 />
-        <ColorPicker3 id="hel" />
+        <ColorPicker3 id="hel" /> */}
         <ColorPicker1 value={128} id="val" />
+        <Lut1 />
       </div>
     );
   }
