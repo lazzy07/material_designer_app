@@ -26,7 +26,13 @@ export default class GraphPropertiesComponent extends Component {
         <InputAndSlider2 />
         <ColorPicker3 id="hel" /> */}
         <ColorPicker1 value={128} id="val" />
-        <Lut1 />
+        <Lut1
+          colors={[
+            { color: "#000000", position: 0 },
+            { color: "#ffffff", position: 1 },
+          ]}
+          onChangeLut={(lut) => console.log(lut)}
+        />
       </div>
     );
   }

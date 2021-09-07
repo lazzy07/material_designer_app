@@ -1,15 +1,25 @@
 import React, { Component } from "react";
+import { ColorLUT } from "../../../interfaces/ColorLutData";
 import LutMaker from "../lut_creator/LutMaker";
 
-export default class Lut1 extends Component {
+interface Props {
+  colors: ColorLUT[];
+  onChangeLut: (colors: ColorLUT[]) => void;
+}
+
+export default class Lut1 extends Component<Props> {
+  onChangeColorData = (lut: ColorLUT[]) => {
+    this.props.onChangeLut(lut);
+  };
+
   render() {
     return (
       <div>
         <LutMaker
           lutType="gradient"
-          onChange={() => {}}
+          onChange={this.onChangeColorData}
           onClickItem={() => {}}
-          val={[]}
+          val={this.props.colors}
         />
       </div>
     );
