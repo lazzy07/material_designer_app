@@ -1,3 +1,5 @@
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Component, createRef } from "react";
 import { ColorLUT } from "../../../interfaces/ColorLutData";
 import { defaultColors } from "../../constants/Colors";
@@ -29,9 +31,9 @@ export default class LutMaker extends Component<Props, State> {
     };
   }
 
-  renderHandle = (pos: number, color: string) => {
+  renderHandle = (pos: number, color: string, key: number) => {
     return (
-      <div style={{ position: "absolute", left: pos }}>
+      <div key={key} style={{ position: "absolute", left: pos }}>
         <div
           style={{
             height: "18px",
@@ -41,8 +43,15 @@ export default class LutMaker extends Component<Props, State> {
             position: "absolute",
             top: -18,
             backgroundColor: defaultColors.HOVER_COLOR,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            cursor: "pointer",
           }}
-        ></div>
+          onClick={() => this.removeHandle(key)}
+        >
+          <FontAwesomeIcon icon={faTimes} style={{ fontSize: "14px" }} />
+        </div>
         <div
           style={{
             height: "45px",
@@ -52,8 +61,8 @@ export default class LutMaker extends Component<Props, State> {
         ></div>
         <div
           style={{
-            height: 15,
-            width: 15,
+            height: 10,
+            width: 10,
             position: "relative",
             transform: "rotate(45deg) translate(-15%, 45%)",
             backgroundColor: defaultColors.HOVER_COLOR,
@@ -61,8 +70,8 @@ export default class LutMaker extends Component<Props, State> {
         ></div>
         <div
           style={{
-            height: 20,
-            width: 20,
+            height: 15,
+            width: 15,
             position: "relative",
             transform: "translate(-45%, -25%)",
             backgroundColor: color,
@@ -75,14 +84,12 @@ export default class LutMaker extends Component<Props, State> {
 
   renderHandles = () => {
     if (this.lutRef.current) {
-      console.log("object");
-      let lutWidth = this.lutRef.current.offsetWidth;
+      let lutWidth = this.state.lutWidth;
 
-      for (const i of this.props.val) {
-        const pos = lutWidth * i.position;
-
-        return this.renderHandle(pos, i.color);
-      }
+      return this.props.val.map((ele, index) => {
+        const pos = lutWidth * ele.position;
+        return this.renderHandle(pos, ele.color, index);
+      });
     } else {
       return <div></div>;
     }
@@ -103,6 +110,14 @@ export default class LutMaker extends Component<Props, State> {
     data.sort((a, b) => {
       return a.position - b.position;
     });
+
+    this.props.onChange(data);
+  };
+
+  removeHandle = (index: number) => {
+    const data = [...this.props.val];
+
+    data.splice(index, 1);
 
     this.props.onChange(data);
   };
@@ -147,6 +162,13 @@ export default class LutMaker extends Component<Props, State> {
         }}
       >
         <div
+          style={{
+            position: "relative",
+          }}
+        >
+          {this.renderHandles()}
+        </div>
+        <div
           ref={this.lutRef}
           style={{
             width: "100%",
@@ -154,15 +176,7 @@ export default class LutMaker extends Component<Props, State> {
             backgroundColor: "red",
             cursor: "pointer",
           }}
-        >
-          <div
-            style={{
-              position: "relative",
-            }}
-          >
-            {this.renderHandles()}
-          </div>
-        </div>
+        ></div>
       </div>
     );
   }

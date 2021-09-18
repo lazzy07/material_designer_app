@@ -11,8 +11,21 @@ import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
 import ColorPicker1 from "../components/graph_property_inputs/ColorPicker1";
 import "../scss/graphcomponentproperties.scss";
 import Lut1 from "../components/graph_property_inputs/Lut1";
+import { ColorLUT } from "../../interfaces/ColorLutData";
 
-export default class GraphPropertiesComponent extends Component {
+interface State {
+  colors: ColorLUT[];
+}
+
+export default class GraphPropertiesComponent extends Component<any, State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      colors: [],
+    };
+  }
+
   render() {
     return (
       <div>
@@ -27,11 +40,8 @@ export default class GraphPropertiesComponent extends Component {
         <ColorPicker3 id="hel" /> */}
         <ColorPicker1 value={128} id="val" />
         <Lut1
-          colors={[
-            { color: "#000000", position: 0 },
-            { color: "#ffffff", position: 1 },
-          ]}
-          onChangeLut={(lut) => console.log(lut)}
+          colors={this.state.colors}
+          onChangeLut={(lut) => this.setState({ colors: lut })}
         />
       </div>
     );
