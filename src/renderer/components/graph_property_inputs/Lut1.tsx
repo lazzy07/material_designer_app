@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { ColorLUT } from "../../../interfaces/ColorLutData";
 import LutMaker from "../lut_creator/LutMaker";
+import "react-linear-gradient-picker/dist/index.css";
 
 interface Props {
   colors: ColorLUT[];
@@ -15,12 +16,12 @@ export default class Lut1 extends Component<Props> {
   render() {
     return (
       <div>
-        <LutMaker
+        {/* <LutMaker
           lutType="gradient"
           onChange={this.onChangeColorData}
           onClickItem={() => {}}
           val={this.props.colors}
-        />
+        /> */}
       </div>
     );
   }

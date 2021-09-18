@@ -1,8 +1,6 @@
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Component, createRef } from "react";
 import { ColorLUT } from "../../../interfaces/ColorLutData";
-import { defaultColors } from "../../constants/Colors";
+import LutHandle from "./LutHandle";
 
 type LUTType = "gradient" | "constant";
 
@@ -31,54 +29,23 @@ export default class LutMaker extends Component<Props, State> {
     };
   }
 
+  setSelected = (id: number) => {
+    this.setState({
+      selected: id,
+    });
+  };
+
   renderHandle = (pos: number, color: string, key: number) => {
     return (
-      <div key={key} style={{ position: "absolute", left: pos }}>
-        <div
-          style={{
-            height: "18px",
-            width: "18px",
-            borderRadius: "50%",
-            transform: "translate(-50%, 0)",
-            position: "absolute",
-            top: -18,
-            backgroundColor: defaultColors.HOVER_COLOR,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            cursor: "pointer",
-          }}
-          onClick={() => this.removeHandle(key)}
-        >
-          <FontAwesomeIcon icon={faTimes} style={{ fontSize: "14px" }} />
-        </div>
-        <div
-          style={{
-            height: "45px",
-            width: "3px",
-            backgroundColor: defaultColors.HOVER_COLOR,
-          }}
-        ></div>
-        <div
-          style={{
-            height: 10,
-            width: 10,
-            position: "relative",
-            transform: "rotate(45deg) translate(-15%, 45%)",
-            backgroundColor: defaultColors.HOVER_COLOR,
-          }}
-        ></div>
-        <div
-          style={{
-            height: 15,
-            width: 15,
-            position: "relative",
-            transform: "translate(-45%, -25%)",
-            backgroundColor: color,
-            border: "2px solid" + defaultColors.HOVER_COLOR,
-          }}
-        ></div>
-      </div>
+      <LutHandle
+        color={color}
+        key={key}
+        id={key}
+        pos={pos}
+        selected={this.state.selected}
+        setSelected={this.setSelected}
+        removeHandle={this.removeHandle}
+      />
     );
   };
 
@@ -102,14 +69,18 @@ export default class LutMaker extends Component<Props, State> {
 
     let position = (mouseX - lutX) / lutWidth;
 
-    data.push({
+    const d = {
       color,
       position,
-    });
+    };
+
+    data.push(d);
 
     data.sort((a, b) => {
       return a.position - b.position;
     });
+
+    this.setSelected(data.indexOf(d));
 
     this.props.onChange(data);
   };
