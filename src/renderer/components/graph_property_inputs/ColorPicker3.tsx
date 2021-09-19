@@ -3,6 +3,8 @@ import ColorSelect from "../form/ColorSelect";
 
 interface Props {
   id: string;
+  value: string;
+  onChange: (val: string) => void;
 }
 
 export default class ColorPicker3 extends Component<Props> {
@@ -11,8 +13,8 @@ export default class ColorPicker3 extends Component<Props> {
       <div>
         <ColorSelect
           id={this.props.id}
-          color={"#e8232d"}
-          onChange={(val) => console.log(val)}
+          color={this.props.value}
+          onChange={this.props.onChange}
           screen="editor"
         />
       </div>

@@ -77,6 +77,9 @@ class ColorStop extends React.Component<any, any> {
         className={isActive ? "cs active" : "cs"}
         style={{ left: pos }}
         onMouseDown={this.handleMouseDown}
+        onDoubleClick={() =>
+          this.props.onDoubleClick(this.props.stop.id, this.props.stop.color)
+        }
       >
         <div style={{ backgroundColor: color }} />
       </div>

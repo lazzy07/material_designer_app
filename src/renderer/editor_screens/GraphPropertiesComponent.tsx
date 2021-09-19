@@ -22,7 +22,16 @@ export default class GraphPropertiesComponent extends Component<any, State> {
     super(props);
 
     this.state = {
-      colors: [],
+      colors: [
+        {
+          color: "#e8232d",
+          pos: "0.2",
+        },
+        {
+          color: "#000000",
+          pos: "0.5",
+        },
+      ],
     };
   }
 
@@ -40,6 +49,7 @@ export default class GraphPropertiesComponent extends Component<any, State> {
         <ColorPicker3 id="hel" /> */}
         <ColorPicker1 value={128} id="val" />
         <Lut1
+          id={"hello"}
           colors={this.state.colors}
           onChangeLut={(lut) => this.setState({ colors: lut })}
         />

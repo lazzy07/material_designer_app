@@ -61,7 +61,7 @@ class GradientBuilder extends React.Component<any, any> {
       onSelect: this.handleSelectColor,
     };
     if (!children) {
-      return <ColorPicker {...props} />;
+      return <div></div>;
     }
     const child = React.Children.only(children);
     return React.cloneElement(child as any, props);
@@ -131,6 +131,7 @@ class GradientBuilder extends React.Component<any, any> {
     const { width, height, drop } = this.props;
     const min = -HALF_STOP_WIDTH;
     const max = this.width1 - HALF_STOP_WIDTH;
+
     return (
       <div>
         <Palette width={width} height={height} palette={this.state.palette} />
@@ -142,6 +143,7 @@ class GradientBuilder extends React.Component<any, any> {
           onAddColor={this.handleAddColor}
           onActivate={this.handleActivate}
           onDeleteColor={this.handleDeleteColor}
+          onDoubleClick={this.props.onDoubleClick}
         />
         {this.colorPicker}
       </div>
