@@ -10,6 +10,7 @@ interface State {
 interface Props {
   value: number;
   id: string;
+  onChange: (value: number) => void;
 }
 
 export default class ColorPicker1 extends Component<Props, State> {
@@ -52,10 +53,14 @@ export default class ColorPicker1 extends Component<Props, State> {
             value={this.props.value}
             labelValues={[]}
             showTrackFill={false}
+            onChange={this.props.onChange}
           />
         </div>
         <div style={{ flex: 2 }}>
-          <InputNumber />
+          <InputNumber
+            value={this.props.value}
+            onChange={this.props.onChange}
+          />
         </div>
       </div>
     );

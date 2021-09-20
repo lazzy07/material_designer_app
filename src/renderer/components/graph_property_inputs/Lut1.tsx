@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { ColorLUT } from "../../../interfaces/ColorLutData";
 import GradientBuilder from "../../../packages/gradient-builder/GradientBuilder";
-import ColorPicker3 from "./ColorPicker3";
+import { hexToRgb, rgbToHex } from "../../services/ColorConverter";
+import ColorSelect from "../form/ColorSelect";
+import ColorPicker1 from "./ColorPicker1";
 
 interface Props {
   id: string;
@@ -11,12 +13,16 @@ interface Props {
 
 export default class Lut1 extends Component<Props> {
   WrappedColorPicker = (props) => {
+    const col = hexToRgb(props.color);
+    const val = col ? col.r : 0;
+
     return (
-      <div>
-        <ColorPicker3
+      <div style={{ paddingTop: 15 }}>
+        <div>Select Color: </div>
+        <ColorPicker1
           id={this.props.id}
-          onChange={props.onSelect}
-          value={props.color}
+          value={val}
+          onChange={(val) => props.onSelect(rgbToHex(val, val, val))}
         />
       </div>
     );
@@ -26,10 +32,6 @@ export default class Lut1 extends Component<Props> {
     this.props.onChangeLut(lut);
   };
 
-  onDoubleClick = (id: number, defColor: string) => {
-    console.log(id, defColor);
-  };
-
   render() {
     return (
       <div style={{ padding: "20px 10px" }}>
@@ -37,7 +39,6 @@ export default class Lut1 extends Component<Props> {
           height={32}
           width={400}
           drop={50}
-          onDoubleClick={this.onDoubleClick}
           palette={this.props.colors}
           onPaletteChange={this.props.onChangeLut}
         >

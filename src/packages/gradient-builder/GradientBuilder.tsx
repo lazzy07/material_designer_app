@@ -143,7 +143,6 @@ class GradientBuilder extends React.Component<any, any> {
           onAddColor={this.handleAddColor}
           onActivate={this.handleActivate}
           onDeleteColor={this.handleDeleteColor}
-          onDoubleClick={this.props.onDoubleClick}
         />
         {this.colorPicker}
       </div>

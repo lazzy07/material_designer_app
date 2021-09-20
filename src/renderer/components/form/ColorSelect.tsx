@@ -11,6 +11,7 @@ interface Props {
   title?: string;
   color: string;
   onChange: (val: string) => void;
+  noWidth?: boolean;
 }
 
 export default class ColorSelect extends Component<Props> {
@@ -41,7 +42,9 @@ export default class ColorSelect extends Component<Props> {
   render() {
     return (
       <div style={{ display: "flex", marginTop: 5, marginBottom: 5 }}>
-        <div style={{ minWidth: 180 }}>{this.props.title}</div>
+        <div style={{ minWidth: this.props.noWidth ? 0 : 180 }}>
+          {this.props.title}
+        </div>
         <div
           onClick={this.openColorPicker}
           style={{
