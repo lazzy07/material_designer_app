@@ -68,7 +68,9 @@ class GradientBuilder extends React.Component<any, any> {
   }
 
   notifyChange(palette) {
-    this.props.onPaletteChange(fromState(palette));
+    try {
+      this.props.onPaletteChange(fromState(palette));
+    } catch (err) {}
   }
 
   handleActivate(activeId) {

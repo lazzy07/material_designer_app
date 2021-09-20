@@ -44,7 +44,7 @@ export default class ColorPicker1 extends Component<Props, State> {
             backgroundColor: `rgb(${this.props.value}, ${this.props.value}, ${this.props.value})`,
           }}
         ></div>
-        <div style={{ flex: 9, paddingRight: "15px" }}>
+        <div style={{ flex: 8, paddingRight: "15px" }}>
           <Slider
             className="gcp-grayscaleslider"
             ref={this.ref}
@@ -53,10 +53,10 @@ export default class ColorPicker1 extends Component<Props, State> {
             value={this.props.value}
             labelValues={[]}
             showTrackFill={false}
-            onChange={this.props.onChange}
+            onRelease={this.props.onChange}
           />
         </div>
-        <div style={{ flex: 2 }}>
+        <div style={{ flex: 3 }}>
           <InputNumber
             value={this.props.value}
             onChange={this.props.onChange}
