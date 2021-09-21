@@ -32,11 +32,13 @@ interface State {
     NODE_BODY_FONT_COLOR: string;
     GRAYSCALE_CONNETION_COLOR: string;
     COLOR_CONNECTION_COLOR: string;
-    FLOAT_CONECTION_COLOR: string;
-    INT_CONNECTION_COLOR: string;
-    COLORPICK_CONNECTION_COLOR: string;
-    FLOATVEC2_CONNECTION_COLOR: string;
-    INTVEC2_CONNECTION_COLOR: string;
+    NUMBER_CONECTION_COLOR: string;
+    NUMBER2_CONNECTION_COLOR: string;
+    COLORVEC_CONNECTION_COLOR: string;
+    COLORVEC3_CONNECTION_COLOR: string;
+    LUT_CONNECTION_COLOR: string;
+    LUT3_CONNECTION_COLOR: string;
+    BOOLEAN_CONNECTION_COLOR: string;
   };
   themes: { fileName: string; id: string; [key: string]: string }[];
   selected: string;
@@ -56,11 +58,14 @@ const defaultTheme = {
   NODE_BODY_FONT_COLOR: "#b3b6b6",
   GRAYSCALE_CONNETION_COLOR: "#b3b6b6",
   COLOR_CONNECTION_COLOR: "#ffa500",
-  FLOAT_CONECTION_COLOR: "#8bc34a",
-  INT_CONNECTION_COLOR: "#e91e63",
-  COLORPICK_CONNECTION_COLOR: "#ff5722",
-  FLOATVEC2_CONNECTION_COLOR: "#00bcd4",
-  INTVEC2_CONNECTION_COLOR: "#673ab7",
+
+  NUMBER_CONECTION_COLOR: "#8bc34a",
+  NUMBER2_CONNECTION_COLOR: "#e91e63",
+  COLORVEC_CONNECTION_COLOR: "#ff5722",
+  COLORVEC3_CONNECTION_COLOR: "#00bcd4",
+  LUT_CONNECTION_COLOR: "#673ab7",
+  LUT3_CONNECTION_COLOR: "#ffa500",
+  BOOLEAN_CONNECTION_COLOR: "#b3b6b6",
 };
 
 export default class NodeTheme extends Component<any, State> {
@@ -219,7 +224,7 @@ export default class NodeTheme extends Component<any, State> {
                     onChange={(val) =>
                       this.setColorData("GENERATOR_GRAYSCALE", val)
                     }
-                    title="Secondary Background Color"
+                    title="Grayscale Generator Node"
                   />
                 </div>
                 <div className="col-6">
@@ -341,57 +346,79 @@ export default class NodeTheme extends Component<any, State> {
                 </div>
                 <div className="col-6">
                   <ColorSelect
-                    id="FLOAT_CONECTION_COLOR"
+                    id="NUMBER_CONECTION_COLOR"
                     screen="preferences"
-                    color={this.state.data.FLOAT_CONECTION_COLOR}
+                    color={this.state.data.NUMBER_CONECTION_COLOR}
                     onChange={(val) =>
-                      this.setColorData("FLOAT_CONECTION_COLOR", val)
+                      this.setColorData("NUMBER_CONECTION_COLOR", val)
                     }
-                    title="Float Connection"
+                    title="Number Connection"
                   />
                 </div>
                 <div className="col-6">
                   <ColorSelect
-                    id="INT_CONNECTION_COLOR"
+                    id="NUMBER2_CONNECTION_COLOR"
                     screen="preferences"
-                    color={this.state.data.INT_CONNECTION_COLOR}
+                    color={this.state.data.NUMBER2_CONNECTION_COLOR}
                     onChange={(val) =>
-                      this.setColorData("INT_CONNECTION_COLOR", val)
+                      this.setColorData("NUMBER2_CONNECTION_COLOR", val)
                     }
-                    title="Int Connection"
+                    title="Number2 Connection"
                   />
                 </div>
                 <div className="col-6">
                   <ColorSelect
-                    id="COLORPICK_CONNECTION_COLOR"
+                    id="COLORVEC_CONNECTION_COLOR"
                     screen="preferences"
-                    color={this.state.data.COLORPICK_CONNECTION_COLOR}
+                    color={this.state.data.COLORVEC_CONNECTION_COLOR}
                     onChange={(val) =>
-                      this.setColorData("COLORPICK_CONNECTION_COLOR", val)
+                      this.setColorData("COLORVEC_CONNECTION_COLOR", val)
                     }
-                    title="ColorPick Connection"
+                    title="ColorVec Connection"
                   />
                 </div>
                 <div className="col-6">
                   <ColorSelect
-                    id="FLOATVEC2_CONNECTION_COLOR"
+                    id="COLORVEC3_CONNECTION_COLOR"
                     screen="preferences"
-                    color={this.state.data.FLOATVEC2_CONNECTION_COLOR}
+                    color={this.state.data.COLORVEC3_CONNECTION_COLOR}
                     onChange={(val) =>
-                      this.setColorData("FLOATVEC2_CONNECTION_COLOR", val)
+                      this.setColorData("COLORVEC3_CONNECTION_COLOR", val)
                     }
-                    title="Float2 Connection"
+                    title="ColorVec3 Connection"
                   />
                 </div>
                 <div className="col-6">
                   <ColorSelect
-                    id="INTVEC2_CONNECTION_COLOR"
+                    id="LUT_CONNECTION_COLOR"
                     screen="preferences"
-                    color={this.state.data.INTVEC2_CONNECTION_COLOR}
+                    color={this.state.data.LUT_CONNECTION_COLOR}
                     onChange={(val) =>
-                      this.setColorData("INTVEC2_CONNECTION_COLOR", val)
+                      this.setColorData("LUT_CONNECTION_COLOR", val)
                     }
-                    title="Int2 Connection"
+                    title="LUT Connection"
+                  />
+                </div>
+                <div className="col-6">
+                  <ColorSelect
+                    id="LUT3_CONNECTION_COLOR"
+                    screen="preferences"
+                    color={this.state.data.LUT3_CONNECTION_COLOR}
+                    onChange={(val) =>
+                      this.setColorData("LUT3_CONNECTION_COLOR", val)
+                    }
+                    title="LUT3 Connection"
+                  />
+                </div>
+                <div className="col-6">
+                  <ColorSelect
+                    id="BOOLEAN_CONNECTION_COLOR"
+                    screen="preferences"
+                    color={this.state.data.BOOLEAN_CONNECTION_COLOR}
+                    onChange={(val) =>
+                      this.setColorData("BOOLEAN_CONNECTION_COLOR", val)
+                    }
+                    title="Boolean Connection"
                   />
                 </div>
               </div>

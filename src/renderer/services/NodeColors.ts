@@ -25,15 +25,19 @@ export const getNodeConnectionColors = (connectionType: CONNECTION_TYPES) => {
       return defaultColors.COLOR_CONNECTION_COLOR;
     case "grayscale":
       return defaultColors.GRAYSCALE_CONNETION_COLOR;
-    case "float":
-      return defaultColors.FLOAT_CONECTION_COLOR;
-    case "int":
-      return defaultColors.INT_CONNECTION_COLOR;
-    case "float_vec2":
-      return defaultColors.FLOATVEC2_CONNECTION_COLOR;
-    case "int_vec2":
-      return defaultColors.INTVEC2_CONNECTION_COLOR;
-    case "colorpick":
-      return defaultColors.COLORPICK_CONNECTION_COLOR;
+    case "number":
+      return defaultColors.NUMBER_CONECTION_COLOR;
+    case "number2":
+      return defaultColors.NUMBER2_CONNECTION_COLOR;
+    case "colorvec":
+      return defaultColors.COLORVEC_CONNECTION_COLOR;
+    case "colorvec3":
+      return defaultColors.COLORVEC3_CONNECTION_COLOR;
+    case "lut":
+      return defaultColors.LUT_CONNECTION_COLOR;
+    case "lut3":
+      return defaultColors.LUT3_CONNECTION_COLOR;
+    case "boolean":
+      return defaultColors.BOOLEAN_CONNECTION_COLOR;
   }
 };

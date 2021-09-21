@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { defaultColors, colors } from "../../constants/Colors";
+import { defaultColors } from "../../constants/Colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import "../../scss/button.scss";

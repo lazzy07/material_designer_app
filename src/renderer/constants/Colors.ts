@@ -1,9 +1,3 @@
-import styles from "../scss/colors.scss";
-
-export let colors = {
-  ...styles,
-};
-
 export let defaultColors = {
   id: "0",
   fileName: "Default Theme",
@@ -32,11 +26,14 @@ export let defaultColors = {
   NODE_BODY_FONT_COLOR: "#b3b6b6",
   GRAYSCALE_CONNETION_COLOR: "#b3b6b6",
   COLOR_CONNECTION_COLOR: "#ffa500",
-  FLOAT_CONECTION_COLOR: "#8bc34a",
-  INT_CONNECTION_COLOR: "#e91e63",
-  COLORPICK_CONNECTION_COLOR: "#ff5722",
-  FLOATVEC2_CONNECTION_COLOR: "#00bcd4",
-  INTVEC2_CONNECTION_COLOR: "#673ab7",
+
+  NUMBER_CONECTION_COLOR: "#8bc34a",
+  NUMBER2_CONNECTION_COLOR: "#e91e63",
+  COLORVEC_CONNECTION_COLOR: "#ff5722",
+  COLORVEC3_CONNECTION_COLOR: "#00bcd4",
+  LUT_CONNECTION_COLOR: "#673ab7",
+  LUT3_CONNECTION_COLOR: "#ffa500",
+  BOOLEAN_CONNECTION_COLOR: "#b3b6b6",
 };
 
 export class ThemeManager {

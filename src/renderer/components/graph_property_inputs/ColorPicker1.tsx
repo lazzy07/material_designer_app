@@ -14,16 +14,6 @@ interface Props {
 }
 
 export default class ColorPicker1 extends Component<Props, State> {
-  ref = createRef<Slider>();
-
-  setBackgroundColor = () => {
-    const ref = this.ref!.current!;
-  };
-
-  componentDidMount() {
-    this.setBackgroundColor();
-  }
-
   render() {
     return (
       <div
@@ -47,7 +37,6 @@ export default class ColorPicker1 extends Component<Props, State> {
         <div style={{ flex: 8, paddingRight: "15px" }}>
           <Slider
             className="gcp-grayscaleslider"
-            ref={this.ref}
             min={0}
             max={255}
             value={this.props.value}

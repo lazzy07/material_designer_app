@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { colors, defaultColors } from "../constants/Colors";
+import { defaultColors } from "../constants/Colors";
 import InputBox from "../components/form/InputBox";
 import Button from "../components/form/Button";
 import { faUser, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
@@ -27,17 +27,18 @@ class LoginScreen extends Component<Props & RouteComponentProps, State> {
     this.state = {
       send: {
         userName: "",
-        password: ""
+        password: "",
       },
       loading: false,
       error: "",
       errorUserName: "",
-      errorPassword: ""
+      errorPassword: "",
     };
   }
 
   validateEmail = (email: string): boolean => {
-    const expression = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+    const expression =
+      /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
 
     return expression.test(email.toLowerCase());
   };
@@ -47,7 +48,7 @@ class LoginScreen extends Component<Props & RouteComponentProps, State> {
       send: { ...this.state.send, [key]: val },
       error: "",
       errorUserName: "",
-      errorPassword: ""
+      errorPassword: "",
     });
   };
 
@@ -56,7 +57,7 @@ class LoginScreen extends Component<Props & RouteComponentProps, State> {
       return this.setState({ errorUserName: "" });
     }
     return this.setState({
-      errorUserName: "Must be longer than 3 letters"
+      errorUserName: "Must be longer than 3 letters",
     });
   };
 
@@ -66,7 +67,7 @@ class LoginScreen extends Component<Props & RouteComponentProps, State> {
     }
 
     return this.setState({
-      errorPassword: "Must be atleast 6 characters long"
+      errorPassword: "Must be atleast 6 characters long",
     });
   };
 
@@ -99,7 +100,7 @@ class LoginScreen extends Component<Props & RouteComponentProps, State> {
               top: 10,
               paddingLeft: 10,
               padding: 5,
-              backgroundColor: defaultColors.DEFAULT_BACKGROUND_COLOR
+              backgroundColor: defaultColors.DEFAULT_BACKGROUND_COLOR,
             }}
           >
             <h6 style={{ margin: 0, padding: 0 }}>Artwork of the month</h6>
@@ -111,7 +112,7 @@ class LoginScreen extends Component<Props & RouteComponentProps, State> {
               paddingLeft: 20,
               paddingRight: 20,
               bottom: 10,
-              left: 0
+              left: 0,
             }}
           >
             <div style={{ fontSize: 12, padding: 0, margin: 0 }}>
@@ -182,7 +183,7 @@ class LoginScreen extends Component<Props & RouteComponentProps, State> {
                   marginTop: 20,
                   width: "100%",
                   textAlign: "center",
-                  fontWeight: "bolder"
+                  fontWeight: "bolder",
                 }}
               >
                 <p className="clickableText" onClick={this.startWithoutSignin}>
@@ -196,7 +197,7 @@ class LoginScreen extends Component<Props & RouteComponentProps, State> {
               position: "absolute",
               bottom: 10,
               right: 20,
-              display: "flex"
+              display: "flex",
             }}
           >
             <img
@@ -208,7 +209,7 @@ class LoginScreen extends Component<Props & RouteComponentProps, State> {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center"
+                justifyContent: "center",
               }}
             >
               <div style={{ fontSize: 12 }}>Material Designer</div>
