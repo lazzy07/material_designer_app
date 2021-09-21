@@ -38,7 +38,7 @@ interface Props {
   dimensions: { width: number; height: number };
   project: Project;
   selectedGraph: string;
-  selectedGraphType: GRAPH_TYPES;
+  selectedGraphType: GRAPH_TYPES | null;
   setSelected: (graphType: GRAPH_TYPES, id: string) => void;
 }
 

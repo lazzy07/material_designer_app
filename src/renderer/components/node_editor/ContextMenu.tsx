@@ -11,7 +11,6 @@ export type CONTEXT_MENU_TYPE = "node" | "editor";
 
 interface Props {
   localLibraryNodes: NodeData[];
-  localProjectNodes: NodeData[];
   selectedType: CONTEXT_MENU_TYPE;
   selectedNode: Node | null;
   onClickAction: (nodeData: NodeData) => void;
@@ -24,10 +23,7 @@ export default class ContextMenu extends Component<Props> {
 
   createMenu = (): ScreenMenu[] => {
     if (this.props.selectedType === "editor") {
-      const data = [
-        ...this.props.localLibraryNodes,
-        ...this.props.localProjectNodes,
-      ];
+      const data = [...this.props.localLibraryNodes];
       let screenMenu: ScreenMenu[] = [];
       for (const i of data) {
         let j: ScreenMenu = {

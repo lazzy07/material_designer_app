@@ -12,7 +12,7 @@ export interface SystemReducer {
   };
   selectedItems: {
     graph: string;
-    graphType: GRAPH_TYPES;
+    graphType: GRAPH_TYPES | null;
     node: string;
     previewNode: string;
   };
@@ -25,7 +25,7 @@ const initialState: SystemReducer = {
   },
   selectedItems: {
     graph: "",
-    graphType: "shadergraph",
+    graphType: null,
     node: "",
     previewNode: "",
   },

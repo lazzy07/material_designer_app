@@ -23,18 +23,17 @@ import { CREATE_NODE_BY_DRAGGING } from "../../packages/connection-plugin-0.9.0/
 import { connect } from "react-redux";
 import { Store } from "../../redux/reducers";
 import { store } from "../../redux/store";
+import { GRAPH_TYPES } from "../../interfaces/Graphs";
 
 interface Props {
   dimensions: { width: number; height: number };
-  isShadergraph: boolean;
+  graphType: GRAPH_TYPES | null;
 }
 
 interface State {
   nodeComponents: NodeComponent[];
   localLibShaderNodes: NodeData[];
-  localProjShaderNodes: NodeData[];
   localLibDataNodes: NodeData[];
-  localProjDataNodes: NodeData[];
   contextMenuType: CONTEXT_MENU_TYPE;
   selectedNode: Node | null;
 }
@@ -58,9 +57,7 @@ class GraphEditorComponent extends Component<Props, State> {
     this.state = {
       nodeComponents: [],
       localLibShaderNodes: [],
-      localProjShaderNodes: [],
       localLibDataNodes: [],
-      localProjDataNodes: [],
       contextMenuType: "editor",
       selectedNode: null,
     };
@@ -186,15 +183,10 @@ class GraphEditorComponent extends Component<Props, State> {
 
   readNodesAndRegister = async () => {
     const localShaderNodes = this.state.localLibShaderNodes;
-    const projectShaderNodes = this.state.localProjShaderNodes;
-
     const localDataNodes = this.state.localLibDataNodes;
-    const projectDataNodes = this.state.localProjDataNodes;
 
     this.registerNodes(localShaderNodes);
-    this.registerNodes(projectShaderNodes);
     this.registerNodes(localDataNodes);
-    this.registerNodes(projectDataNodes);
   };
 
   listenToNodeData = () => {
@@ -228,9 +220,7 @@ class GraphEditorComponent extends Component<Props, State> {
           }
           this.setState({
             localLibShaderNodes: libraryShaderNodes,
-            localProjShaderNodes: projectShaderNodes,
             localLibDataNodes: libraryDataNodes,
-            localProjDataNodes: projectDataNodes,
           });
 
           this.readNodesAndRegister();
@@ -324,14 +314,9 @@ class GraphEditorComponent extends Component<Props, State> {
           selectedNode={this.state.selectedNode}
           selectedType={this.state.contextMenuType}
           localLibraryNodes={
-            this.props.isShadergraph
+            this.props.graphType === "shadergraph"
               ? this.state.localLibShaderNodes
               : this.state.localLibDataNodes
-          }
-          localProjectNodes={
-            this.props.isShadergraph
-              ? this.state.localProjShaderNodes
-              : this.state.localProjDataNodes
           }
           onClickAction={this.onContextMenuItemClick}
           onClickDelete={this.onClickDeleteNode}
@@ -354,7 +339,7 @@ class GraphEditorComponent extends Component<Props, State> {
                 10
               )}
             </div>
-            {this.props.isShadergraph ? shaderDom : dataDom}
+            {this.props.graphType === "shadergraph" ? shaderDom : dataDom}
           </div>
         </ContextMenu>
       </DropFileComponent>
@@ -364,7 +349,7 @@ class GraphEditorComponent extends Component<Props, State> {
 
 const mapStateToProps = (state: Store) => {
   return {
-    isShadergraph: state.system.selectedItems.graphType === "shadergraph",
+    graphType: state.system.selectedItems.graphType,
   };
 };
 
