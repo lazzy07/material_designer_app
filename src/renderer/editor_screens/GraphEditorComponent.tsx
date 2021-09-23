@@ -24,6 +24,8 @@ import { connect } from "react-redux";
 import { Store } from "../../redux/reducers";
 import { store } from "../../redux/store";
 import { GRAPH_TYPES } from "../../interfaces/Graphs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faProjectDiagram } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -197,8 +199,6 @@ class GraphEditorComponent extends Component<Props, State> {
         async (_, data) => {
           let libraryShaderNodes: NodeData[] = [];
           let libraryDataNodes: NodeData[] = [];
-          let projectShaderNodes: NodeData[] = [];
-          let projectDataNodes: NodeData[] = [];
 
           if (data.library) {
             for (const i of data.library) {
@@ -206,15 +206,6 @@ class GraphEditorComponent extends Component<Props, State> {
                 libraryShaderNodes.push(i);
               } else {
                 libraryDataNodes.push(i);
-              }
-            }
-          }
-          if (data.projct) {
-            for (const i of data.project) {
-              if (i.graphType === "shadergraph") {
-                projectShaderNodes.push(i);
-              } else {
-                projectShaderNodes.push(i);
               }
             }
           }
@@ -275,9 +266,35 @@ class GraphEditorComponent extends Component<Props, State> {
   };
 
   componentDidMount = async () => {
-    this.createShaderEditor();
+    if (this.props.graphType === "shadergraph") {
+      console.log("Shadergraph selected");
+      this.createShaderEditor();
+    }
+    if (
+      this.props.graphType === "datagraph" ||
+      this.props.graphType === "kernelgraph"
+    ) {
+      console.log("Datagraph/KernelGraph selected");
+      this.createDataGraphEditor();
+    }
     this.listenToNodeData();
     this.listenToNodeMenuOpen();
+  };
+
+  componentDidUpdate = (prevProps: Props) => {
+    if (this.props.graphType !== prevProps.graphType) {
+      if (this.props.graphType === "shadergraph") {
+        console.log("Shadergraph selected");
+        this.createShaderEditor();
+      }
+      if (
+        this.props.graphType === "datagraph" ||
+        this.props.graphType === "kernelgraph"
+      ) {
+        console.log("Datagraph/KernelGraph selected");
+        this.createDataGraphEditor();
+      }
+    }
   };
 
   componentWillUnmount() {
@@ -304,6 +321,30 @@ class GraphEditorComponent extends Component<Props, State> {
         style={{ width, height }}
       ></div>
     );
+
+    if (!this.props.graphType) {
+      return (
+        <div
+          style={{
+            display: "flex",
+            height: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <div style={{ padding: 10 }}>
+            <FontAwesomeIcon icon={faProjectDiagram} style={{ fontSize: 50 }} />
+          </div>
+          <div>
+            <h4>Select a Graph from the outliner</h4>
+          </div>
+          <div>
+            <p>(Double click on any graph to view the content)</p>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <DropFileComponent
