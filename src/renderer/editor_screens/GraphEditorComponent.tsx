@@ -4,25 +4,17 @@ import { createGrid } from "../services/CreateGrid";
 import DropFileComponent from "../components/library_components/DropFileComponent";
 import { DraggableItem } from "../../interfaces/DraggableItem";
 import { NodeData } from "../../interfaces/NodeData";
-import { EDITOR_VERSION, ENGINE_VERSION } from "../constants/Versions";
+import { ENGINE_VERSION } from "../constants/Versions";
 import Rete, { Node, NodeEditor } from "../../packages/rete-1.4.4";
-import ConnectionPlugin from "../../packages/connection-plugin-0.9.0";
-import ReactRenderPlugin from "../../packages/react-render-plugin-0.2.1";
-import AreaPlugin from "../../packages/area-plugin";
 import NodeClass from "../../nodes/classes/NodeClass";
 import NodeComponent from "../../nodes/classes/NodeComponent";
-import MaterialNode from "../../nodes/classes/MaterialNode";
 import ContextMenu, {
   CONTEXT_MENU_TYPE,
 } from "../components/node_editor/ContextMenu";
-import { ipcRenderer } from "electron";
-import { IS_WEB } from "../services/Webguard";
-import { IpcMessages } from "../../IpcMessages";
 import { Mouse } from "../../packages/rete-1.4.4/view/area";
 import { CREATE_NODE_BY_DRAGGING } from "../../packages/connection-plugin-0.9.0/windowevents";
 import { connect } from "react-redux";
 import { Store } from "../../redux/reducers";
-import { store } from "../../redux/store";
 import { GRAPH_TYPES } from "../../interfaces/Graphs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faProjectDiagram } from "@fortawesome/free-solid-svg-icons";
@@ -68,72 +60,6 @@ class GraphEditorComponent extends Component<Props, State> {
   onNodeDropped = (item: DraggableItem<NodeData>) => {
     //Simulate menu item click
     this.onContextMenuItemClick(item.item);
-  };
-
-  createEditor = (ref: React.RefObject<HTMLDivElement>) => {
-    const editor = new Rete.NodeEditor(
-      "materialdesigner@" + EDITOR_VERSION,
-      ref.current!
-    );
-    editor.use(ConnectionPlugin);
-    editor.use(ReactRenderPlugin, { component: MaterialNode });
-    editor.use(AreaPlugin as any, { scaleExtent: { min: 0.1, max: 1.5 } });
-
-    editor.view.area.el.style.height =
-      store.getState().preferences.graphSettings.canvasSize.y + "px";
-    editor.view.area.el.style.width =
-      store.getState().preferences.graphSettings.canvasSize.x + "px";
-
-    editor.view.area.el.addEventListener("drop", (e) => {
-      this.contextMenuPos = { x: e.offsetX, y: e.offsetY };
-    });
-
-    return editor;
-  };
-
-  createShaderEditor = () => {
-    this.shaderEditor = this.createEditor(this.shaderDomRef);
-
-    this.shaderEditor.on(
-      [
-        "process",
-        "nodecreated",
-        "noderemoved",
-        "connectioncreated",
-        "connectionremoved",
-      ],
-      async () => {
-        await this.engine.abort();
-        await this.engine.process(this.shaderEditor!.toJSON());
-      }
-    );
-
-    this.shaderEditor.on("mousemove", (mouse) => {
-      this.mouse = mouse;
-    });
-    this.selectContextMenuType();
-  };
-
-  createDataGraphEditor = () => {
-    this.dataGraphEditor = this.createEditor(this.dataDomRef);
-
-    this.dataGraphEditor.on(
-      [
-        "process",
-        "nodecreated",
-        "noderemoved",
-        "connectioncreated",
-        "connectionremoved",
-      ],
-      async () => {
-        await this.engine.abort();
-        await this.engine.process(this.dataGraphEditor!.toJSON());
-      }
-    );
-
-    this.dataGraphEditor.on("mousemove", (mouse) => {
-      this.mouse = mouse;
-    });
   };
 
   selectContextMenuType = () => {
@@ -191,42 +117,6 @@ class GraphEditorComponent extends Component<Props, State> {
     this.registerNodes(localDataNodes);
   };
 
-  listenToNodeData = () => {
-    if (!IS_WEB) {
-      ipcRenderer.send(IpcMessages.GET_ALL_LOCAL_NODE_DATA);
-      ipcRenderer.on(
-        IpcMessages.RETURN_GET_ALL_LOCAL_NODE_DATA,
-        async (_, data) => {
-          let libraryShaderNodes: NodeData[] = [];
-          let libraryDataNodes: NodeData[] = [];
-
-          if (data.library) {
-            for (const i of data.library) {
-              if (i.graphType === "shadergraph") {
-                libraryShaderNodes.push(i);
-              } else {
-                libraryDataNodes.push(i);
-              }
-            }
-          }
-          this.setState({
-            localLibShaderNodes: libraryShaderNodes,
-            localLibDataNodes: libraryDataNodes,
-          });
-
-          this.readNodesAndRegister();
-          const node = await this.state.nodeComponents[0].createNode();
-          const node2 = await this.state.nodeComponents[0].createNode();
-
-          node.position = [1000000 / 2 + 500, 1000000 / 2 + 500];
-          node2.position = [1000000 / 2, 1000000 / 2];
-          this.shaderEditor?.addNode(node);
-          this.shaderEditor?.addNode(node2);
-        }
-      );
-    }
-  };
-
   onCallContextMenu = () => {
     this.contextMenuPos = this.mouse;
   };
@@ -266,35 +156,7 @@ class GraphEditorComponent extends Component<Props, State> {
   };
 
   componentDidMount = async () => {
-    if (this.props.graphType === "shadergraph") {
-      console.log("Shadergraph selected");
-      this.createShaderEditor();
-    }
-    if (
-      this.props.graphType === "datagraph" ||
-      this.props.graphType === "kernelgraph"
-    ) {
-      console.log("Datagraph/KernelGraph selected");
-      this.createDataGraphEditor();
-    }
-    this.listenToNodeData();
     this.listenToNodeMenuOpen();
-  };
-
-  componentDidUpdate = (prevProps: Props) => {
-    if (this.props.graphType !== prevProps.graphType) {
-      if (this.props.graphType === "shadergraph") {
-        console.log("Shadergraph selected");
-        this.createShaderEditor();
-      }
-      if (
-        this.props.graphType === "datagraph" ||
-        this.props.graphType === "kernelgraph"
-      ) {
-        console.log("Datagraph/KernelGraph selected");
-        this.createDataGraphEditor();
-      }
-    }
   };
 
   componentWillUnmount() {
@@ -307,20 +169,6 @@ class GraphEditorComponent extends Component<Props, State> {
 
   render() {
     const { width, height } = this.props.dimensions;
-    const shaderDom = (
-      <div
-        onContextMenu={this.onCallContextMenu}
-        ref={this.shaderDomRef}
-        style={{ width, height }}
-      ></div>
-    );
-    const dataDom = (
-      <div
-        onContextMenu={this.onCallContextMenu}
-        ref={this.dataDomRef}
-        style={{ width, height }}
-      ></div>
-    );
 
     if (!this.props.graphType) {
       return (
@@ -380,7 +228,26 @@ class GraphEditorComponent extends Component<Props, State> {
                 10
               )}
             </div>
-            {this.props.graphType === "shadergraph" ? shaderDom : dataDom}
+            <div
+              onContextMenu={this.onCallContextMenu}
+              ref={this.shaderDomRef}
+              style={{
+                width,
+                height,
+                display:
+                  this.props.graphType === "shadergraph" ? undefined : "none",
+              }}
+            ></div>
+            <div
+              onContextMenu={this.onCallContextMenu}
+              ref={this.dataDomRef}
+              style={{
+                width,
+                height,
+                display:
+                  this.props.graphType === "shadergraph" ? "none" : undefined,
+              }}
+            ></div>
           </div>
         </ContextMenu>
       </DropFileComponent>
