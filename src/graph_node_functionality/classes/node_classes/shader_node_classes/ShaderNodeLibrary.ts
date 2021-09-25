@@ -1,8 +1,14 @@
-import NodeEngine from "../common/NodeEngine";
+import { Store } from "../../../../redux/reducers";
+import { store } from "../../../../redux/store";
 import NodeLibrary from "../common/NodeLibrary";
 
 export default class ShaderNodeLibrary extends NodeLibrary {
-  constructor(engine: NodeEngine) {
-    super(engine);
+  getNodes() {
+    const state: Store = store.getState();
+    return state.graphLibraries.shaderGraphNodes;
   }
+
+  registerNodes = (nodeLibrary: NodeLibrary) => {
+    const nodes = nodeLibrary.getNodes();
+  };
 }

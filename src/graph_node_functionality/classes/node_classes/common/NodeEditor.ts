@@ -7,6 +7,7 @@ import ReactRenderPlugin from "../../../../packages/react-render-plugin-0.2.1";
 import AreaPlugin from "../../../../packages/area-plugin";
 import MaterialNode from "../../renderer/MaterialNode";
 import { Mouse } from "../../../../packages/rete-1.4.4/view/area";
+import NodeLibrary from "./NodeLibrary";
 
 export default abstract class NodeEditor {
   dom: HTMLDivElement;
@@ -21,6 +22,8 @@ export default abstract class NodeEditor {
       this.dom
     );
   }
+
+  abstract registerNodes(nodeLibrary: NodeLibrary): void;
 
   getReteEditor = () => {
     return this.editorCore;

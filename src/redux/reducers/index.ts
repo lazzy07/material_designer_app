@@ -4,6 +4,7 @@ import { saveProjectReducer, SaveProject } from "./SaveProjectReducer";
 import { projectReducer, ProjectReducer } from "./ProjectReducer";
 import { SystemReducer, systemReducer } from "./SystemReducer";
 import { preferencesReducer, PreferencesReducer } from "./PreferencesReducer";
+import { nodeLibraryReducer, NodeLibraryReducer } from "./NodeLibraryReducer";
 
 export interface Store {
   user: UserReducer;
@@ -11,6 +12,7 @@ export interface Store {
   project: ProjectReducer;
   system: SystemReducer;
   preferences: PreferencesReducer;
+  graphLibraries: NodeLibraryReducer;
 }
 
 export const rootReducer = combineReducers({
@@ -19,4 +21,5 @@ export const rootReducer = combineReducers({
   project: projectReducer,
   system: systemReducer,
   preferences: preferencesReducer,
+  graphLibraries: nodeLibraryReducer,
 });

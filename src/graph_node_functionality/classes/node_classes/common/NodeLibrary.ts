@@ -1,9 +1,5 @@
-import NodeEngine from "./NodeEngine";
+import { Graphs } from "../../../../interfaces/Graphs";
 
 export default abstract class NodeLibrary {
-  engine: NodeEngine;
-
-  constructor(engine: NodeEngine) {
-    this.engine = engine;
-  }
+  abstract getNodes(): Graphs[];
 }
