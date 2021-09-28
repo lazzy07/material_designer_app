@@ -3,7 +3,6 @@ export type PROPERTY_INPUT_TYPE =
   | "slider"
   | "input_and_slider"
   | "button"
-  | "radiobutton"
   | "dropdown"
   | "colorpicker"
   | "lut";

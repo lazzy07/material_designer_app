@@ -4,9 +4,6 @@ import { createGrid } from "../services/CreateGrid";
 import DropFileComponent from "../components/library_components/DropFileComponent";
 import { DraggableItem } from "../../interfaces/DraggableItem";
 import { NodeData } from "../../interfaces/NodeData";
-import { ENGINE_VERSION } from "../constants/Versions";
-import Rete, { Node, NodeEditor } from "../../packages/rete-1.4.4";
-import NodeClass from "../../nodes/classes/NodeClass";
 import NodeComponent from "../../nodes/classes/NodeComponent";
 import ContextMenu, {
   CONTEXT_MENU_TYPE,
@@ -18,6 +15,9 @@ import { Store } from "../../redux/reducers";
 import { GRAPH_TYPES } from "../../interfaces/Graphs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faProjectDiagram } from "@fortawesome/free-solid-svg-icons";
+import DataNodeEditor from "../../graph_node_functionality/classes/node_classes/data_node_classes/DataNodeEditor";
+import ShaderNodeEditor from "../../graph_node_functionality/classes/node_classes/shader_node_classes/ShaderNodeEditor";
+import { Node } from "../../packages/rete-1.4.4";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -36,9 +36,9 @@ class GraphEditorComponent extends Component<Props, State> {
   private shaderDomRef = React.createRef<HTMLDivElement>();
   private dataDomRef = React.createRef<HTMLDivElement>();
 
-  engine = new Rete.Engine("materialdesigner@" + ENGINE_VERSION);
-  shaderEditor: NodeEditor | null = null;
-  dataGraphEditor: NodeEditor | null = null;
+  private dataGraphEditor: DataNodeEditor | undefined;
+  private shaderGraphEditor: ShaderNodeEditor | undefined;
+
   timeOut: NodeJS.Timeout | null = null;
 
   createNodeByDraggingToSpace = false;
@@ -64,7 +64,7 @@ class GraphEditorComponent extends Component<Props, State> {
 
   selectContextMenuType = () => {
     let canPropagate = true;
-    this.shaderEditor?.on("contextmenu", (e) => {
+    this.shaderGraphEditor?.getReteEditor().on("contextmenu", (e) => {
       if (e.node) {
         this.timeOut = setTimeout(() => {
           canPropagate = true;
@@ -85,38 +85,6 @@ class GraphEditorComponent extends Component<Props, State> {
     });
   };
 
-  registerNode = (nodeData: NodeData) => {
-    const component = new NodeClass(nodeData);
-    const nodeComponent = new NodeComponent(component);
-
-    let nodeComponents = [...this.state.nodeComponents, nodeComponent];
-
-    this.setState({
-      nodeComponents,
-    });
-    if (nodeData.graphType === "shadergraph") {
-      this.shaderEditor?.register(nodeComponent);
-    } else if (nodeData.graphType === "datagraph") {
-      this.dataGraphEditor?.register(nodeComponent);
-    }
-  };
-
-  registerNodes = (data: NodeData[]) => {
-    if (data) {
-      for (const i of data) {
-        this.registerNode(i);
-      }
-    }
-  };
-
-  readNodesAndRegister = async () => {
-    const localShaderNodes = this.state.localLibShaderNodes;
-    const localDataNodes = this.state.localLibDataNodes;
-
-    this.registerNodes(localShaderNodes);
-    this.registerNodes(localDataNodes);
-  };
-
   onCallContextMenu = () => {
     this.contextMenuPos = this.mouse;
   };
@@ -126,7 +94,7 @@ class GraphEditorComponent extends Component<Props, State> {
       if (node.nodeClass.id === item.id) {
         const newNode = await node.createNode();
         newNode.position = [this.contextMenuPos.x, this.contextMenuPos.y];
-        this.shaderEditor?.addNode(newNode);
+        this.shaderGraphEditor?.getReteEditor().addNode(newNode);
 
         if (this.createNodeByDraggingToSpace) {
           const event = new CustomEvent(CREATE_NODE_BY_DRAGGING, {
@@ -140,11 +108,19 @@ class GraphEditorComponent extends Component<Props, State> {
   };
 
   onClickDeleteNode = (node: Node) => {
-    this.shaderEditor?.removeNode(node);
+    if (this.props.graphType === "shadergraph") {
+      this.shaderGraphEditor?.getReteEditor().removeNode(node);
+    } else {
+      this.dataGraphEditor?.getReteEditor().removeNode(node);
+    }
   };
 
   onClickCopyNode = (node: Node) => {
-    this.shaderEditor?.addNode(node);
+    if (this.props.graphType === "shadergraph") {
+      this.shaderGraphEditor?.getReteEditor().addNode(node);
+    } else {
+      this.shaderGraphEditor?.getReteEditor().addNode(node);
+    }
   };
 
   // Since we forcibly open context menu the mouse values are not correct, so correct values can be found in the event
@@ -163,8 +139,12 @@ class GraphEditorComponent extends Component<Props, State> {
     if (this.timeOut) {
       clearTimeout(this.timeOut);
     }
-    this.shaderEditor?.view.area.el.removeEventListener("drop", () => {});
-    this.dataGraphEditor?.view.area.el.removeEventListener("drop", () => {});
+    this.shaderGraphEditor
+      ?.getReteEditor()
+      .view.area.el.removeEventListener("drop", () => {});
+    this.dataGraphEditor
+      ?.getReteEditor()
+      .view.area.el.removeEventListener("drop", () => {});
   }
 
   render() {
