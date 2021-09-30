@@ -7,7 +7,35 @@ export interface NodeLibraryReducer {
 }
 
 const initState: NodeLibraryReducer = {
-  dataGraphNodes: [],
+  dataGraphNodes: [
+    {
+      id: "1",
+      name: "Number1 Input",
+      type: "datagraph",
+      contentType: "graph",
+      children: [],
+      dataGraph: {
+        id: "11",
+        data: [
+          {
+            id: "111",
+            name: "Default Value",
+            data: 0,
+            dataType: "number",
+            groups: {
+              id: "1111",
+              name: "Default",
+            },
+            inputType: "input",
+            type: "",
+          },
+        ],
+        parentId: "1",
+        ioType: "input",
+        operationType: "",
+      },
+    },
+  ],
   shaderGraphNodes: [],
 };
 
