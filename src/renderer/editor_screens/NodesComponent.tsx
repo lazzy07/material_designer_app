@@ -6,23 +6,23 @@ import DropFiles from "../components/editor_page/editor_components/editor_depend
 import InputBox from "../components/form/InputBox";
 import { ipcRenderer } from "electron";
 import { IpcMessages } from "../../IpcMessages";
-
-interface State {
-  localNodes: NodeData[];
-  projectNodes: NodeData[];
-}
+import { connect } from "react-redux";
+import { Store } from "../../redux/reducers";
+import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 
 interface Props {
   dimensions: { height: number; width: number };
+  localDataNodes: Graphs[];
+  localShaderNodes: Graphs[];
+  selectedGraphType: GRAPH_TYPES | null;
 }
 
-class NodesComponent extends Component<Props, State> {
+class NodesComponent extends Component<Props> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
       localNodes: [],
-      projectNodes: [],
     };
   }
 
@@ -31,15 +31,7 @@ class NodesComponent extends Component<Props, State> {
     ipcRenderer.send(IpcMessages.LOAD_LOCAL_LIBRARY_NODES, NODES_PATH);
   };
 
-  readProjectLibrary = async () => {
-    const NODES_PATH = PROJECT_NODES_PATH();
-
-    if (NODES_PATH) {
-      ipcRenderer.send(IpcMessages.LOAD_LOCAL_PROJECT_NODES, NODES_PATH);
-    }
-  };
-
-  renderNode = (nodeData: NodeData[], keyPrefix: string) => {
+  renderNode = (nodeData: Graphs[], keyPrefix: string) => {
     return nodeData.map((ele, index) => {
       return <NodePreviewItem key={keyPrefix + index} data={ele} />;
     });
@@ -47,22 +39,37 @@ class NodesComponent extends Component<Props, State> {
 
   componentDidMount = () => {
     this.readLocalLibrary();
-    this.readProjectLibrary();
 
     ipcRenderer.on(IpcMessages.REFRESH_LOCAL_LIBRARY_NODES, (_, data) => {
       this.setState({
         localNodes: data,
       });
     });
-
-    ipcRenderer.on(IpcMessages.REFRESH_LOCAL_PROJECT_NODES, (_, data) => {
-      this.setState({
-        projectNodes: data,
-      });
-    });
   };
 
   render() {
+    const nodeLib =
+      this.props.selectedGraphType === "shadergraph"
+        ? this.props.localShaderNodes
+        : this.props.localDataNodes;
+
+    if (!this.props.selectedGraphType) {
+      return (
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            padding: 30,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          You must select a graph
+        </div>
+      );
+    }
+
     return (
       <div>
         <div style={{ paddingLeft: "25px", paddingTop: "10px" }}>
@@ -83,8 +90,7 @@ class NodesComponent extends Component<Props, State> {
               height: this.props.dimensions.height,
             }}
           >
-            {this.renderNode(this.state.localNodes, "local")}
-            {this.renderNode(this.state.projectNodes, "project")}
+            {this.renderNode(nodeLib, "local")}
           </div>
         </DropFiles>
       </div>
@@ -92,4 +98,11 @@ class NodesComponent extends Component<Props, State> {
   }
 }
 
-export default NodesComponent;
+const mapStateToProps = (state: Store) => {
+  return {
+    localNodes: state.graphLibraries.dataGraphNodes,
+    selectedGraphType: state.system.selectedItems.graphType,
+  };
+};
+
+export default connect(mapStateToProps)(NodesComponent);

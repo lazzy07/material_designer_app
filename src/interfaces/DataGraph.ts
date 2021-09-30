@@ -1,3 +1,4 @@
+import { NODE_TYPES } from "../nodes/NodeTypes";
 import { NODE_IO_TYPE } from "./GraphNodeIOType";
 import { MaterialGraph } from "./MaterialGraph";
 

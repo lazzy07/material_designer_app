@@ -1,18 +1,32 @@
 import React, { Component } from "react";
+import { Graphs } from "../../../interfaces/Graphs";
 import { NodeData } from "../../../interfaces/NodeData";
+import { NODE_TYPES } from "../../../nodes/NodeTypes";
 import { defaultColors } from "../../constants/Colors";
 import { getNodeColor } from "./../../services/NodeColors";
 import DraggableComponent from "./DraggableComponent";
 
 interface Props {
-  data: NodeData;
+  data: Graphs;
 }
 
 export default class NodePreviewItem extends Component<Props> {
-  renderIcon = () => {
-    const { type, name } = this.props.data;
+  getColor = () => {
+    const { type } = this.props.data;
 
-    const nodeColor = getNodeColor(type);
+    let nodeType: string = "generator.color";
+
+    if (type === "datagraph") {
+      nodeType = this.props.data.dataGraph?.ioType + ".color";
+    }
+
+    return nodeType as NODE_TYPES;
+  };
+
+  renderIcon = () => {
+    const { name } = this.props.data;
+
+    const nodeColor = getNodeColor(this.getColor());
     const firstLetter = name[0].toUpperCase();
 
     return (
@@ -68,7 +82,7 @@ export default class NodePreviewItem extends Component<Props> {
           <div>
             <div
               style={{
-                color: getNodeColor(this.props.data.type),
+                color: getNodeColor(this.getColor()),
                 fontWeight: "bolder",
               }}
             >
