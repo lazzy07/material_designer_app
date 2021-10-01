@@ -1,6 +1,11 @@
-import { Component } from "../../../packages/rete-1.4.4";
+import { Graphs } from "../../../interfaces/Graphs";
+import GraphReference from "../node_classes/common/GraphReference";
 
-export default class DataGraphReference extends Component {
+export default class DataGraphReference extends GraphReference {
+  constructor(graph: Graphs) {
+    super(graph);
+  }
+
   async builder() {}
 
   async worker() {}

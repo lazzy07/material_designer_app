@@ -2,7 +2,6 @@ import { faCopy, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Component } from "react";
 import { ContextMenu as CM } from "../../../packages/react-context-menu";
-import { NodeData } from "../../../interfaces/NodeData";
 import { Node } from "../../../packages/rete-1.4.4";
 import { defaultColors } from "../../constants/Colors";
 import { renderScreenMenu, ScreenMenu } from "../../services/RenderMenu";

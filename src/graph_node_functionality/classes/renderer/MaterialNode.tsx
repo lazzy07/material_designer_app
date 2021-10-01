@@ -2,7 +2,7 @@ import React from "react";
 import { Control, Socket } from "../../../packages/react-render-plugin-0.2.1";
 import "../../../packages/react-render-plugin-0.2.1/styles.sass";
 import { defaultColors } from "../../../renderer/constants/Colors";
-import "../../renderer/scss/nodes.scss";
+import "../../../renderer/scss/nodes.scss";
 import {
   getNodeColor,
   getNodeConnectionColors,

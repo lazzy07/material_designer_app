@@ -3,7 +3,6 @@ import { defaultColors } from "../constants/Colors";
 import { createGrid } from "../services/CreateGrid";
 import DropFileComponent from "../components/library_components/DropFileComponent";
 import { DraggableItem } from "../../interfaces/DraggableItem";
-import NodeComponent from "../../nodes/classes/NodeComponent";
 import ContextMenu, {
   CONTEXT_MENU_TYPE,
 } from "../components/node_editor/ContextMenu";
@@ -19,6 +18,7 @@ import ShaderNodeEditor from "../../graph_node_functionality/classes/node_classe
 import { Node } from "../../packages/rete-1.4.4";
 import DataNodeLibrary from "../../graph_node_functionality/classes/node_classes/data_node_classes/DataNodeLibrary";
 import ShaderNodeLibrary from "../../graph_node_functionality/classes/node_classes/shader_node_classes/ShaderNodeLibrary";
+import NodeLibrary from "../../graph_node_functionality/classes/node_classes/common/NodeLibrary";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -28,7 +28,6 @@ interface Props {
 }
 
 interface State {
-  nodeComponents: NodeComponent[];
   contextMenuType: CONTEXT_MENU_TYPE;
   selectedNode: Node | null;
 }
@@ -40,6 +39,9 @@ class GraphEditorComponent extends Component<Props, State> {
   private dataGraphEditor: DataNodeEditor | undefined;
   private shaderGraphEditor: ShaderNodeEditor | undefined;
 
+  private dataNodeLibrary = new DataNodeLibrary();
+  private shaderNodeLibrary = new ShaderNodeLibrary();
+
   timeOut: NodeJS.Timeout | null = null;
 
   createNodeByDraggingToSpace = false;
@@ -50,7 +52,6 @@ class GraphEditorComponent extends Component<Props, State> {
     super(props);
 
     this.state = {
-      nodeComponents: [],
       contextMenuType: "editor",
       selectedNode: null,
     };
@@ -89,11 +90,19 @@ class GraphEditorComponent extends Component<Props, State> {
   };
 
   onContextMenuItemClick = async (item: Graphs) => {
-    for (const node of this.state.nodeComponents) {
-      if (node.nodeClass.id === item.id) {
+    const lib: NodeLibrary =
+      this.props.graphType === "shadergraph"
+        ? this.shaderNodeLibrary
+        : this.dataNodeLibrary;
+    const editor =
+      this.props.graphType === "shadergraph"
+        ? this.shaderGraphEditor
+        : this.dataGraphEditor;
+    for (const node of lib.getReteNodes()) {
+      if (node.data.id === item.id) {
         const newNode = await node.createNode();
         newNode.position = [this.contextMenuPos.x, this.contextMenuPos.y];
-        this.shaderGraphEditor?.getReteEditor().addNode(newNode);
+        editor?.getReteEditor().addNode(newNode);
 
         if (this.createNodeByDraggingToSpace) {
           const event = new CustomEvent(CREATE_NODE_BY_DRAGGING, {
@@ -137,9 +146,8 @@ class GraphEditorComponent extends Component<Props, State> {
 
     this.dataGraphEditor.enableEditorPlugins();
     this.shaderGraphEditor.enableEditorPlugins();
-
-    this.dataGraphEditor.registerNodes(new DataNodeLibrary());
-    this.shaderGraphEditor.registerNodes(new ShaderNodeLibrary());
+    this.dataGraphEditor.registerNodes(this.dataNodeLibrary);
+    this.shaderGraphEditor.registerNodes(this.shaderNodeLibrary);
   };
 
   componentWillUnmount() {

@@ -8,7 +8,9 @@ export default class DataNodeEditor extends NodeEditor {
   }
 
   registerNodes = (nodeLibrary: NodeLibrary) => {
-    const nodes = nodeLibrary.getNodes();
-    console.log(nodes);
+    const nodes = nodeLibrary.getReteNodes();
+    for (const i of nodes) {
+      this.engine.getReteEngine().register(i);
+    }
   };
 }
