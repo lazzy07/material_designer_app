@@ -13,7 +13,6 @@ interface Props {
 export default class NodePreviewItem extends Component<Props> {
   getColor = () => {
     const { type } = this.props.data;
-
     let nodeType: string = "generator.color";
 
     if (type === "datagraph") {
@@ -55,9 +54,13 @@ export default class NodePreviewItem extends Component<Props> {
   };
 
   renderType = () => {
-    const { type } = this.props.data;
+    let type = "";
 
-    return <div>{type.split(".")[0]}</div>;
+    if (this.props.data.type === "datagraph") {
+      type = this.props.data.dataGraph?.ioType || "";
+    }
+
+    return <div>{type}</div>;
   };
 
   render() {

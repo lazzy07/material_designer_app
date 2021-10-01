@@ -3,7 +3,6 @@ import { defaultColors } from "../constants/Colors";
 import { createGrid } from "../services/CreateGrid";
 import DropFileComponent from "../components/library_components/DropFileComponent";
 import { DraggableItem } from "../../interfaces/DraggableItem";
-import { NodeData } from "../../interfaces/NodeData";
 import NodeComponent from "../../nodes/classes/NodeComponent";
 import ContextMenu, {
   CONTEXT_MENU_TYPE,
@@ -12,22 +11,24 @@ import { Mouse } from "../../packages/rete-1.4.4/view/area";
 import { CREATE_NODE_BY_DRAGGING } from "../../packages/connection-plugin-0.9.0/windowevents";
 import { connect } from "react-redux";
 import { Store } from "../../redux/reducers";
-import { GRAPH_TYPES } from "../../interfaces/Graphs";
+import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faProjectDiagram } from "@fortawesome/free-solid-svg-icons";
 import DataNodeEditor from "../../graph_node_functionality/classes/node_classes/data_node_classes/DataNodeEditor";
 import ShaderNodeEditor from "../../graph_node_functionality/classes/node_classes/shader_node_classes/ShaderNodeEditor";
 import { Node } from "../../packages/rete-1.4.4";
+import DataNodeLibrary from "../../graph_node_functionality/classes/node_classes/data_node_classes/DataNodeLibrary";
+import ShaderNodeLibrary from "../../graph_node_functionality/classes/node_classes/shader_node_classes/ShaderNodeLibrary";
 
 interface Props {
   dimensions: { width: number; height: number };
   graphType: GRAPH_TYPES | null;
+  localLibShaderNodes: Graphs[];
+  localLibDataNodes: Graphs[];
 }
 
 interface State {
   nodeComponents: NodeComponent[];
-  localLibShaderNodes: NodeData[];
-  localLibDataNodes: NodeData[];
   contextMenuType: CONTEXT_MENU_TYPE;
   selectedNode: Node | null;
 }
@@ -50,14 +51,12 @@ class GraphEditorComponent extends Component<Props, State> {
 
     this.state = {
       nodeComponents: [],
-      localLibShaderNodes: [],
-      localLibDataNodes: [],
       contextMenuType: "editor",
       selectedNode: null,
     };
   }
 
-  onNodeDropped = (item: DraggableItem<NodeData>) => {
+  onNodeDropped = (item: DraggableItem<Graphs>) => {
     //Simulate menu item click
     this.onContextMenuItemClick(item.item);
   };
@@ -89,7 +88,7 @@ class GraphEditorComponent extends Component<Props, State> {
     this.contextMenuPos = this.mouse;
   };
 
-  onContextMenuItemClick = async (item: NodeData) => {
+  onContextMenuItemClick = async (item: Graphs) => {
     for (const node of this.state.nodeComponents) {
       if (node.nodeClass.id === item.id) {
         const newNode = await node.createNode();
@@ -133,6 +132,14 @@ class GraphEditorComponent extends Component<Props, State> {
 
   componentDidMount = async () => {
     this.listenToNodeMenuOpen();
+    this.dataGraphEditor = new DataNodeEditor(this.dataDomRef.current!);
+    this.shaderGraphEditor = new DataNodeEditor(this.shaderDomRef.current!);
+
+    this.dataGraphEditor.enableEditorPlugins();
+    this.shaderGraphEditor.enableEditorPlugins();
+
+    this.dataGraphEditor.registerNodes(new DataNodeLibrary());
+    this.shaderGraphEditor.registerNodes(new ShaderNodeLibrary());
   };
 
   componentWillUnmount() {
@@ -184,8 +191,8 @@ class GraphEditorComponent extends Component<Props, State> {
           selectedType={this.state.contextMenuType}
           localLibraryNodes={
             this.props.graphType === "shadergraph"
-              ? this.state.localLibShaderNodes
-              : this.state.localLibDataNodes
+              ? this.props.localLibShaderNodes
+              : this.props.localLibDataNodes
           }
           onClickAction={this.onContextMenuItemClick}
           onClickDelete={this.onClickDeleteNode}
@@ -238,6 +245,8 @@ class GraphEditorComponent extends Component<Props, State> {
 const mapStateToProps = (state: Store) => {
   return {
     graphType: state.system.selectedItems.graphType,
+    localLibShaderNodes: state.graphLibraries.shaderGraphNodes,
+    localLibDataNodes: state.graphLibraries.dataGraphNodes,
   };
 };
 

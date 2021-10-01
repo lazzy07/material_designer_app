@@ -18,14 +18,6 @@ interface Props {
 }
 
 class NodesComponent extends Component<Props> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      localNodes: [],
-    };
-  }
-
   readLocalLibrary = async () => {
     const NODES_PATH = LOCAL_NODES_PATH;
     ipcRenderer.send(IpcMessages.LOAD_LOCAL_LIBRARY_NODES, NODES_PATH);
@@ -100,7 +92,8 @@ class NodesComponent extends Component<Props> {
 
 const mapStateToProps = (state: Store) => {
   return {
-    localNodes: state.graphLibraries.dataGraphNodes,
+    localDataNodes: state.graphLibraries.dataGraphNodes,
+    localShaderNodes: state.graphLibraries.shaderGraphNodes,
     selectedGraphType: state.system.selectedItems.graphType,
   };
 };

@@ -9,5 +9,6 @@ export default class DataNodeEditor extends NodeEditor {
 
   registerNodes = (nodeLibrary: NodeLibrary) => {
     const nodes = nodeLibrary.getNodes();
+    console.log(nodes);
   };
 }
