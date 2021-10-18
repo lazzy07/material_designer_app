@@ -46,11 +46,12 @@ export default class MaterialNode extends React.Component {
           minWidth: 180,
           borderTopLeftRadius: borderRadius,
           borderTopRightRadius: borderRadius,
-          borderTop: `0px solid black`,
+          // borderTop: `0px solid black`,
+          borderTop: selected ? `2px solid ${color}` : undefined,
           borderLeft: selected ? `2px solid ${color}` : undefined,
           borderRight: selected ? `2px solid ${color}` : undefined,
           borderBottom: selected ? `2px solid ${color}` : undefined,
-          boxShadow: selected ? `0 0 6px 6px ${color}30` : undefined,
+          boxShadow: selected ? `0 0 6px 6px ${color}` : undefined,
         }}
       >
         <div

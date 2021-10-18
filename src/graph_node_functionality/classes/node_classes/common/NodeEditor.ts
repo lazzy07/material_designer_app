@@ -13,6 +13,7 @@ export default abstract class NodeEditor {
   dom: HTMLDivElement;
   engine: NodeEngine;
   private editorCore: ReteNodeEditor;
+  mouse: Mouse = { x: 0, y: 0 };
 
   constructor(domElement: HTMLDivElement, engine: NodeEngine) {
     this.dom = domElement;
@@ -21,6 +22,7 @@ export default abstract class NodeEditor {
       "materialdesigner@" + EDITOR_VERSION,
       this.dom
     );
+    this.onMouseMove();
   }
 
   abstract registerNodes(nodeLibrary: NodeLibrary): void;
@@ -59,7 +61,9 @@ export default abstract class NodeEditor {
     );
   };
 
-  onMouseMove = (fn: (mouse: Mouse) => void) => {
-    this.editorCore.on("mousemove", fn);
+  onMouseMove = () => {
+    this.editorCore.on("mousemove", (mouse) => {
+      this.mouse = mouse;
+    });
   };
 }

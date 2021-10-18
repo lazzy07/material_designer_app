@@ -6,6 +6,7 @@ import { ShaderGraph } from "./ShaderGraph";
 
 export interface Graphs extends PackageElement {
   type: GRAPH_TYPES;
+  isPrimitive?: boolean;
   kernelGraph?: KernelGraph;
   shaderGraph?: ShaderGraph;
   dataGraph?: DataGraph;

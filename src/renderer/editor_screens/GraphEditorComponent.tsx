@@ -45,7 +45,6 @@ class GraphEditorComponent extends Component<Props, State> {
   timeOut: NodeJS.Timeout | null = null;
 
   createNodeByDraggingToSpace = false;
-  mouse: Mouse = { x: 0, y: 0 };
   contextMenuPos: Mouse = { x: 0, y: 0 };
 
   constructor(props: Props) {
@@ -86,7 +85,13 @@ class GraphEditorComponent extends Component<Props, State> {
   };
 
   onCallContextMenu = () => {
-    this.contextMenuPos = this.mouse;
+    const editor =
+      this.props.graphType === "shadergraph"
+        ? this.shaderGraphEditor
+        : this.dataGraphEditor;
+    if (editor) {
+      this.contextMenuPos = editor.mouse;
+    }
   };
 
   onContextMenuItemClick = async (item: Graphs) => {
@@ -101,6 +106,7 @@ class GraphEditorComponent extends Component<Props, State> {
     for (const node of lib.getReteNodes()) {
       if (node.data.id === item.id) {
         const newNode = await node.createNode();
+
         newNode.position = [this.contextMenuPos.x, this.contextMenuPos.y];
         editor?.getReteEditor().addNode(newNode);
 
@@ -146,6 +152,7 @@ class GraphEditorComponent extends Component<Props, State> {
 
     this.dataGraphEditor.enableEditorPlugins();
     this.shaderGraphEditor.enableEditorPlugins();
+
     this.dataGraphEditor.registerNodes(this.dataNodeLibrary);
     this.shaderGraphEditor.registerNodes(this.shaderNodeLibrary);
   };

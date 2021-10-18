@@ -1,5 +1,5 @@
-import { Graphs } from "../../../interfaces/Graphs";
-import GraphReference from "../node_classes/common/GraphReference";
+import { Graphs } from "../../../../interfaces/Graphs";
+import GraphReference from "../common/GraphReference";
 
 export default class DataGraphReference extends GraphReference {
   constructor(graph: Graphs) {

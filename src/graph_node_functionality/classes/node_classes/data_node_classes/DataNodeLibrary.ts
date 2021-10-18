@@ -2,7 +2,7 @@ import { Graphs } from "../../../../interfaces/Graphs";
 import { Store } from "../../../../redux/reducers";
 import { store } from "../../../../redux/store";
 import NodeLibrary from "../common/NodeLibrary";
-import DataGraphReference from "../../data_node_classes/DataGraphReference";
+import DataGraphReference from "./DataGraphReference";
 import GraphReference from "../common/GraphReference";
 
 export default class DataNodeLibrary extends NodeLibrary {
