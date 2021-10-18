@@ -4,5 +4,4 @@ import { MaterialGraph } from "./MaterialGraph";
 
 export interface DataGraph extends MaterialGraph {
   operationType?: string;
-  ioType?: NODE_IO_TYPE;
 }

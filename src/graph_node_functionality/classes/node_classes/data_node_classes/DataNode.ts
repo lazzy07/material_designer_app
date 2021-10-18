@@ -1,17 +1,15 @@
-import { Component, Node } from "../../../../packages/rete-1.4.4";
-import { NodePropertyData } from "../../../interfaces/NodePropertyData";
-import { Number1Properties } from "../../../interfaces/Number1Properties";
+import { Graphs, GRAPH_TYPES } from "../../../../interfaces/Graphs";
+import { Component } from "../../../../packages/rete-1.4.4";
 
-export default class DataNode extends Component {
-  data: NodePropertyData<Number1Properties>;
+export default abstract class DataNode<T> extends Component {
+  data: Graphs;
+  meta: { engineType: GRAPH_TYPES };
 
-  constructor(data: NodePropertyData<Number1Properties>) {
-    console.log("working");
+  constructor(data: Graphs, engineType: GRAPH_TYPES) {
     super(data.name);
     this.data = data;
+    this.meta = { engineType };
   }
-
-  async builder(node: Node) {}
 
   async worker() {}
 }

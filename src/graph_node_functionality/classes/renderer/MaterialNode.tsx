@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Component } from "react";
+import { NODE_TYPES } from "../../../nodes/NodeTypes";
 import { Control, Socket } from "../../../packages/react-render-plugin-0.2.1";
 import "../../../packages/react-render-plugin-0.2.1/styles.sass";
 import { defaultColors } from "../../../renderer/constants/Colors";
@@ -7,8 +8,9 @@ import {
   getNodeColor,
   getNodeConnectionColors,
 } from "../../../renderer/services/NodeColors";
+import { fetchFromGraphData } from "../node_classes/common/FetchFromGraphData";
 
-export default class MaterialNode extends React.Component {
+export default class MaterialNode extends Component<any, any> {
   state: any;
   props: any;
 
@@ -33,8 +35,15 @@ export default class MaterialNode extends React.Component {
     const { node, bindSocket, bindControl } = this.props;
     const { outputs, controls, inputs, selected } = this.state;
 
-    const { type } = node.meta;
-    const color = getNodeColor(type);
+    const graphData = fetchFromGraphData(node.meta.engineType, node.data);
+    const ioType = graphData.ioType;
+    console.log(ioType);
+    const color = getNodeColor(
+      node.meta.engineType === "datagraph"
+        ? ((ioType + ".grayscale") as NODE_TYPES)
+        : "generator.color"
+    );
+    console.log(color);
     const borderRadius = 12;
 
     return (
@@ -51,7 +60,7 @@ export default class MaterialNode extends React.Component {
           borderLeft: selected ? `2px solid ${color}` : undefined,
           borderRight: selected ? `2px solid ${color}` : undefined,
           borderBottom: selected ? `2px solid ${color}` : undefined,
-          boxShadow: selected ? `0 0 6px 6px ${color}` : undefined,
+          boxShadow: selected ? `0 0 6px 6px ${color}30` : undefined,
         }}
       >
         <div
@@ -77,6 +86,7 @@ export default class MaterialNode extends React.Component {
         >
           {/* Inputs */}
           {inputs.map((input, index) => {
+            console.log(input.key);
             const connectionColor = getNodeConnectionColors(input.key);
             return (
               <div
@@ -99,11 +109,11 @@ export default class MaterialNode extends React.Component {
             );
           })}
           {/* Outputs */}
-          {outputs.map((output) => {
+          {outputs.map((output, index) => {
             const connectionColor = getNodeConnectionColors(output.key);
             return (
               <div
-                key={output.key}
+                key={index}
                 style={{
                   display: "flex",
                   alignItems: "center",

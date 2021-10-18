@@ -63,7 +63,11 @@ class GraphEditorComponent extends Component<Props, State> {
 
   selectContextMenuType = () => {
     let canPropagate = true;
-    this.shaderGraphEditor?.getReteEditor().on("contextmenu", (e) => {
+    const editor =
+      this.props.graphType === "shadergraph"
+        ? this.shaderGraphEditor
+        : this.dataGraphEditor;
+    editor!.getReteEditor().on("contextmenu", (e) => {
       if (e.node) {
         this.timeOut = setTimeout(() => {
           canPropagate = true;
@@ -155,7 +159,15 @@ class GraphEditorComponent extends Component<Props, State> {
 
     this.dataGraphEditor.registerNodes(this.dataNodeLibrary);
     this.shaderGraphEditor.registerNodes(this.shaderNodeLibrary);
+
+    this.selectContextMenuType();
   };
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (prevProps.graphType !== this.props.graphType) {
+      this.selectContextMenuType();
+    }
+  }
 
   componentWillUnmount() {
     if (this.timeOut) {

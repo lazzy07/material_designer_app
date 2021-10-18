@@ -1,3 +1,3 @@
 import DataNode from "./DataNode";
 
-export default abstract class DataInputNode extends DataNode {}
+export default abstract class DataInputNode<T> extends DataNode<T> {}
