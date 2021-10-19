@@ -67,6 +67,7 @@ class GraphEditorComponent extends Component<Props, State> {
       this.props.graphType === "shadergraph"
         ? this.shaderGraphEditor
         : this.dataGraphEditor;
+
     editor!.getReteEditor().on("contextmenu", (e) => {
       if (e.node) {
         this.timeOut = setTimeout(() => {
@@ -149,8 +150,7 @@ class GraphEditorComponent extends Component<Props, State> {
     });
   };
 
-  componentDidMount = async () => {
-    this.listenToNodeMenuOpen();
+  initEditors = () => {
     this.dataGraphEditor = new DataNodeEditor(this.dataDomRef.current!);
     this.shaderGraphEditor = new DataNodeEditor(this.shaderDomRef.current!);
 
@@ -159,12 +159,19 @@ class GraphEditorComponent extends Component<Props, State> {
 
     this.dataGraphEditor.registerNodes(this.dataNodeLibrary);
     this.shaderGraphEditor.registerNodes(this.shaderNodeLibrary);
+  };
 
+  componentDidMount = async () => {
+    this.listenToNodeMenuOpen();
+    this.initEditors();
     this.selectContextMenuType();
   };
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     if (prevProps.graphType !== this.props.graphType) {
+      if (!this.dataGraphEditor || !this.shaderGraphEditor) {
+        this.initEditors();
+      }
       this.selectContextMenuType();
     }
   }

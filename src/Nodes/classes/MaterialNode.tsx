@@ -98,11 +98,11 @@ export default class MaterialNode extends React.Component {
             );
           })}
           {/* Outputs */}
-          {outputs.map((output) => {
+          {outputs.map((output, index) => {
             const connectionColor = getNodeConnectionColors(output.key);
             return (
               <div
-                key={output.key}
+                key={index}
                 style={{
                   display: "flex",
                   alignItems: "center",

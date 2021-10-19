@@ -7,6 +7,6 @@ export class Number1Input extends DataInputNode<Number1Properties> {
   async builder(node: Node) {
     (node as any).data = this.data;
     (node as any).meta = this.meta;
-    node.addOutput(new Output("nmber1input", "Number", NUMBER_SOCKET));
+    node.addOutput(new Output("number", "Number", NUMBER_SOCKET));
   }
 }

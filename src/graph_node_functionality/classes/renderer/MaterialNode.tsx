@@ -37,13 +37,11 @@ export default class MaterialNode extends Component<any, any> {
 
     const graphData = fetchFromGraphData(node.meta.engineType, node.data);
     const ioType = graphData.ioType;
-    console.log(ioType);
     const color = getNodeColor(
       node.meta.engineType === "datagraph"
         ? ((ioType + ".grayscale") as NODE_TYPES)
         : "generator.color"
     );
-    console.log(color);
     const borderRadius = 12;
 
     return (
@@ -85,57 +83,59 @@ export default class MaterialNode extends Component<any, any> {
           }}
         >
           {/* Inputs */}
-          {inputs.map((input, index) => {
-            console.log(input.key);
-            const connectionColor = getNodeConnectionColors(input.key);
-            return (
-              <div
-                key={index}
-                style={{ display: "flex", alignItems: "center" }}
-              >
-                <Socket
-                  type="input"
-                  color={connectionColor}
-                  socket={input.socket}
-                  io={input}
-                  innerRef={bindSocket}
-                />
-                {!input.showControl() && (
-                  <div style={{ fontWeight: "bolder", fontSize: 17 }}>
-                    {input.name}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-          {/* Outputs */}
-          {outputs.map((output, index) => {
-            const connectionColor = getNodeConnectionColors(output.key);
-            return (
-              <div
-                key={index}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  paddingTop: 5,
-                  paddingBottom: 5,
-                }}
-              >
-                <div style={{ fontWeight: "bolder", fontSize: 17 }}>
-                  {output.name}
+          <div>
+            {inputs.map((input, index) => {
+              const connectionColor = getNodeConnectionColors(input.key);
+              return (
+                <div
+                  key={index}
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <Socket
+                    type="input"
+                    color={connectionColor}
+                    socket={input.socket}
+                    io={input}
+                    innerRef={bindSocket}
+                  />
+                  {!input.showControl() && (
+                    <div style={{ fontWeight: "bolder", fontSize: 17 }}>
+                      {input.name}
+                    </div>
+                  )}
                 </div>
-                <Socket
-                  type="output"
-                  color={connectionColor}
-                  socket={output.socket}
-                  io={output}
-                  innerRef={bindSocket}
-                />
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+          <div>
+            {/* Outputs */}
+            {outputs.map((output, index) => {
+              const connectionColor = getNodeConnectionColors(output.key);
+              return (
+                <div
+                  key={index}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                  }}
+                >
+                  <div style={{ fontWeight: "bolder", fontSize: 17 }}>
+                    {output.name}
+                  </div>
+                  <Socket
+                    type="output"
+                    color={connectionColor}
+                    socket={output.socket}
+                    io={output}
+                    innerRef={bindSocket}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
-
         {/* Controls */}
         {controls.map((control) => (
           <Control
