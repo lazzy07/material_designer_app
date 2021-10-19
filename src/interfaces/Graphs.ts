@@ -13,4 +13,4 @@ export interface Graphs extends PackageElement {
   author?: Author;
 }
 
-export type GRAPH_TYPES = "datagraph" | "shadergraph" | "kernelgraph";
+export type GRAPH_TYPES = "dataGraph" | "shaderGraph" | "kernelGraph";

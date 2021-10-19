@@ -221,7 +221,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
-                  onClick: () => this.addGraph("shadergraph"),
+                  onClick: () => this.addGraph("shaderGraph"),
                 },
                 {
                   label: "Create Data Graph",
@@ -232,7 +232,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
-                  onClick: () => this.addGraph("datagraph"),
+                  onClick: () => this.addGraph("dataGraph"),
                 },
                 {
                   label: "Create Kernel Graph",
@@ -243,7 +243,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
-                  onClick: () => this.addGraph("kernelgraph"),
+                  onClick: () => this.addGraph("kernelGraph"),
                 },
               ],
             },
@@ -274,7 +274,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
-                  onClick: () => this.addGraph("shadergraph"),
+                  onClick: () => this.addGraph("shaderGraph"),
                 },
                 {
                   label: "Create Data Graph",
@@ -285,7 +285,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
-                  onClick: () => this.addGraph("datagraph"),
+                  onClick: () => this.addGraph("dataGraph"),
                 },
                 {
                   label: "Create Kernel Graph",
@@ -296,7 +296,7 @@ class OutlinerComponent extends Component<Props, State> {
                       style={{ color: defaultColors.FONT_COLOR }}
                     />
                   ),
-                  onClick: () => this.addGraph("kernelgraph"),
+                  onClick: () => this.addGraph("kernelGraph"),
                 },
                 {
                   label: "Rename",
@@ -395,7 +395,7 @@ class OutlinerComponent extends Component<Props, State> {
         };
 
         switch (graph.type) {
-          case "shadergraph":
+          case "shaderGraph":
             graphOutlinerElem.icon = (
               <FontAwesomeIcon
                 icon={faProjectDiagram}
@@ -414,7 +414,7 @@ class OutlinerComponent extends Component<Props, State> {
                 label: this.renderOutlinerLabel(
                   "Data Graph",
                   graph.dataGraph!.id,
-                  "datagraph"
+                  "dataGraph"
                 ),
                 isSelected: this.state.clicked === graph.dataGraph!.id,
                 icon: (
@@ -428,11 +428,11 @@ class OutlinerComponent extends Component<Props, State> {
             graphOutlinerElem.label = this.renderOutlinerLabel(
               graph.name,
               graph.id,
-              "shadergraph"
+              "shaderGraph"
             );
             break;
 
-          case "kernelgraph":
+          case "kernelGraph":
             graphOutlinerElem.icon = (
               <FontAwesomeIcon icon={faCode} style={{ marginRight: 10 }} />
             );
@@ -449,7 +449,7 @@ class OutlinerComponent extends Component<Props, State> {
                 label: this.renderOutlinerLabel(
                   "Data Graph",
                   graph.dataGraph!.id,
-                  "datagraph"
+                  "dataGraph"
                 ),
                 icon: (
                   <FontAwesomeIcon
@@ -463,11 +463,11 @@ class OutlinerComponent extends Component<Props, State> {
             graphOutlinerElem.label = this.renderOutlinerLabel(
               graph.name,
               graph.id,
-              "kernelgraph"
+              "kernelGraph"
             );
             break;
 
-          case "datagraph":
+          case "dataGraph":
             graphOutlinerElem.icon = (
               <FontAwesomeIcon
                 icon={faSquareRootAlt}
@@ -481,7 +481,7 @@ class OutlinerComponent extends Component<Props, State> {
             graphOutlinerElem.label = this.renderOutlinerLabel(
               graph.name,
               graph.id,
-              "datagraph"
+              "dataGraph"
             );
 
             break;
@@ -555,11 +555,11 @@ class OutlinerComponent extends Component<Props, State> {
         const graph = elem.data as Graphs;
         let type: GRAPH_TYPES;
         if (graph.dataGraph!.id === id) {
-          type = "datagraph";
+          type = "dataGraph";
         } else if (graph.kernelGraph?.id === id) {
-          type = "kernelgraph";
+          type = "kernelGraph";
         } else {
-          type = "shadergraph";
+          type = "shaderGraph";
         }
         this.props.setSelected(type, elem.data!.id);
       }

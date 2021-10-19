@@ -2,21 +2,25 @@
   "id": "examplenode",
   "name": "Exampe Node",
   "type": "generator.grayscale",
-  "graphType": "shadergraph",
+  "graphType": "shaderGraph",
   "library": {
     "title": "core",
     "id": "",
     "version": "^1.0.0"
   },
   "function": "helloWorld",
-  "inputs": [{
-    "title": "Hello",
-    "type": "grayscale"
-  }],
-  "outputs": [{
-    "title": "Image",
-    "type": "grayscale"
-  }],
+  "inputs": [
+    {
+      "title": "Hello",
+      "type": "grayscale"
+    }
+  ],
+  "outputs": [
+    {
+      "title": "Image",
+      "type": "grayscale"
+    }
+  ],
   "data": {
     "parameters": [],
     "data": {}

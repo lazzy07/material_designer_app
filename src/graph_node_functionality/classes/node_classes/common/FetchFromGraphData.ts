@@ -6,9 +6,9 @@ export const fetchFromGraphData = (
   graph: Graphs
 ): MaterialGraph => {
   switch (graphType) {
-    case "shadergraph":
+    case "shaderGraph":
       return graph.shaderGraph!;
-    case "datagraph":
+    case "dataGraph":
       return graph.dataGraph!;
 
     default:

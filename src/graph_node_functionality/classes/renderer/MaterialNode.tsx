@@ -38,7 +38,7 @@ export default class MaterialNode extends Component<any, any> {
     const graphData = fetchFromGraphData(node.meta.engineType, node.data);
     const ioType = graphData.ioType;
     const color = getNodeColor(
-      node.meta.engineType === "datagraph"
+      node.meta.engineType === "dataGraph"
         ? ((ioType + ".grayscale") as NODE_TYPES)
         : "generator.color"
     );

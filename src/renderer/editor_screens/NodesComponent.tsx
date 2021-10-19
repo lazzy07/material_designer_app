@@ -41,7 +41,7 @@ class NodesComponent extends Component<Props> {
 
   render() {
     const nodeLib =
-      this.props.selectedGraphType === "shadergraph"
+      this.props.selectedGraphType === "shaderGraph"
         ? this.props.localShaderNodes
         : this.props.localDataNodes;
 

@@ -19,7 +19,7 @@ export const getPackageElementById = (
   const project = rStore.getState().project as ProjectReducer;
 
   if (project.id === id) {
-    return { contentType: "project", graphType: "datagraph" };
+    return { contentType: "project", graphType: "dataGraph" };
   }
 
   const data = searchPackages(project.packages, id, project.id);

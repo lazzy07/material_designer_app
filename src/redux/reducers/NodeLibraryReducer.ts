@@ -11,7 +11,7 @@ const initState: NodeLibraryReducer = {
     {
       id: "1",
       name: "Number1 Input",
-      type: "datagraph",
+      type: "dataGraph",
       contentType: "graph",
       children: [],
       dataGraph: {
@@ -38,7 +38,7 @@ const initState: NodeLibraryReducer = {
     {
       id: "2",
       name: "Number1 Input & Slider",
-      type: "datagraph",
+      type: "dataGraph",
       contentType: "graph",
       children: [],
       dataGraph: {

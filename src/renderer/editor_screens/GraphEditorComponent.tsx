@@ -64,34 +64,35 @@ class GraphEditorComponent extends Component<Props, State> {
   selectContextMenuType = () => {
     let canPropagate = true;
     const editor =
-      this.props.graphType === "shadergraph"
+      this.props.graphType === "shaderGraph"
         ? this.shaderGraphEditor
         : this.dataGraphEditor;
-
-    editor!.getReteEditor().on("contextmenu", (e) => {
-      if (e.node) {
-        this.timeOut = setTimeout(() => {
-          canPropagate = true;
-        }, 300);
-        canPropagate = false;
-        this.setState({
-          selectedNode: e.node,
-          contextMenuType: "node",
-        });
-      } else {
-        if (canPropagate) {
+    if (editor) {
+      editor!.getReteEditor().on("contextmenu", (e) => {
+        if (e.node) {
+          this.timeOut = setTimeout(() => {
+            canPropagate = true;
+          }, 300);
+          canPropagate = false;
           this.setState({
-            selectedNode: null,
-            contextMenuType: "editor",
+            selectedNode: e.node,
+            contextMenuType: "node",
           });
+        } else {
+          if (canPropagate) {
+            this.setState({
+              selectedNode: null,
+              contextMenuType: "editor",
+            });
+          }
         }
-      }
-    });
+      });
+    }
   };
 
   onCallContextMenu = () => {
     const editor =
-      this.props.graphType === "shadergraph"
+      this.props.graphType === "shaderGraph"
         ? this.shaderGraphEditor
         : this.dataGraphEditor;
     if (editor) {
@@ -101,11 +102,11 @@ class GraphEditorComponent extends Component<Props, State> {
 
   onContextMenuItemClick = async (item: Graphs) => {
     const lib: NodeLibrary =
-      this.props.graphType === "shadergraph"
+      this.props.graphType === "shaderGraph"
         ? this.shaderNodeLibrary
         : this.dataNodeLibrary;
     const editor =
-      this.props.graphType === "shadergraph"
+      this.props.graphType === "shaderGraph"
         ? this.shaderGraphEditor
         : this.dataGraphEditor;
     for (const node of lib.getReteNodes()) {
@@ -127,7 +128,7 @@ class GraphEditorComponent extends Component<Props, State> {
   };
 
   onClickDeleteNode = (node: Node) => {
-    if (this.props.graphType === "shadergraph") {
+    if (this.props.graphType === "shaderGraph") {
       this.shaderGraphEditor?.getReteEditor().removeNode(node);
     } else {
       this.dataGraphEditor?.getReteEditor().removeNode(node);
@@ -135,7 +136,7 @@ class GraphEditorComponent extends Component<Props, State> {
   };
 
   onClickCopyNode = (node: Node) => {
-    if (this.props.graphType === "shadergraph") {
+    if (this.props.graphType === "shaderGraph") {
       this.shaderGraphEditor?.getReteEditor().addNode(node);
     } else {
       this.shaderGraphEditor?.getReteEditor().addNode(node);
@@ -151,17 +152,21 @@ class GraphEditorComponent extends Component<Props, State> {
   };
 
   initEditors = () => {
-    this.dataGraphEditor = new DataNodeEditor(this.dataDomRef.current!);
-    this.shaderGraphEditor = new DataNodeEditor(this.shaderDomRef.current!);
+    if (this.dataDomRef.current) {
+      this.dataGraphEditor = new DataNodeEditor(this.dataDomRef.current!);
+      this.dataGraphEditor.enableEditorPlugins();
+      this.dataGraphEditor.handleSelectNodes();
+      this.dataGraphEditor.registerNodes(this.dataNodeLibrary);
+      this.dataGraphEditor.onEditorChange();
+    }
 
-    this.dataGraphEditor.enableEditorPlugins();
-    this.shaderGraphEditor.enableEditorPlugins();
-
-    this.dataGraphEditor.handleSelectNodes();
-    this.shaderGraphEditor.handleSelectNodes();
-
-    this.dataGraphEditor.registerNodes(this.dataNodeLibrary);
-    this.shaderGraphEditor.registerNodes(this.shaderNodeLibrary);
+    if (this.shaderDomRef.current) {
+      this.shaderGraphEditor = new DataNodeEditor(this.shaderDomRef.current!);
+      this.shaderGraphEditor.enableEditorPlugins();
+      this.shaderGraphEditor.handleSelectNodes();
+      this.shaderGraphEditor.registerNodes(this.shaderNodeLibrary);
+      this.shaderGraphEditor.onEditorChange();
+    }
   };
 
   componentDidMount = async () => {
@@ -227,7 +232,7 @@ class GraphEditorComponent extends Component<Props, State> {
           selectedNode={this.state.selectedNode}
           selectedType={this.state.contextMenuType}
           localLibraryNodes={
-            this.props.graphType === "shadergraph"
+            this.props.graphType === "shaderGraph"
               ? this.props.localLibShaderNodes
               : this.props.localLibDataNodes
           }
@@ -259,7 +264,7 @@ class GraphEditorComponent extends Component<Props, State> {
                 width,
                 height,
                 display:
-                  this.props.graphType === "shadergraph" ? undefined : "none",
+                  this.props.graphType === "shaderGraph" ? undefined : "none",
               }}
             ></div>
             <div
@@ -269,7 +274,7 @@ class GraphEditorComponent extends Component<Props, State> {
                 width,
                 height,
                 display:
-                  this.props.graphType === "shadergraph" ? "none" : undefined,
+                  this.props.graphType === "shaderGraph" ? "none" : undefined,
               }}
             ></div>
           </div>

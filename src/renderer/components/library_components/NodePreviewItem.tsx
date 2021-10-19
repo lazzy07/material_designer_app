@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Graphs } from "../../../interfaces/Graphs";
-import { NodeData } from "../../../interfaces/NodeData";
 import { NODE_TYPES } from "../../../nodes/NodeTypes";
 import { defaultColors } from "../../constants/Colors";
 import { getNodeColor } from "./../../services/NodeColors";
@@ -15,7 +14,7 @@ export default class NodePreviewItem extends Component<Props> {
     const { type } = this.props.data;
     let nodeType: string = "generator.color";
 
-    if (type === "datagraph") {
+    if (type === "dataGraph") {
       nodeType = this.props.data.dataGraph?.ioType + ".color";
     }
 
@@ -55,8 +54,8 @@ export default class NodePreviewItem extends Component<Props> {
 
   renderType = () => {
     let type = "";
-
-    if (this.props.data.type === "datagraph") {
+    console.log(this.props.data.type);
+    if (this.props.data.type === "dataGraph") {
       type = this.props.data.dataGraph?.ioType || "";
     }
 
