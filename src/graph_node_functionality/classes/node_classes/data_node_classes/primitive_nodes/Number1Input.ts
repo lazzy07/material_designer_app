@@ -11,7 +11,7 @@ export class Number1Input extends DataInputNode<Number1Properties> {
     node.addOutput(new Output("number", "Number", NUMBER_SOCKET));
 
     node.addControl(
-      new NameController("Number1Input", this.data.id, this.data.name, node)
+      new NameController("Num1", this.data.id, this.data.name, node)
     );
   }
 }

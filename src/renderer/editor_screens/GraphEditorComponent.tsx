@@ -157,6 +157,9 @@ class GraphEditorComponent extends Component<Props, State> {
     this.dataGraphEditor.enableEditorPlugins();
     this.shaderGraphEditor.enableEditorPlugins();
 
+    this.dataGraphEditor.handleSelectNodes();
+    this.shaderGraphEditor.handleSelectNodes();
+
     this.dataGraphEditor.registerNodes(this.dataNodeLibrary);
     this.shaderGraphEditor.registerNodes(this.shaderNodeLibrary);
   };

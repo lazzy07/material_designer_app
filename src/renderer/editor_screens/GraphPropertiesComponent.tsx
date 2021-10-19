@@ -9,16 +9,24 @@ import Slider2 from "../components/graph_property_inputs/Slider2";
 import Switch from "../components/graph_property_inputs/Switch";
 import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
 import ColorPicker1 from "../components/graph_property_inputs/ColorPicker1";
-import "../scss/graphcomponentproperties.scss";
 import Lut1 from "../components/graph_property_inputs/Lut1";
 import { ColorLUT } from "../../interfaces/ColorLutData";
+import "../scss/graphcomponentproperties.scss";
+import { connect } from "react-redux";
+import { Store } from "../../redux/reducers";
+import { PackageElement } from "../../interfaces/PackageElement";
+
+interface Props {
+  selectedGraph: number;
+  packages: PackageElement[];
+}
 
 interface State {
   colors: ColorLUT[];
 }
 
-export default class GraphPropertiesComponent extends Component<any, State> {
-  constructor(props) {
+class GraphPropertiesComponent extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -36,23 +44,17 @@ export default class GraphPropertiesComponent extends Component<any, State> {
   }
 
   render() {
-    return (
-      <div>
-        {/* <Button title="Hello Wolrd" />
-        <InputNumber />
-        <InputString />
-        <Switch />
-        <Slider1 />
-        <Slider2 />
-        <InputAndSlider1 />
-        <InputAndSlider2 />
-        <ColorPicker3 id="hel" /> */}
-        <Lut1
-          id={"hello"}
-          colors={this.state.colors}
-          onChangeLut={(lut) => this.setState({ colors: lut })}
-        />
-      </div>
-    );
+    console.log(this.props.selectedGraph);
+    console.log(this.props.packages);
+    return <div></div>;
   }
 }
+
+const mapStateToProps = (state: Store) => {
+  return {
+    selectedGraph: state.system.selectedItems.node,
+    packages: state.project.packages,
+  };
+};
+
+export default connect(mapStateToProps)(GraphPropertiesComponent);

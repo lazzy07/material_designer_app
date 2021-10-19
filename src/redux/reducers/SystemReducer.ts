@@ -1,7 +1,11 @@
 import { ImportTypes } from "../../renderer/services/ImportImageData";
 import { ImportAssetFile } from "../../interfaces/ImportAssetFile";
 import { Action } from "../store";
-import { SET_IMPORT_FILES, SET_SELECTED } from "../actions/SystemActions";
+import {
+  SET_IMPORT_FILES,
+  SET_SELECTED,
+  SET_SELECTED_NODE,
+} from "../actions/SystemActions";
 import { OutlinerTypes } from "../../interfaces/OutlinerTypes";
 import { GRAPH_TYPES } from "../../interfaces/Graphs";
 
@@ -13,8 +17,8 @@ export interface SystemReducer {
   selectedItems: {
     graph: string;
     graphType: GRAPH_TYPES | null;
-    node: string;
-    previewNode: string;
+    node: number;
+    previewNode: number;
   };
 }
 
@@ -26,8 +30,8 @@ const initialState: SystemReducer = {
   selectedItems: {
     graph: "",
     graphType: null,
-    node: "",
-    previewNode: "",
+    node: -1,
+    previewNode: -1,
   },
 };
 
@@ -45,10 +49,18 @@ export const systemReducer = (
       return {
         ...state,
         selectedItems: {
+          ...state.selectedItems,
           graph: action.payload.id,
           graphType: action.payload.graphType,
-          node: "",
-          previewNode: "",
+        },
+      };
+
+    case SET_SELECTED_NODE:
+      return {
+        ...state,
+        selectedItems: {
+          ...state.selectedItems,
+          node: action.payload,
         },
       };
     default:

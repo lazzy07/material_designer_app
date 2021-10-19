@@ -35,7 +35,7 @@ export const setSelected = (graphType: GRAPH_TYPES, id: string) => {
   };
 };
 
-export const setSelectedNode = (id: string) => {
+export const setSelectedNode = (id: number) => {
   return {
     type: SET_SELECTED_NODE,
     payload: id,

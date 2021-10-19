@@ -17,9 +17,11 @@ export default class NameControllerRenderer extends Component<Props, any> {
           padding: 5,
           display: "flex",
           alignItems: "center",
+          textAlign: "center",
+          justifyContent: "center",
         }}
       >
-        <h2>{this.props.node.name}</h2>
+        <h1>{this.props.emitter}</h1>
       </div>
     );
   }
