@@ -70,6 +70,7 @@ export default class MaterialNode extends Component<any, any> {
             padding: 7,
             fontWeight: "bolder",
             fontSize: 20,
+            textShadow: "0 0 10px rgba(0,0,0,0.7)",
           }}
         >
           {node.name}
