@@ -54,7 +54,6 @@ export default class NodePreviewItem extends Component<Props> {
 
   renderType = () => {
     let type = "";
-    console.log(this.props.data.type);
     if (this.props.data.type === "dataGraph") {
       type = this.props.data.dataGraph?.ioType || "";
     }

@@ -9,6 +9,7 @@ import MaterialNode from "../../renderer/MaterialNode";
 import { Mouse } from "../../../../packages/rete-1.4.4/view/area";
 import NodeLibrary from "./NodeLibrary";
 import { setSelectedNode } from "../../../../redux/actions/SystemActions";
+import { Data } from "../../../../packages/rete-1.4.4/core/data";
 
 export default abstract class NodeEditor {
   dom: HTMLDivElement;
@@ -55,6 +56,10 @@ export default abstract class NodeEditor {
         // await engine.process(this.editorCore!.toJSON());
       }
     );
+  };
+
+  loadFromStore = (data: Data) => {
+    this.editorCore.fromJSON(data);
   };
 
   handleSelectNodes = () => {

@@ -19,12 +19,15 @@ import { Node } from "../../packages/rete-1.4.4";
 import DataNodeLibrary from "../../graph_node_functionality/classes/node_classes/data_node_classes/DataNodeLibrary";
 import ShaderNodeLibrary from "../../graph_node_functionality/classes/node_classes/shader_node_classes/ShaderNodeLibrary";
 import NodeLibrary from "../../graph_node_functionality/classes/node_classes/common/NodeLibrary";
+import { getPackageElementById } from "../services/GetPackageElement";
+import _ from "lodash";
 
 interface Props {
   dimensions: { width: number; height: number };
   graphType: GRAPH_TYPES | null;
   localLibShaderNodes: Graphs[];
   localLibDataNodes: Graphs[];
+  graph: Graphs | undefined;
 }
 
 interface State {
@@ -169,10 +172,34 @@ class GraphEditorComponent extends Component<Props, State> {
     }
   };
 
+  loadDataFromStore = () => {
+    //Load Data from store
+    const editor =
+      this.props.graphType === "shaderGraph"
+        ? this.shaderGraphEditor
+        : this.dataGraphEditor;
+    if (editor) {
+      if (this.props.graph && this.props.graphType) {
+        const graphElem = this.props.graph[this.props.graphType!];
+        console.log(graphElem);
+        if (graphElem) {
+          if (!_.isEmpty(graphElem.data)) {
+            console.log(graphElem.data);
+            editor.loadFromStore(graphElem.data);
+          } else {
+            console.log("editor cleared");
+            editor.getReteEditor().clear();
+          }
+        }
+      }
+    }
+  };
+
   componentDidMount = async () => {
     this.listenToNodeMenuOpen();
     this.initEditors();
     this.selectContextMenuType();
+    this.loadDataFromStore();
   };
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -180,7 +207,12 @@ class GraphEditorComponent extends Component<Props, State> {
       if (!this.dataGraphEditor || !this.shaderGraphEditor) {
         this.initEditors();
       }
+      this.loadDataFromStore();
       this.selectContextMenuType();
+    }
+
+    if (prevProps.graph != this.props.graph) {
+      this.loadDataFromStore();
     }
   }
 
@@ -285,7 +317,15 @@ class GraphEditorComponent extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: Store) => {
+  const pkg = getPackageElementById(state.system.selectedItems.graph);
+  let graph: Graphs | undefined = undefined;
+
+  if (pkg) {
+    graph = pkg.data as Graphs;
+  }
+
   return {
+    graph,
     graphType: state.system.selectedItems.graphType,
     localLibShaderNodes: state.graphLibraries.shaderGraphNodes,
     localLibDataNodes: state.graphLibraries.dataGraphNodes,
