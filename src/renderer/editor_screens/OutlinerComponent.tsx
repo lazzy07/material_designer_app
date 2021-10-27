@@ -37,9 +37,9 @@ import { showDialogBox } from "../services/QuestionDialog";
 interface Props {
   dimensions: { width: number; height: number };
   project: Project;
-  selectedGraph: string;
+  selectedGraph: Graphs | null;
   selectedGraphType: GRAPH_TYPES | null;
-  setSelected: (graphType: GRAPH_TYPES, id: string) => void;
+  setSelected: (graphType: GRAPH_TYPES, graph: Graphs) => void;
 }
 
 interface State {
@@ -183,7 +183,8 @@ class OutlinerComponent extends Component<Props, State> {
     ) : (
       <div>
         {name}{" "}
-        {this.props.selectedGraph === elem?.data?.id &&
+        {this.props.selectedGraph &&
+          this.props.selectedGraph.id === elem?.data?.id &&
           this.props.selectedGraphType === type && (
             <FontAwesomeIcon style={{ marginLeft: 20 }} icon={faEye} />
           )}
@@ -561,7 +562,7 @@ class OutlinerComponent extends Component<Props, State> {
         } else {
           type = "shaderGraph";
         }
-        this.props.setSelected(type, elem.data!.id);
+        this.props.setSelected(type, elem.data! as Graphs);
       }
     }
   };

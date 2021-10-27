@@ -317,7 +317,7 @@ class GraphEditorComponent extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: Store) => {
-  const pkg = getPackageElementById(state.system.selectedItems.graph);
+  const pkg = getPackageElementById(state.system.selectedItems.graph?.id || "");
   let graph: Graphs | undefined = undefined;
 
   if (pkg) {

@@ -4,10 +4,10 @@ import { Action } from "../store";
 import {
   SET_IMPORT_FILES,
   SET_SELECTED,
+  SET_SELECTED_GRAPH_DATA,
   SET_SELECTED_NODE,
 } from "../actions/SystemActions";
-import { OutlinerTypes } from "../../interfaces/OutlinerTypes";
-import { GRAPH_TYPES } from "../../interfaces/Graphs";
+import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 
 export interface SystemReducer {
   importingAssets: {
@@ -15,7 +15,7 @@ export interface SystemReducer {
     assets: ImportAssetFile[];
   };
   selectedItems: {
-    graph: string;
+    graph: Graphs | null;
     graphType: GRAPH_TYPES | null;
     node: number;
     previewNode: number;
@@ -28,7 +28,7 @@ const initialState: SystemReducer = {
     assets: [],
   },
   selectedItems: {
-    graph: "",
+    graph: null,
     graphType: null,
     node: -1,
     previewNode: -1,
@@ -50,7 +50,7 @@ export const systemReducer = (
         ...state,
         selectedItems: {
           ...state.selectedItems,
-          graph: action.payload.id,
+          graph: action.payload.graph,
           graphType: action.payload.graphType,
         },
       };
@@ -61,6 +61,20 @@ export const systemReducer = (
         selectedItems: {
           ...state.selectedItems,
           node: action.payload,
+        },
+      };
+
+    case SET_SELECTED_GRAPH_DATA:
+      return {
+        ...state,
+        selectedItems: {
+          ...state.selectedItems,
+          graph: {
+            ...state.selectedItems.graph!,
+            [state.selectedItems.graphType!]: {
+              ...action.payload,
+            },
+          },
         },
       };
     default:
