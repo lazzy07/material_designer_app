@@ -11,14 +11,18 @@ import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
 import ColorPicker1 from "../components/graph_property_inputs/ColorPicker1";
 import Lut1 from "../components/graph_property_inputs/Lut1";
 import { ColorLUT } from "../../interfaces/ColorLutData";
-import "../scss/graphcomponentproperties.scss";
 import { connect } from "react-redux";
 import { Store } from "../../redux/reducers";
-import { PackageElement } from "../../interfaces/PackageElement";
+import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
+import { Data } from "../../packages/rete-1.4.4/core/data";
+import { NodePropertyData } from "../../graph_node_functionality/interfaces/NodePropertyData";
+import { getSelectedNode } from "../services/NodeServices";
+import "../scss/graphcomponentproperties.scss";
 
 interface Props {
-  selectedGraph: number;
-  packages: PackageElement[];
+  selectedNode: number;
+  selectedGraph: Graphs | null;
+  selectedGraphType: GRAPH_TYPES | null;
 }
 
 interface State {
@@ -50,8 +54,9 @@ class GraphPropertiesComponent extends Component<Props, State> {
 
 const mapStateToProps = (state: Store) => {
   return {
-    selectedGraph: state.system.selectedItems.node,
-    packages: state.project.packages,
+    selectedNode: state.system.selectedItems.node,
+    selectedGraph: state.system.selectedItems.graph,
+    selectedGraphType: state.system.selectedItems.graphType,
   };
 };
 

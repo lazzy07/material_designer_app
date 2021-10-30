@@ -8,6 +8,7 @@ import {
   SET_SELECTED_NODE,
 } from "../actions/SystemActions";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
+import { EDIT_GRAPH_DATA } from "../actions/GraphActions";
 
 export interface SystemReducer {
   importingAssets: {
@@ -64,7 +65,7 @@ export const systemReducer = (
         },
       };
 
-    case SET_SELECTED_GRAPH_DATA:
+    case EDIT_GRAPH_DATA:
       return {
         ...state,
         selectedItems: {

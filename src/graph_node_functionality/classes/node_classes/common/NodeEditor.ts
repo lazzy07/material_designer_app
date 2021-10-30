@@ -61,7 +61,6 @@ export default abstract class NodeEditor {
 
     this.editorCore.on(["nodecreated", "noderemoved"], () => {
       const json = this.editorCore!.toJSON();
-      console.log(json);
       const state: Store = store.getState();
       const selectedItems = state.system.selectedItems;
 

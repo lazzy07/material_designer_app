@@ -110,7 +110,7 @@ export default class EditorScreen extends Component<Props, State> {
       localStorage.removeItem("mainConfig");
       localStorage.removeItem("subEditorData");
       ipcRenderer.send(IpcMessages.CLOSE_ALL_SUB_EDITORS);
-      window.location.reload(false);
+      window.location.reload();
     });
   };
 
