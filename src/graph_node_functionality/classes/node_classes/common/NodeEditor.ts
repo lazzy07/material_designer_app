@@ -10,6 +10,8 @@ import { Mouse } from "../../../../packages/rete-1.4.4/view/area";
 import NodeLibrary from "./NodeLibrary";
 import { setSelectedNode } from "../../../../redux/actions/SystemActions";
 import { Data } from "../../../../packages/rete-1.4.4/core/data";
+import { editGraphData } from "../../../../redux/actions/GraphActions";
+import { Store } from "../../../../redux/reducers";
 
 export default abstract class NodeEditor {
   dom: HTMLDivElement;
@@ -56,6 +58,15 @@ export default abstract class NodeEditor {
         // await engine.process(this.editorCore!.toJSON());
       }
     );
+
+    this.editorCore.on(["nodecreated", "noderemoved"], () => {
+      const json = this.editorCore!.toJSON();
+      console.log(json);
+      const state: Store = store.getState();
+      const selectedItems = state.system.selectedItems;
+
+      store.dispatch(editGraphData(selectedItems.graphType!, json));
+    });
   };
 
   loadFromStore = (data: Data) => {

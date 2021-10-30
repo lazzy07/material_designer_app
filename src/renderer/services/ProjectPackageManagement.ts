@@ -3,6 +3,7 @@ import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { PackageElement } from "../../interfaces/PackageElement";
 import { changeGraphData } from "../../redux/actions/GraphActions";
 import { ProjectReducer } from "../../redux/reducers/ProjectReducer";
+import { EDITOR_VERSION } from "../constants/Versions";
 import { rStore } from "../renderer";
 import { getPackageElementById } from "./GetPackageElement";
 
@@ -30,19 +31,19 @@ export const createGraph = (
     createdAt: new Date(),
     dataGraph: {
       id: v4(),
-      data: {},
+      data: { id: "materialdesigner" + EDITOR_VERSION, nodes: {} },
       parentId: id,
       createdAt: new Date(),
     },
     kernelGraph: {
       id: v4(),
-      data: {},
+      data: { id: "materialdesigner" + EDITOR_VERSION, nodes: {} },
       parentId: id,
       createdAt: new Date(),
     },
     shaderGraph: {
       id: v4(),
-      data: {},
+      data: { id: "materialdesigner" + EDITOR_VERSION, nodes: {} },
       parentId: id,
       createdAt: new Date(),
     },

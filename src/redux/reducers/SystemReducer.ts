@@ -71,8 +71,9 @@ export const systemReducer = (
           ...state.selectedItems,
           graph: {
             ...state.selectedItems.graph!,
-            [state.selectedItems.graphType!]: {
-              ...action.payload,
+            [action.payload.selectedType!]: {
+              ...state.selectedItems.graph![action.payload.selectedType!],
+              data: { ...action.payload.packageData },
             },
           },
         },

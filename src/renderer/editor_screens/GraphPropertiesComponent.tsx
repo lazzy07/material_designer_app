@@ -44,8 +44,6 @@ class GraphPropertiesComponent extends Component<Props, State> {
   }
 
   render() {
-    console.log(this.props.selectedGraph);
-    console.log(this.props.packages);
     return <div></div>;
   }
 }

@@ -21,6 +21,7 @@ import ShaderNodeLibrary from "../../graph_node_functionality/classes/node_class
 import NodeLibrary from "../../graph_node_functionality/classes/node_classes/common/NodeLibrary";
 import { getPackageElementById } from "../services/GetPackageElement";
 import _ from "lodash";
+import { Data } from "../../packages/rete-1.4.4/core/data";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -185,7 +186,7 @@ class GraphEditorComponent extends Component<Props, State> {
         if (graphElem) {
           if (!_.isEmpty(graphElem.data)) {
             console.log(graphElem.data);
-            editor.loadFromStore(graphElem.data);
+            editor.loadFromStore(graphElem.data as Data);
           } else {
             console.log("editor cleared");
             editor.getReteEditor().clear();

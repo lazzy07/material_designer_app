@@ -1,11 +1,12 @@
 import { NodePropertyData } from "../graph_node_functionality/interfaces/NodePropertyData";
+import { Data } from "../packages/rete-1.4.4/core/data";
 import { Author } from "./Author";
 import { NODE_IO_TYPE } from "./GraphNodeIOType";
 
 export interface MaterialGraph {
   parentId: string;
   id: string;
-  data: NodePropertyData<any>[] | any;
+  data: Data | NodePropertyData<any>[];
   author?: Author;
   createdAt?: Date;
   ioType?: NODE_IO_TYPE;
