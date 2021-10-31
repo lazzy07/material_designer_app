@@ -18,6 +18,8 @@ import { Data } from "../../packages/rete-1.4.4/core/data";
 import { NodePropertyData } from "../../graph_node_functionality/interfaces/NodePropertyData";
 import { getSelectedNode } from "../services/NodeServices";
 import "../scss/graphcomponentproperties.scss";
+import { DataGraph } from "../../interfaces/DataGraph";
+import { dataGraphToElements } from "../services/DataGraphToElements";
 
 interface Props {
   selectedNode: number;
@@ -47,7 +49,22 @@ class GraphPropertiesComponent extends Component<Props, State> {
     };
   }
 
+  renderNodeData = () => {
+    const node = getSelectedNode(
+      this.props.selectedGraph,
+      this.props.selectedGraphType,
+      this.props.selectedNode
+    );
+
+    if (node) {
+      const dataGraph: DataGraph = node.data.dataGraph as DataGraph;
+
+      dataGraphToElements(dataGraph);
+    }
+  };
+
   render() {
+    this.renderNodeData();
     return <div></div>;
   }
 }
