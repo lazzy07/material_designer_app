@@ -4,7 +4,10 @@ import { Graphs } from "../../interfaces/Graphs";
 import { Data } from "../../packages/rete-1.4.4/core/data";
 import { renderDatagraphElement } from "./RenderDataGraphElements";
 
-export const dataGraphToElements = (dataGraph: DataGraph) => {
+export const dataGraphToElements = (
+  dataGraph: DataGraph,
+  selectedNode: number
+) => {
   const isPrimitive = dataGraph.ioType;
   const elements: JSX.Element[] = [];
 
@@ -13,7 +16,7 @@ export const dataGraphToElements = (dataGraph: DataGraph) => {
     const options = dataGraph.data as NodePropertyData<any>[];
     let j = 0;
     for (const i of options) {
-      return renderDatagraphElement(i, j);
+      return renderDatagraphElement(i, j, selectedNode);
       j++;
     }
   } else {

@@ -14,10 +14,13 @@ import Lut3 from "../components/graph_property_inputs/Lut3";
 import ColorPicker1 from "../components/graph_property_inputs/ColorPicker1";
 import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
 import Switch from "../components/graph_property_inputs/Switch";
+import { store } from "../../redux/store";
+import { changeNodeData } from "../../redux/actions/GraphActions";
 
 export const renderDatagraphElement = (
   nodeProperty: NodePropertyData<any>,
-  index: number
+  index: number,
+  selectedNode: number
 ) => {
   return (
     <div>
@@ -31,12 +34,15 @@ export const renderDatagraphElement = (
       >
         <div>{nodeProperty.name}</div>
       </div>
-      <div>{selectGraphElement(nodeProperty)}</div>
+      <div>{selectGraphElement(nodeProperty, selectedNode)}</div>
     </div>
   );
 };
 
-const selectGraphElement = (nodeProperty: NodePropertyData<any>) => {
+const selectGraphElement = (
+  nodeProperty: NodePropertyData<any>,
+  selectedNode: number
+) => {
   const dataType = nodeProperty.dataType;
   const type = nodeProperty.inputType;
   if (dataType === "number" && type === "input") {
@@ -75,4 +81,8 @@ const selectGraphElement = (nodeProperty: NodePropertyData<any>) => {
   } else if (dataType === "boolean" && type === "switch") {
     return <Switch />;
   }
+};
+
+const onChangeGraphData = (selectedNode: number, data: any) => {
+  store.dispatch(changeNodeData(selectedNode, data));
 };

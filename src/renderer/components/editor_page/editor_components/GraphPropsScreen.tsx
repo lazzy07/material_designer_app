@@ -6,7 +6,7 @@ export default class GraphPropsScreen extends ScreenComponent {
   render() {
     return (
       <div>
-        <GraphPropertiesComponent />
+        <GraphPropertiesComponent width={this.state.width} />
       </div>
     );
   }

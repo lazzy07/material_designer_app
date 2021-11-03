@@ -25,6 +25,7 @@ interface Props {
   selectedNode: number;
   selectedGraph: Graphs | null;
   selectedGraphType: GRAPH_TYPES | null;
+  width: number;
 }
 
 interface State {
@@ -59,14 +60,18 @@ class GraphPropertiesComponent extends Component<Props, State> {
     if (node) {
       const dataGraph: DataGraph = node.data.dataGraph as DataGraph;
 
-      return dataGraphToElements(dataGraph);
+      return dataGraphToElements(dataGraph, this.props.selectedNode);
     }
 
     return null;
   };
 
   render() {
-    return <div>{this.renderNodeData()};</div>;
+    return (
+      <div style={{ width: this.props.width, padding: "10px 10px" }}>
+        {this.renderNodeData()}
+      </div>
+    );
   }
 }
 
