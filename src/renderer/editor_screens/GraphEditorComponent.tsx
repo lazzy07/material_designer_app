@@ -185,7 +185,6 @@ class GraphEditorComponent extends Component<Props, State> {
         console.log(graphElem);
         if (graphElem) {
           if (!_.isEmpty(graphElem.data)) {
-            console.log(graphElem.data);
             editor.loadFromStore(graphElem.data as Data);
           } else {
             console.log("editor cleared");

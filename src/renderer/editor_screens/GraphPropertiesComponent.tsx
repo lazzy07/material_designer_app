@@ -59,13 +59,14 @@ class GraphPropertiesComponent extends Component<Props, State> {
     if (node) {
       const dataGraph: DataGraph = node.data.dataGraph as DataGraph;
 
-      dataGraphToElements(dataGraph);
+      return dataGraphToElements(dataGraph);
     }
+
+    return null;
   };
 
   render() {
-    this.renderNodeData();
-    return <div></div>;
+    return <div>{this.renderNodeData()};</div>;
   }
 }
 
