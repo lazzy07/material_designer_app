@@ -4,7 +4,7 @@ import Slider1 from "./Slider1";
 
 interface Props {
   value: number;
-  onChange: (val: number) => {};
+  onChange: (val: number) => void;
 }
 
 export default class InputAndSlider1 extends Component<Props> {

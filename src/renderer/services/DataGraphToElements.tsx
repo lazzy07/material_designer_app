@@ -11,9 +11,10 @@ export const dataGraphToElements = (dataGraph: DataGraph) => {
   if (isPrimitive) {
     //Primitive type node has been queried
     const options = dataGraph.data as NodePropertyData<any>[];
-
+    let j = 0;
     for (const i of options) {
-      return renderDatagraphElement(i);
+      return renderDatagraphElement(i, j);
+      j++;
     }
   } else {
     //find all the generator types in the graph and render those data

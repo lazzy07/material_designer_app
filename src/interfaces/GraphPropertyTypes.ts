@@ -7,4 +7,5 @@ export type PROPERTY_TYPE =
   | "colorvec3"
   | "lut"
   | "lut3"
-  | "boolean";
+  | "boolean"
+  | "string";

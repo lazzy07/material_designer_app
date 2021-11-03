@@ -5,4 +5,5 @@ export type PROPERTY_INPUT_TYPE =
   | "button"
   | "dropdown"
   | "colorpicker"
-  | "lut";
+  | "lut"
+  | "switch";
