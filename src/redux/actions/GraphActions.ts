@@ -27,9 +27,13 @@ export const editGraphData = (
   };
 };
 
-export const changeNodeData = (selectedNode: number, data: any) => {
+export const changeNodeData = (
+  selectedNode: number,
+  data: Graphs,
+  graphType: GRAPH_TYPES = "dataGraph"
+) => {
   return {
     type: CHANGE_NODE_DATA,
-    payload: { selectedNode, data },
+    payload: { selectedNode, data, graphType },
   };
 };

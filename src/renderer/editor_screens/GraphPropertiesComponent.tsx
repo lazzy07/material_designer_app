@@ -59,7 +59,7 @@ class GraphPropertiesComponent extends Component<Props, State> {
 
     if (node) {
       const dataGraph: DataGraph = node.data.dataGraph as DataGraph;
-
+      console.log(this.props.selectedGraph);
       return dataGraphToElements(dataGraph, this.props.selectedNode);
     }
 

@@ -1,14 +1,15 @@
+import { CHANGE_NODE_DATA } from "./../actions/GraphActions";
 import { ImportTypes } from "../../renderer/services/ImportImageData";
 import { ImportAssetFile } from "../../interfaces/ImportAssetFile";
 import { Action } from "../store";
 import {
   SET_IMPORT_FILES,
   SET_SELECTED,
-  SET_SELECTED_GRAPH_DATA,
   SET_SELECTED_NODE,
 } from "../actions/SystemActions";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { EDIT_GRAPH_DATA } from "../actions/GraphActions";
+import { Data } from "../../packages/rete-1.4.4/core/data";
 
 export interface SystemReducer {
   importingAssets: {
@@ -75,6 +76,32 @@ export const systemReducer = (
             [action.payload.selectedType!]: {
               ...state.selectedItems.graph![action.payload.selectedType!],
               data: { ...action.payload.packageData },
+            },
+          },
+        },
+      };
+
+    case CHANGE_NODE_DATA:
+      const data = action.payload.data;
+      const selectedNode = action.payload.selectedNode;
+      const newDataGraph = {
+        ...state.selectedItems.graph![action.payload.graphType],
+      };
+      const graphData = newDataGraph.data as Data;
+
+      graphData.nodes[selectedNode].data = data;
+
+      return {
+        ...state,
+        selectedItems: {
+          ...state.selectedItems,
+          graph: {
+            ...state.selectedItems.graph!,
+            [action.payload.graphType]: {
+              ...state.selectedItems.graph![action.payload.graphType],
+              data: {
+                ...newDataGraph,
+              },
             },
           },
         },

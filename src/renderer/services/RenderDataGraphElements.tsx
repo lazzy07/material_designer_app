@@ -16,6 +16,7 @@ import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
 import Switch from "../components/graph_property_inputs/Switch";
 import { store } from "../../redux/store";
 import { changeNodeData } from "../../redux/actions/GraphActions";
+import { Graphs } from "../../interfaces/Graphs";
 
 export const renderDatagraphElement = (
   nodeProperty: NodePropertyData<any>,
@@ -83,6 +84,6 @@ const selectGraphElement = (
   }
 };
 
-const onChangeGraphData = (selectedNode: number, data: any) => {
+const onChangeGraphData = (selectedNode: number, data: Graphs) => {
   store.dispatch(changeNodeData(selectedNode, data));
 };

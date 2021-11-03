@@ -9,3 +9,7 @@ Material Desigener is a node based texture designer software which is free to us
 ### N-API Bindings for Material Designer App
 
 You can find the documentation for N-API bindings [here](https://github.com/lazzy07/material_designer_library/tree/main/matd_v8). This library can be port to NodeJS or an Electron app as native module.
+
+## Current Progress (UI)
+
+![screenshot]("./screenshot_2021_11_04.png")
