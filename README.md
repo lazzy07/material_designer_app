@@ -12,4 +12,4 @@ You can find the documentation for N-API bindings [here](https://github.com/lazz
 
 ## Current Progress (UI)
 
-![screenshot]("screenshot_2021_11_04.png")
+![screenshot](screenshot_2021_11_04.png)
