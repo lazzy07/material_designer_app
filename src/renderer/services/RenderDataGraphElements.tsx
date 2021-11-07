@@ -15,13 +15,15 @@ import ColorPicker1 from "../components/graph_property_inputs/ColorPicker1";
 import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
 import Switch from "../components/graph_property_inputs/Switch";
 import { store } from "../../redux/store";
-import { changeNodeData } from "../../redux/actions/GraphActions";
 import { Graphs } from "../../interfaces/Graphs";
+import { Store } from "../../redux/reducers";
+import { Data } from "../../packages/rete-1.4.4/core/data";
+import { editGraphData } from "../../redux/actions/GraphActions";
+import { ColorLUT } from "../../interfaces/ColorLutData";
 
 export const renderDatagraphElement = (
   nodeProperty: NodePropertyData<any>,
-  index: number,
-  selectedNode: number
+  index: number
 ) => {
   return (
     <div>
@@ -35,55 +37,122 @@ export const renderDatagraphElement = (
       >
         <div>{nodeProperty.name}</div>
       </div>
-      <div>{selectGraphElement(nodeProperty, selectedNode)}</div>
+      <div>{selectGraphElement(nodeProperty)}</div>
     </div>
   );
 };
 
-const selectGraphElement = (
-  nodeProperty: NodePropertyData<any>,
-  selectedNode: number
-) => {
+const selectGraphElement = (nodeProperty: NodePropertyData<any>) => {
   const dataType = nodeProperty.dataType;
   const type = nodeProperty.inputType;
   if (dataType === "number" && type === "input") {
-    return <InputNumber value={nodeProperty.data} onChange={() => {}} />;
+    return (
+      <InputNumber
+        value={nodeProperty.data}
+        onChange={(val) => onChangeData<number>(val, nodeProperty)}
+      />
+    );
   } else if (dataType === "number" && type === "input_and_slider") {
-    return <InputAndSlider1 onChange={() => {}} value={nodeProperty.data} />;
+    return (
+      <InputAndSlider1
+        onChange={(val) => onChangeData<number>(val, nodeProperty)}
+        value={nodeProperty.data}
+      />
+    );
   } else if (dataType === "number2" && type === "input_and_slider") {
-    return <InputAndSlider2 onChange={() => {}} value={nodeProperty.data} />;
+    return (
+      <InputAndSlider2
+        onChange={(val) => onChangeData<number[]>(val, nodeProperty)}
+        value={nodeProperty.data}
+      />
+    );
   } else if (dataType === "boolean" && type === "button") {
     return (
       <Button
         title={nodeProperty.data === true ? "True" : "False"}
-        onClick={() => {}}
+        onClick={() => onChangeData<boolean>(!nodeProperty.data, nodeProperty)}
       />
     );
   } else if (dataType === "string" && type === "input") {
-    return <InputString value={nodeProperty.data} onChange={() => {}} />;
+    return (
+      <InputString
+        value={nodeProperty.data}
+        onChange={(val) => onChangeData<string>(val, nodeProperty)}
+      />
+    );
   } else if (dataType === "number" && type === "dropdown") {
     return <Dropdown />;
   } else if (dataType === "number" && type === "slider") {
-    return <Slider1 />;
+    return (
+      <Slider1
+        value={nodeProperty.data}
+        onChange={(val) => onChangeData<number>(val, nodeProperty)}
+      />
+    );
   } else if (dataType === "number2" && type === "slider") {
-    return <Slider2 />;
+    return (
+      <Slider2
+        value={nodeProperty.data}
+        onChange={(val) => onChangeData<number[]>(val, nodeProperty)}
+      />
+    );
   } else if (dataType === "lut" && type === "lut") {
-    return <Lut1 id={v4()} colors={nodeProperty.data} onChangeLut={() => {}} />;
+    return (
+      <Lut1
+        id={v4()}
+        colors={nodeProperty.data}
+        onChangeLut={(val) => onChangeData<ColorLUT[]>(val, nodeProperty)}
+      />
+    );
   } else if (dataType === "lut3" && type === "lut") {
-    return <Lut3 id={v4()} colors={nodeProperty.data} onChangeLut={() => {}} />;
+    return (
+      <Lut3
+        id={v4()}
+        colors={nodeProperty.data}
+        onChangeLut={(val) => onChangeData<ColorLUT[]>(val, nodeProperty)}
+      />
+    );
   } else if (dataType === "colorvec" && type === "colorpicker") {
     return (
-      <ColorPicker1 value={nodeProperty.data} onChange={() => {}} id={v4()} />
+      <ColorPicker1
+        value={nodeProperty.data}
+        onChange={(val) => onChangeData<number>(val, nodeProperty)}
+        id={v4()}
+      />
     );
   } else if (dataType === "colorvec3" && type === "colorpicker") {
     return (
-      <ColorPicker3 value={nodeProperty.data} onChange={() => {}} id={v4()} />
+      <ColorPicker3
+        value={nodeProperty.data}
+        onChange={(val) => onChangeData<string>(val, nodeProperty)}
+        id={v4()}
+      />
     );
   } else if (dataType === "boolean" && type === "switch") {
     return <Switch />;
   }
 };
 
-const onChangeGraphData = (selectedNode: number, data: Graphs) => {
-  store.dispatch(changeNodeData(selectedNode, data));
-};
+function onChangeData<T>(value: T, nodeProperty: NodePropertyData<T>) {
+  const currStoreState: Store = store.getState();
+
+  const selectedGraph = { ...currStoreState.system.selectedItems.graph };
+  const selectedNode = currStoreState.system.selectedItems.node;
+
+  const dataGraph = selectedGraph!["dataGraph"];
+  const reteGraph = dataGraph!.data as Data;
+  const selectedNodeData = reteGraph.nodes[selectedNode];
+
+  const data: Graphs = selectedNodeData.data as any;
+
+  const nodePrimitiveData = data["dataGraph"]!.data as NodePropertyData<T>[];
+
+  const propertyIndex = nodePrimitiveData.findIndex(
+    (obj) => obj.id === nodeProperty.id
+  );
+  nodePrimitiveData[propertyIndex].data = value;
+
+  store.dispatch(
+    editGraphData("dataGraph", (selectedGraph as any).dataGraph!.data as Data)
+  );
+}

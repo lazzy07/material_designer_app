@@ -19,7 +19,7 @@ import { NodePropertyData } from "../../graph_node_functionality/interfaces/Node
 import { getSelectedNode } from "../services/NodeServices";
 import "../scss/graphcomponentproperties.scss";
 import { DataGraph } from "../../interfaces/DataGraph";
-import { dataGraphToElements } from "../services/DataGraphToElements";
+import { nodePropertiesToElements } from "../services/DataGraphToElements";
 
 interface Props {
   selectedNode: number;
@@ -58,9 +58,8 @@ class GraphPropertiesComponent extends Component<Props, State> {
     );
 
     if (node) {
-      const dataGraph: DataGraph = node.data.dataGraph as DataGraph;
-      console.log(this.props.selectedGraph);
-      return dataGraphToElements(dataGraph, this.props.selectedNode);
+      const graph: Graphs = node.data as any;
+      return nodePropertiesToElements(node, this.props.selectedGraph!);
     }
 
     return null;

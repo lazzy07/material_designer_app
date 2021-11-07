@@ -5,7 +5,6 @@ import { Action } from "../store";
 
 export const CHANGE_GRAPHS = "change graphs";
 export const EDIT_GRAPH_DATA = "edit graph data";
-export const CHANGE_NODE_DATA = "change node data";
 
 export const changeGraphData = (packages: PackageElement[]): Action => {
   return {
@@ -24,16 +23,5 @@ export const editGraphData = (
       selectedType,
       packageData,
     },
-  };
-};
-
-export const changeNodeData = (
-  selectedNode: number,
-  data: Graphs,
-  graphType: GRAPH_TYPES = "dataGraph"
-) => {
-  return {
-    type: CHANGE_NODE_DATA,
-    payload: { selectedNode, data, graphType },
   };
 };
