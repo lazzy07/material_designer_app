@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, session } from "electron";
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 import { mainStore } from "../redux/store";
 import installExtension, {
@@ -58,14 +58,22 @@ const initializeApp = () => {
   screens.editorScreen.createScreenInitial();
 };
 
-app.on("ready", () => {
-  installExtension(REACT_DEVELOPER_TOOLS)
-    .then((name) => console.log(`Added Extension:  ${name}`))
-    .catch((err) => console.log("An error occurred: ", err));
+app.on("ready", async () => {
+  // installExtension(REACT_DEVELOPER_TOOLS)
+  //   .then((name) => console.log(`Added Extension:  ${name}`))
+  //   .catch((err) => console.log("An error occurred: ", err));
 
-  installExtension(REDUX_DEVTOOLS)
-    .then((name) => console.log(`Added Extension:  ${name}`))
-    .catch((err) => console.log("An error occurred: ", err));
+  // installExtension(REDUX_DEVTOOLS)
+  //   .then((name) => console.log(`Added Extension:  ${name}`))
+  //   .catch((err) => console.log("An error occurred: ", err));
+
+  const reduxDevToolsPath = "lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.2_0";
+
+  try {
+    installExtension(reduxDevToolsPath);
+  } catch (err) {
+    console.log(err);
+  }
 
   try {
     const path = SAVE_DEFAULT_PATH;

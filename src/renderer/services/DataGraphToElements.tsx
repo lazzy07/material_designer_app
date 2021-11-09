@@ -14,23 +14,19 @@ export const nodePropertiesToElements = (node: NodeData, graph: Graphs) => {
     const options = nodeDataGraph.data as NodePropertyData<any>[];
     let j = 0;
     for (const i of options) {
-      const elem = renderDatagraphElement(i, j);
-      j++;
-
+      const elem = renderDatagraphElement(i, j, graph, node);
       elements.push(elem);
+      j++;
     }
   } else {
     //find all the generator types in the graph and render those data
-    const data: Data = node.data as any;
-    const nodes = data.nodes;
-
-    const keys = Object.keys(nodes);
-
-    for (const i of keys) {
-      const data = nodes[i].data as any as Graphs;
-
-      //TODO:: Handle graph data
-    }
+    // const data: Data = node.data as any;
+    // const nodes = data.nodes;
+    // const keys = Object.keys(nodes);
+    // for (const i of keys) {
+    //   const data = nodes[i].data as any as Graphs;
+    //   //TODO:: Handle graph data
+    // }
   }
 
   return elements;
