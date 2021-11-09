@@ -18,7 +18,10 @@ import { store } from "../../redux/store";
 import { Graphs } from "../../interfaces/Graphs";
 import { Store } from "../../redux/reducers";
 import { Data } from "../../packages/rete-1.4.4/core/data";
-import { editGraphData } from "../../redux/actions/GraphActions";
+import {
+  editGraphData,
+  editGraphNodeData,
+} from "../../redux/actions/GraphActions";
 import { ColorLUT } from "../../interfaces/ColorLutData";
 
 export const renderDatagraphElement = (
@@ -26,9 +29,8 @@ export const renderDatagraphElement = (
   index: number
 ) => {
   return (
-    <div>
+    <div key={index}>
       <div
-        key={index}
         style={{
           padding: "3px 10px",
           display: "flex",
@@ -147,12 +149,14 @@ function onChangeData<T>(value: T, nodeProperty: NodePropertyData<T>) {
 
   const nodePrimitiveData = data["dataGraph"]!.data as NodePropertyData<T>[];
 
-  const propertyIndex = nodePrimitiveData.findIndex(
-    (obj) => obj.id === nodeProperty.id
-  );
-  nodePrimitiveData[propertyIndex].data = value;
+  for (const i of nodePrimitiveData) {
+    if (i.id === nodeProperty.id) {
+      console.log(i);
+      i.data = value;
+    }
+  }
 
   store.dispatch(
-    editGraphData("dataGraph", (selectedGraph as any).dataGraph!.data as Data)
+    editGraphNodeData("dataGraph", selectedNodeData, selectedNode)
   );
 }

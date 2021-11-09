@@ -1,25 +1,11 @@
 import React, { Component } from "react";
-import Button from "../components/graph_property_inputs/Button";
-import InputAndSlider1 from "../components/graph_property_inputs/InputAndSlider1";
-import InputAndSlider2 from "../components/graph_property_inputs/InputAndSlider2";
-import InputNumber from "../components/graph_property_inputs/InputNumber";
-import InputString from "../components/graph_property_inputs/InputString";
-import Slider1 from "../components/graph_property_inputs/Slider1";
-import Slider2 from "../components/graph_property_inputs/Slider2";
-import Switch from "../components/graph_property_inputs/Switch";
-import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
-import ColorPicker1 from "../components/graph_property_inputs/ColorPicker1";
-import Lut1 from "../components/graph_property_inputs/Lut1";
 import { ColorLUT } from "../../interfaces/ColorLutData";
 import { connect } from "react-redux";
 import { Store } from "../../redux/reducers";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
-import { Data } from "../../packages/rete-1.4.4/core/data";
-import { NodePropertyData } from "../../graph_node_functionality/interfaces/NodePropertyData";
 import { getSelectedNode } from "../services/NodeServices";
-import "../scss/graphcomponentproperties.scss";
-import { DataGraph } from "../../interfaces/DataGraph";
 import { nodePropertiesToElements } from "../services/DataGraphToElements";
+import "../scss/graphcomponentproperties.scss";
 
 interface Props {
   selectedNode: number;
@@ -58,7 +44,6 @@ class GraphPropertiesComponent extends Component<Props, State> {
     );
 
     if (node) {
-      const graph: Graphs = node.data as any;
       return nodePropertiesToElements(node, this.props.selectedGraph!);
     }
 

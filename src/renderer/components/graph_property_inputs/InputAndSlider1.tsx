@@ -12,7 +12,7 @@ export default class InputAndSlider1 extends Component<Props> {
     return (
       <div style={{ display: "flex", width: "100%", margin: 5 }}>
         <div style={{ flex: 9, paddingRight: "15px" }}>
-          <Slider1 />
+          <Slider1 value={this.props.value} onChange={this.props.onChange} />
         </div>
         <div style={{ flex: 3 }}>
           <InputNumber

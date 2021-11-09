@@ -7,7 +7,7 @@ import {
   SET_SELECTED_NODE,
 } from "../actions/SystemActions";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
-import { EDIT_GRAPH_DATA } from "../actions/GraphActions";
+import { EDIT_GRAPH_DATA, EDIT_GRAPH_NODE_DATA } from "../actions/GraphActions";
 
 export interface SystemReducer {
   importingAssets: {
@@ -74,6 +74,29 @@ export const systemReducer = (
             [action.payload.selectedType!]: {
               ...state.selectedItems.graph![action.payload.selectedType!],
               data: { ...action.payload.packageData },
+            },
+          },
+        },
+      };
+
+    case EDIT_GRAPH_NODE_DATA:
+      return {
+        ...state,
+        selectedItems: {
+          ...state.selectedItems,
+          graph: {
+            ...state.selectedItems.graph!,
+            [action.payload.selectedType!]: {
+              ...state.selectedItems.graph![action.payload.selectedType!],
+              data: {
+                ...state.selectedItems.graph![action.payload.selectedType!]
+                  .data,
+                nodes: {
+                  ...state.selectedItems.graph![action.payload.selectedType!]
+                    .data.nodes,
+                  [action.payload.selectedNode]: action.payload.data,
+                },
+              },
             },
           },
         },

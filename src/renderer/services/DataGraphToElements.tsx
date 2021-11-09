@@ -17,7 +17,7 @@ export const nodePropertiesToElements = (node: NodeData, graph: Graphs) => {
       const elem = renderDatagraphElement(i, j);
       j++;
 
-      return elem;
+      elements.push(elem);
     }
   } else {
     //find all the generator types in the graph and render those data

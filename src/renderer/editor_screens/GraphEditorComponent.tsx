@@ -182,7 +182,6 @@ class GraphEditorComponent extends Component<Props, State> {
     if (editor) {
       if (this.props.graph && this.props.graphType) {
         const graphElem = this.props.graph[this.props.graphType!];
-        console.log(graphElem);
         if (graphElem) {
           if (!_.isEmpty(graphElem.data)) {
             editor.loadFromStore(graphElem.data as Data);
@@ -230,7 +229,6 @@ class GraphEditorComponent extends Component<Props, State> {
 
   render() {
     const { width, height } = this.props.dimensions;
-
     if (!this.props.graphType) {
       return (
         <div
