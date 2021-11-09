@@ -31,13 +31,13 @@ export const createGraph = (
     createdAt: new Date(),
     dataGraph: {
       id: v4(),
-      data: { id: "materialdesigner" + EDITOR_VERSION, nodes: {} },
+      data: { id: "materialdesigner@" + EDITOR_VERSION, nodes: {} },
       parentId: id,
       createdAt: new Date(),
     },
     kernelGraph: {
       id: v4(),
-      data: { id: "materialdesigner" + EDITOR_VERSION, nodes: {} },
+      data: { id: "materialdesigner@" + EDITOR_VERSION, nodes: {} },
       parentId: id,
       createdAt: new Date(),
     },

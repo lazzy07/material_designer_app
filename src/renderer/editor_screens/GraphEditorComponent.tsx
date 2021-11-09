@@ -184,6 +184,7 @@ class GraphEditorComponent extends Component<Props, State> {
         const graphElem = this.props.graph[this.props.graphType!];
         if (graphElem) {
           if (!_.isEmpty(graphElem.data)) {
+            editor.getReteEditor().clear();
             editor.loadFromStore(graphElem.data as Data);
           } else {
             console.log("editor cleared");
