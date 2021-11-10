@@ -8,6 +8,7 @@ import {
 } from "../actions/SystemActions";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { EDIT_GRAPH_DATA, EDIT_GRAPH_NODE_DATA } from "../actions/GraphActions";
+import { Data } from "../../packages/rete-1.4.4/core/data";
 
 export interface SystemReducer {
   importingAssets: {
@@ -65,6 +66,19 @@ export const systemReducer = (
       };
 
     case EDIT_GRAPH_DATA:
+      const toUpdate: Data = { ...action.payload.packageData };
+      const newNodes = toUpdate.nodes;
+      const prevData: Data = {
+        ...state.selectedItems.graph![action.payload.selectedType!].data,
+      };
+      const prevNodes = prevData.nodes;
+
+      for (const i of Object.keys(newNodes)) {
+        if (!prevNodes[i]) {
+          prevNodes[i] = { ...newNodes[i] };
+        }
+      }
+
       return {
         ...state,
         selectedItems: {
@@ -73,11 +87,7 @@ export const systemReducer = (
             ...state.selectedItems.graph!,
             [action.payload.selectedType!]: {
               ...state.selectedItems.graph![action.payload.selectedType!],
-              data: {
-                ...action.payload.packageData,
-                ...state.selectedItems.graph![action.payload.selectedType!]
-                  .data,
-              },
+              data: prevData,
             },
           },
         },

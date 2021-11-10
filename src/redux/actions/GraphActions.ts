@@ -18,7 +18,6 @@ export const editGraphData = (
   selectedType: GRAPH_TYPES,
   packageData: Data
 ): Action => {
-  console.log(packageData);
   return {
     type: EDIT_GRAPH_DATA,
     payload: {
@@ -38,7 +37,7 @@ export const editGraphNodeData = (
     payload: {
       selectedType,
       data,
-      nodeId,
+      selectedNode: nodeId,
     },
   };
 };

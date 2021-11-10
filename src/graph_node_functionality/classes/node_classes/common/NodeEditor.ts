@@ -68,7 +68,6 @@ export default abstract class NodeEditor {
   };
 
   loadFromStore = (data: Data) => {
-    console.log(data);
     this.editorCore.fromJSON(data);
   };
 
