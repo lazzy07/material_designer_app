@@ -1,3 +1,4 @@
+import InputString from "../../../renderer/components/graph_property_inputs/InputString";
 import { Number1Input } from "./01_Number1Input";
 import { Number1InputAndSlider } from "./02_Number1InputAndSlider";
 import { Number2InputAndSlider } from "./03_Number2InputAndSlider";

@@ -16,7 +16,6 @@ import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
 import Switch from "../components/graph_property_inputs/Switch";
 import { store } from "../../redux/store";
 import { Graphs } from "../../interfaces/Graphs";
-import { Store } from "../../redux/reducers";
 import { Data, NodeData } from "../../packages/rete-1.4.4/core/data";
 import { editGraphNodeData } from "../../redux/actions/GraphActions";
 import { ColorLUT } from "../../interfaces/ColorLutData";
