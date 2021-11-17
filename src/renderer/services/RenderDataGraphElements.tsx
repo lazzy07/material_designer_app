@@ -5,7 +5,6 @@ import InputAndSlider2 from "../components/graph_property_inputs/InputAndSlider2
 import Button from "../components/graph_property_inputs/Button";
 import InputNumber from "../components/graph_property_inputs/InputNumber";
 import InputString from "../components/graph_property_inputs/InputString";
-import Dropdown from "../components/graph_property_inputs/Dropdown";
 import Slider1 from "../components/graph_property_inputs/Slider1";
 import Slider2 from "../components/graph_property_inputs/Slider2";
 import Lut1 from "../components/graph_property_inputs/Lut1";
@@ -13,12 +12,13 @@ import { v4 } from "uuid";
 import Lut3 from "../components/graph_property_inputs/Lut3";
 import ColorPicker1 from "../components/graph_property_inputs/ColorPicker1";
 import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
-import Switch from "../components/graph_property_inputs/Switch";
 import { store } from "../../redux/store";
 import { Graphs } from "../../interfaces/Graphs";
 import { Data, NodeData } from "../../packages/rete-1.4.4/core/data";
 import { editGraphNodeData } from "../../redux/actions/GraphActions";
 import { ColorLUT } from "../../interfaces/ColorLutData";
+// import Switch from "../components/graph_property_inputs/Switch";
+// import Dropdown from "../components/graph_property_inputs/Dropdown";
 
 export const renderDatagraphElement = (
   nodeProperty: NodePropertyData<any>,

@@ -9,6 +9,8 @@ import { Number2InputAndSlider } from "./primitive_nodes/Number2InputAndSlider";
 import { Dropdown } from "./primitive_nodes/Dropdown";
 import { Slider1 } from "./primitive_nodes/Slider1";
 import { Slider2 } from "./primitive_nodes/Slider2";
+import { ColorPicker1 } from "./primitive_nodes/ColorPicker1";
+import { ColorPicker3 } from "./primitive_nodes/ColorPicker3";
 
 export const getNodeFromFactory = (nodeData: Graphs) => {
   switch (nodeData.id) {
@@ -30,6 +32,10 @@ export const getNodeFromFactory = (nodeData: Graphs) => {
       return new Lut1(nodeData, "dataGraph");
     case "11":
       return new Lut3(nodeData, "dataGraph");
+    case "12":
+      return new ColorPicker1(nodeData, "dataGraph");
+    case "13":
+      return new ColorPicker3(nodeData, "dataGraph");
     default:
       return new DataGraphReference(nodeData, "dataGraph");
   }
