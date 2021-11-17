@@ -37,7 +37,7 @@ export default class Lut1 extends Component<Props> {
       <div style={{ padding: "20px 10px" }}>
         <GradientBuilder
           height={32}
-          width={400}
+          width={300}
           drop={50}
           palette={this.props.colors}
           onPaletteChange={this.props.onChangeLut}

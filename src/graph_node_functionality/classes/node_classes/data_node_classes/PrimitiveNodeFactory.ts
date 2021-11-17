@@ -1,3 +1,5 @@
+import { Lut3 } from "./primitive_nodes/Lut3";
+import { Lut1 } from "./primitive_nodes/Lut1";
 import { Graphs } from "../../../../interfaces/Graphs";
 import DataGraphReference from "./DataGraphReference";
 import { Button } from "./primitive_nodes/Button";
@@ -5,6 +7,8 @@ import { Number1Input } from "./primitive_nodes/Number1Input";
 import { Number1InputAndSlider } from "./primitive_nodes/Number1InputAndSlider";
 import { Number2InputAndSlider } from "./primitive_nodes/Number2InputAndSlider";
 import { Dropdown } from "./primitive_nodes/Dropdown";
+import { Slider1 } from "./primitive_nodes/Slider1";
+import { Slider2 } from "./primitive_nodes/Slider2";
 
 export const getNodeFromFactory = (nodeData: Graphs) => {
   switch (nodeData.id) {
@@ -18,6 +22,14 @@ export const getNodeFromFactory = (nodeData: Graphs) => {
       return new Button(nodeData, "dataGraph");
     case "6":
       return new Dropdown(nodeData, "dataGraph");
+    case "8":
+      return new Slider1(nodeData, "dataGraph");
+    case "9":
+      return new Slider2(nodeData, "dataGraph");
+    case "10":
+      return new Lut1(nodeData, "dataGraph");
+    case "11":
+      return new Lut3(nodeData, "dataGraph");
     default:
       return new DataGraphReference(nodeData, "dataGraph");
   }

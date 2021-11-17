@@ -39,7 +39,7 @@ export default class Lut3 extends Component<Props> {
       <div style={{ padding: "20px 10px" }}>
         <GradientBuilder
           height={32}
-          width={400}
+          width={300}
           drop={50}
           onDoubleClick={this.onDoubleClick}
           palette={this.props.colors}

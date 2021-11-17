@@ -99,9 +99,19 @@ const selectGraphElement = (
         }
       />
     );
-  } else if (dataType === "number" && type === "dropdown") {
-    return <Dropdown />;
-  } else if (dataType === "number" && type === "slider") {
+  }
+  // else if (dataType === "number" && type === "dropdown") {
+  //   return (
+  //     <Dropdown
+  //       value={nodeProperty.data.value}
+  //       options={nodeProperty.data.options}
+  //       onChange={(val) =>
+  //         onChangeDataElem(val, nodeProperty, graph, selectedNode)
+  //       }
+  //     />
+  //   );
+  // }
+  else if (dataType === "number" && type === "slider") {
     return (
       <Slider1
         value={nodeProperty.data}
@@ -159,9 +169,10 @@ const selectGraphElement = (
         id={v4()}
       />
     );
-  } else if (dataType === "boolean" && type === "switch") {
-    return <Switch />;
   }
+  // else if (dataType === "boolean" && type === "switch") {
+  //   return <Switch />;
+  // }
 };
 
 function onChangeData<T>(
@@ -180,6 +191,30 @@ function onChangeData<T>(
   for (const i of nodePrimitiveData) {
     if (i.id === nodeProperty.id) {
       i.data = value;
+    }
+  }
+
+  store.dispatch(
+    editGraphNodeData("dataGraph", selectedNodeData, selectedNode.id)
+  );
+}
+
+function onChangeDataElem(
+  value: any,
+  nodeProperty: NodePropertyData<any>,
+  selectedGraph: Graphs,
+  selectedNode: NodeData
+) {
+  const dataGraph = selectedGraph!["dataGraph"];
+  const reteGraph = dataGraph!.data as Data;
+  const selectedNodeData = reteGraph.nodes[selectedNode.id];
+  const data: Graphs = selectedNodeData.data as any;
+
+  const nodePrimitiveData = data["dataGraph"]!.data as NodePropertyData<any>[];
+
+  for (const i of nodePrimitiveData) {
+    if (i.id === nodeProperty.id) {
+      i.data.value = value;
     }
   }
 
