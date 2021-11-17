@@ -2,7 +2,7 @@ import { Graphs } from "../../../interfaces/Graphs";
 
 export const ColorPicker3: Graphs = {
   id: "13",
-  name: "Lut3",
+  name: "Color Picker 3",
   type: "dataGraph",
   contentType: "graph",
   children: [],
