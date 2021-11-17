@@ -4,6 +4,7 @@ import { Button } from "./primitive_nodes/Button";
 import { Number1Input } from "./primitive_nodes/Number1Input";
 import { Number1InputAndSlider } from "./primitive_nodes/Number1InputAndSlider";
 import { Number2InputAndSlider } from "./primitive_nodes/Number2InputAndSlider";
+import { Dropdown } from "./primitive_nodes/Dropdown";
 
 export const getNodeFromFactory = (nodeData: Graphs) => {
   switch (nodeData.id) {
@@ -15,6 +16,8 @@ export const getNodeFromFactory = (nodeData: Graphs) => {
       return new Number2InputAndSlider(nodeData, "dataGraph");
     case "4":
       return new Button(nodeData, "dataGraph");
+    case "6":
+      return new Dropdown(nodeData, "dataGraph");
     default:
       return new DataGraphReference(nodeData, "dataGraph");
   }
