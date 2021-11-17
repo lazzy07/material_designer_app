@@ -1,4 +1,4 @@
-import { BOOLEAN_SOCKET } from "../../../../../nodes/ConnectionTypes";
+import { BOOLEAN_SOCKET } from "../../../../ConnectionTypes";
 import { Node, Output } from "../../../../../packages/rete-1.4.4";
 import NameController from "../../../renderer/controls/NameController";
 import DataInputNode from "../DataInputNode";

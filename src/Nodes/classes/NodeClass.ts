@@ -1,4 +1,4 @@
-import { NODE_TYPES } from "../NodeTypes";
+import { NODE_TYPES } from "../../graph_node_functionality/NodeTypes";
 import NodeLibrary from "./NodeLibrary";
 import Input from "./InputConnection";
 import Output from "./OutputConnection";

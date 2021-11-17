@@ -6,7 +6,10 @@ import {
 } from "../../packages/rete-1.4.4/core/data";
 import NodeClass from "./NodeClass";
 import ImageController from "./controls/ImageController";
-import { COLOR_SOCKET, GRAYSCALE_SOCKET } from "../ConnectionTypes";
+import {
+  COLOR_SOCKET,
+  GRAYSCALE_SOCKET,
+} from "../../graph_node_functionality/ConnectionTypes";
 
 export default class NodeComponent extends Component {
   nodeClass: NodeClass;

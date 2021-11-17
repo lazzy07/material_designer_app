@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Graphs } from "../../../interfaces/Graphs";
-import { NODE_TYPES } from "../../../nodes/NodeTypes";
+import { NODE_TYPES } from "../../../graph_node_functionality/NodeTypes";
 import { defaultColors } from "../../constants/Colors";
 import { getNodeColor } from "./../../services/NodeColors";
 import DraggableComponent from "./DraggableComponent";

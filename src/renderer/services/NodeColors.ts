@@ -1,5 +1,5 @@
-import { CONNECTION_TYPES } from "../../nodes/ConnectionTypes";
-import { NODE_TYPES } from "../../nodes/NodeTypes";
+import { CONNECTION_TYPES } from "../../graph_node_functionality/ConnectionTypes";
+import { NODE_TYPES } from "../../graph_node_functionality/NodeTypes";
 import { defaultColors } from "../constants/Colors";
 
 export const getNodeColor = (nodeType: NODE_TYPES) => {
@@ -20,6 +20,7 @@ export const getNodeColor = (nodeType: NODE_TYPES) => {
 };
 
 export const getNodeConnectionColors = (connectionType: CONNECTION_TYPES) => {
+  console.log(connectionType);
   switch (connectionType) {
     case "color":
       return defaultColors.COLOR_CONNECTION_COLOR;

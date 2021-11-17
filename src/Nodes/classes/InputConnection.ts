@@ -1,5 +1,5 @@
 import Rete, { Socket } from "../../packages/rete-1.4.4";
-import { CONNECTION_TYPES } from "../ConnectionTypes";
+import { CONNECTION_TYPES } from "../../graph_node_functionality/ConnectionTypes";
 import { Connection } from "./Connection";
 
 export default class InputConnection extends Connection {

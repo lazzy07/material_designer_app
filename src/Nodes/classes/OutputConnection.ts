@@ -1,4 +1,4 @@
-import { CONNECTION_TYPES } from "../ConnectionTypes";
+import { CONNECTION_TYPES } from "../../graph_node_functionality/ConnectionTypes";
 import { Connection } from "./Connection";
 
 export default class Output extends Connection {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NODE_TYPES } from "../../../nodes/NodeTypes";
+import { NODE_TYPES } from "../../../graph_node_functionality/NodeTypes";
 import { Control, Socket } from "../../../packages/react-render-plugin-0.2.1";
 import "../../../packages/react-render-plugin-0.2.1/styles.sass";
 import { defaultColors } from "../../../renderer/constants/Colors";

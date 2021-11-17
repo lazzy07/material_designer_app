@@ -1,4 +1,4 @@
-import { NUMBER_SOCKET } from "./../../ConnectionTypes";
+import { NUMBER_SOCKET } from "../../../graph_node_functionality/ConnectionTypes";
 import { Component, Node, Input, Output } from "../../../packages/rete-1.4.4";
 import {
   NodeData,

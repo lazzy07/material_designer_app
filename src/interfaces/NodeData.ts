@@ -1,6 +1,6 @@
 import Input from "../nodes/classes/InputConnection";
 import Output from "../nodes/classes/OutputConnection";
-import { NODE_TYPES } from "../nodes/NodeTypes";
+import { NODE_TYPES } from "../graph_node_functionality/NodeTypes";
 import { FunctionLibraryData } from "./FunctionLibraryData";
 import { GRAPH_TYPES } from "./Graphs";
 

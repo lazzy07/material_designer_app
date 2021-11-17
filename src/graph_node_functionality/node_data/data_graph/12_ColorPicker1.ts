@@ -13,7 +13,7 @@ export const ColorPicker1: Graphs = {
         id: "1211",
         name: "Default Value",
         data: 0,
-        dataType: "colorvec3",
+        dataType: "colorvec",
         groups: {
           id: "12111",
           name: "Default",
