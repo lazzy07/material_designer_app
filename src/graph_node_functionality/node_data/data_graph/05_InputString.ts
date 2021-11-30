@@ -15,7 +15,7 @@ export const Button: Graphs = {
         data: "",
         dataType: "string",
         groups: {
-          id: "2111",
+          id: "5111",
           name: "Default",
         },
         inputType: "input",

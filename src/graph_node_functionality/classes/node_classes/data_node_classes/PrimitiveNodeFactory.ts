@@ -11,6 +11,7 @@ import { Slider1 } from "./primitive_nodes/Slider1";
 import { Slider2 } from "./primitive_nodes/Slider2";
 import { ColorPicker1 } from "./primitive_nodes/ColorPicker1";
 import { ColorPicker3 } from "./primitive_nodes/ColorPicker3";
+import { AddNumber } from "./primitive_nodes/AddNumber";
 
 export const getNodeFromFactory = (nodeData: Graphs) => {
   switch (nodeData.id) {
@@ -36,6 +37,8 @@ export const getNodeFromFactory = (nodeData: Graphs) => {
       return new ColorPicker1(nodeData, "dataGraph");
     case "13":
       return new ColorPicker3(nodeData, "dataGraph");
+    case "14":
+      return new AddNumber(nodeData, "dataGraph");
     default:
       return new DataGraphReference(nodeData, "dataGraph");
   }

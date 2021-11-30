@@ -8,6 +8,7 @@ import { Lut1 } from "./10_Lut1";
 import { Lut3 } from "./11_Lut3";
 import { ColorPicker1 } from "./12_ColorPicker1";
 import { ColorPicker3 } from "./13_ColorPicker3";
+import { AddNumber } from "./14_Add_Number";
 // import InputString from "../../../renderer/components/graph_property_inputs/InputString";
 // import { Dropdown } from "./06_Dropdown";
 
@@ -23,6 +24,7 @@ const DATA_NODES = [
   ColorPicker1,
   ColorPicker3,
   // Dropdown,
+  AddNumber,
 ];
 
 export default DATA_NODES;

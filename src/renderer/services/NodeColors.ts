@@ -20,7 +20,6 @@ export const getNodeColor = (nodeType: NODE_TYPES) => {
 };
 
 export const getNodeConnectionColors = (connectionType: CONNECTION_TYPES) => {
-  console.log(connectionType);
   switch (connectionType) {
     case "color":
       return defaultColors.COLOR_CONNECTION_COLOR;

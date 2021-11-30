@@ -15,7 +15,7 @@ export const Number2InputAndSlider: Graphs = {
         data: [0, 0],
         dataType: "number2",
         groups: {
-          id: "2111",
+          id: "3111",
           name: "Default",
         },
         inputType: "input_and_slider",

@@ -11,6 +11,18 @@ export type CONNECTION_TYPES =
   | "lut3"
   | "boolean";
 
+export const CONN_TYPES = {
+  color: "color",
+  grayscale: "grayscale",
+  number: "number",
+  number2: "number2",
+  colorvec: "colorvec",
+  colorvec2: "colorvec3",
+  lut: "lut",
+  lut3: "lut3",
+  boolean: "boolean",
+};
+
 //Shadergraph connection types
 export const GRAYSCALE_SOCKET = new Socket("grayscale");
 export const COLOR_SOCKET = new Socket("color");

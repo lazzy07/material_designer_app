@@ -86,7 +86,9 @@ export default class MaterialNode extends Component<any, any> {
           {/* Inputs */}
           <div>
             {inputs.map((input, index) => {
-              const connectionColor = getNodeConnectionColors(input.key);
+              const connectionColor = getNodeConnectionColors(
+                input.socket.name
+              );
               return (
                 <div
                   key={index}
@@ -111,7 +113,9 @@ export default class MaterialNode extends Component<any, any> {
           <div>
             {/* Outputs */}
             {outputs.map((output, index) => {
-              const connectionColor = getNodeConnectionColors(output.key);
+              const connectionColor = getNodeConnectionColors(
+                output.socket.name
+              );
               return (
                 <div
                   key={index}
