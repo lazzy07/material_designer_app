@@ -3,7 +3,7 @@ import { Input, Node, Output } from "../../../../../packages/rete-1.4.4";
 import NameController from "../../../renderer/controls/NameController";
 import DataProcessNode from "../DataProcessNode";
 
-export class AddNumber extends DataProcessNode<number> {
+export class SubstractNumber extends DataProcessNode<number> {
   async builder(node: Node) {
     (node as any).data = this.data;
     (node as any).meta = this.meta;
@@ -12,7 +12,7 @@ export class AddNumber extends DataProcessNode<number> {
     node.addOutput(new Output("Num", "Num", NUMBER_SOCKET));
 
     node.addControl(
-      new NameController("Add", this.data.id, this.data.name, node)
+      new NameController("Sub", this.data.id, this.data.name, node)
     );
   }
 }

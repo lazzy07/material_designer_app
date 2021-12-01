@@ -12,6 +12,11 @@ import { Slider2 } from "./primitive_nodes/Slider2";
 import { ColorPicker1 } from "./primitive_nodes/ColorPicker1";
 import { ColorPicker3 } from "./primitive_nodes/ColorPicker3";
 import { AddNumber } from "./primitive_nodes/AddNumber";
+import { SubstractNumber } from "./primitive_nodes/SubstractNumber";
+import { MultiplyNumber } from "./primitive_nodes/MultiplyNumber";
+import { DivideNumber } from "./primitive_nodes/DivideNumber";
+import { PowerNumber } from "./primitive_nodes/PowerNumber";
+import { SquarerootNumber } from "./primitive_nodes/SquarerootNumber";
 
 export const getNodeFromFactory = (nodeData: Graphs) => {
   switch (nodeData.id) {
@@ -39,6 +44,16 @@ export const getNodeFromFactory = (nodeData: Graphs) => {
       return new ColorPicker3(nodeData, "dataGraph");
     case "14":
       return new AddNumber(nodeData, "dataGraph");
+    case "15":
+      return new SubstractNumber(nodeData, "dataGraph");
+    case "16":
+      return new MultiplyNumber(nodeData, "dataGraph");
+    case "17":
+      return new DivideNumber(nodeData, "dataGraph");
+    case "18":
+      return new PowerNumber(nodeData, "dataGraph");
+    case "19":
+      return new SquarerootNumber(nodeData, "dataGraph");
     default:
       return new DataGraphReference(nodeData, "dataGraph");
   }

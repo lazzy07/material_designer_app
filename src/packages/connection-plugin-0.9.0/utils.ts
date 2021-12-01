@@ -76,9 +76,11 @@ export function renderConnection({
   svg.classList.add("connection", ...classed);
   path.classList.add("main-path");
 
-  if (io) path.style.stroke = getNodeConnectionColors(io.key as any);
+  if (io) path.style.stroke = getNodeConnectionColors(io.socket.name as any);
   if (connection)
-    path.style.stroke = getNodeConnectionColors(connection.input.key as any);
+    path.style.stroke = getNodeConnectionColors(
+      connection.input.socket.name as any
+    );
 
   path.style.strokeWidth =
     store
