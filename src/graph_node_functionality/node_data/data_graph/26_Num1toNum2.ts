@@ -2,7 +2,7 @@ import { Graphs } from "../../../interfaces/Graphs";
 
 export const Num1toNum2: Graphs = {
   id: "26",
-  name: "Num1 to Bool",
+  name: "Num1 to Num2",
   type: "dataGraph",
   contentType: "graph",
   children: [],

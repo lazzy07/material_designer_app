@@ -1,16 +1,16 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const Num2toNum1: Graphs = {
-  id: "27",
-  name: "Num2 to Num1",
+export const OutputNum2: Graphs = {
+  id: "29",
+  name: "Out Num2",
   type: "dataGraph",
   contentType: "graph",
   children: [],
   dataGraph: {
-    id: "271",
+    id: "291",
     data: [],
-    parentId: "27",
-    ioType: "process",
+    parentId: "29",
+    ioType: "output",
     operationType: "",
   },
 };

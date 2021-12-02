@@ -8,8 +8,8 @@ export class Num2toNum1 extends DataProcessNode<number> {
     (node as any).data = this.data;
     (node as any).meta = this.meta;
     node.addInput(new Input("Num2", "Num2", NUMBER2_SOCKET));
-    node.addOutput(new Output("Num1", "Num1", NUMBER_SOCKET));
-    node.addOutput(new Output("Num1", "Num1", NUMBER_SOCKET));
+    node.addOutput(new Output("Num1 - 1", "Num1", NUMBER_SOCKET));
+    node.addOutput(new Output("Num1 - 2", "Num1", NUMBER_SOCKET));
 
     node.addControl(
       new NameController("Num2-Num1", this.data.id, this.data.name, node)

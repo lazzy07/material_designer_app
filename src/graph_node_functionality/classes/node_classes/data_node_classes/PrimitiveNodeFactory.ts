@@ -25,6 +25,13 @@ import { BooltoNum1 } from "./primitive_nodes/BooltoNum1";
 import { Num1toBool } from "./primitive_nodes/Num1toBool";
 import { Num1toNum2 } from "./primitive_nodes/Num1toNum2";
 import { Num2toNum1 } from "./primitive_nodes/Num2toNum1";
+import { OutputNum1 } from "./primitive_nodes/OutputNum1";
+import { OutputNum2 } from "./primitive_nodes/OutputNum2";
+import { OutputCol1 } from "./primitive_nodes/OutputCol1";
+import { OutputCol3 } from "./primitive_nodes/OutputCol3";
+import { OutputBool } from "./primitive_nodes/OutputBool";
+import { OutputLut1 } from "./primitive_nodes/OutputLut1";
+import { OutputLut3 } from "./primitive_nodes/OutputLut3";
 
 export const getNodeFromFactory = (nodeData: Graphs) => {
   switch (nodeData.id) {
@@ -78,6 +85,20 @@ export const getNodeFromFactory = (nodeData: Graphs) => {
       return new Num1toNum2(nodeData, "dataGraph");
     case "27":
       return new Num2toNum1(nodeData, "dataGraph");
+    case "28":
+      return new OutputNum1(nodeData, "dataGraph");
+    case "29":
+      return new OutputNum2(nodeData, "dataGraph");
+    case "30":
+      return new OutputCol1(nodeData, "dataGraph");
+    case "31":
+      return new OutputCol3(nodeData, "dataGraph");
+    case "32":
+      return new OutputBool(nodeData, "dataGraph");
+    case "33":
+      return new OutputLut1(nodeData, "dataGraph");
+    case "34":
+      return new OutputLut3(nodeData, "dataGraph");
     default:
       return new DataGraphReference(nodeData, "dataGraph");
   }

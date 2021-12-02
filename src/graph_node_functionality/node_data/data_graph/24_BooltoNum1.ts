@@ -2,7 +2,7 @@ import { Graphs } from "../../../interfaces/Graphs";
 
 export const BooltoNum1: Graphs = {
   id: "24",
-  name: "Num1 to Col3",
+  name: "Bool to Num1",
   type: "dataGraph",
   contentType: "graph",
   children: [],
