@@ -14,6 +14,14 @@ import { MultiplyNumber } from "./16_MultiplyNumber";
 import { DivideNumber } from "./17_DivideNumber";
 import { PowerNumber } from "./18_PowerNumber";
 import { SquarerootNumber } from "./19_SquarerootNumber";
+import { Col1toNum1 } from "./20_Col1toNum1";
+import { Num1toCol1 } from "./21_Num1toCol1";
+import { Col3toNum1 } from "./22_Col3toNum1";
+import { Num1toCol3 } from "./23_Num1toCol3";
+import { BooltoNum1 } from "./24_BooltoNum1";
+import { Num1toBool } from "./25_Num1toBool";
+import { Num1toNum2 } from "./26_Num1toNum2";
+import { Num2toNum1 } from "./27_Num2toNum1";
 // import InputString from "../../../renderer/components/graph_property_inputs/InputString";
 // import { Dropdown } from "./06_Dropdown";
 
@@ -35,6 +43,15 @@ const DATA_NODES = [
   DivideNumber,
   PowerNumber,
   SquarerootNumber,
+
+  Col1toNum1,
+  Num1toCol1,
+  Col3toNum1,
+  Num1toCol3,
+  BooltoNum1,
+  Num1toBool,
+  Num1toNum2,
+  Num2toNum1,
 ];
 
 export default DATA_NODES;

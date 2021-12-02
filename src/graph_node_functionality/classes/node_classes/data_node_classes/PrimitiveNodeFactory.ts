@@ -17,6 +17,14 @@ import { MultiplyNumber } from "./primitive_nodes/MultiplyNumber";
 import { DivideNumber } from "./primitive_nodes/DivideNumber";
 import { PowerNumber } from "./primitive_nodes/PowerNumber";
 import { SquarerootNumber } from "./primitive_nodes/SquarerootNumber";
+import { Col1toNum1 } from "./primitive_nodes/Col1toNum1";
+import { Num1toCol1 } from "./primitive_nodes/Num1toCol1";
+import { Col3toNum1 } from "./primitive_nodes/Col3toNum1";
+import { Num1toCol3 } from "./primitive_nodes/Num1toCol3";
+import { BooltoNum1 } from "./primitive_nodes/BooltoNum1";
+import { Num1toBool } from "./primitive_nodes/Num1toBool";
+import { Num1toNum2 } from "./primitive_nodes/Num1toNum2";
+import { Num2toNum1 } from "./primitive_nodes/Num2toNum1";
 
 export const getNodeFromFactory = (nodeData: Graphs) => {
   switch (nodeData.id) {
@@ -54,6 +62,22 @@ export const getNodeFromFactory = (nodeData: Graphs) => {
       return new PowerNumber(nodeData, "dataGraph");
     case "19":
       return new SquarerootNumber(nodeData, "dataGraph");
+    case "20":
+      return new Col1toNum1(nodeData, "dataGraph");
+    case "21":
+      return new Num1toCol1(nodeData, "dataGraph");
+    case "22":
+      return new Col3toNum1(nodeData, "dataGraph");
+    case "23":
+      return new Num1toCol3(nodeData, "dataGraph");
+    case "24":
+      return new BooltoNum1(nodeData, "dataGraph");
+    case "25":
+      return new Num1toBool(nodeData, "dataGraph");
+    case "26":
+      return new Num1toNum2(nodeData, "dataGraph");
+    case "27":
+      return new Num2toNum1(nodeData, "dataGraph");
     default:
       return new DataGraphReference(nodeData, "dataGraph");
   }
