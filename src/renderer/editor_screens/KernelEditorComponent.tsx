@@ -1,5 +1,10 @@
+import { faCode } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Component } from "react";
 import MonacoEditor from "react-monaco-editor";
+import { connect } from "react-redux";
+import { GRAPH_TYPES } from "../../interfaces/Graphs";
+import { Store } from "../../redux/reducers";
 
 interface State {
   src: string;
@@ -7,9 +12,10 @@ interface State {
 
 interface Props {
   height: number;
+  graphType: GRAPH_TYPES | null;
 }
 
-export default class KernelEditorComponent extends Component<Props, State> {
+class KernelEditorComponent extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -25,6 +31,30 @@ export default class KernelEditorComponent extends Component<Props, State> {
   };
 
   render() {
+    if (this.props.graphType != "kernelGraph") {
+      return (
+        <div
+          style={{
+            display: "flex",
+            height: this.props.height,
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <div style={{ padding: 10 }}>
+            <FontAwesomeIcon icon={faCode} style={{ fontSize: 50 }} />
+          </div>
+          <div>
+            <h4>Select a Kernel from the outliner</h4>
+          </div>
+          <div>
+            <p>(Double click on any kernel graph to view the content)</p>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div>
         <MonacoEditor
@@ -39,3 +69,11 @@ export default class KernelEditorComponent extends Component<Props, State> {
     );
   }
 }
+
+const mapStateToProps = (state: Store) => {
+  return {
+    graphType: state.system.selectedItems.graphType,
+  };
+};
+
+export default connect(mapStateToProps)(KernelEditorComponent);

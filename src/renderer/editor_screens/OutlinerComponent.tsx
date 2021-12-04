@@ -460,6 +460,21 @@ class OutlinerComponent extends Component<Props, State> {
                 ),
                 isSelected: this.state.clicked === graph.dataGraph!.id,
               },
+              {
+                id: graph.shaderGraph!.id,
+                label: this.renderOutlinerLabel(
+                  "Shader Graph",
+                  graph.shaderGraph!.id,
+                  "shaderGraph"
+                ),
+                icon: (
+                  <FontAwesomeIcon
+                    icon={faProjectDiagram}
+                    style={{ marginRight: 10 }}
+                  />
+                ),
+                isSelected: this.state.clicked === graph.shaderGraph!.id,
+              },
             ];
             graphOutlinerElem.label = this.renderOutlinerLabel(
               graph.name,
