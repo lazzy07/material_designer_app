@@ -235,7 +235,7 @@ class GraphEditorComponent extends Component<Props, State> {
         <div
           style={{
             display: "flex",
-            height: "100%",
+            height: height,
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",

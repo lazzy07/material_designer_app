@@ -22,6 +22,13 @@ import { BooltoNum1 } from "./24_BooltoNum1";
 import { Num1toBool } from "./25_Num1toBool";
 import { Num1toNum2 } from "./26_Num1toNum2";
 import { Num2toNum1 } from "./27_Num2toNum1";
+import { OutputNum1 } from "./28_OutputNum1";
+import { OutputNum2 } from "./29_OutputNum2";
+import { OutputCol1 } from "./30_OutputCol1";
+import { OutputCol3 } from "./31_OutputCol3";
+import { OutputBool } from "./32_OutputBool";
+import { OutputLut1 } from "./33_OutputLut1";
+import { OutputLut3 } from "./34_OutputLut3";
 // import InputString from "../../../renderer/components/graph_property_inputs/InputString";
 // import { Dropdown } from "./06_Dropdown";
 
@@ -52,6 +59,14 @@ const DATA_NODES = [
   Num1toBool,
   Num1toNum2,
   Num2toNum1,
+
+  OutputNum1,
+  OutputNum2,
+  OutputCol1,
+  OutputCol3,
+  OutputBool,
+  OutputLut1,
+  OutputLut3,
 ];
 
 export default DATA_NODES;

@@ -16,7 +16,7 @@ interface Props {
 }
 
 class FunctionEditorComponent extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -31,9 +31,10 @@ class FunctionEditorComponent extends Component<Props, State> {
   };
 
   render() {
-    if (this.props.graphType != "kernelGraph") {
-      return (
+    return (
+      <div>
         <div
+          hidden={this.props.graphType == "kernelGraph"}
           style={{
             display: "flex",
             height: this.props.height,
@@ -52,11 +53,6 @@ class FunctionEditorComponent extends Component<Props, State> {
             <p>(Double click on any kernel graph to view the content)</p>
           </div>
         </div>
-      );
-    }
-
-    return (
-      <div>
         <MonacoEditor
           height={this.props.height}
           width="100%"
@@ -72,7 +68,9 @@ class FunctionEditorComponent extends Component<Props, State> {
 
 const mapStateToProps = (state: Store) => {
   return {
-    graphType: state.system.selectedItems.graphType,
+    graphType: state.system.selectedItems.graph
+      ? state.system.selectedItems.graph.type
+      : null,
   };
 };
 
