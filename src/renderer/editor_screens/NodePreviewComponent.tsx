@@ -1,28 +1,43 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import panzoom from "panzoom";
-import { defaultColors } from '../constants/Colors';
-
+import { defaultColors } from "../constants/Colors";
 interface Props {
-  dimensions: { height: number, width: number }
+  dimensions: { height: number; width: number };
 }
 
-interface State {
-
-}
+interface State {}
 
 export default class NodePreviewComponent extends Component<Props, State> {
   ref = React.createRef<HTMLImageElement>();
 
   componentDidMount = () => {
-    panzoom(this.ref.current!, { smoothScroll: false, maxZoom: 5, minZoom: 0.15, autocenter: false });
+    panzoom(this.ref.current!, {
+      smoothScroll: false,
+      maxZoom: 5,
+      minZoom: 0.15,
+      autocenter: false,
+    });
   };
-
 
   render() {
     return (
-      <div style={{ outline: "none", width: this.props.dimensions.width, height: this.props.dimensions.height - 30, overflow: "hidden", borderTop: "2px solid " + defaultColors.IMPORTANT_BACKGROUND_COLOR }}>
-        <img ref={this.ref} alt="" src={"https://picsum.photos/1200"} height={300} style={{ overflow: "auto" }} />
+      <div
+        style={{
+          outline: "none",
+          width: this.props.dimensions.width,
+          height: this.props.dimensions.height - 30,
+          overflow: "hidden",
+          borderTop: "2px solid " + defaultColors.IMPORTANT_BACKGROUND_COLOR,
+        }}
+      >
+        <img
+          ref={this.ref}
+          alt=""
+          src={"https://picsum.photos/1200"}
+          height={300}
+          style={{ overflow: "auto" }}
+        />
       </div>
-    )
+    );
   }
 }

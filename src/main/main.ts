@@ -18,6 +18,7 @@ import { ImportScreen } from "./windows/ImportScreen";
 import Path from "path";
 import { PreferencesScreen } from "./windows/PreferencesScreen";
 import { ColorPickerScreen } from "./windows/ColorPicker";
+import MatdV8 from "./workers/MatdV8";
 
 let store: any;
 
@@ -68,6 +69,14 @@ app.on("ready", async () => {
   //   .catch((err) => console.log("An error occurred: ", err));
 
   const reduxDevToolsPath = "lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.2_0";
+
+  try {
+    MatdV8.init(
+      "H:/projects/material_designer/material_designer_lib/bin/Windows/x64/Debug/matd_v8_bindings.node"
+    );
+  } catch (err) {
+    console.log(err);
+  }
 
   try {
     installExtension(reduxDevToolsPath);

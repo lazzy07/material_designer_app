@@ -14,8 +14,8 @@ export class EditorScreen {
     transparent: true,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false
-    }
+      webSecurity: false,
+    },
   };
 
   constructor(url: string) {
@@ -36,8 +36,8 @@ export class EditorScreen {
       splashScreenOpts: {
         width: 600,
         height: 360,
-        backgroundColor: "#20292b"
-      }
+        backgroundColor: "#20292b",
+      },
     };
     this.window = Splashscreen.initSplashScreen(config);
     this.window.maximize();
