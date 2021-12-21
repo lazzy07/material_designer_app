@@ -1,5 +1,3 @@
-import { remote } from "electron";
-
 export default class MatdV8 {
   private libPath: string;
   private static matdV8: MatdV8;
@@ -7,8 +5,8 @@ export default class MatdV8 {
 
   private constructor(libPath: string) {
     this.libPath = libPath;
-    const MatdLib = remote.require(this.libPath);
-    this.matdLib = new MatdLib();
+    const { MatdV8 } = eval("require")(this.libPath);
+    this.matdLib = new MatdV8();
   }
 
   static init(libPath: string) {
@@ -17,5 +15,9 @@ export default class MatdV8 {
 
   static getLib() {
     return MatdV8.matdV8.matdLib;
+  }
+
+  static parseJSONToNodeGraph(nodeGraph: string) {
+    this.getLib().parseJSONToNodeProject(nodeGraph);
   }
 }

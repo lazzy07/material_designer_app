@@ -26,4 +26,9 @@ export const IpcMessages = {
 
   OPEN_COLORPICKER: "open color picker",
   SET_COLORPICKER_DATA: "set color picker data",
+
+  OPEN_NEW_PROJECT: "open project",
+  UPDATE_PROJECT: "update project",
+  UPDATE_GRAPH: "update graph",
+  LOAD_GRAPH: "load graph",
 };

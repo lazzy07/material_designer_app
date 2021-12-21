@@ -1,10 +1,8 @@
+import { Store } from "./../redux/reducers/index";
 import { app, BrowserWindow, ipcMain, session } from "electron";
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
 import { mainStore } from "../redux/store";
-import installExtension, {
-  REACT_DEVELOPER_TOOLS,
-  REDUX_DEVTOOLS,
-} from "electron-devtools-installer";
+import installExtension from "electron-devtools-installer";
 import { listenToMessages } from "./IpcListeners";
 import { EditorScreen } from "./windows/EditorScreen";
 import { LoginScreen } from "./windows/LoginScreen";
@@ -57,6 +55,17 @@ const createStore = () => {
 const initializeApp = () => {
   console.log("Current environment: " + process.env.NODE_ENV);
   screens.editorScreen.createScreenInitial();
+
+  try {
+    MatdV8.init(
+      "H:/projects/material_designer/material_designer_lib/bin/Windows/x64/Debug/matd_v8_bindings.node"
+    );
+    let state: Store = store.getState();
+
+    MatdV8.parseJSONToNodeGraph(JSON.stringify(state.project));
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 app.on("ready", async () => {
@@ -69,14 +78,6 @@ app.on("ready", async () => {
   //   .catch((err) => console.log("An error occurred: ", err));
 
   const reduxDevToolsPath = "lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.2_0";
-
-  try {
-    MatdV8.init(
-      "H:/projects/material_designer/material_designer_lib/bin/Windows/x64/Debug/matd_v8_bindings.node"
-    );
-  } catch (err) {
-    console.log(err);
-  }
 
   try {
     installExtension(reduxDevToolsPath);

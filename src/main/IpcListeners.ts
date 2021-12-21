@@ -3,7 +3,6 @@ import { IpcMessages } from "../IpcMessages";
 import { Screens } from "./main";
 import { SubEditorScreen } from "./windows/SubEditorScreen";
 import { DraggableItem } from "../interfaces/DraggableItem";
-import NodeLibrary from "./workers/NodeLibrary";
 
 let draggingData: DraggableItem<any> | null = null;
 let colorRef: Electron.IpcMainEvent | null = null;
@@ -94,23 +93,11 @@ export const listenToMessages = (screens: Screens, url: string) => {
     event.sender.send(IpcMessages.DRAG_DATA, draggingData);
   });
 
-  ipcMain.on(IpcMessages.LOAD_LOCAL_LIBRARY_NODES, (_, data) => {
-    const library = new NodeLibrary();
-    library.loadLocalNodeLibrary(data);
-  });
+  ipcMain.on(IpcMessages.OPEN_NEW_PROJECT, (event, data) => {});
 
-  ipcMain.on(IpcMessages.LOAD_LOCAL_PROJECT_NODES, (_, data) => {
-    const library = new NodeLibrary();
-    if (data) {
-      library.loadProjectNodeLibrary(data);
-    }
-  });
+  ipcMain.on(IpcMessages.UPDATE_PROJECT, (event) => {});
 
-  ipcMain.on(IpcMessages.GET_ALL_LOCAL_NODE_DATA, (event) => {
-    const library = new NodeLibrary();
-    event.sender.send(IpcMessages.RETURN_GET_ALL_LOCAL_NODE_DATA, {
-      library: library.getLibraryNodes(),
-      project: library.getProjectNodes(),
-    });
-  });
+  ipcMain.on(IpcMessages.LOAD_GRAPH, (event) => {});
+
+  ipcMain.on(IpcMessages.UPDATE_GRAPH, (event) => {});
 };
