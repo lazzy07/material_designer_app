@@ -29,6 +29,6 @@ export const IpcMessages = {
 
   OPEN_NEW_PROJECT: "open project",
   UPDATE_PROJECT: "update project",
+  SELECT_CURRENT_GRAPH: "select current graph",
   UPDATE_GRAPH: "update graph",
-  LOAD_GRAPH: "load graph",
 };
