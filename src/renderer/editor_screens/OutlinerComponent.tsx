@@ -109,7 +109,7 @@ class OutlinerComponent extends Component<Props, State> {
         }
       }
     }
-    ipcRenderer.emit(IpcMessages.UPDATE_PROJECT);
+    ipcRenderer.send(IpcMessages.UPDATE_PROJECT);
     this.closeMenu();
   };
 
@@ -133,7 +133,7 @@ class OutlinerComponent extends Component<Props, State> {
 
           if (val.response === 0) {
             deletePackage(rightClicked);
-            ipcRenderer.emit(IpcMessages.UPDATE_PROJECT);
+            ipcRenderer.send(IpcMessages.UPDATE_PROJECT);
           }
         }
       }
@@ -581,7 +581,7 @@ class OutlinerComponent extends Component<Props, State> {
           type = "shaderGraph";
         }
         this.props.setSelected(type, elem.data! as Graphs);
-        ipcRenderer.emit(IpcMessages.SELECT_CURRENT_GRAPH, elem.data!);
+        ipcRenderer.send(IpcMessages.SELECT_CURRENT_GRAPH, elem.data!);
       }
     }
   };

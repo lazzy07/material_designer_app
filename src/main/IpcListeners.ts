@@ -1,8 +1,9 @@
 import { ipcMain } from "electron";
 import { IpcMessages } from "../IpcMessages";
-import { Screens } from "./main";
+import { Screens, store } from "./main";
 import { SubEditorScreen } from "./windows/SubEditorScreen";
 import { DraggableItem } from "../interfaces/DraggableItem";
+import { Store } from "../redux/reducers";
 
 let draggingData: DraggableItem<any> | null = null;
 let colorRef: Electron.IpcMainEvent | null = null;
@@ -95,9 +96,13 @@ export const listenToMessages = (screens: Screens, url: string) => {
 
   ipcMain.on(IpcMessages.OPEN_NEW_PROJECT, (event, data) => {});
 
-  ipcMain.on(IpcMessages.UPDATE_PROJECT, (event) => {});
+  ipcMain.on(IpcMessages.UPDATE_PROJECT, (event) => {
+    const state: Store = store.getState();
 
-  ipcMain.on(IpcMessages.LOAD_GRAPH, (event) => {});
+    console.log(state.project);
+  });
 
-  ipcMain.on(IpcMessages.UPDATE_GRAPH, (event) => {});
+  ipcMain.on(IpcMessages.UPDATE_GRAPH, (event, data) => {});
+
+  ipcMain.on(IpcMessages.SELECT_CURRENT_GRAPH, (event, data) => {});
 };

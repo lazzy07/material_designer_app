@@ -1,3 +1,4 @@
+import { ipcRenderer } from "electron";
 import { store } from "../../../../redux/store";
 import { EDITOR_VERSION } from "../../../../renderer/constants/Versions";
 import { NodeEditor as ReteNodeEditor } from "./../../../../packages/rete-1.4.4/editor";
@@ -12,6 +13,7 @@ import { setSelectedNode } from "../../../../redux/actions/SystemActions";
 import { Data } from "../../../../packages/rete-1.4.4/core/data";
 import { editGraphData } from "../../../../redux/actions/GraphActions";
 import { Store } from "../../../../redux/reducers";
+import { IpcMessages } from "../../../../IpcMessages";
 
 export default abstract class NodeEditor {
   dom: HTMLDivElement;
@@ -52,6 +54,7 @@ export default abstract class NodeEditor {
     this.editorCore.on(
       ["nodecreated", "noderemoved", "connectioncreated", "connectionremoved"],
       async () => {
+        ipcRenderer.send(IpcMessages.UPDATE_GRAPH, this.editorCore.toJSON());
         // store.dispatch()
         // const engine = this.engine.getReteEngine();
         // await engine.abort();
