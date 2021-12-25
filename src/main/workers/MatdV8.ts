@@ -17,7 +17,32 @@ export default class MatdV8 {
     return MatdV8.matdV8.matdLib;
   }
 
-  static parseJSONToNodeGraph(nodeGraph: string) {
-    this.getLib().parseJSONToNodeProject(nodeGraph);
+  static setComputationDevice(platformID: number, deviceID: number) {
+    this.getLib().setComputationDevice(platformID, deviceID);
+  }
+
+  static getAvailableEngines(): {
+    platformID: number;
+    deviceID: number;
+    platformName: string;
+    deviceName: string;
+  }[] {
+    return this.getLib().getAvailableEngines();
+  }
+
+  static openNodeProject(nodeProject: string) {
+    this.getLib().openNodeProject(nodeProject);
+  }
+
+  static updateNodeProject(nodeProject: string) {
+    this.getLib().updateNodeProject(nodeProject);
+  }
+
+  static updateNodeGraph(graph: string) {
+    this.getLib().updateNodeGraph(graph);
+  }
+
+  static selectCurrentNodeGraph(graph: string) {
+    this.getLib().selectCurrentNodeGraph(graph);
   }
 }

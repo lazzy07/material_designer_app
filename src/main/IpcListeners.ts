@@ -4,6 +4,7 @@ import { Screens, store } from "./main";
 import { SubEditorScreen } from "./windows/SubEditorScreen";
 import { DraggableItem } from "../interfaces/DraggableItem";
 import { Store } from "../redux/reducers";
+import MatdV8 from "./workers/MatdV8";
 
 let draggingData: DraggableItem<any> | null = null;
 let colorRef: Electron.IpcMainEvent | null = null;
@@ -94,15 +95,22 @@ export const listenToMessages = (screens: Screens, url: string) => {
     event.sender.send(IpcMessages.DRAG_DATA, draggingData);
   });
 
-  ipcMain.on(IpcMessages.OPEN_NEW_PROJECT, (event, data) => {});
-
-  ipcMain.on(IpcMessages.UPDATE_PROJECT, (event) => {
-    const state: Store = store.getState();
-
-    console.log(state.project);
+  ipcMain.on(IpcMessages.OPEN_NEW_PROJECT, (_, data) => {
+    MatdV8.openNodeProject(data);
   });
 
-  ipcMain.on(IpcMessages.UPDATE_GRAPH, (event, data) => {});
+  ipcMain.on(IpcMessages.UPDATE_PROJECT, (_) => {
+    const state: Store = store.getState();
+    const project = JSON.stringify(state.project);
 
-  ipcMain.on(IpcMessages.SELECT_CURRENT_GRAPH, (event, data) => {});
+    MatdV8.updateNodeProject(project);
+  });
+
+  ipcMain.on(IpcMessages.UPDATE_GRAPH, (_, data) => {
+    MatdV8.updateNodeGraph(JSON.stringify(data));
+  });
+
+  ipcMain.on(IpcMessages.SELECT_CURRENT_GRAPH, (_, data) => {
+    MatdV8.selectCurrentNodeGraph(JSON.stringify(data));
+  });
 };
