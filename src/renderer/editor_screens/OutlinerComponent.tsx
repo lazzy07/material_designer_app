@@ -581,7 +581,7 @@ class OutlinerComponent extends Component<Props, State> {
           type = "shaderGraph";
         }
         this.props.setSelected(type, elem.data! as Graphs);
-        ipcRenderer.send(IpcMessages.SELECT_CURRENT_GRAPH, elem.data!);
+        ipcRenderer.send(IpcMessages.SELECT_CURRENT_GRAPH, elem.data!.id);
       }
     }
   };
