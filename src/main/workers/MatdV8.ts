@@ -30,19 +30,19 @@ export default class MatdV8 {
     return this.getLib().getAvailableEngines();
   }
 
-  static openNodeProject(nodeProject: string) {
-    this.getLib().openNodeProject(nodeProject);
+  static openMaterialProject(materialProject: string) {
+    this.getLib().openNodeProject(materialProject);
   }
 
-  static updateNodeProject(nodeProject: string) {
-    this.getLib().updateNodeProject(nodeProject);
+  static updateMaterialProject(materialProject: string) {
+    this.getLib().updateNodeProject(materialProject);
   }
 
-  static updateNodeGraph(graph: string) {
-    this.getLib().updateNodeGraph(graph);
+  static updateMaterialGraph(graph: string) {
+    this.getLib().updateMatrerialGraph(graph);
   }
 
-  static selectCurrentNodeGraph(graph: string) {
-    this.getLib().selectCurrentNodeGraph(graph);
+  static selectCurrentMaterialGraph(graph: string) {
+    this.getLib().selectCurrentMaterialGraph(graph);
   }
 }

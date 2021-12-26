@@ -96,21 +96,21 @@ export const listenToMessages = (screens: Screens, url: string) => {
   });
 
   ipcMain.on(IpcMessages.OPEN_NEW_PROJECT, (_, data) => {
-    MatdV8.openNodeProject(data);
+    MatdV8.openMaterialProject(data);
   });
 
   ipcMain.on(IpcMessages.UPDATE_PROJECT, (_) => {
     const state: Store = store.getState();
     const project = JSON.stringify(state.project);
 
-    MatdV8.updateNodeProject(project);
+    MatdV8.updateMaterialProject(project);
   });
 
   ipcMain.on(IpcMessages.UPDATE_GRAPH, (_, data) => {
-    MatdV8.updateNodeGraph(JSON.stringify(data));
+    MatdV8.updateMaterialGraph(JSON.stringify(data));
   });
 
   ipcMain.on(IpcMessages.SELECT_CURRENT_GRAPH, (_, data) => {
-    MatdV8.selectCurrentNodeGraph(data);
+    MatdV8.selectCurrentMaterialGraph(data);
   });
 };
