@@ -31,15 +31,15 @@ export default class MatdV8 {
   }
 
   static openMaterialProject(materialProject: string) {
-    this.getLib().openNodeProject(materialProject);
+    this.getLib().openMaterialProject(materialProject);
   }
 
   static updateMaterialProject(materialProject: string) {
-    this.getLib().updateNodeProject(materialProject);
+    this.getLib().updateMaterialProject(materialProject);
   }
 
   static updateMaterialGraph(graph: string) {
-    this.getLib().updateMatrerialGraph(graph);
+    this.getLib().updateMaterialGraph(graph);
   }
 
   static selectCurrentMaterialGraph(graph: string) {

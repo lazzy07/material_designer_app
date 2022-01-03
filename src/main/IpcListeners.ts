@@ -111,6 +111,6 @@ export const listenToMessages = (screens: Screens, url: string) => {
   });
 
   ipcMain.on(IpcMessages.SELECT_CURRENT_GRAPH, (_, data) => {
-    MatdV8.selectCurrentMaterialGraph(data);
+    MatdV8.selectCurrentMaterialGraph(JSON.stringify(data));
   });
 };

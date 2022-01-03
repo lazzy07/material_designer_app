@@ -62,7 +62,7 @@ const initializeApp = () => {
     );
     let state: Store = store.getState();
 
-    MatdV8.openNodeProject(JSON.stringify(state.project));
+    MatdV8.openMaterialProject(JSON.stringify(state.project));
   } catch (err) {
     console.log(err);
   }
