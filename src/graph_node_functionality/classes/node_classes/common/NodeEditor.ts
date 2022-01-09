@@ -51,16 +51,44 @@ export default abstract class NodeEditor {
   };
 
   onEditorChange = () => {
-    this.editorCore.on(
-      ["nodecreated", "noderemoved", "connectioncreated", "connectionremoved"],
-      async () => {
-        ipcRenderer.send(IpcMessages.UPDATE_GRAPH, this.editorCore.toJSON());
-        // store.dispatch()
-        // const engine = this.engine.getReteEngine();
-        // await engine.abort();
-        // await engine.process(this.editorCore!.toJSON());
-      }
-    );
+    // this.editorCore.on(
+    //   ["nodecreated", "noderemoved", "connectioncreated", "connectionremoved"],
+    //   async () => {
+    //     ipcRenderer.send(IpcMessages.UPDATE_GRAPH, this.editorCore.toJSON());
+    //     // store.dispatch()
+    //     // const engine = this.engine.getReteEngine();
+    //     // await engine.abort();
+    //     // await engine.process(this.editorCore!.toJSON());
+    //   }
+    // );
+
+    this.editorCore.on("nodecreated", (node) => {
+      ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
+        updateType: "createNode",
+        update: JSON.stringify(node),
+      });
+    });
+
+    this.editorCore.on("noderemoved", (node) => {
+      ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
+        updateType: "removeNode",
+        update: JSON.stringify(node),
+      });
+    });
+
+    this.editorCore.on("connectioncreated", (connection) => {
+      ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
+        updateType: "addConnection",
+        update: JSON.stringify(connection),
+      });
+    });
+
+    this.editorCore.on("connectioncreated", (connection) => {
+      ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
+        updateType: "removeConnection",
+        update: JSON.stringify(connection),
+      });
+    });
 
     this.editorCore.on(["nodecreated", "noderemoved"], () => {
       const json = this.editorCore!.toJSON();

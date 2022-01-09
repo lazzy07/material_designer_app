@@ -38,8 +38,8 @@ export default class MatdV8 {
     this.getLib().updateMaterialProject(materialProject);
   }
 
-  static updateMaterialGraph(graph: string) {
-    this.getLib().updateMaterialGraph(graph);
+  static updateMaterialGraph(updateType: string, update: string) {
+    this.getLib().updateMaterialGraph(updateType, update);
   }
 
   static selectCurrentMaterialGraph(graph: string) {
