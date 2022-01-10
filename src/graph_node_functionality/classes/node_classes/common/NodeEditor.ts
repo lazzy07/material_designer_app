@@ -83,7 +83,7 @@ export default abstract class NodeEditor {
       });
     });
 
-    this.editorCore.on("connectioncreated", (connection) => {
+    this.editorCore.on("connectionremoved", (connection) => {
       ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
         updateType: "removeConnection",
         update: JSON.stringify(connection),

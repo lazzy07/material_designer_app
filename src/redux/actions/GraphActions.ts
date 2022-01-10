@@ -1,5 +1,7 @@
+import { ipcRenderer } from "electron";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { PackageElement } from "../../interfaces/PackageElement";
+import { IpcMessages } from "../../IpcMessages";
 import { Data, NodeData } from "../../packages/rete-1.4.4/core/data";
 import { Action } from "../store";
 
@@ -32,7 +34,7 @@ export const editGraphNodeData = (
   data: NodeData,
   nodeId: number
 ): Action => {
-  return {
+  const update = {
     type: EDIT_GRAPH_NODE_DATA,
     payload: {
       selectedType,
@@ -40,4 +42,11 @@ export const editGraphNodeData = (
       selectedNode: nodeId,
     },
   };
+
+  ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
+    updateType: "update",
+    update: JSON.stringify(update),
+  });
+
+  return update;
 };
