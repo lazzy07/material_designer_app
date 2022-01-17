@@ -1,22 +1,26 @@
-import { Input } from './input';
-import { Output } from './output';
+import { v4 } from "uuid";
+import { Input } from "./input";
+import { Output } from "./output";
 
 export class Connection {
+  id: string;
+  output: Output;
+  input: Input;
+  data: unknown = {};
 
-    output: Output;
-    input: Input;
-    data: unknown = {};
+  constructor(output: Output, input: Input) {
+    this.id = v4();
+    this.output = output;
+    this.input = input;
+    this.data = {
+      id: this.id,
+    };
 
-    constructor(output: Output, input: Input) {
-        this.output = output;
-        this.input = input;
-        this.data = {};
+    this.input.addConnection(this);
+  }
 
-        this.input.addConnection(this);
-    }
-
-    remove() {
-        this.input.removeConnection(this);
-        this.output.removeConnection(this);
-    }
+  remove() {
+    this.input.removeConnection(this);
+    this.output.removeConnection(this);
+  }
 }
