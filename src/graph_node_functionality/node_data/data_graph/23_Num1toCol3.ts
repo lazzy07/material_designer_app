@@ -8,7 +8,44 @@ export const Num1toCol3: Graphs = {
   children: [],
   dataGraph: {
     id: "231",
-    data: [],
+    data: [
+      {
+        id: "2311",
+        name: "Default Value",
+        data: 0,
+        dataType: "number",
+        groups: {
+          id: "23111",
+          name: "Default",
+        },
+        inputType: "input_and_slider",
+        type: "",
+      },
+      {
+        id: "2312",
+        name: "Default Value",
+        data: 0,
+        dataType: "number",
+        groups: {
+          id: "23111",
+          name: "Default",
+        },
+        inputType: "input_and_slider",
+        type: "",
+      },
+      {
+        id: "2113",
+        name: "Default Value",
+        data: 0,
+        dataType: "number",
+        groups: {
+          id: "23111",
+          name: "Default",
+        },
+        inputType: "input_and_slider",
+        type: "",
+      },
+    ],
     parentId: "23",
     ioType: "process",
     operationType: "",

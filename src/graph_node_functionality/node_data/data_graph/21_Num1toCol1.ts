@@ -8,7 +8,20 @@ export const Num1toCol1: Graphs = {
   children: [],
   dataGraph: {
     id: "211",
-    data: [],
+    data: [
+      {
+        id: "2111",
+        name: "Default Value",
+        data: 0,
+        dataType: "number",
+        groups: {
+          id: "21111",
+          name: "Default",
+        },
+        inputType: "input_and_slider",
+        type: "",
+      },
+    ],
     parentId: "21",
     ioType: "process",
     operationType: "",

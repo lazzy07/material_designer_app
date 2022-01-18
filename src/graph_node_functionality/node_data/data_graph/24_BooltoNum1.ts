@@ -8,7 +8,20 @@ export const BooltoNum1: Graphs = {
   children: [],
   dataGraph: {
     id: "241",
-    data: [],
+    data: [
+      {
+        id: "2411",
+        name: "Default Value",
+        data: false,
+        dataType: "boolean",
+        groups: {
+          id: "24111",
+          name: "Default",
+        },
+        inputType: "button",
+        type: "",
+      },
+    ],
     parentId: "24",
     ioType: "process",
     operationType: "",

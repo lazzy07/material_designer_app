@@ -8,7 +8,32 @@ export const SubstractNumber: Graphs = {
   children: [],
   dataGraph: {
     id: "151",
-    data: [],
+    data: [
+      {
+        id: "1511",
+        name: "Default Value 1",
+        data: 0,
+        dataType: "number",
+        groups: {
+          id: "15111",
+          name: "Default",
+        },
+        inputType: "input_and_slider",
+        type: "",
+      },
+      {
+        id: "1512",
+        name: "Default Value 2",
+        data: 0,
+        dataType: "number",
+        groups: {
+          id: "15111",
+          name: "Default",
+        },
+        inputType: "input_and_slider",
+        type: "",
+      },
+    ],
     parentId: "15",
     ioType: "process",
     operationType: "",

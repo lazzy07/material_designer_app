@@ -8,7 +8,20 @@ export const OutputNum1: Graphs = {
   children: [],
   dataGraph: {
     id: "281",
-    data: [],
+    data: [
+      {
+        id: "2811",
+        name: "Default Value",
+        data: 0,
+        dataType: "number",
+        groups: {
+          id: "28111",
+          name: "Default",
+        },
+        inputType: "input_and_slider",
+        type: "",
+      },
+    ],
     parentId: "28",
     ioType: "output",
     operationType: "",
