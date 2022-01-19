@@ -10,7 +10,7 @@ export const Slider2: Graphs = {
     id: "91",
     data: [
       {
-        id: "911",
+        id: "311",
         name: "Default Value",
         data: [0, 0],
         dataType: "number2",

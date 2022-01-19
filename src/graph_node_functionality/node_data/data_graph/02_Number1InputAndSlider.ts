@@ -10,7 +10,7 @@ export const Number1InputAndSlider: Graphs = {
     id: "21",
     data: [
       {
-        id: "211",
+        id: "111",
         name: "Default Value",
         data: 0,
         dataType: "number",

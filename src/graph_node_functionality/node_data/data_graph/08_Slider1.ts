@@ -2,7 +2,7 @@ import { Graphs } from "../../../interfaces/Graphs";
 
 export const Slider1: Graphs = {
   id: "8",
-  name: "Slider1",
+  name: "Slider 1",
   type: "dataGraph",
   contentType: "graph",
   children: [],
@@ -10,7 +10,7 @@ export const Slider1: Graphs = {
     id: "81",
     data: [
       {
-        id: "811",
+        id: "111",
         name: "Default Value",
         data: 0,
         dataType: "number",

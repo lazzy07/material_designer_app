@@ -7,7 +7,7 @@ export class Lut3 extends DataInputNode<number> {
   async builder(node: Node) {
     (node as any).data = this.data;
     (node as any).meta = this.meta;
-    node.addOutput(new Output("lut3", "Lut3", LUT3_SOCKET));
+    node.addOutput(new Output("out", "Lut3", LUT3_SOCKET));
 
     node.addControl(
       new NameController("Lut3", this.data.id, this.data.name, node)
