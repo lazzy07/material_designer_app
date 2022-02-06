@@ -9,6 +9,8 @@ export class Col3toNum1 extends DataProcessNode<number> {
     (node as any).meta = this.meta;
     node.addInput(new Input("1", "Col3", COLORVEC3_SOCKET));
     node.addOutput(new Output("out", "Num1", NUMBER_SOCKET));
+    node.addOutput(new Output("out2", "Num1", NUMBER_SOCKET));
+    node.addOutput(new Output("out3", "Num1", NUMBER_SOCKET));
 
     node.addControl(
       new NameController("Col3-Num1", this.data.id, this.data.name, node)

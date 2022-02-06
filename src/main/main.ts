@@ -80,7 +80,7 @@ app.on("ready", async () => {
   const reduxDevToolsPath = "lmhkpmbekcpmknklioeibfkpmmfibljd/2.17.2_0";
 
   try {
-    installExtension(reduxDevToolsPath);
+    //installExtension(reduxDevToolsPath);
   } catch (err) {
     console.log(err);
   }
