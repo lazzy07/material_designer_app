@@ -21,18 +21,6 @@ export const SquarerootNumber: Graphs = {
         inputType: "input_and_slider",
         type: "",
       },
-      {
-        id: "1912",
-        name: "Default Value 2",
-        data: 1,
-        dataType: "number",
-        groups: {
-          id: "19111",
-          name: "Default",
-        },
-        inputType: "input_and_slider",
-        type: "",
-      },
     ],
     parentId: "19",
     ioType: "process",
