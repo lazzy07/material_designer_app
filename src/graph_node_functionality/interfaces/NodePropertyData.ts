@@ -10,4 +10,6 @@ export interface NodePropertyData<T> {
   inputType: PROPERTY_INPUT_TYPE;
   dataType: PROPERTY_TYPE;
   data: T;
+  disabled?: boolean;
+  isHidden?: boolean;
 }

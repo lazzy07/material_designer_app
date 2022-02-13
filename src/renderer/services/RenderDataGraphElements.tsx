@@ -26,6 +26,10 @@ export const renderDatagraphElement = (
   graph: Graphs,
   selectedNode: NodeData
 ) => {
+  if (nodeProperty.isHidden) {
+    return <div></div>;
+  }
+
   return (
     <div key={index}>
       <div
@@ -49,6 +53,7 @@ const selectGraphElement = (
 ) => {
   const dataType = nodeProperty.dataType;
   const type = nodeProperty.inputType;
+
   if (dataType === "number" && type === "input") {
     return (
       <InputNumber
