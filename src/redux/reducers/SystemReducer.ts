@@ -129,7 +129,10 @@ export const systemReducer = (
             ...state.selectedItems.graph!,
             kernelGraph: {
               ...state.selectedItems.graph!.kernelGraph!,
-              [action.payload.type]: action.payload.update,
+              data: {
+                ...state.selectedItems.graph!.kernelGraph!.data,
+                [action.payload.type]: action.payload.update,
+              },
             },
           },
         },
