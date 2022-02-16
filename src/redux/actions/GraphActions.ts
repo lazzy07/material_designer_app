@@ -8,6 +8,7 @@ import { Action } from "../store";
 export const CHANGE_GRAPHS = "change graphs";
 export const EDIT_GRAPH_DATA = "edit graph data";
 export const EDIT_GRAPH_NODE_DATA = "edit graph node data";
+export const EDIT_KERNEL_DATA = "edit kernel data";
 
 export const changeGraphData = (packages: PackageElement[]): Action => {
   return {
@@ -49,4 +50,21 @@ export const editGraphNodeData = (
   });
 
   return update;
+};
+
+export const editKernelData = (type: string, update: string): Action => {
+  const action = {
+    type: EDIT_KERNEL_DATA,
+    payload: {
+      update,
+      type,
+    },
+  };
+
+  ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
+    updateType: "update",
+    update: JSON.stringify({ update, type }),
+  });
+
+  return action;
 };

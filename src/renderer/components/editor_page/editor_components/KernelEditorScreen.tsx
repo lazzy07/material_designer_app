@@ -6,7 +6,10 @@ export default class KernelEditorScreen extends ScreenComponent {
   render() {
     return (
       <div>
-        <KernelEditorComponent height={this.state.height} />
+        <KernelEditorComponent
+          height={this.state.height}
+          width={this.state.width}
+        />
       </div>
     );
   }

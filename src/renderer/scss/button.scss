@@ -5,3 +5,8 @@
   outline: 1px solid $HOVER_COLOR;
   transition: 0.2s;
 }
+
+.customButton:active {
+  opacity: 0.2;
+  transition: 0.5s;
+}

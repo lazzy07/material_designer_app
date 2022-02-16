@@ -37,7 +37,10 @@ export const createGraph = (
     },
     kernelGraph: {
       id: v4(),
-      data: { id: "materialdesigner@" + EDITOR_VERSION, nodes: {} },
+      data: {
+        kernel: "",
+        functions: "",
+      },
       parentId: id,
       createdAt: new Date(),
     },

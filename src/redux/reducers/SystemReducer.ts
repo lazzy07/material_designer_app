@@ -7,7 +7,11 @@ import {
   SET_SELECTED_NODE,
 } from "../actions/SystemActions";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
-import { EDIT_GRAPH_DATA, EDIT_GRAPH_NODE_DATA } from "../actions/GraphActions";
+import {
+  EDIT_GRAPH_DATA,
+  EDIT_GRAPH_NODE_DATA,
+  EDIT_KERNEL_DATA,
+} from "../actions/GraphActions";
 import { Data } from "../../packages/rete-1.4.4/core/data";
 
 export interface SystemReducer {
@@ -111,6 +115,21 @@ export const systemReducer = (
                   [action.payload.selectedNode]: action.payload.data,
                 },
               },
+            },
+          },
+        },
+      };
+
+    case EDIT_KERNEL_DATA:
+      return {
+        ...state,
+        selectedItems: {
+          ...state.selectedItems,
+          graph: {
+            ...state.selectedItems.graph!,
+            kernelGraph: {
+              ...state.selectedItems.graph!.kernelGraph!,
+              [action.payload.type]: action.payload.update,
             },
           },
         },
