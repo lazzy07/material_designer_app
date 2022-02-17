@@ -12,7 +12,10 @@ export default class FunctionEditorScreen extends ScreenComponent<
   render() {
     return (
       <div style={{ height: this.state.height, width: this.state.width }}>
-        <FunctionEditorComponent height={this.state.height} />
+        <FunctionEditorComponent
+          height={this.state.height}
+          width={this.state.width}
+        />
       </div>
     );
   }

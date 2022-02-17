@@ -38,8 +38,8 @@ export const createGraph = (
     kernelGraph: {
       id: v4(),
       data: {
-        kernel: "",
-        functions: "",
+        kernel: "//Implement your kernel functionality here\n",
+        functions: "//Implement your helper functions here\n",
       },
       parentId: id,
       createdAt: new Date(),
