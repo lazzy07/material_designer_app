@@ -8,6 +8,7 @@ import { KernelGraphData } from "../../interfaces/KernelGraph";
 import { editKernelData } from "../../redux/actions/GraphActions";
 import { Store } from "../../redux/reducers";
 import { defaultColors } from "../constants/Colors";
+import { compileKernel } from "../services/CompileKernel";
 
 interface State {}
 
@@ -62,6 +63,7 @@ class FunctionEditorComponent extends Component<Props, State> {
           }}
         >
           <div
+            onClick={compileKernel}
             className="customButton"
             style={{
               display: "flex",
