@@ -19,7 +19,7 @@ import { ColorPickerScreen } from "./windows/ColorPicker";
 import MatdV8 from "./workers/MatdV8";
 
 let store: any;
-
+app.allowRendererProcessReuse = false;
 export interface Screens {
   editorScreen: EditorScreen;
   loginScreen: LoginScreen;

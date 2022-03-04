@@ -1,3 +1,4 @@
+@use "sass:math"
 @import "./vars"
 
 .node
@@ -39,7 +40,7 @@
     vertical-align: middle
     display: inline-block
   .control
-    padding: $socket-margin $socket-size/2 + $socket-margin
+    padding: $socket-margin math.div($socket-size, 2) + $socket-margin
 
 
 
@@ -47,7 +48,7 @@
   display: inline-block
   cursor: pointer
   border: 1px solid white
-  border-radius: $socket-size/2.0
+  border-radius: math.div($socket-size, 2)
   width: $socket-size
   height: $socket-size
   margin: $socket-margin
@@ -60,6 +61,6 @@
   &.multiple
     border-color: yellow
   &.output
-    margin-right: - $socket-size / 2
+    margin-right: math.div(-$socket-size, 2)
   &.input
-    margin-left: - $socket-size / 2
+    margin-left: math.div(-$socket-size, 2)
