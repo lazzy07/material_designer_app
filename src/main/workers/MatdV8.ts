@@ -45,4 +45,8 @@ export default class MatdV8 {
   static selectCurrentMaterialGraph(graph: string) {
     this.getLib().selectCurrentMaterialGraph(graph);
   }
+
+  static compileKernel(func: (error: string) => void) {
+    this.getLib().compileKernel(func);
+  }
 }

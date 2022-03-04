@@ -110,6 +110,12 @@ export const listenToMessages = (screens: Screens, url: string) => {
 
   ipcMain.on(IpcMessages.UPDATE_GRAPH, (_, data) => {
     //console.log(data.updateType, data.update);
+    if (data.updateType === "compileKernel") {
+      MatdV8.compileKernel((error) => {
+        console.log(error);
+      });
+    }
+
     MatdV8.updateMaterialGraph(data.updateType, data.update);
   });
 
