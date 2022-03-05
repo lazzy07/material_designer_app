@@ -1,3 +1,4 @@
+import { SET_KERNEL_ERROR } from "./../actions/GraphActions";
 import { ImportTypes } from "../../renderer/services/ImportImageData";
 import { ImportAssetFile } from "../../interfaces/ImportAssetFile";
 import { Action } from "../store";
@@ -25,6 +26,7 @@ export interface SystemReducer {
     node: number;
     previewNode: number;
   };
+  kernelCompilerError: string;
 }
 
 const initialState: SystemReducer = {
@@ -38,6 +40,7 @@ const initialState: SystemReducer = {
     node: -1,
     previewNode: -1,
   },
+  kernelCompilerError: "",
 };
 
 export const systemReducer = (
@@ -140,5 +143,11 @@ export const systemReducer = (
 
     default:
       return state;
+
+    case SET_KERNEL_ERROR:
+      return {
+        ...state,
+        kernelCompilerError: action.payload,
+      };
   }
 };

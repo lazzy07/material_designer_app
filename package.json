@@ -5,7 +5,7 @@
   "description": "Material Designer The Texture Editor",
   "main": "./.webpack/main",
   "scripts": {
-    "start": "electron-forge start --inspect-electron",
+    "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",

@@ -9,6 +9,7 @@ export const CHANGE_GRAPHS = "change graphs";
 export const EDIT_GRAPH_DATA = "edit graph data";
 export const EDIT_GRAPH_NODE_DATA = "edit graph node data";
 export const EDIT_KERNEL_DATA = "edit kernel data";
+export const SET_KERNEL_ERROR = "set kernel error";
 
 export const changeGraphData = (packages: PackageElement[]): Action => {
   return {
@@ -67,4 +68,11 @@ export const editKernelData = (type: string, update: string): Action => {
   });
 
   return action;
+};
+
+export const setKernelError = (error: string): Action => {
+  return {
+    type: SET_KERNEL_ERROR,
+    payload: error,
+  };
 };

@@ -5,6 +5,7 @@ import { SubEditorScreen } from "./windows/SubEditorScreen";
 import { DraggableItem } from "../interfaces/DraggableItem";
 import { Store } from "../redux/reducers";
 import MatdV8 from "./workers/MatdV8";
+import { setKernelError } from "../redux/actions/GraphActions";
 
 let draggingData: DraggableItem<any> | null = null;
 let colorRef: Electron.IpcMainEvent | null = null;
@@ -112,8 +113,9 @@ export const listenToMessages = (screens: Screens, url: string) => {
     //console.log(data.updateType, data.update);
     if (data.updateType === "compileKernel") {
       MatdV8.compileKernel((error) => {
-        console.log(error);
+        store.dispatch(setKernelError(error));
       });
+      return;
     }
 
     MatdV8.updateMaterialGraph(data.updateType, data.update);
