@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { Graphs } from "../../../interfaces/Graphs";
 
 export const OutputNum2: Graphs = {
@@ -20,6 +21,31 @@ export const OutputNum2: Graphs = {
         },
         inputType: "input_and_slider",
         type: "",
+      },
+      {
+        id: "var_name",
+        name: "Variable Name",
+        data: v4(),
+        dataType: "string",
+        groups: {
+          id: "29111",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+      },
+      {
+        id: "id",
+        name: "ID",
+        data: v4(),
+        dataType: "string",
+        groups: {
+          id: "29111",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+        isHidden: true,
       },
     ],
     parentId: "29",

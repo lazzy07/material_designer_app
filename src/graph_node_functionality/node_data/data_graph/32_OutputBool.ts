@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { Graphs } from "../../../interfaces/Graphs";
 
 export const OutputBool: Graphs = {
@@ -20,6 +21,31 @@ export const OutputBool: Graphs = {
         },
         inputType: "button",
         type: "",
+      },
+      {
+        id: "var_name",
+        name: "Variable Name",
+        data: v4(),
+        dataType: "string",
+        groups: {
+          id: "32111",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+      },
+      {
+        id: "id",
+        name: "ID",
+        data: v4(),
+        dataType: "string",
+        groups: {
+          id: "32111",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+        isHidden: true,
       },
     ],
     parentId: "32",
