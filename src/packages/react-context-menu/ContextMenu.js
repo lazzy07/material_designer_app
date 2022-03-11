@@ -1,162 +1,154 @@
-import React, { Component } from "react"
-import ReactDOM from "react-dom"
-import PropTypes from "prop-types"
+import React, { Component } from "react";
+import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
 import { CLOSE_MENU, OPEN_MENU } from "../connection-plugin-0.9.0/windowevents";
 
 class ContextMenu extends Component {
   dispatchCloseMenu = false;
   constructor(props) {
+    super(props);
 
-    super(props)
+    this.state = { display: false, position: { x: 0, y: 0 } };
 
-    this.state = { display : false, position : { x : 0, y : 0 } }
+    this.handleBlurWindow = this.handleBlurWindow.bind(this);
+    this.handleClickDoc = this.handleClickDoc.bind(this);
+    this.handleContextMenu = this.handleContextMenu.bind(this);
 
-    this.handleBlurWindow = this.handleBlurWindow.bind(this)
-    this.handleClickDoc = this.handleClickDoc.bind(this)
-    this.handleContextMenu = this.handleContextMenu.bind(this)
-
-    this.menu = React.createRef()
+    this.menu = React.createRef();
   }
 
-  close() { 
-    this.setState({ display : false });
+  close() {
+    this.setState({ display: false });
 
-    if(this.dispatchCloseMenu){
+    if (this.dispatchCloseMenu) {
       const event = new CustomEvent(CLOSE_MENU);
       window.dispatchEvent(event);
       this.dispatchCloseMenu = false;
     }
   }
 
-  handleBlurWindow() { 
+  handleBlurWindow() {
     this.close();
   }
 
   handleClickDoc(e) {
+    if (!this.menu.current) return;
 
-    if (!this.menu.current) return
+    const { current } = this.menu;
 
-    const { current } = this.menu
-
-    if (current && !current.contains(e.target)) this.close()
+    if (current && !current.contains(e.target)) this.close();
   }
 
   handleContextMenu(e) {
+    e.preventDefault();
+    e.persist();
 
-    e.preventDefault()
-    e.persist()
+    this.setState({ display: true }, () => this.setPosition(e));
 
-    this.setState({ display : true }, () => this.setPosition(e))
-
-    if (this.props.onContextMenu) this.props.onContextMenu(e)
+    if (this.props.onContextMenu) this.props.onContextMenu(e);
   }
 
   setPosition(e) {
+    if (!this.menu) return;
 
-    if (!this.menu) return
+    const { current } = this.menu;
 
-    const { current } = this.menu
+    if (!current) return;
 
-    if (!current) return
-
-    let x = e.clientX
-    let y = e.clientY
+    let x = e.clientX;
+    let y = e.clientY;
 
     if (e.clientX + current.offsetWidth > window.innerWidth) {
-
-      x -= current.offsetWidth
-      if (x < 0) x = window.innerWidth - current.offsetWidth
-
+      x -= current.offsetWidth;
+      if (x < 0) x = window.innerWidth - current.offsetWidth;
     }
 
     if (e.clientY + current.offsetHeight > window.innerHeight) {
-
-      y -= current.offsetHeight
-      if (y < 0) y = window.innerHeight - current.offsetHeight
-
+      y -= current.offsetHeight;
+      if (y < 0) y = window.innerHeight - current.offsetHeight;
     }
 
-    this.setState({ position : { x, y } })
-
+    this.setState({ position: { x, y } });
   }
 
   handleOpenMenu = (e) => {
     this.addEventListeners();
     this.dispatchCloseMenu = true;
-    this.setState({display: true}, () => this.setPosition(e.detail.event));
-  }
+    this.setState({ display: true }, () => this.setPosition(e.detail.event));
+  };
 
   addEventListeners() {
-    document.addEventListener("mousedown", this.handleClickDoc)
-    window.addEventListener("blur", this.handleBlurWindow)
+    document.addEventListener("mousedown", this.handleClickDoc);
+    window.addEventListener("blur", this.handleBlurWindow);
   }
-  
+
   removeEventListeners() {
-    document.removeEventListener("mousedown", this.handleClickDoc)
-    window.removeEventListener("blur", this.handleBlurWindow)
+    document.removeEventListener("mousedown", this.handleClickDoc);
+    window.removeEventListener("blur", this.handleBlurWindow);
   }
-  
+
   componentDidUpdate(_, prevState) {
     if (this.state.display && !prevState.display) {
-      this.addEventListeners()
+      this.addEventListeners();
     } else if (!this.state.display && prevState.display) {
-      this.removeEventListeners()
+      this.removeEventListeners();
     }
   }
-  
+
   componentDidMount = () => {
-    window.addEventListener(OPEN_MENU, this.handleOpenMenu)
+    window.addEventListener(OPEN_MENU, this.handleOpenMenu);
   };
-  
 
   componentWillUnmount() {
-    this.removeEventListeners()
-    window.removeEventListener(OPEN_MENU, this.handleOpenMenu)
+    this.removeEventListeners();
+    window.removeEventListener(OPEN_MENU, this.handleOpenMenu);
   }
 
-  handlePreventDefault(e) { e.preventDefault() }
+  handlePreventDefault(e) {
+    e.preventDefault();
+  }
 
   render() {
+    const { children, menu, ...rest } = this.props;
 
-    const { children, menu, ...rest } = this.props
-
-    const content = React.Children.only(children)
+    const content = React.Children.only(children);
 
     const container = React.cloneElement(content, {
-      key : "container",
+      key: "container",
       ...rest,
-      onContextMenu : this.handleContextMenu
-    })
+      onContextMenu: this.handleContextMenu,
+    });
 
     if (this.state.display) {
-
-      const contextMenu = ReactDOM.createPortal((
+      const contextMenu = ReactDOM.createPortal(
         <div
           key="contextMenu"
-          ref={ this.menu }
-          onContextMenu={ this.handlePreventDefault }
-          style={ {
-            position : "fixed",
-            left : this.state.position.x,
-            top : this.state.position.y
-          } }
+          ref={this.menu}
+          onContextMenu={this.handlePreventDefault}
+          style={{
+            position: "fixed",
+            left: this.state.position.x,
+            top: this.state.position.y,
+            zIndex: 8000,
+            maxHeight: 400,
+            overflowY: "auto",
+            borderRadius: 2,
+          }}
         >
-          { menu }
-        </div>
-      ), document.body)
+          {menu}
+        </div>,
+        document.body
+      );
 
-      return [container, contextMenu]
-
-    } else return container
-
+      return [container, contextMenu];
+    } else return container;
   }
-
 }
 
 ContextMenu.propTypes = {
-  children : PropTypes.node,
-  menu : PropTypes.node,
-  onContextMenu : PropTypes.func
-}
+  children: PropTypes.node,
+  menu: PropTypes.node,
+  onContextMenu: PropTypes.func,
+};
 
-export default ContextMenu
+export default ContextMenu;
