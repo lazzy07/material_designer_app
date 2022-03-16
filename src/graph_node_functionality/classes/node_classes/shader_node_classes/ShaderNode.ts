@@ -1,3 +1,4 @@
+import { Graphs, GRAPH_TYPES } from "../../../../interfaces/Graphs";
 import { Component, Node } from "../../../../packages/rete-1.4.4";
 import {
   NodeData,
@@ -6,7 +7,14 @@ import {
 } from "../../../../packages/rete-1.4.4/core/data";
 
 export default abstract class ShaderNode extends Component {
-  async builder(node: Node) {}
+  data: Graphs;
+  meta: { engineType: GRAPH_TYPES };
 
-  worker(node: NodeData, inputs: WorkerInputs, outputs: WorkerOutputs) {}
+  constructor(data: Graphs, engineType: GRAPH_TYPES) {
+    super(data.name);
+    this.data = data;
+    this.meta = { engineType };
+  }
+
+  worker() {}
 }
