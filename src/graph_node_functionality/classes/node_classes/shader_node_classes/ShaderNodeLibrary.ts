@@ -3,6 +3,7 @@ import { Store } from "../../../../redux/reducers";
 import { store } from "../../../../redux/store";
 import GraphReference from "../common/GraphReference";
 import NodeLibrary from "../common/NodeLibrary";
+import { getNodeFromFactory } from "./PrimitiveNodeFactory";
 
 export default class ShaderNodeLibrary extends NodeLibrary {
   constructor() {
@@ -20,7 +21,11 @@ export default class ShaderNodeLibrary extends NodeLibrary {
     const nodes = nodeLibrary.getNodes();
   };
 
-  initReteNodes = (graphs: Graphs[]) => {
-    return [] as GraphReference[];
+  initReteNodes = (nodes: Graphs[]) => {
+    const reteNodes: GraphReference[] = [];
+    for (const i of nodes) {
+      reteNodes.push(getNodeFromFactory(i));
+    }
+    return reteNodes;
   };
 }
