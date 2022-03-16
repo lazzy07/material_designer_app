@@ -12,4 +12,30 @@ You can find the documentation for N-API bindings [here](https://github.com/lazz
 
 ## Current Progress (UI)
 
-![screenshot](screenshot_2021_11_04.png)
+Here are some screenshots of the current progress as of (2022/03/17)
+
+### Main screen when working on a data graph
+
+![screenshot](screenshot_2022_03_17_data_graph.png)
+
+### Main screen when working on a kernel graph
+
+![screenshot](screenshot_2022_03_17_kernel_editor.png)
+
+### Loading Screen
+
+![screenshot](screenshot_2022_03_17_loading_screen.png)
+
+### Open Project Screen
+
+![screenshot](screenshot_2022_03_17_open_project.png)
+
+### Preferences Screen
+
+![screenshot](screenshot_2022_03_17_preferences.png)
+
+### Console Outputs
+
+This screen is only available for the users who have turned debugging on
+
+![screenshot](screenshot_2022_03_17_open_project.png)
