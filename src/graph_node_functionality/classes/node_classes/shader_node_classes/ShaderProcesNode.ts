@@ -1,3 +1,3 @@
 import ShaderNode from "./ShaderNode";
 
-export default class ShaderProcessNode extends ShaderNode {}
+export default abstract class ShaderProcessNode extends ShaderNode {}

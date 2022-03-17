@@ -29,5 +29,7 @@ export const getNodeFromFactory = (nodeData: Graphs) => {
       return new OutputGrayscale(nodeData, "shaderGraph");
     case "9":
       return new Viewer(nodeData, "shaderGraph");
+    default:
+      return new Viewer(nodeData, "shaderGraph");
   }
 };
