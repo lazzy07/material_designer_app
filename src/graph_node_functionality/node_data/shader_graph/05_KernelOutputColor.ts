@@ -11,6 +11,6 @@ export const KernelOutputColor: Graphs = {
     data: [],
     parentId: "5",
     ioType: "process",
-    operationType: "",
+    operationType: "color",
   },
 };

@@ -11,6 +11,6 @@ export const KernelInputColor: Graphs = {
     data: [],
     parentId: "3",
     ioType: "generator",
-    operationType: "",
+    operationType: "color",
   },
 };

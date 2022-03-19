@@ -11,6 +11,6 @@ export const InputColor: Graphs = {
     data: [],
     parentId: "1",
     ioType: "generator",
-    operationType: "",
+    operationType: "color",
   },
 };

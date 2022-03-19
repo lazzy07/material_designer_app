@@ -1,5 +1,6 @@
 import { Node, Output } from "../../../../../packages/rete-1.4.4";
 import { COLOR_SOCKET } from "../../../../ConnectionTypes";
+import NameController from "../../../renderer/controls/NameController";
 import ShaderInputNode from "../ShaderInputNode";
 
 export class InputColor extends ShaderInputNode {

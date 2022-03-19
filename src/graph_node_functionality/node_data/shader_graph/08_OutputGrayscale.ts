@@ -11,6 +11,6 @@ export const OutputGrayscale: Graphs = {
     data: [],
     parentId: "8",
     ioType: "output",
-    operationType: "",
+    operationType: "grayscale",
   },
 };

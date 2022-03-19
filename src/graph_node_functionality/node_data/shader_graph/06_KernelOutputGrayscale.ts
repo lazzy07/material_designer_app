@@ -11,6 +11,6 @@ export const KernelOutputGrayscale: Graphs = {
     data: [],
     parentId: "6",
     ioType: "process",
-    operationType: "",
+    operationType: "grayscale",
   },
 };

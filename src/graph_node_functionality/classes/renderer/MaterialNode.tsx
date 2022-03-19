@@ -34,13 +34,13 @@ export default class MaterialNode extends Component<any, any> {
   render() {
     const { node, bindSocket, bindControl } = this.props;
     const { outputs, controls, inputs, selected } = this.state;
-
-    const graphData = fetchFromGraphData(node.meta.engineType, node.data);
+    //node.meta.engineType
+    const graphData = fetchFromGraphData("dataGraph", node.data);
     const ioType = graphData.ioType;
     const color = getNodeColor(
       node.meta.engineType === "dataGraph"
         ? ((ioType + ".grayscale") as NODE_TYPES)
-        : "generator.color"
+        : ((ioType + "." + (graphData as any).operationType) as NODE_TYPES)
     );
     const borderRadius = 12;
 

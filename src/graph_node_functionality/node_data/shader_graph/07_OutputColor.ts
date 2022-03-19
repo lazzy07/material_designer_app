@@ -11,6 +11,6 @@ export const OutputColor: Graphs = {
     data: [],
     parentId: "7",
     ioType: "output",
-    operationType: "",
+    operationType: "color",
   },
 };

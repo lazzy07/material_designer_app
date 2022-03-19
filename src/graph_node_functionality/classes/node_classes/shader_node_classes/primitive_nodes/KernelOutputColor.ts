@@ -1,6 +1,7 @@
 import { Node, Output } from "../../../../../packages/rete-1.4.4";
 import { COLOR_SOCKET } from "../../../../ConnectionTypes";
 import ShaderOutputNode from "../ShaderOutputNode";
+import NameController from "../../../renderer/controls/NameController";
 
 export class KernelOutputColor extends ShaderOutputNode {
   async builder(node: Node) {

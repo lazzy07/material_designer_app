@@ -11,6 +11,6 @@ export const KernelInputGrayscale: Graphs = {
     data: [],
     parentId: "4",
     ioType: "generator",
-    operationType: "",
+    operationType: "grayscale",
   },
 };

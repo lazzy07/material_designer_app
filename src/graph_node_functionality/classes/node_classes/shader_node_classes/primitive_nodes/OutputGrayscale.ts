@@ -2,6 +2,7 @@ import Output from "../../../../../nodes/classes/OutputConnection";
 import { Input, Node } from "../../../../../packages/rete-1.4.4";
 import { GRAYSCALE_SOCKET } from "../../../../ConnectionTypes";
 import ShaderOutputNode from "../ShaderOutputNode";
+import NameController from "../../../renderer/controls/NameController";
 
 export class OutputGrayscale extends ShaderOutputNode {
   async builder(node: Node) {

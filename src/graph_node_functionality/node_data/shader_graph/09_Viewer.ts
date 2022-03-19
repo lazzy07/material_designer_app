@@ -2,7 +2,7 @@ import { Graphs } from "../../../interfaces/Graphs";
 
 export const Viewer: Graphs = {
   id: "9",
-  name: "Kernel Color Input",
+  name: "Viewer",
   type: "shaderGraph",
   contentType: "graph",
   children: [],
@@ -11,6 +11,6 @@ export const Viewer: Graphs = {
     data: [],
     parentId: "9",
     ioType: "output",
-    operationType: "",
+    operationType: "color",
   },
 };
