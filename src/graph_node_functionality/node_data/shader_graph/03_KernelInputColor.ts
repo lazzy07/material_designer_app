@@ -10,7 +10,7 @@ export const KernelInputColor: Graphs = {
     id: "33",
     data: [],
     parentId: "3",
-    ioType: "generator",
+    ioType: "process",
     operationType: "color",
   },
 };

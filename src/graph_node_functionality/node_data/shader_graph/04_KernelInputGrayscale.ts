@@ -10,7 +10,7 @@ export const KernelInputGrayscale: Graphs = {
     id: "44",
     data: [],
     parentId: "4",
-    ioType: "generator",
+    ioType: "process",
     operationType: "grayscale",
   },
 };
