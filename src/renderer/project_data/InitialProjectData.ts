@@ -31,19 +31,19 @@ export const initialProjectData = (): Project => {
         data: {
           options: [
             {
-              value: 0,
+              value: "0",
               label: "8-Bit",
             },
             {
-              value: 1,
+              value: "1",
               label: "16-Bit",
             },
             {
-              value: 2,
+              value: "2",
               label: "32-bit",
             },
           ],
-          value: 0,
+          value: "0",
         },
         name: "Bit Type",
         type: "",

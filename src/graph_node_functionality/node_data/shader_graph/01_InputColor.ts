@@ -15,15 +15,15 @@ export const InputColor: Graphs = {
         data: {
           options: [
             {
-              value: 0,
+              value: "0",
               label: "Use Global Settings",
             },
             {
-              value: 1,
+              value: "1",
               label: "Custom",
             },
           ],
-          value: 0,
+          value: "0",
         },
         dataType: "number",
         groups: {
