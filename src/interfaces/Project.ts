@@ -1,5 +1,6 @@
 import { Image } from "./Image";
 import { PackageElement } from "./PackageElement";
+import { ProjectOption } from "./ProjectOption";
 
 export interface Project {
   id: string;
@@ -18,4 +19,5 @@ export interface Project {
   isLocal: boolean;
   modifiedAt: number;
   createdAt: number;
+  options: ProjectOption<any>[];
 }
