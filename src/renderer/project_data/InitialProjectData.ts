@@ -19,5 +19,59 @@ export const initialProjectData = (): Project => {
     isLocal: true,
     createdAt: Date.now(),
     modifiedAt: Date.now(),
+    options: [
+      {
+        id: "bit_type",
+        groups: {
+          id: "1",
+          name: "Default",
+        },
+        dataType: "number",
+        inputType: "dropdown",
+        data: {
+          options: [
+            {
+              value: 0,
+              label: "8-Bit",
+            },
+            {
+              value: 1,
+              label: "16-Bit",
+            },
+            {
+              value: 2,
+              label: "32-bit",
+            },
+          ],
+          value: 0,
+        },
+        name: "Bit Type",
+        type: "",
+      },
+      {
+        id: "resolution_h",
+        groups: {
+          id: "1",
+          name: "Default",
+        },
+        dataType: "number",
+        inputType: "input",
+        data: 1024,
+        name: "Resolution Width",
+        type: "",
+      },
+      {
+        id: "resolution_w",
+        groups: {
+          id: "1",
+          name: "Default",
+        },
+        dataType: "number",
+        inputType: "input",
+        data: 1024,
+        name: "Resolution Width",
+        type: "",
+      },
+    ],
   };
 };
