@@ -14,28 +14,9 @@ interface Props {
   width: number;
 }
 
-interface State {
-  colors: ColorLUT[];
-}
+interface State {}
 
 class GraphPropertiesComponent extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      colors: [
-        {
-          color: "#000000",
-          pos: "0.0",
-        },
-        {
-          color: "#ffffff",
-          pos: "1.0",
-        },
-      ],
-    };
-  }
-
   renderNodeData = () => {
     const node = getSelectedNode(
       this.props.selectedGraph,
@@ -44,7 +25,11 @@ class GraphPropertiesComponent extends Component<Props, State> {
     );
 
     if (node) {
-      return nodePropertiesToElements(node, this.props.selectedGraph!);
+      return nodePropertiesToElements(
+        node,
+        this.props.selectedGraph!,
+        this.props.selectedGraphType!
+      );
     }
 
     return null;

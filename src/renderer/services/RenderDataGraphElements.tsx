@@ -13,10 +13,11 @@ import Lut3 from "../components/graph_property_inputs/Lut3";
 import ColorPicker1 from "../components/graph_property_inputs/ColorPicker1";
 import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
 import { store } from "../../redux/store";
-import { Graphs } from "../../interfaces/Graphs";
+import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { Data, NodeData } from "../../packages/rete-1.4.4/core/data";
 import { editGraphNodeData } from "../../redux/actions/GraphActions";
 import { ColorLUT } from "../../interfaces/ColorLutData";
+import Dropdown from "../components/graph_property_inputs/Dropdown";
 // import Switch from "../components/graph_property_inputs/Switch";
 // import Dropdown from "../components/graph_property_inputs/Dropdown";
 
@@ -24,7 +25,8 @@ export const renderDatagraphElement = (
   nodeProperty: NodePropertyData<any>,
   index: number,
   graph: Graphs,
-  selectedNode: NodeData
+  selectedNode: NodeData,
+  selectedGraphType: GRAPH_TYPES
 ) => {
   if (nodeProperty.isHidden) {
     return <div></div>;
@@ -41,7 +43,14 @@ export const renderDatagraphElement = (
       >
         <div>{nodeProperty.name}</div>
       </div>
-      <div>{selectGraphElement(nodeProperty, graph, selectedNode)}</div>
+      <div>
+        {selectGraphElement(
+          nodeProperty,
+          graph,
+          selectedNode,
+          selectedGraphType
+        )}
+      </div>
     </div>
   );
 };
@@ -49,7 +58,8 @@ export const renderDatagraphElement = (
 const selectGraphElement = (
   nodeProperty: NodePropertyData<any>,
   graph: Graphs,
-  selectedNode: NodeData
+  selectedNode: NodeData,
+  selectedGraphType: GRAPH_TYPES
 ) => {
   const dataType = nodeProperty.dataType;
   const type = nodeProperty.inputType;
@@ -59,7 +69,13 @@ const selectGraphElement = (
       <InputNumber
         value={nodeProperty.data}
         onChange={(val) =>
-          onChangeData<number>(val, nodeProperty, graph, selectedNode)
+          onChangeData<number>(
+            val,
+            nodeProperty,
+            graph,
+            selectedNode,
+            selectedGraphType
+          )
         }
       />
     );
@@ -67,7 +83,13 @@ const selectGraphElement = (
     return (
       <InputAndSlider1
         onChange={(val) =>
-          onChangeData<number>(val, nodeProperty, graph, selectedNode)
+          onChangeData<number>(
+            val,
+            nodeProperty,
+            graph,
+            selectedNode,
+            selectedGraphType
+          )
         }
         value={nodeProperty.data}
       />
@@ -76,7 +98,13 @@ const selectGraphElement = (
     return (
       <InputAndSlider2
         onChange={(val) =>
-          onChangeData<number[]>(val, nodeProperty, graph, selectedNode)
+          onChangeData<number[]>(
+            val,
+            nodeProperty,
+            graph,
+            selectedNode,
+            selectedGraphType
+          )
         }
         value={nodeProperty.data}
       />
@@ -90,7 +118,8 @@ const selectGraphElement = (
             !nodeProperty.data,
             nodeProperty,
             graph,
-            selectedNode
+            selectedNode,
+            selectedGraphType
           )
         }
       />
@@ -100,28 +129,44 @@ const selectGraphElement = (
       <InputString
         value={nodeProperty.data}
         onChange={(val) =>
-          onChangeData<string>(val, nodeProperty, graph, selectedNode)
+          onChangeData<string>(
+            val,
+            nodeProperty,
+            graph,
+            selectedNode,
+            selectedGraphType
+          )
         }
       />
     );
-  }
-  // else if (dataType === "number" && type === "dropdown") {
-  //   return (
-  //     <Dropdown
-  //       value={nodeProperty.data.value}
-  //       options={nodeProperty.data.options}
-  //       onChange={(val) =>
-  //         onChangeDataElem(val, nodeProperty, graph, selectedNode)
-  //       }
-  //     />
-  //   );
-  // }
-  else if (dataType === "number" && type === "slider") {
+  } else if (dataType === "number" && type === "dropdown") {
+    return (
+      <Dropdown
+        value={nodeProperty.data.value}
+        options={nodeProperty.data.options}
+        onChange={(val) =>
+          onChangeDataElem(
+            val,
+            nodeProperty,
+            graph,
+            selectedNode,
+            selectedGraphType
+          )
+        }
+      />
+    );
+  } else if (dataType === "number" && type === "slider") {
     return (
       <Slider1
         value={nodeProperty.data}
         onChange={(val) =>
-          onChangeData<number>(val, nodeProperty, graph, selectedNode)
+          onChangeData<number>(
+            val,
+            nodeProperty,
+            graph,
+            selectedNode,
+            selectedGraphType
+          )
         }
       />
     );
@@ -130,7 +175,13 @@ const selectGraphElement = (
       <Slider2
         value={nodeProperty.data}
         onChange={(val) =>
-          onChangeData<number[]>(val, nodeProperty, graph, selectedNode)
+          onChangeData<number[]>(
+            val,
+            nodeProperty,
+            graph,
+            selectedNode,
+            selectedGraphType
+          )
         }
       />
     );
@@ -140,7 +191,13 @@ const selectGraphElement = (
         id={v4()}
         colors={nodeProperty.data}
         onChangeLut={(val) =>
-          onChangeData<ColorLUT[]>(val, nodeProperty, graph, selectedNode)
+          onChangeData<ColorLUT[]>(
+            val,
+            nodeProperty,
+            graph,
+            selectedNode,
+            selectedGraphType
+          )
         }
       />
     );
@@ -150,7 +207,13 @@ const selectGraphElement = (
         id={v4()}
         colors={nodeProperty.data}
         onChangeLut={(val) =>
-          onChangeData<ColorLUT[]>(val, nodeProperty, graph, selectedNode)
+          onChangeData<ColorLUT[]>(
+            val,
+            nodeProperty,
+            graph,
+            selectedNode,
+            selectedGraphType
+          )
         }
       />
     );
@@ -159,7 +222,13 @@ const selectGraphElement = (
       <ColorPicker1
         value={nodeProperty.data}
         onChange={(val) =>
-          onChangeData<number>(val, nodeProperty, graph, selectedNode)
+          onChangeData<number>(
+            val,
+            nodeProperty,
+            graph,
+            selectedNode,
+            selectedGraphType
+          )
         }
         id={v4()}
       />
@@ -169,7 +238,13 @@ const selectGraphElement = (
       <ColorPicker3
         value={nodeProperty.data}
         onChange={(val) =>
-          onChangeData<string>(val, nodeProperty, graph, selectedNode)
+          onChangeData<string>(
+            val,
+            nodeProperty,
+            graph,
+            selectedNode,
+            selectedGraphType
+          )
         }
         id={v4()}
       />
@@ -184,9 +259,10 @@ function onChangeData<T>(
   value: T,
   nodeProperty: NodePropertyData<T>,
   selectedGraph: Graphs,
-  selectedNode: NodeData
+  selectedNode: NodeData,
+  selectedGraphType: GRAPH_TYPES
 ) {
-  const dataGraph = selectedGraph!["dataGraph"];
+  const dataGraph = selectedGraph![selectedGraphType];
   const reteGraph = dataGraph!.data as Data;
   const selectedNodeData = reteGraph.nodes[selectedNode.id];
   const data: Graphs = selectedNodeData.data as any;
@@ -208,9 +284,10 @@ function onChangeDataElem(
   value: any,
   nodeProperty: NodePropertyData<any>,
   selectedGraph: Graphs,
-  selectedNode: NodeData
+  selectedNode: NodeData,
+  selectedGraphType: GRAPH_TYPES
 ) {
-  const dataGraph = selectedGraph!["dataGraph"];
+  const dataGraph = selectedGraph![selectedGraphType];
   const reteGraph = dataGraph!.data as Data;
   const selectedNodeData = reteGraph.nodes[selectedNode.id];
   const data: Graphs = selectedNodeData.data as any;

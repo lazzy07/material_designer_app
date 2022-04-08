@@ -1,10 +1,14 @@
 import { NodePropertyData } from "../../graph_node_functionality/interfaces/NodePropertyData";
 import { DataGraph } from "../../interfaces/DataGraph";
-import { Graphs } from "../../interfaces/Graphs";
+import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { Data, NodeData } from "../../packages/rete-1.4.4/core/data";
 import { renderDatagraphElement } from "./RenderDataGraphElements";
 
-export const nodePropertiesToElements = (node: NodeData, graph: Graphs) => {
+export const nodePropertiesToElements = (
+  node: NodeData,
+  graph: Graphs,
+  selectedGraphType: GRAPH_TYPES
+) => {
   const nodeDataGraph = node.data.dataGraph as DataGraph;
   const isPrimitive = nodeDataGraph.ioType;
   const elements: JSX.Element[] = [];
@@ -14,7 +18,7 @@ export const nodePropertiesToElements = (node: NodeData, graph: Graphs) => {
     const options = nodeDataGraph.data as NodePropertyData<any>[];
     let j = 0;
     for (const i of options) {
-      const elem = renderDatagraphElement(i, j, graph, node);
+      const elem = renderDatagraphElement(i, j, graph, node, selectedGraphType);
       elements.push(elem);
       j++;
     }
