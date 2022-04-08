@@ -16,7 +16,7 @@ import Preview3DScreen from "../components/editor_page/editor_components/Preview
 import NodePreviewScreen from "../components/editor_page/editor_components/NodePreviewScreen";
 import OutlinerScreen from "../components/editor_page/editor_components/OutlinerScreen";
 import NodePropsScreen from "../components/editor_page/editor_components/NodePropsScreen";
-import GraphPropsScreen from "../components/editor_page/editor_components/GraphPropsScreen";
+import ProjectPropsScreen from "../components/editor_page/editor_components/ProjectPropsScreen";
 import { Dimensions } from "../../interfaces/Dimensions";
 import KernelEditorScreen from "../components/editor_page/editor_components/KernelEditorScreen";
 import InputOutputScreen from "../components/editor_page/editor_components/InputOutputScreen";
@@ -170,7 +170,7 @@ export default class EditorScreen extends Component<Props, State> {
               myLayout.registerComponent("nodePreview", NodePreviewScreen);
               myLayout.registerComponent("outliner", OutlinerScreen);
               myLayout.registerComponent("nodeProps", NodePropsScreen);
-              myLayout.registerComponent("graphProps", GraphPropsScreen);
+              myLayout.registerComponent("projectProps", ProjectPropsScreen);
               myLayout.registerComponent("kernelEditor", KernelEditorScreen);
               myLayout.registerComponent(
                 "functionsEditor",

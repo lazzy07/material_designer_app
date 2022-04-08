@@ -54,9 +54,9 @@ export const NodeProps: EditorElement = {
 };
 
 export const GraphProps: EditorElement = {
-  title: "Graph Props",
+  title: "Project Props",
   type: "react-component",
-  component: "graphProps",
+  component: "projectProps",
 };
 
 export const KernelEditor: EditorElement = {
