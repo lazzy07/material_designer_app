@@ -4,6 +4,7 @@ import { IpcMessages } from "../../IpcMessages";
 import { Action } from "../store";
 
 export const OPEN_PROJECT = "open project";
+export const CHANGE_PROJECT_SETTING = "change project setting";
 
 export const openProject = (data: Project): Action => {
   const time = Date.now();
@@ -18,5 +19,16 @@ export const openProject = (data: Project): Action => {
   return {
     type: OPEN_PROJECT,
     payload: updatedData,
+  };
+};
+
+export const changeProjectSetting = <T>(
+  value: T,
+  index: number,
+  isDropdown?: boolean
+) => {
+  return {
+    type: CHANGE_PROJECT_SETTING,
+    payload: { value, index, isDropdown },
   };
 };

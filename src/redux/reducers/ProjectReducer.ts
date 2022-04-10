@@ -1,7 +1,10 @@
 import { Project } from "src/interfaces/Project";
 import { initialProjectData } from "./../../renderer/project_data/InitialProjectData";
 import { Action } from "./../store";
-import { OPEN_PROJECT } from "../actions/ProjectActions";
+import {
+  CHANGE_PROJECT_SETTING,
+  OPEN_PROJECT,
+} from "../actions/ProjectActions";
 import { CHANGE_GRAPHS } from "../actions/GraphActions";
 
 export interface ProjectReducer extends Project {
@@ -27,6 +30,20 @@ export const projectReducer = (
       return {
         ...state,
         packages: [...action.payload],
+      };
+
+    case CHANGE_PROJECT_SETTING:
+      const settings = [...state.settings];
+
+      if (action.payload.isDropdown) {
+        settings[action.payload.index].data.value = action.payload.value;
+      } else {
+        settings[action.payload.index].data = action.payload.value;
+      }
+
+      return {
+        ...state,
+        settings,
       };
 
     default:

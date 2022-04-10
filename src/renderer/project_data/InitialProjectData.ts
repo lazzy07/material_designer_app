@@ -19,7 +19,7 @@ export const initialProjectData = (): Project => {
     isLocal: true,
     createdAt: Date.now(),
     modifiedAt: Date.now(),
-    options: [
+    settings: [
       {
         id: "bit_type",
         groups: {

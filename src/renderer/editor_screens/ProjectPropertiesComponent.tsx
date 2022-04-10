@@ -1,44 +1,26 @@
 import React, { Component } from "react";
-import { ColorLUT } from "../../interfaces/ColorLutData";
 import { connect } from "react-redux";
+import { ProjectSetting } from "../../interfaces/ProjectSetting";
 import { Store } from "../../redux/reducers";
-import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
-import { getSelectedNode } from "../services/NodeServices";
-import { nodePropertiesToElements } from "../services/DataGraphToElements";
 import "../scss/graphcomponentproperties.scss";
+import { projectSettingsToElements } from "../services/ProjectSettingsToElements";
 
 interface Props {
-  selectedNode: number;
-  selectedGraph: Graphs | null;
-  selectedGraphType: GRAPH_TYPES | null;
   width: number;
+  projectSettings: ProjectSetting<any>[];
 }
 
 interface State {}
 
 class GraphPropertiesComponent extends Component<Props, State> {
-  renderNodeData = () => {
-    const node = getSelectedNode(
-      this.props.selectedGraph,
-      this.props.selectedGraphType,
-      this.props.selectedNode
-    );
-
-    if (node) {
-      return nodePropertiesToElements(
-        node,
-        this.props.selectedGraph!,
-        this.props.selectedGraphType!
-      );
-    }
-
-    return null;
+  renderProperties = () => {
+    return projectSettingsToElements(this.props.projectSettings);
   };
 
   render() {
     return (
       <div style={{ width: this.props.width, padding: "10px 10px" }}>
-        {this.renderNodeData()}
+        {this.renderProperties()}
       </div>
     );
   }
@@ -46,9 +28,7 @@ class GraphPropertiesComponent extends Component<Props, State> {
 
 const mapStateToProps = (state: Store) => {
   return {
-    selectedNode: state.system.selectedItems.node,
-    selectedGraph: state.system.selectedItems.graph,
-    selectedGraphType: state.system.selectedItems.graphType,
+    projectSettings: state.project.settings,
   };
 };
 
