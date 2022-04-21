@@ -14,12 +14,12 @@ export const OutputCol1: Graphs = {
         id: "3011",
         name: "Default Value",
         data: 0,
-        dataType: "number2",
+        dataType: "colorvec",
         groups: {
           id: "30111",
           name: "Default",
         },
-        inputType: "input_and_slider",
+        inputType: "colorpicker",
         type: "",
       },
       {
