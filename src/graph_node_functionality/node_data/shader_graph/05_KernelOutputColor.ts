@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { Graphs } from "../../../interfaces/Graphs";
 
 export const KernelOutputColor: Graphs = {
@@ -55,6 +56,18 @@ export const KernelOutputColor: Graphs = {
         inputType: "input",
         data: 1024,
         name: "Resolution Width",
+        type: "",
+      },
+      {
+        id: "var_name",
+        name: "Variable Name",
+        data: v4(),
+        dataType: "string",
+        groups: {
+          id: "1",
+          name: "Default",
+        },
+        inputType: "input",
         type: "",
       },
     ],
