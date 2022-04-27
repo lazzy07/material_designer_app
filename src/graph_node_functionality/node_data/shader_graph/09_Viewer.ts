@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const Viewer: Graphs = {
+export const Viewer = (): Graphs => ({
   id: "9",
   name: "Viewer",
   type: "shaderGraph",
@@ -13,4 +13,4 @@ export const Viewer: Graphs = {
     ioType: "output",
     operationType: "color",
   },
-};
+});

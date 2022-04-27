@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const OutputGrayscale: Graphs = {
+export const OutputGrayscale = (): Graphs => ({
   id: "8",
   name: "Grayscale Output",
   type: "shaderGraph",
@@ -13,4 +13,4 @@ export const OutputGrayscale: Graphs = {
     ioType: "output",
     operationType: "grayscale",
   },
-};
+});

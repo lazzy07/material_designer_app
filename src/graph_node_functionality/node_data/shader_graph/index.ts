@@ -9,15 +9,15 @@ import { InputGrayscale } from "./02_InputGrayscale";
 import { InputColor } from "./01_InputColor";
 
 const SHADER_NODES = [
-  InputColor,
-  InputGrayscale,
-  KernelInputColor,
-  KernelInputGrayscale,
-  KernelOutputColor,
-  KernelOutputGrayscale,
-  OutputColor,
-  OutputGrayscale,
-  Viewer,
+  InputColor(),
+  InputGrayscale(),
+  KernelInputColor(),
+  KernelInputGrayscale(),
+  KernelOutputColor(),
+  KernelOutputGrayscale(),
+  OutputColor(),
+  OutputGrayscale(),
+  Viewer(),
 ];
 
 export default SHADER_NODES;

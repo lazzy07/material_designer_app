@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const InputColor: Graphs = {
+export const InputColor = (): Graphs => ({
   id: "1",
   name: "Color Input",
   type: "shaderGraph",
@@ -13,4 +13,4 @@ export const InputColor: Graphs = {
     ioType: "generator",
     operationType: "color",
   },
-};
+});

@@ -1,7 +1,7 @@
 import { v4 } from "uuid";
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const KernelOutputGrayscale: Graphs = {
+export const KernelOutputGrayscale = (): Graphs => ({
   id: "6",
   name: "Kernel Grayscale Output",
   type: "shaderGraph",
@@ -75,4 +75,4 @@ export const KernelOutputGrayscale: Graphs = {
     ioType: "process",
     operationType: "grayscale",
   },
-};
+});
