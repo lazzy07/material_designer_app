@@ -1,4 +1,6 @@
+import { v4 } from "uuid";
 import { Graphs } from "../../../../interfaces/Graphs";
+import { NodePropertyData } from "../../../interfaces/NodePropertyData";
 import { InputColor } from "./primitive_nodes/InputColor";
 import { InputGrayscale } from "./primitive_nodes/InputGrayscale";
 import { KernelInputColor } from "./primitive_nodes/KernelInputColor";
@@ -10,6 +12,12 @@ import { OutputGrayscale } from "./primitive_nodes/OutputGrayscale";
 import { Viewer } from "./primitive_nodes/Viewer";
 
 export const getNodeFromFactory = (nodeData: Graphs) => {
+  for (let node of nodeData.dataGraph!.data as NodePropertyData<any>[]) {
+    if (node.id === "var_name") {
+      node.id = v4();
+    }
+  }
+
   switch (nodeData.id) {
     case "1":
       return new InputColor(nodeData, "shaderGraph");

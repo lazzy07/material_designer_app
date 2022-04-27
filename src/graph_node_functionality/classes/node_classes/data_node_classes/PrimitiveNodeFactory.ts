@@ -32,6 +32,8 @@ import { OutputCol3 } from "./primitive_nodes/OutputCol3";
 import { OutputBool } from "./primitive_nodes/OutputBool";
 import { OutputLut1 } from "./primitive_nodes/OutputLut1";
 import { OutputLut3 } from "./primitive_nodes/OutputLut3";
+import { NodePropertyData } from "../../../interfaces/NodePropertyData";
+import { v4 } from "uuid";
 
 export const getNodeFromFactory = (nodeData: Graphs) => {
   switch (nodeData.id) {
