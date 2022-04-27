@@ -1,7 +1,7 @@
 import { v4 } from "uuid";
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const OutputCol3: Graphs = {
+export const OutputCol3 = (): Graphs => ({
   id: "31",
   name: "Out Col3",
   type: "dataGraph",
@@ -52,4 +52,4 @@ export const OutputCol3: Graphs = {
     ioType: "output",
     operationType: "",
   },
-};
+});

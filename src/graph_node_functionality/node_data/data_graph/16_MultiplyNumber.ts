@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const MultiplyNumber: Graphs = {
+export const MultiplyNumber = (): Graphs => ({
   id: "16",
   name: "Multiply Number",
   type: "dataGraph",
@@ -38,4 +38,4 @@ export const MultiplyNumber: Graphs = {
     ioType: "process",
     operationType: "",
   },
-};
+});

@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const Dropdown: Graphs = {
+export const Dropdown = (): Graphs => ({
   id: "6",
   name: "Dropdown",
   type: "dataGraph",
@@ -26,4 +26,4 @@ export const Dropdown: Graphs = {
     ioType: "generator",
     operationType: "",
   },
-};
+});

@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const SquarerootNumber: Graphs = {
+export const SquarerootNumber = (): Graphs => ({
   id: "19",
   name: "Sqrt Number",
   type: "dataGraph",
@@ -26,4 +26,4 @@ export const SquarerootNumber: Graphs = {
     ioType: "process",
     operationType: "",
   },
-};
+});

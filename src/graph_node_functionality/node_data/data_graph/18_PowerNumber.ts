@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const PowerNumber: Graphs = {
+export const PowerNumber = (): Graphs => ({
   id: "18",
   name: "Power Number",
   type: "dataGraph",
@@ -38,4 +38,4 @@ export const PowerNumber: Graphs = {
     ioType: "process",
     operationType: "",
   },
-};
+});

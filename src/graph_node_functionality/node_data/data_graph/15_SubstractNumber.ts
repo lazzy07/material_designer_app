@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const SubstractNumber: Graphs = {
+export const SubstractNumber = (): Graphs => ({
   id: "15",
   name: "Substract Number",
   type: "dataGraph",
@@ -38,4 +38,4 @@ export const SubstractNumber: Graphs = {
     ioType: "process",
     operationType: "",
   },
-};
+});

@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const Lut1: Graphs = {
+export const Lut1 = (): Graphs => ({
   id: "10",
   name: "Lut1",
   type: "dataGraph",
@@ -35,4 +35,4 @@ export const Lut1: Graphs = {
     ioType: "generator",
     operationType: "",
   },
-};
+});

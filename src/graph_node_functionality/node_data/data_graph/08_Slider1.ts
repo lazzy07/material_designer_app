@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const Slider1: Graphs = {
+export const Slider1 = (): Graphs => ({
   id: "8",
   name: "Slider 1",
   type: "dataGraph",
@@ -26,4 +26,4 @@ export const Slider1: Graphs = {
     ioType: "generator",
     operationType: "",
   },
-};
+});

@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const ColorPicker3: Graphs = {
+export const ColorPicker3 = (): Graphs => ({
   id: "13",
   name: "Color Picker 3",
   type: "dataGraph",
@@ -26,4 +26,4 @@ export const ColorPicker3: Graphs = {
     ioType: "generator",
     operationType: "",
   },
-};
+});

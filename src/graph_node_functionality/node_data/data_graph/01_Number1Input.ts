@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const Number1Input: Graphs = {
+export const Number1Input = (): Graphs => ({
   id: "1",
   name: "Number1 Input",
   type: "dataGraph",
@@ -26,4 +26,4 @@ export const Number1Input: Graphs = {
     ioType: "generator",
     operationType: "",
   },
-};
+});

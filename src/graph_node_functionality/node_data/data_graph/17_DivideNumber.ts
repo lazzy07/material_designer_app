@@ -1,6 +1,6 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const DivideNumber: Graphs = {
+export const DivideNumber = (): Graphs => ({
   id: "17",
   name: "Divide Number",
   type: "dataGraph",
@@ -38,4 +38,4 @@ export const DivideNumber: Graphs = {
     ioType: "process",
     operationType: "",
   },
-};
+});
