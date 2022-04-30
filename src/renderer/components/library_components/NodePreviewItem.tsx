@@ -16,6 +16,8 @@ export default class NodePreviewItem extends Component<Props> {
 
     if (type === "dataGraph") {
       nodeType = this.props.data.dataGraph?.ioType + ".color";
+    } else if (type === "shaderGraph") {
+      nodeType = this.props.data.dataGraph?.ioType + ".color";
     }
 
     return nodeType as NODE_TYPES;
