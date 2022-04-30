@@ -1,3 +1,5 @@
+import { NodePropertyData } from "./../../../interfaces/NodePropertyData";
+import { v4 } from "uuid";
 import { Graphs, GRAPH_TYPES } from "../../../../interfaces/Graphs";
 import { Component, Node } from "../../../../packages/rete-1.4.4";
 import {
