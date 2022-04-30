@@ -39,9 +39,13 @@ export default class MatdV8 {
   }
 
   static updateMaterialGraph(updateType: string, update: string) {
-    this.getLib().updateMaterialGraph(updateType, update, () => {
-      console.log("Update Completed");
-    });
+    try {
+      this.getLib().updateMaterialGraph(updateType, update, () => {
+        console.log("Update Completed");
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   static selectCurrentMaterialGraph(graph: string) {
