@@ -17,6 +17,12 @@ import { IpcMessages } from "../../../../IpcMessages";
 import { Graphs } from "../../../../interfaces/Graphs";
 import { NodePropertyData } from "../../../interfaces/NodePropertyData";
 import { v4 } from "uuid";
+import {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+  animals,
+} from "unique-names-generator";
 
 export default abstract class NodeEditor {
   dom: HTMLDivElement;
@@ -69,7 +75,11 @@ export default abstract class NodeEditor {
       for (let data of (node.data as any).dataGraph!
         .data as NodePropertyData<any>[]) {
         if (data.id === "var_name") {
-          data.data = v4();
+          data.data = uniqueNamesGenerator({
+            dictionaries: [adjectives, colors, animals],
+            separator: "_",
+            length: 3,
+          });
         }
       }
 
