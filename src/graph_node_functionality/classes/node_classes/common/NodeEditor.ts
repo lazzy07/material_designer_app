@@ -14,6 +14,9 @@ import { Data } from "../../../../packages/rete-1.4.4/core/data";
 import { editGraphData } from "../../../../redux/actions/GraphActions";
 import { Store } from "../../../../redux/reducers";
 import { IpcMessages } from "../../../../IpcMessages";
+import { Graphs } from "../../../../interfaces/Graphs";
+import { NodePropertyData } from "../../../interfaces/NodePropertyData";
+import { v4 } from "uuid";
 
 export default abstract class NodeEditor {
   dom: HTMLDivElement;
@@ -63,6 +66,13 @@ export default abstract class NodeEditor {
     // );
 
     this.editorCore.on("nodecreated", (node) => {
+      for (let data of (node.data as any).dataGraph!
+        .data as NodePropertyData<any>[]) {
+        if (data.id === "var_name") {
+          data.data = v4();
+        }
+      }
+
       ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
         updateType: "createNode",
         update: JSON.stringify(node),
