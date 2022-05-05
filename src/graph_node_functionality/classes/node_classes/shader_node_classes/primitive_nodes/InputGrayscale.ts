@@ -1,7 +1,7 @@
 import { Node, Output } from "../../../../../packages/rete-1.4.4";
 import { GRAYSCALE_SOCKET } from "../../../../ConnectionTypes";
 import ShaderInputNode from "../ShaderInputNode";
-import NameController from "../../../renderer/controls/NameController";
+import ImageController from "../../../renderer/controls/ImageController";
 
 export class InputGrayscale extends ShaderInputNode {
   async builder(node: Node) {
@@ -10,7 +10,7 @@ export class InputGrayscale extends ShaderInputNode {
     node.addOutput(new Output("out", "Tex", GRAYSCALE_SOCKET));
 
     node.addControl(
-      new NameController("Add", this.data.id, this.data.name, node)
+      new ImageController("Add", this.data.id, this.data.name, node)
     );
   }
 }
