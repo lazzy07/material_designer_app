@@ -31,4 +31,6 @@ export const IpcMessages = {
   UPDATE_PROJECT: "update project",
   SELECT_CURRENT_GRAPH: "select current graph",
   UPDATE_GRAPH: "update graph",
+
+  UPDATE_TEXTURE_POINTER: "update texture pointer",
 };

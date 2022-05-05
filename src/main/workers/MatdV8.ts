@@ -1,3 +1,7 @@
+import { screens } from "./../main";
+import { ipcMain } from "electron";
+import { IpcMessages } from "../../IpcMessages";
+
 export default class MatdV8 {
   private libPath: string;
   private static matdV8: MatdV8;
@@ -5,8 +9,9 @@ export default class MatdV8 {
 
   private constructor(libPath: string) {
     this.libPath = libPath;
-    const { MatdV8 } = eval("require")(this.libPath);
-    this.matdLib = new MatdV8();
+    const MatdObj = eval("require")(this.libPath);
+
+    this.matdLib = new MatdObj.MatdV8();
   }
 
   static init(libPath: string) {
@@ -40,9 +45,28 @@ export default class MatdV8 {
 
   static updateMaterialGraph(updateType: string, update: string) {
     try {
-      this.getLib().updateMaterialGraph(updateType, update, () => {
-        console.log("Update Completed");
-      });
+      this.getLib().updateMaterialGraph(
+        updateType,
+        update,
+        (id: number, buffer: ArrayBuffer) => {
+          if (id) {
+            screens.editorScreen.window?.webContents.send(
+              IpcMessages.UPDATE_TEXTURE_POINTER,
+              {
+                id,
+                buffer,
+              }
+            );
+
+            screens.subEditorScreens.forEach((w) => {
+              w.window?.webContents.send(IpcMessages.UPDATE_TEXTURE_POINTER, {
+                id,
+                buffer,
+              });
+            });
+          }
+        }
+      );
     } catch (err) {
       console.log(err);
     }

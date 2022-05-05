@@ -16,7 +16,7 @@ import { Store } from "../../../../redux/reducers";
 import { IpcMessages } from "../../../../IpcMessages";
 import { Graphs } from "../../../../interfaces/Graphs";
 import { NodePropertyData } from "../../../interfaces/NodePropertyData";
-import { v4 } from "uuid";
+
 import {
   uniqueNamesGenerator,
   adjectives,
