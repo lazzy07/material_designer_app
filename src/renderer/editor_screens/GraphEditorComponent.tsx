@@ -165,7 +165,7 @@ class GraphEditorComponent extends Component<Props, State> {
     }
 
     if (this.shaderDomRef.current) {
-      this.shaderGraphEditor = new DataNodeEditor(this.shaderDomRef.current!);
+      this.shaderGraphEditor = new ShaderNodeEditor(this.shaderDomRef.current!);
       this.shaderGraphEditor.enableEditorPlugins();
       this.shaderGraphEditor.handleSelectNodes();
       this.shaderGraphEditor.registerNodes(this.shaderNodeLibrary);
