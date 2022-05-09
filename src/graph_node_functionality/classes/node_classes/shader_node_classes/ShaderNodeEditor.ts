@@ -13,8 +13,6 @@ export default class ShaderNodeEditor extends NodeEditor {
         if (node.id == args.id) {
           node.controls.forEach((c) => {
             var arrayBufferView = new Uint8Array(args.buffer);
-            console.log(arrayBufferView);
-            console.log(args.buffer);
             var iData = new ImageData(
               new Uint8ClampedArray(arrayBufferView.buffer),
               1024,

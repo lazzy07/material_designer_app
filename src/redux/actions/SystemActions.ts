@@ -7,6 +7,7 @@ export const SET_SELECTED = "set selected";
 export const SET_SELECTED_NODE = "set selected node";
 export const SET_PREVIEW_NODE = "set preview node";
 export const SET_SELECTED_GRAPH_DATA = "set selected graph data";
+export const SAVE_SELECTED_GRAPH_DATA = "save selected graph data";
 
 export const setImportFiles = (type: ImportTypes, files: File[]) => {
   return {

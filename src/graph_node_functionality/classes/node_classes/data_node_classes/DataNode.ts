@@ -1,7 +1,13 @@
-import { v4 } from "uuid";
 import { Graphs, GRAPH_TYPES } from "../../../../interfaces/Graphs";
-import { Component, Node } from "../../../../packages/rete-1.4.4";
+import { Component } from "../../../../packages/rete-1.4.4";
 import { NodePropertyData } from "../../../interfaces/NodePropertyData";
+
+import {
+  adjectives,
+  animals,
+  colors,
+  uniqueNamesGenerator,
+} from "unique-names-generator";
 
 export default abstract class DataNode<T> extends Component {
   data: Graphs;
@@ -11,6 +17,17 @@ export default abstract class DataNode<T> extends Component {
     super(data.name);
     this.data = data;
     this.meta = { engineType };
+
+    for (let data of (this.data as any).dataGraph!
+      .data as NodePropertyData<any>[]) {
+      if (data.id === "var_name") {
+        data.data = uniqueNamesGenerator({
+          dictionaries: [adjectives, colors, animals],
+          separator: "_",
+          length: 3,
+        });
+      }
+    }
   }
 
   async worker() {}

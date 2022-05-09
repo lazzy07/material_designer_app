@@ -46,7 +46,7 @@ export const createGraph = (
     },
     shaderGraph: {
       id: v4(),
-      data: { id: "materialdesigner" + EDITOR_VERSION, nodes: {} },
+      data: { id: "materialdesigner@" + EDITOR_VERSION, nodes: {} },
       parentId: id,
       createdAt: new Date(),
     },
@@ -167,5 +167,23 @@ export const editPackageName = (id: string, name: string) => {
   if (ref) {
     ref.name = name;
     rStore.dispatch(changeGraphData(packages));
+  }
+};
+
+export const saveGraph = (id: string, graph: Graphs) => {
+  const project: ProjectReducer = rStore.getState().project;
+  const packages = project.packages;
+
+  const ref = getPackageElement(id, packages);
+  if (ref) {
+    if (ref.contentType === "graph") {
+      let r = ref as Graphs;
+
+      r.dataGraph = { ...graph.dataGraph! };
+      r.kernelGraph = { ...graph.kernelGraph! };
+      r.shaderGraph = { ...graph.shaderGraph! };
+
+      rStore.dispatch(changeGraphData(packages));
+    }
   }
 };

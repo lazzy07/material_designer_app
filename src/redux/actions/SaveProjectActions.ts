@@ -1,3 +1,4 @@
+import { PackageElement } from "../../interfaces/PackageElement";
 import { Action } from "../store";
 
 export const SAVE_NEW_PROJECT_DATA = "save project data";

@@ -31,6 +31,8 @@ import {
   createPackage,
   deletePackage,
   editPackageName,
+  getPackageElement,
+  saveGraph,
 } from "../services/ProjectPackageManagement";
 import { showDialogBox } from "../services/QuestionDialog";
 import { ipcRenderer } from "electron";
@@ -41,6 +43,7 @@ interface Props {
   project: Project;
   selectedGraph: Graphs | null;
   selectedGraphType: GRAPH_TYPES | null;
+  packages: PackageElement[];
   setSelected: (graphType: GRAPH_TYPES, graph: Graphs) => void;
 }
 
@@ -580,7 +583,12 @@ class OutlinerComponent extends Component<Props, State> {
         } else {
           type = "shaderGraph";
         }
+
+        if (this.props.selectedGraph) {
+          saveGraph(this.props.selectedGraph.id, this.props.selectedGraph);
+        }
         this.props.setSelected(type, elem.data! as Graphs);
+
         ipcRenderer.send(IpcMessages.SELECT_CURRENT_GRAPH, {
           id: elem.data!.id,
           type,
@@ -612,6 +620,7 @@ const mapStateToProps = (state: Store) => {
     project: state.project,
     selectedGraph: state.system.selectedItems.graph,
     selectedGraphType: state.system.selectedItems.graphType,
+    packages: state.project.packages,
   };
 };
 

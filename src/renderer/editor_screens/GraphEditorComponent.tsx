@@ -28,7 +28,7 @@ interface Props {
   graphType: GRAPH_TYPES | null;
   localLibShaderNodes: Graphs[];
   localLibDataNodes: Graphs[];
-  graph: Graphs | undefined;
+  graph: Graphs | undefined | null;
 }
 
 interface State {
@@ -211,7 +211,7 @@ class GraphEditorComponent extends Component<Props, State> {
       this.selectContextMenuType();
     }
 
-    if (prevProps.graph != this.props.graph) {
+    if (JSON.stringify(prevProps.graph) != JSON.stringify(this.props.graph)) {
       this.loadDataFromStore();
     }
   }
@@ -324,7 +324,7 @@ const mapStateToProps = (state: Store) => {
   }
 
   return {
-    graph,
+    graph: state.system.selectedItems.graph,
     graphType: state.system.selectedItems.graphType,
     localLibShaderNodes: state.graphLibraries.shaderGraphNodes,
     localLibDataNodes: state.graphLibraries.dataGraphNodes,
