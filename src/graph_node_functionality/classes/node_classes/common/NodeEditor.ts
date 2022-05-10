@@ -94,7 +94,9 @@ export default abstract class NodeEditor {
       const json = this.editorCore!.toJSON();
       const state: Store = store.getState();
       const selectedItems = state.system.selectedItems;
-      store.dispatch(editGraphData(selectedItems.graphType!, json));
+      store.dispatch(
+        editGraphData(selectedItems.graphId, selectedItems.graphType!, json)
+      );
     });
   };
 

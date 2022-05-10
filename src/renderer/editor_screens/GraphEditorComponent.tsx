@@ -316,7 +316,7 @@ class GraphEditorComponent extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: Store) => {
-  const pkg = getPackageElementById(state.system.selectedItems.graph?.id || "");
+  const pkg = getPackageElementById(state.system.selectedItems.graphId || "");
   let graph: Graphs | undefined = undefined;
 
   if (pkg) {
@@ -324,7 +324,7 @@ const mapStateToProps = (state: Store) => {
   }
 
   return {
-    graph: state.system.selectedItems.graph,
+    graph: state.project.packages[state.system.selectedItems.graphId] as Graphs,
     graphType: state.system.selectedItems.graphType,
     localLibShaderNodes: state.graphLibraries.shaderGraphNodes,
     localLibDataNodes: state.graphLibraries.dataGraphNodes,

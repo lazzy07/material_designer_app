@@ -34,7 +34,6 @@ import {
   createPackage,
   deletePackage,
   editPackageName,
-  getPackageElement,
 } from "../services/ProjectPackageManagement";
 import { showDialogBox } from "../services/QuestionDialog";
 import { ipcRenderer } from "electron";
@@ -47,7 +46,7 @@ interface Props {
   selectedGraphType: GRAPH_TYPES | null;
   packages: { [id: string]: PackageElement };
   tree: PackageTreeElement[];
-  setSelected: (graphType: GRAPH_TYPES, graph: Graphs) => void;
+  setSelected: (graphType: GRAPH_TYPES, graphId: string) => void;
 }
 
 interface State {
@@ -596,10 +595,7 @@ class OutlinerComponent extends Component<Props, State> {
           type = "shaderGraph";
         }
 
-        if (this.props.selectedGraph) {
-          //saveGraph(this.props.selectedGraph.id, this.props.selectedGraph);
-        }
-        this.props.setSelected(type, elem.data! as Graphs);
+        this.props.setSelected(type, elem.data!.id);
 
         ipcRenderer.send(IpcMessages.SELECT_CURRENT_GRAPH, {
           id: elem.data!.id,
@@ -630,7 +626,9 @@ class OutlinerComponent extends Component<Props, State> {
 const mapStateToProps = (state: Store) => {
   return {
     project: state.project,
-    selectedGraph: state.system.selectedItems.graph,
+    selectedGraph: state.project.packages[
+      state.system.selectedItems.graphId
+    ] as Graphs,
     selectedGraphType: state.system.selectedItems.graphType,
     packages: state.project.packages,
     tree: state.project.tree,

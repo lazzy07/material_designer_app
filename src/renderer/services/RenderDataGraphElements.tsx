@@ -18,6 +18,7 @@ import { Data, NodeData } from "../../packages/rete-1.4.4/core/data";
 import { editGraphNodeData } from "../../redux/actions/GraphActions";
 import { ColorLUT } from "../../interfaces/ColorLutData";
 import Dropdown from "../components/graph_property_inputs/Dropdown";
+import { Store } from "../../redux/reducers";
 // import Switch from "../components/graph_property_inputs/Switch";
 // import Dropdown from "../components/graph_property_inputs/Dropdown";
 
@@ -274,9 +275,14 @@ function onChangeData<T>(
       i.data = value;
     }
   }
-
+  const state = store.getState() as Store;
   store.dispatch(
-    editGraphNodeData("dataGraph", selectedNodeData, selectedNode.id)
+    editGraphNodeData(
+      state.system.selectedItems.graphId,
+      "dataGraph",
+      selectedNodeData,
+      selectedNode.id
+    )
   );
 }
 
@@ -299,8 +305,14 @@ function onChangeDataElem(
       i.data.value = value;
     }
   }
+  const state = store.getState() as Store;
 
   store.dispatch(
-    editGraphNodeData("dataGraph", selectedNodeData, selectedNode.id)
+    editGraphNodeData(
+      state.system.selectedItems.graphId,
+      "dataGraph",
+      selectedNodeData,
+      selectedNode.id
+    )
   );
 }

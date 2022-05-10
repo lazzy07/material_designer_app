@@ -27,11 +27,11 @@ export const setImportFiles = (type: ImportTypes, files: File[]) => {
   };
 };
 
-export const setSelected = (graphType: GRAPH_TYPES, graph: Graphs) => {
+export const setSelected = (graphType: GRAPH_TYPES, graphId: string) => {
   return {
     type: SET_SELECTED,
     payload: {
-      graph,
+      id: graphId,
       graphType,
     },
   };

@@ -1,4 +1,3 @@
-import { getPackageElementById } from "./../../renderer/services/GetPackageElement";
 import { SET_KERNEL_ERROR } from "./../actions/GraphActions";
 import { ImportTypes } from "../../renderer/services/ImportImageData";
 import { ImportAssetFile } from "../../interfaces/ImportAssetFile";
@@ -8,13 +7,7 @@ import {
   SET_SELECTED,
   SET_SELECTED_NODE,
 } from "../actions/SystemActions";
-import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
-import {
-  EDIT_GRAPH_DATA,
-  EDIT_GRAPH_NODE_DATA,
-  EDIT_KERNEL_DATA,
-} from "../actions/GraphActions";
-import { Data } from "../../packages/rete-1.4.4/core/data";
+import { GRAPH_TYPES } from "../../interfaces/Graphs";
 
 export interface SystemReducer {
   importingAssets: {
@@ -22,7 +15,7 @@ export interface SystemReducer {
     assets: ImportAssetFile[];
   };
   selectedItems: {
-    graph: Graphs | null;
+    graphId: string;
     graphType: GRAPH_TYPES | null;
     node: number;
     previewNode: number;
@@ -36,7 +29,7 @@ const initialState: SystemReducer = {
     assets: [],
   },
   selectedItems: {
-    graph: null,
+    graphId: "",
     graphType: null,
     node: -1,
     previewNode: -1,
@@ -59,7 +52,7 @@ export const systemReducer = (
         ...state,
         selectedItems: {
           ...state.selectedItems,
-          graph: action.payload.graph,
+          graphId: action.payload.id,
           graphType: action.payload.graphType,
         },
       };
@@ -70,75 +63,6 @@ export const systemReducer = (
         selectedItems: {
           ...state.selectedItems,
           node: action.payload,
-        },
-      };
-
-    case EDIT_GRAPH_DATA:
-      const toUpdate: Data = { ...action.payload.packageData };
-      const newNodes = toUpdate.nodes;
-      const prevData: Data = {
-        ...state.selectedItems.graph![action.payload.selectedType!].data,
-      };
-      const prevNodes = prevData.nodes;
-
-      for (const i of Object.keys(newNodes)) {
-        if (!prevNodes[i]) {
-          prevNodes[i] = { ...newNodes[i] };
-        }
-      }
-
-      return {
-        ...state,
-        selectedItems: {
-          ...state.selectedItems,
-          graph: {
-            ...state.selectedItems.graph!,
-            [action.payload.selectedType!]: {
-              ...state.selectedItems.graph![action.payload.selectedType!],
-              data: prevData,
-            },
-          },
-        },
-      };
-
-    case EDIT_GRAPH_NODE_DATA:
-      return {
-        ...state,
-        selectedItems: {
-          ...state.selectedItems,
-          graph: {
-            ...state.selectedItems.graph!,
-            [action.payload.selectedType!]: {
-              ...state.selectedItems.graph![action.payload.selectedType!],
-              data: {
-                ...state.selectedItems.graph![action.payload.selectedType!]
-                  .data,
-                nodes: {
-                  ...state.selectedItems.graph![action.payload.selectedType!]
-                    .data.nodes,
-                  [action.payload.selectedNode]: action.payload.data,
-                },
-              },
-            },
-          },
-        },
-      };
-
-    case EDIT_KERNEL_DATA:
-      return {
-        ...state,
-        selectedItems: {
-          ...state.selectedItems,
-          graph: {
-            ...state.selectedItems.graph!,
-            kernelGraph: {
-              ...state.selectedItems.graph!.kernelGraph!,
-              data: {
-                ...state.selectedItems.graph!.kernelGraph!.data,
-                [action.payload.type]: action.payload.update,
-              },
-            },
-          },
         },
       };
 

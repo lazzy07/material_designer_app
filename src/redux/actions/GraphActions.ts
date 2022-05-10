@@ -28,12 +28,14 @@ export const changeGraphData = (
 };
 
 export const editGraphData = (
+  id: string,
   selectedType: GRAPH_TYPES,
   packageData: Data
 ): Action => {
   return {
     type: EDIT_GRAPH_DATA,
     payload: {
+      id,
       selectedType,
       packageData,
     },
@@ -41,6 +43,7 @@ export const editGraphData = (
 };
 
 export const editGraphNodeData = (
+  id: string,
   selectedType: GRAPH_TYPES,
   data: NodeData,
   nodeId: number
@@ -48,6 +51,7 @@ export const editGraphNodeData = (
   const update = {
     type: EDIT_GRAPH_NODE_DATA,
     payload: {
+      id,
       selectedType,
       data,
       selectedNode: nodeId,
@@ -62,10 +66,15 @@ export const editGraphNodeData = (
   return update;
 };
 
-export const editKernelData = (type: string, update: string): Action => {
+export const editKernelData = (
+  id: string,
+  type: string,
+  update: string
+): Action => {
   const action = {
     type: EDIT_KERNEL_DATA,
     payload: {
+      id,
       update,
       type,
     },

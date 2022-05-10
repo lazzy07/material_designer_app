@@ -15,10 +15,9 @@ interface State {}
 interface Props {
   height: number;
   width: number;
-  graphType: GRAPH_TYPES | null;
-  selectedGraph: Graphs | null;
   selectedGraphType: GRAPH_TYPES | null;
-  onChange: (type: string, change: string) => void;
+  selectedGraph: Graphs | undefined;
+  onChange: (id: string, type: string, change: string) => void;
 }
 class FunctionEditorComponent extends Component<Props, State> {
   constructor(props: Props) {
@@ -26,14 +25,14 @@ class FunctionEditorComponent extends Component<Props, State> {
   }
 
   onChangeCode = (val: string) => {
-    this.props.onChange("functions", val);
+    this.props.onChange(this.props.selectedGraph!.id, "functions", val);
   };
 
   render() {
     return (
       <div>
         <div
-          hidden={this.props.graphType == "kernelGraph"}
+          hidden={this.props.selectedGraphType == "kernelGraph"}
           style={{
             display: "flex",
             height: this.props.height,
@@ -95,10 +94,10 @@ class FunctionEditorComponent extends Component<Props, State> {
 
 const mapStateToProps = (state: Store) => {
   return {
-    graphType: state.system.selectedItems.graph
-      ? state.system.selectedItems.graph.type
-      : null,
-    selectedGraph: state.system.selectedItems.graph,
+    graphType: state.system.selectedItems.graphType,
+    selectedGraph: state.project.packages[
+      state.system.selectedItems.graphId
+    ] as Graphs,
     selectedGraphType: state.system.selectedItems.graphType,
   };
 };
