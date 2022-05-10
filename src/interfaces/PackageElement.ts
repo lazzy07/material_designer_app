@@ -3,7 +3,13 @@ export interface PackageElement {
   id: string;
   name: string;
   contentType: PACKAGE_CONTENT_TYPE;
-  children: PackageElement[];
+  //Remove
+  children: string[];
+}
+
+export interface PackageTreeElement {
+  id: string;
+  children: PackageTreeElement[];
 }
 
 export type PACKAGE_CONTENT_TYPE = "package" | "graph";

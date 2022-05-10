@@ -1,3 +1,4 @@
+import { PackageTreeElement } from "./../../interfaces/PackageElement";
 import { Project } from "src/interfaces/Project";
 import { v4 } from "uuid";
 
@@ -6,7 +7,8 @@ export const initialProjectData = (): Project => {
     id: v4(),
     filePath: "",
     fileName: "Untitled",
-    packages: [],
+    tree: [],
+    packages: {},
     preview: {
       shape: "cube",
       subdivision: 100,

@@ -1,6 +1,9 @@
 import { ipcRenderer } from "electron";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
-import { PackageElement } from "../../interfaces/PackageElement";
+import {
+  PackageElement,
+  PackageTreeElement,
+} from "../../interfaces/PackageElement";
 import { IpcMessages } from "../../IpcMessages";
 import { Data, NodeData } from "../../packages/rete-1.4.4/core/data";
 import { Action } from "../store";
@@ -11,10 +14,16 @@ export const EDIT_GRAPH_NODE_DATA = "edit graph node data";
 export const EDIT_KERNEL_DATA = "edit kernel data";
 export const SET_KERNEL_ERROR = "set kernel error";
 
-export const changeGraphData = (packages: PackageElement[]): Action => {
+export const changeGraphData = (
+  tree: PackageTreeElement[],
+  packages: { [id: string]: PackageElement }
+): Action => {
   return {
     type: CHANGE_GRAPHS,
-    payload: [...packages],
+    payload: {
+      tree,
+      packages,
+    },
   };
 };
 
