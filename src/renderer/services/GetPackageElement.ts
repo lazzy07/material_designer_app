@@ -1,6 +1,7 @@
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import {
   PackageElement,
+  PackageTreeElement,
   PACKAGE_CONTENT_TYPE,
 } from "../../interfaces/PackageElement";
 import { ProjectReducer } from "../../redux/reducers/ProjectReducer";
@@ -22,7 +23,7 @@ export const getPackageElementById = (
     return { contentType: "project", graphType: "dataGraph" };
   }
 
-  const data = searchPackages(project.packages, id, project.id);
+  const data = searchPackages(project.packages, project.tree, id, project.id);
   if (data) {
     return {
       contentType: data.package.contentType,
@@ -36,28 +37,32 @@ export const getPackageElementById = (
 };
 
 const searchPackages = (
-  packages: PackageElement[],
+  packages: { [id: string]: PackageElement },
+  tree: PackageTreeElement[],
   id: string,
   parentId: string
 ): { package: PackageElement; parentId: string } | undefined => {
-  for (const pkg of packages) {
-    if (pkg.id === id) {
-      return { package: pkg, parentId };
-    }
-    if (pkg.contentType === "graph") {
-      const graph = pkg as Graphs;
-
-      if (
-        graph.kernelGraph!.id === id ||
-        graph.shaderGraph!.id === id ||
-        graph.dataGraph!.id === id
-      ) {
-        return { package: graph, parentId };
+  for (const i of tree) {
+    let pkg = packages[i.id];
+    if (pkg) {
+      if (pkg.id === id) {
+        return { package: pkg, parentId };
       }
-    }
-    if (pkg.children.length > 0) {
-      const newpkg = searchPackages(pkg.children, id, pkg.id);
-      if (newpkg) return newpkg;
+      if (pkg.contentType === "graph") {
+        const graph = pkg as Graphs;
+
+        if (
+          graph.kernelGraph!.id === id ||
+          graph.shaderGraph!.id === id ||
+          graph.dataGraph!.id === id
+        ) {
+          return { package: graph, parentId };
+        }
+      }
+      if (pkg.children.length > 0) {
+        const newpkg = searchPackages(packages, i.children, id, pkg.id);
+        if (newpkg) return newpkg;
+      }
     }
   }
 };

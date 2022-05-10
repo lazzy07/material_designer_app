@@ -17,7 +17,10 @@ import {
   faSquareRootAlt,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { PackageElement } from "../../interfaces/PackageElement";
+import {
+  PackageElement,
+  PackageTreeElement,
+} from "../../interfaces/PackageElement";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { ScreenMenu } from "../services/RenderMenu";
 import OutlinerContextMenu from "../components/outliner/OutlinerContextMenu";
@@ -32,7 +35,6 @@ import {
   deletePackage,
   editPackageName,
   getPackageElement,
-  saveGraph,
 } from "../services/ProjectPackageManagement";
 import { showDialogBox } from "../services/QuestionDialog";
 import { ipcRenderer } from "electron";
@@ -43,7 +45,8 @@ interface Props {
   project: Project;
   selectedGraph: Graphs | null;
   selectedGraphType: GRAPH_TYPES | null;
-  packages: PackageElement[];
+  packages: { [id: string]: PackageElement };
+  tree: PackageTreeElement[];
   setSelected: (graphType: GRAPH_TYPES, graph: Graphs) => void;
 }
 
@@ -367,154 +370,163 @@ class OutlinerComponent extends Component<Props, State> {
     return [];
   };
 
-  outlinerRecursive = (packages: PackageElement[]) => {
+  outlinerRecursive = (packages: PackageTreeElement[]) => {
     let treeData: TreeNodeInfo<{}>[] = [];
-    for (const pkg of packages) {
-      if (pkg.contentType === "package") {
-        let pkgOutlinerElem: TreeNodeInfo = {
-          id: pkg.id,
-          label: this.renderOutlinerLabel(pkg.name, pkg.id, "package"),
-          isExpanded: this.state.expanded.includes(pkg.id),
-          isSelected: this.state.clicked === pkg.id,
-          hasCaret: true,
-          icon: <FontAwesomeIcon icon={faFolder} style={{ marginRight: 10 }} />,
-          childNodes: [],
-        };
+    for (const i of packages) {
+      let pkg = this.props.packages[i.id];
+      if (pkg) {
+        if (pkg.contentType === "package") {
+          let pkgOutlinerElem: TreeNodeInfo = {
+            id: pkg.id,
+            label: this.renderOutlinerLabel(pkg.name, pkg.id, "package"),
+            isExpanded: this.state.expanded.includes(pkg.id),
+            isSelected: this.state.clicked === pkg.id,
+            hasCaret: true,
+            icon: (
+              <FontAwesomeIcon icon={faFolder} style={{ marginRight: 10 }} />
+            ),
+            childNodes: [],
+          };
 
-        if (pkgOutlinerElem.isExpanded) {
-          pkgOutlinerElem.icon = (
-            <FontAwesomeIcon icon={faFolderOpen} style={{ marginRight: 10 }} />
-          );
-        }
-
-        pkgOutlinerElem.childNodes = this.outlinerRecursive(pkg.children);
-
-        treeData!.push(pkgOutlinerElem);
-      } else {
-        const graph = pkg as Graphs;
-        let graphOutlinerElem: TreeNodeInfo = {
-          id: graph.id,
-          label: this.renderOutlinerLabel(graph.name, graph.id, "project"),
-          isExpanded: this.state.expanded.includes(graph.id),
-          isSelected: this.state.clicked === graph.id,
-          hasCaret: true,
-          childNodes: [],
-        };
-
-        switch (graph.type) {
-          case "shaderGraph":
-            graphOutlinerElem.icon = (
+          if (pkgOutlinerElem.isExpanded) {
+            pkgOutlinerElem.icon = (
               <FontAwesomeIcon
-                icon={faProjectDiagram}
+                icon={faFolderOpen}
                 style={{ marginRight: 10 }}
               />
             );
-            graphOutlinerElem.id = graph.shaderGraph!.id;
-            graphOutlinerElem.isSelected =
-              this.state.clicked === graph.shaderGraph!.id;
-            graphOutlinerElem.isExpanded = this.state.expanded.includes(
-              graph.shaderGraph!.id
-            );
-            graphOutlinerElem.childNodes = [
-              {
-                id: graph.dataGraph!.id,
-                label: this.renderOutlinerLabel(
-                  "Data Graph",
-                  graph.dataGraph!.id,
-                  "dataGraph"
-                ),
-                isSelected: this.state.clicked === graph.dataGraph!.id,
-                icon: (
-                  <FontAwesomeIcon
-                    icon={faSquareRootAlt}
-                    style={{ marginRight: 10 }}
-                  />
-                ),
-              },
-            ];
-            graphOutlinerElem.label = this.renderOutlinerLabel(
-              graph.name,
-              graph.id,
-              "shaderGraph"
-            );
-            break;
+          }
 
-          case "kernelGraph":
-            graphOutlinerElem.icon = (
-              <FontAwesomeIcon icon={faCode} style={{ marginRight: 10 }} />
-            );
-            graphOutlinerElem.id = graph.kernelGraph!.id;
-            graphOutlinerElem.isSelected =
-              this.state.clicked === graph.kernelGraph!.id;
-            graphOutlinerElem.isExpanded = this.state.expanded.includes(
-              graph.kernelGraph!.id
-            );
+          pkgOutlinerElem.childNodes = this.outlinerRecursive(i.children);
 
-            graphOutlinerElem.childNodes = [
-              {
-                id: graph.dataGraph!.id,
-                label: this.renderOutlinerLabel(
-                  "Data Graph",
-                  graph.dataGraph!.id,
-                  "dataGraph"
-                ),
-                icon: (
-                  <FontAwesomeIcon
-                    icon={faSquareRootAlt}
-                    style={{ marginRight: 10 }}
-                  />
-                ),
-                isSelected: this.state.clicked === graph.dataGraph!.id,
-              },
-              {
-                id: graph.shaderGraph!.id,
-                label: this.renderOutlinerLabel(
-                  "Shader Graph",
-                  graph.shaderGraph!.id,
-                  "shaderGraph"
-                ),
-                icon: (
-                  <FontAwesomeIcon
-                    icon={faProjectDiagram}
-                    style={{ marginRight: 10 }}
-                  />
-                ),
-                isSelected: this.state.clicked === graph.shaderGraph!.id,
-              },
-            ];
-            graphOutlinerElem.label = this.renderOutlinerLabel(
-              graph.name,
-              graph.id,
-              "kernelGraph"
-            );
-            break;
+          treeData!.push(pkgOutlinerElem);
+        } else {
+          const graph = pkg as unknown as Graphs;
+          let graphOutlinerElem: TreeNodeInfo = {
+            id: graph.id,
+            label: this.renderOutlinerLabel(graph.name, graph.id, "project"),
+            isExpanded: this.state.expanded.includes(graph.id),
+            isSelected: this.state.clicked === graph.id,
+            hasCaret: true,
+            childNodes: [],
+          };
 
-          case "dataGraph":
-            graphOutlinerElem.icon = (
-              <FontAwesomeIcon
-                icon={faSquareRootAlt}
-                style={{ marginRight: 10 }}
-              />
-            );
-            graphOutlinerElem.hasCaret = false;
-            graphOutlinerElem.id = graph.dataGraph!.id;
-            graphOutlinerElem.isSelected =
-              this.state.clicked === graph.dataGraph!.id;
-            graphOutlinerElem.label = this.renderOutlinerLabel(
-              graph.name,
-              graph.id,
-              "dataGraph"
-            );
+          switch (graph.type) {
+            case "shaderGraph":
+              graphOutlinerElem.icon = (
+                <FontAwesomeIcon
+                  icon={faProjectDiagram}
+                  style={{ marginRight: 10 }}
+                />
+              );
+              graphOutlinerElem.id = graph.shaderGraph!.id;
+              graphOutlinerElem.isSelected =
+                this.state.clicked === graph.shaderGraph!.id;
+              graphOutlinerElem.isExpanded = this.state.expanded.includes(
+                graph.shaderGraph!.id
+              );
+              graphOutlinerElem.childNodes = [
+                {
+                  id: graph.dataGraph!.id,
+                  label: this.renderOutlinerLabel(
+                    "Data Graph",
+                    graph.dataGraph!.id,
+                    "dataGraph"
+                  ),
+                  isSelected: this.state.clicked === graph.dataGraph!.id,
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faSquareRootAlt}
+                      style={{ marginRight: 10 }}
+                    />
+                  ),
+                },
+              ];
+              graphOutlinerElem.label = this.renderOutlinerLabel(
+                graph.name,
+                graph.id,
+                "shaderGraph"
+              );
+              break;
 
-            break;
+            case "kernelGraph":
+              graphOutlinerElem.icon = (
+                <FontAwesomeIcon icon={faCode} style={{ marginRight: 10 }} />
+              );
+              graphOutlinerElem.id = graph.kernelGraph!.id;
+              graphOutlinerElem.isSelected =
+                this.state.clicked === graph.kernelGraph!.id;
+              graphOutlinerElem.isExpanded = this.state.expanded.includes(
+                graph.kernelGraph!.id
+              );
+
+              graphOutlinerElem.childNodes = [
+                {
+                  id: graph.dataGraph!.id,
+                  label: this.renderOutlinerLabel(
+                    "Data Graph",
+                    graph.dataGraph!.id,
+                    "dataGraph"
+                  ),
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faSquareRootAlt}
+                      style={{ marginRight: 10 }}
+                    />
+                  ),
+                  isSelected: this.state.clicked === graph.dataGraph!.id,
+                },
+                {
+                  id: graph.shaderGraph!.id,
+                  label: this.renderOutlinerLabel(
+                    "Shader Graph",
+                    graph.shaderGraph!.id,
+                    "shaderGraph"
+                  ),
+                  icon: (
+                    <FontAwesomeIcon
+                      icon={faProjectDiagram}
+                      style={{ marginRight: 10 }}
+                    />
+                  ),
+                  isSelected: this.state.clicked === graph.shaderGraph!.id,
+                },
+              ];
+              graphOutlinerElem.label = this.renderOutlinerLabel(
+                graph.name,
+                graph.id,
+                "kernelGraph"
+              );
+              break;
+
+            case "dataGraph":
+              graphOutlinerElem.icon = (
+                <FontAwesomeIcon
+                  icon={faSquareRootAlt}
+                  style={{ marginRight: 10 }}
+                />
+              );
+              graphOutlinerElem.hasCaret = false;
+              graphOutlinerElem.id = graph.dataGraph!.id;
+              graphOutlinerElem.isSelected =
+                this.state.clicked === graph.dataGraph!.id;
+              graphOutlinerElem.label = this.renderOutlinerLabel(
+                graph.name,
+                graph.id,
+                "dataGraph"
+              );
+
+              break;
+          }
+
+          treeData.push(graphOutlinerElem);
         }
-
-        treeData.push(graphOutlinerElem);
       }
     }
-
     return treeData;
   };
+
+  packagesObjectToPackageTree = () => {};
 
   projectToOutliner = () => {
     const packages = this.props.project.packages;
@@ -530,7 +542,7 @@ class OutlinerComponent extends Component<Props, State> {
       },
     ];
 
-    outliner[0].childNodes = this.outlinerRecursive(packages);
+    outliner[0].childNodes = this.outlinerRecursive(this.props.tree);
     return outliner;
   };
 
@@ -585,7 +597,7 @@ class OutlinerComponent extends Component<Props, State> {
         }
 
         if (this.props.selectedGraph) {
-          saveGraph(this.props.selectedGraph.id, this.props.selectedGraph);
+          //saveGraph(this.props.selectedGraph.id, this.props.selectedGraph);
         }
         this.props.setSelected(type, elem.data! as Graphs);
 
@@ -621,6 +633,7 @@ const mapStateToProps = (state: Store) => {
     selectedGraph: state.system.selectedItems.graph,
     selectedGraphType: state.system.selectedItems.graphType,
     packages: state.project.packages,
+    tree: state.project.tree,
   };
 };
 

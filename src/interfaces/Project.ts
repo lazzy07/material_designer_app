@@ -1,5 +1,5 @@
 import { Image } from "./Image";
-import { PackageElement } from "./PackageElement";
+import { PackageElement, PackageTreeElement } from "./PackageElement";
 import { ProjectSetting } from "./ProjectSetting";
 
 export interface Project {
@@ -7,7 +7,8 @@ export interface Project {
   filePath: string;
   fileName: string;
   description: string;
-  packages: PackageElement[];
+  tree: PackageTreeElement[];
+  packages: { [id: string]: PackageElement };
   textures: Image[];
   preview: {
     subdivision: number;
