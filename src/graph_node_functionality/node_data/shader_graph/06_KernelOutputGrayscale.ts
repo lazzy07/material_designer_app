@@ -1,4 +1,3 @@
-import { v4 } from "uuid";
 import { Graphs } from "../../../interfaces/Graphs";
 
 export const KernelOutputGrayscale = (): Graphs => ({
@@ -61,7 +60,7 @@ export const KernelOutputGrayscale = (): Graphs => ({
       {
         id: "var_name",
         name: "Variable Name",
-        data: v4(),
+        data: "",
         dataType: "string",
         groups: {
           id: "1",

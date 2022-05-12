@@ -25,7 +25,7 @@ export const OutputNum2 = (): Graphs => ({
       {
         id: "var_name",
         name: "Variable Name",
-        data: v4(),
+        data: "",
         dataType: "string",
         groups: {
           id: "29111",
