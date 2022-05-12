@@ -6,6 +6,7 @@ import DataInputNode from "../DataInputNode";
 export class Number1Input extends DataInputNode<number> {
   async builder(node: Node) {
     (node as any).data = this.data;
+    super.builder(node);
     (node as any).meta = this.meta;
     node.addOutput(new Output("out", "Num1", NUMBER_SOCKET));
 

@@ -6,6 +6,7 @@ import DataProcessNode from "../DataProcessNode";
 export class Num1toCol1 extends DataProcessNode<number> {
   async builder(node: Node) {
     (node as any).data = this.data;
+    super.builder(node);
     (node as any).meta = this.meta;
     node.addInput(new Input("1", "Num", NUMBER_SOCKET));
     node.addOutput(new Output("out", "Col1", COLORVEC_SOCKET));
