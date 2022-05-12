@@ -5,9 +5,9 @@ import DataProcessNode from "../DataProcessNode";
 
 export class SquarerootNumber extends DataProcessNode<number> {
   async builder(node: Node) {
-    (node as any).data = this.data;
+    (node as any).data = { ...this.data };
     super.builder(node);
-    (node as any).meta = this.meta;
+    (node as any).meta = { ...this.meta };
     node.addInput(new Input("1", "Num1", NUMBER_SOCKET));
     node.addInput(new Input("2", "Num2", NUMBER_SOCKET));
     node.addOutput(new Output("out", "Num", NUMBER_SOCKET));

@@ -5,9 +5,9 @@ import DataInputNode from "../DataInputNode";
 
 export class Lut3 extends DataInputNode<number> {
   async builder(node: Node) {
-    (node as any).data = this.data;
+    (node as any).data = { ...this.data };
     super.builder(node);
-    (node as any).meta = this.meta;
+    (node as any).meta = { ...this.meta };
     node.addOutput(new Output("out", "Lut3", LUT3_SOCKET));
 
     node.addControl(

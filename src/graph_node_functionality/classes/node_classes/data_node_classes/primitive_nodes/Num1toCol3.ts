@@ -5,9 +5,9 @@ import DataProcessNode from "../DataProcessNode";
 
 export class Num1toCol3 extends DataProcessNode<number> {
   async builder(node: Node) {
-    (node as any).data = this.data;
+    (node as any).data = { ...this.data };
     super.builder(node);
-    (node as any).meta = this.meta;
+    (node as any).meta = { ...this.meta };
     node.addInput(new Input("1", "R", NUMBER_SOCKET));
     node.addInput(new Input("2", "G", NUMBER_SOCKET));
     node.addInput(new Input("3", "B", NUMBER_SOCKET));
