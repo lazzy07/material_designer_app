@@ -20,6 +20,7 @@ export default abstract class ShaderNode extends Component {
   }
 
   async builder(node: Node) {
+    console.log(node);
     for (let data of (node.data as any).dataGraph!
       .data as NodePropertyData<any>[]) {
       if (data.id === "var_name" && !data.data) {
