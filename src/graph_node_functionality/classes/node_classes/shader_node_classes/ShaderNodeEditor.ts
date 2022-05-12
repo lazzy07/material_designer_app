@@ -23,8 +23,10 @@ export default class ShaderNodeEditor extends NodeEditor {
               (c as any).id
             )! as HTMLCanvasElement;
 
-            const ctx = canvas.getContext("2d");
-            ctx?.putImageData(iData, 0, 0);
+            if (canvas) {
+              const ctx = canvas.getContext("2d");
+              ctx?.putImageData(iData, 0, 0);
+            }
           });
         }
       });

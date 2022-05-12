@@ -7,6 +7,7 @@ import ImageController from "../../../renderer/controls/ImageController";
 export class KernelInputColor extends ShaderInputNode {
   async builder(node: Node) {
     (node as any).data = this.data;
+    super.builder(node);
     (node as any).meta = this.meta;
     node.addInput(new Input("1", "Tex", COLOR_SOCKET));
 
