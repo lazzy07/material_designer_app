@@ -36,72 +36,73 @@ import { NodePropertyData } from "../../../interfaces/NodePropertyData";
 import { v4 } from "uuid";
 
 export const getNodeFromFactory = (nodeData: Graphs) => {
-  switch (nodeData.id) {
+  let data = { ...nodeData };
+  switch (data.id) {
     case "1":
-      return new Number1Input(nodeData, "dataGraph");
+      return new Number1Input(data, "dataGraph");
     case "2":
-      return new Number1InputAndSlider(nodeData, "dataGraph");
+      return new Number1InputAndSlider(data, "dataGraph");
     case "3":
-      return new Number2InputAndSlider(nodeData, "dataGraph");
+      return new Number2InputAndSlider(data, "dataGraph");
     case "4":
-      return new Button(nodeData, "dataGraph");
+      return new Button(data, "dataGraph");
     case "6":
-      return new Dropdown(nodeData, "dataGraph");
+      return new Dropdown(data, "dataGraph");
     case "8":
-      return new Slider1(nodeData, "dataGraph");
+      return new Slider1(data, "dataGraph");
     case "9":
-      return new Slider2(nodeData, "dataGraph");
+      return new Slider2(data, "dataGraph");
     case "10":
-      return new Lut1(nodeData, "dataGraph");
+      return new Lut1(data, "dataGraph");
     case "11":
-      return new Lut3(nodeData, "dataGraph");
+      return new Lut3(data, "dataGraph");
     case "12":
-      return new ColorPicker1(nodeData, "dataGraph");
+      return new ColorPicker1(data, "dataGraph");
     case "13":
-      return new ColorPicker3(nodeData, "dataGraph");
+      return new ColorPicker3(data, "dataGraph");
     case "14":
-      return new AddNumber(nodeData, "dataGraph");
+      return new AddNumber(data, "dataGraph");
     case "15":
-      return new SubstractNumber(nodeData, "dataGraph");
+      return new SubstractNumber(data, "dataGraph");
     case "16":
-      return new MultiplyNumber(nodeData, "dataGraph");
+      return new MultiplyNumber(data, "dataGraph");
     case "17":
-      return new DivideNumber(nodeData, "dataGraph");
+      return new DivideNumber(data, "dataGraph");
     case "18":
-      return new PowerNumber(nodeData, "dataGraph");
+      return new PowerNumber(data, "dataGraph");
     case "19":
-      return new SquarerootNumber(nodeData, "dataGraph");
+      return new SquarerootNumber(data, "dataGraph");
     case "20":
-      return new Col1toNum1(nodeData, "dataGraph");
+      return new Col1toNum1(data, "dataGraph");
     case "21":
-      return new Num1toCol1(nodeData, "dataGraph");
+      return new Num1toCol1(data, "dataGraph");
     case "22":
-      return new Col3toNum1(nodeData, "dataGraph");
+      return new Col3toNum1(data, "dataGraph");
     case "23":
-      return new Num1toCol3(nodeData, "dataGraph");
+      return new Num1toCol3(data, "dataGraph");
     case "24":
-      return new BooltoNum1(nodeData, "dataGraph");
+      return new BooltoNum1(data, "dataGraph");
     case "25":
-      return new Num1toBool(nodeData, "dataGraph");
+      return new Num1toBool(data, "dataGraph");
     case "26":
-      return new Num1toNum2(nodeData, "dataGraph");
+      return new Num1toNum2(data, "dataGraph");
     case "27":
-      return new Num2toNum1(nodeData, "dataGraph");
+      return new Num2toNum1(data, "dataGraph");
     case "28":
-      return new OutputNum1(nodeData, "dataGraph");
+      return new OutputNum1(data, "dataGraph");
     case "29":
-      return new OutputNum2(nodeData, "dataGraph");
+      return new OutputNum2(data, "dataGraph");
     case "30":
-      return new OutputCol1(nodeData, "dataGraph");
+      return new OutputCol1(data, "dataGraph");
     case "31":
-      return new OutputCol3(nodeData, "dataGraph");
+      return new OutputCol3(data, "dataGraph");
     case "32":
-      return new OutputBool(nodeData, "dataGraph");
+      return new OutputBool(data, "dataGraph");
     case "33":
-      return new OutputLut1(nodeData, "dataGraph");
+      return new OutputLut1(data, "dataGraph");
     case "34":
-      return new OutputLut3(nodeData, "dataGraph");
+      return new OutputLut3(data, "dataGraph");
     default:
-      return new DataGraphReference(nodeData, "dataGraph");
+      return new DataGraphReference(data, "dataGraph");
   }
 };

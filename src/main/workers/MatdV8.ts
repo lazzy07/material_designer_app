@@ -16,6 +16,7 @@ export default class MatdV8 {
 
   static init(libPath: string) {
     MatdV8.matdV8 = new MatdV8(libPath);
+    MatdV8.setShaderNodeChangeCallback(MatdV8.onShaderNodeChanged);
   }
 
   static getLib() {
@@ -78,5 +79,19 @@ export default class MatdV8 {
 
   static compileKernel(func: (error: string) => void) {
     this.getLib().compileKernel(func);
+  }
+
+  static onShaderNodeChanged = (
+    nodeId: number,
+    elementSize: number,
+    buffer: ArrayBuffer
+  ) => {
+    console.log(nodeId, elementSize, buffer);
+  };
+
+  static setShaderNodeChangeCallback(
+    cb: (nodeId: number, elementSize: number, buffer: ArrayBuffer) => void
+  ) {
+    this.getLib().setShaderNodeChangeCallback(cb);
   }
 }
