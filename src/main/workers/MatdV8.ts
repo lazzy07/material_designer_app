@@ -1,5 +1,4 @@
 import { screens } from "./../main";
-import { ipcMain } from "electron";
 import { IpcMessages } from "../../IpcMessages";
 
 export default class MatdV8 {
@@ -46,28 +45,7 @@ export default class MatdV8 {
 
   static updateMaterialGraph(updateType: string, update: string) {
     try {
-      this.getLib().updateMaterialGraph(
-        updateType,
-        update,
-        (id: number, buffer: ArrayBuffer) => {
-          if (id) {
-            screens.editorScreen.window?.webContents.send(
-              IpcMessages.UPDATE_TEXTURE_POINTER,
-              {
-                id,
-                buffer,
-              }
-            );
-
-            screens.subEditorScreens.forEach((w) => {
-              w.window?.webContents.send(IpcMessages.UPDATE_TEXTURE_POINTER, {
-                id,
-                buffer,
-              });
-            });
-          }
-        }
-      );
+      this.getLib().updateMaterialGraph(updateType, update, () => {});
     } catch (err) {
       console.log(err);
     }
@@ -86,7 +64,16 @@ export default class MatdV8 {
     elementSize: number,
     buffer: ArrayBuffer
   ) => {
-    console.log(nodeId, elementSize, buffer);
+    screens.editorScreen.window
+      ? screens.editorScreen.window.webContents.send(
+          IpcMessages.UPDATE_TEXTURE_POINTER,
+          {
+            nodeId,
+            elementSize,
+            buffer,
+          }
+        )
+      : undefined;
   };
 
   static setShaderNodeChangeCallback(

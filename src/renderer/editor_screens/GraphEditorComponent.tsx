@@ -45,7 +45,7 @@ class GraphEditorComponent extends Component<Props, State> {
   private shaderGraphEditor: ShaderNodeEditor | undefined;
 
   private dataNodeLibrary = new DataNodeLibrary();
-  private shaderNodeLibrary = new ShaderNodeLibrary();
+  private shaderNodeLibrary: ShaderNodeLibrary | undefined;
 
   timeOut: NodeJS.Timeout | null = null;
 
@@ -106,7 +106,7 @@ class GraphEditorComponent extends Component<Props, State> {
   };
 
   onContextMenuItemClick = async (item: Graphs) => {
-    const lib: NodeLibrary =
+    const lib: NodeLibrary | undefined =
       this.props.graphType === "shaderGraph"
         ? this.shaderNodeLibrary
         : this.dataNodeLibrary;
@@ -114,24 +114,24 @@ class GraphEditorComponent extends Component<Props, State> {
       this.props.graphType === "shaderGraph"
         ? this.shaderGraphEditor
         : this.dataGraphEditor;
+    if (lib)
+      for (const node of lib.getReteNodes()) {
+        if (node.data.id === item.id) {
+          const newNode = await node.createNode();
 
-    for (const node of lib.getReteNodes()) {
-      if (node.data.id === item.id) {
-        const newNode = await node.createNode();
+          newNode.position = [this.contextMenuPos.x, this.contextMenuPos.y];
 
-        newNode.position = [this.contextMenuPos.x, this.contextMenuPos.y];
+          editor?.getReteEditor().addNode(newNode);
 
-        editor?.getReteEditor().addNode(newNode);
-
-        if (this.createNodeByDraggingToSpace) {
-          const event = new CustomEvent(CREATE_NODE_BY_DRAGGING, {
-            detail: { node: newNode },
-          });
-          window.dispatchEvent(event);
-          this.createNodeByDraggingToSpace = false;
+          if (this.createNodeByDraggingToSpace) {
+            const event = new CustomEvent(CREATE_NODE_BY_DRAGGING, {
+              detail: { node: newNode },
+            });
+            window.dispatchEvent(event);
+            this.createNodeByDraggingToSpace = false;
+          }
         }
       }
-    }
   };
 
   onClickDeleteNode = (node: Node) => {
@@ -171,6 +171,7 @@ class GraphEditorComponent extends Component<Props, State> {
       this.shaderGraphEditor = new ShaderNodeEditor(this.shaderDomRef.current!);
       this.shaderGraphEditor.enableEditorPlugins();
       this.shaderGraphEditor.handleSelectNodes();
+      this.shaderNodeLibrary = new ShaderNodeLibrary(this.shaderGraphEditor!);
       this.shaderGraphEditor.registerNodes(this.shaderNodeLibrary);
       this.shaderGraphEditor.onEditorChange();
     }

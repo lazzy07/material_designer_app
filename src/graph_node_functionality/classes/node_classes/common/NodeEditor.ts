@@ -37,6 +37,10 @@ export default abstract class NodeEditor {
     return this.editorCore;
   };
 
+  getReteEngine = () => {
+    return this.engine.getReteEngine();
+  };
+
   enableEditorPlugins = () => {
     this.editorCore.use(ConnectionPlugin);
     this.editorCore.use(ReactRenderPlugin, { component: MaterialNode });
@@ -51,16 +55,14 @@ export default abstract class NodeEditor {
   };
 
   onEditorChange = () => {
-    // this.editorCore.on(
-    //   ["nodecreated", "noderemoved", "connectioncreated", "connectionremoved"],
-    //   async () => {
-    //     ipcRenderer.send(IpcMessages.UPDATE_GRAPH, this.editorCore.toJSON());
-    //     // store.dispatch()
-    //     // const engine = this.engine.getReteEngine();
-    //     // await engine.abort();
-    //     // await engine.process(this.editorCore!.toJSON());
-    //   }
-    // );
+    this.editorCore.on(
+      ["nodecreated", "noderemoved", "connectioncreated", "connectionremoved"],
+      async () => {
+        const engine = this.engine.getReteEngine();
+        await engine.abort();
+        await engine.process(this.editorCore!.toJSON());
+      }
+    );
 
     this.editorCore.on("nodecreated", (node) => {
       ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {

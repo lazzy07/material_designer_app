@@ -10,28 +10,32 @@ import { KernelOutputGrayscale } from "./primitive_nodes/KernelOutputGrayscale";
 import { OutputColor } from "./primitive_nodes/OutputColor";
 import { OutputGrayscale } from "./primitive_nodes/OutputGrayscale";
 import { Viewer } from "./primitive_nodes/Viewer";
+import ShaderNodeEditor from "./ShaderNodeEditor";
 
-export const getNodeFromFactory = (nodeData: Graphs) => {
+export const getNodeFromFactory = (
+  nodeData: Graphs,
+  editor: ShaderNodeEditor
+) => {
   switch (nodeData.id) {
     case "1":
-      return new InputColor(nodeData, "shaderGraph");
+      return new InputColor(nodeData, "shaderGraph", editor);
     case "2":
-      return new InputGrayscale(nodeData, "shaderGraph");
+      return new InputGrayscale(nodeData, "shaderGraph", editor);
     case "3":
-      return new KernelInputColor(nodeData, "shaderGraph");
+      return new KernelInputColor(nodeData, "shaderGraph", editor);
     case "4":
-      return new KernelInputGrayscale(nodeData, "shaderGraph");
+      return new KernelInputGrayscale(nodeData, "shaderGraph", editor);
     case "5":
-      return new KernelOutputColor(nodeData, "shaderGraph");
+      return new KernelOutputColor(nodeData, "shaderGraph", editor);
     case "6":
-      return new KernelOutputGrayscale(nodeData, "shaderGraph");
+      return new KernelOutputGrayscale(nodeData, "shaderGraph", editor);
     case "7":
-      return new OutputColor(nodeData, "shaderGraph");
+      return new OutputColor(nodeData, "shaderGraph", editor);
     case "8":
-      return new OutputGrayscale(nodeData, "shaderGraph");
+      return new OutputGrayscale(nodeData, "shaderGraph", editor);
     case "9":
-      return new Viewer(nodeData, "shaderGraph");
+      return new Viewer(nodeData, "shaderGraph", editor);
     default:
-      return new Viewer(nodeData, "shaderGraph");
+      return new Viewer(nodeData, "shaderGraph", editor);
   }
 };

@@ -100,6 +100,7 @@ export class Node {
     return {
       id: this.id,
       data: this.data,
+      meta: this.meta,
       inputs: reduceIO<InputsData>(this.inputs),
       outputs: reduceIO<OutputsData>(this.outputs),
       position: this.position,

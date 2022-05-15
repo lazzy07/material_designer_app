@@ -4,11 +4,15 @@ import { store } from "../../../../redux/store";
 import GraphReference from "../common/GraphReference";
 import NodeLibrary from "../common/NodeLibrary";
 import { getNodeFromFactory } from "./PrimitiveNodeFactory";
+import ShaderNodeEditor from "./ShaderNodeEditor";
 
 export default class ShaderNodeLibrary extends NodeLibrary {
-  constructor() {
+  shaderNodeEditor: ShaderNodeEditor;
+
+  constructor(shaderNodeEditor: ShaderNodeEditor) {
     super();
     const nodes = this.getNodes();
+    this.shaderNodeEditor = shaderNodeEditor;
     this.reteNodes = this.initReteNodes(nodes);
   }
 
@@ -24,7 +28,7 @@ export default class ShaderNodeLibrary extends NodeLibrary {
   initReteNodes = (nodes: Graphs[]) => {
     const reteNodes: GraphReference[] = [];
     for (const i of nodes) {
-      reteNodes.push(getNodeFromFactory(i));
+      reteNodes.push(getNodeFromFactory(i, this.shaderNodeEditor));
     }
     return reteNodes;
   };
