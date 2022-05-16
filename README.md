@@ -18,34 +18,34 @@ Here are some screenshots of the current progress as of (2022/03/17)
 
 Datagraphs are the data that being passed to the kernels when they calculate pixel data. This window layout can be used to create these Datagraphs.
 
-![screenshot](screenshot_2022_03_17_data_graph.png)
+![screenshot](./screenshots/screenshot_2022_03_17_data_graph.png)
 
 ### Main screen when working on a kernel graph
 
 Core of the engine is made out of OpenCL and CUDA (CUDA not implemented yet) you can use this window layout to create kernels for OpenCL/CUDA.
 
-![screenshot](screenshot_2022_03_17_kernel_editor.png)
+![screenshot](./screenshots/screenshot_2022_03_17_kernel_editor.png)
 
 ### Loading Screen
 
 Loading sceen will be shown to the users while program being load into the memory.
 
-![screenshot](screenshot_2022_03_17_loading_screen.png)
+![screenshot](./screenshots/screenshot_2022_03_17_loading_screen.png)
 
 ### Open Project Screen
 
 Opening projects which you created earlier can be accessed using this screen. Material designer will keep track on the latest files you created/opened using material designer. Currently cloud features are not available.
 
-![screenshot](screenshot_2022_03_17_open_project.png)
+![screenshot](./screenshots/screenshot_2022_03_17_open_project.png)
 
 ### Preferences Screen
 
 Preferences screen can be used to customize how material designer look and feel. Also it will allow you to tweak and configure the editor the way you want it.
 
-![screenshot](screenshot_2022_03_17_preferences.png)
+![screenshot](./screenshots/screenshot_2022_03_17_preferences.png)
 
 ### Console Outputs
 
 This screen is only available for the users who have turned debugging on. (Advanced Users)
 
-![screenshot](screenshot_2022_03_17_console.png)
+![screenshot](./screenshots/screenshot_2022_03_17_console.png)
