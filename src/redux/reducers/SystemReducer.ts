@@ -16,7 +16,7 @@ export interface SystemReducer {
   };
   selectedItems: {
     graphId: string;
-    graphType: GRAPH_TYPES | null;
+    selectedNodesGraphType: GRAPH_TYPES;
     node: number;
     previewNode: number;
   };
@@ -30,7 +30,7 @@ const initialState: SystemReducer = {
   },
   selectedItems: {
     graphId: "",
-    graphType: null,
+    selectedNodesGraphType: "dataGraph",
     node: -1,
     previewNode: -1,
   },
@@ -53,7 +53,6 @@ export const systemReducer = (
         selectedItems: {
           ...state.selectedItems,
           graphId: action.payload.id,
-          graphType: action.payload.graphType,
         },
       };
 
@@ -62,7 +61,8 @@ export const systemReducer = (
         ...state,
         selectedItems: {
           ...state.selectedItems,
-          node: action.payload,
+          node: action.payload.id,
+          selectedNodesGraphType: action.payload.graphType,
         },
       };
 
