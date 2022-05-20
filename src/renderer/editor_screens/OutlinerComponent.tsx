@@ -43,7 +43,6 @@ interface Props {
   dimensions: { width: number; height: number };
   project: Project;
   selectedGraph: Graphs | null;
-  selectedGraphType: GRAPH_TYPES | null;
   packages: { [id: string]: PackageElement };
   tree: PackageTreeElement[];
   setSelected: (graphType: GRAPH_TYPES, graphId: string) => void;
@@ -192,8 +191,7 @@ class OutlinerComponent extends Component<Props, State> {
       <div>
         {name}{" "}
         {this.props.selectedGraph &&
-          this.props.selectedGraph.id === elem?.data?.id &&
-          this.props.selectedGraphType === type && (
+          this.props.selectedGraph.id === elem?.data?.id && (
             <FontAwesomeIcon style={{ marginLeft: 20 }} icon={faEye} />
           )}
       </div>
@@ -424,23 +422,6 @@ class OutlinerComponent extends Component<Props, State> {
               graphOutlinerElem.isExpanded = this.state.expanded.includes(
                 graph.shaderGraph!.id
               );
-              graphOutlinerElem.childNodes = [
-                {
-                  id: graph.dataGraph!.id,
-                  label: this.renderOutlinerLabel(
-                    "Data Graph",
-                    graph.dataGraph!.id,
-                    "dataGraph"
-                  ),
-                  isSelected: this.state.clicked === graph.dataGraph!.id,
-                  icon: (
-                    <FontAwesomeIcon
-                      icon={faSquareRootAlt}
-                      style={{ marginRight: 10 }}
-                    />
-                  ),
-                },
-              ];
               graphOutlinerElem.label = this.renderOutlinerLabel(
                 graph.name,
                 graph.id,
@@ -459,38 +440,6 @@ class OutlinerComponent extends Component<Props, State> {
                 graph.kernelGraph!.id
               );
 
-              graphOutlinerElem.childNodes = [
-                {
-                  id: graph.dataGraph!.id,
-                  label: this.renderOutlinerLabel(
-                    "Data Graph",
-                    graph.dataGraph!.id,
-                    "dataGraph"
-                  ),
-                  icon: (
-                    <FontAwesomeIcon
-                      icon={faSquareRootAlt}
-                      style={{ marginRight: 10 }}
-                    />
-                  ),
-                  isSelected: this.state.clicked === graph.dataGraph!.id,
-                },
-                {
-                  id: graph.shaderGraph!.id,
-                  label: this.renderOutlinerLabel(
-                    "Shader Graph",
-                    graph.shaderGraph!.id,
-                    "shaderGraph"
-                  ),
-                  icon: (
-                    <FontAwesomeIcon
-                      icon={faProjectDiagram}
-                      style={{ marginRight: 10 }}
-                    />
-                  ),
-                  isSelected: this.state.clicked === graph.shaderGraph!.id,
-                },
-              ];
               graphOutlinerElem.label = this.renderOutlinerLabel(
                 graph.name,
                 graph.id,
@@ -528,7 +477,6 @@ class OutlinerComponent extends Component<Props, State> {
   packagesObjectToPackageTree = () => {};
 
   projectToOutliner = () => {
-    const packages = this.props.project.packages;
     let outliner: TreeNodeInfo[] = [
       {
         id: this.props.project.id,
@@ -629,7 +577,6 @@ const mapStateToProps = (state: Store) => {
     selectedGraph: state.project.packages[
       state.system.selectedItems.graphId
     ] as Graphs,
-    selectedGraphType: state.system.selectedItems.graphType,
     packages: state.project.packages,
     tree: state.project.tree,
   };

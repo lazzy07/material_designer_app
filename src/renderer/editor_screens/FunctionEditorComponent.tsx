@@ -76,7 +76,7 @@ class FunctionEditorComponent extends Component<Props, State> {
         </div>
         <MonacoEditor
           height={this.props.height}
-          width="100%"
+          width={this.props.width}
           language="cpp"
           theme="vs-dark"
           value={
@@ -93,12 +93,13 @@ class FunctionEditorComponent extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: Store) => {
+  const graph = state.project.packages[
+    state.system.selectedItems.graphId
+  ] as Graphs;
+
   return {
-    graphType: state.system.selectedItems.graphType,
-    selectedGraph: state.project.packages[
-      state.system.selectedItems.graphId
-    ] as Graphs,
-    selectedGraphType: state.system.selectedItems.graphType,
+    selectedGraph: graph,
+    selectedGraphType: graph ? graph.type : null,
   };
 };
 
