@@ -1,5 +1,6 @@
 import { screens } from "./../main";
 import { IpcMessages } from "../../IpcMessages";
+import { GRAPH_TYPES } from "../../interfaces/Graphs";
 
 export default class MatdV8 {
   private libPath: string;
@@ -43,9 +44,18 @@ export default class MatdV8 {
     this.getLib().updateMaterialProject(materialProject);
   }
 
-  static updateMaterialGraph(updateType: string, update: string) {
+  static updateMaterialGraph(
+    updateType: string,
+    update: string,
+    selectedGraphType: GRAPH_TYPES
+  ) {
     try {
-      this.getLib().updateMaterialGraph(updateType, update, () => {});
+      this.getLib().updateMaterialGraph(
+        updateType,
+        update,
+        selectedGraphType,
+        () => {}
+      );
     } catch (err) {
       console.log(err);
     }

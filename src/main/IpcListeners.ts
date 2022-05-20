@@ -118,7 +118,11 @@ export const listenToMessages = (screens: Screens, url: string) => {
       return;
     }
 
-    MatdV8.updateMaterialGraph(data.updateType, data.update);
+    MatdV8.updateMaterialGraph(
+      data.updateType,
+      data.update,
+      data.selectedGraphType
+    );
   });
 
   ipcMain.on(IpcMessages.SELECT_CURRENT_GRAPH, (_, data) => {
