@@ -5,5 +5,6 @@ export const compileKernel = () => {
   ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
     updateType: "compileKernel",
     update: "",
+    selectedGraphType: "kernelGraph",
   });
 };
