@@ -31,6 +31,7 @@ export const getSelectedNode = (
   if (selectedGraph && selectedGraphType) {
     const sGraph = selectedGraph[selectedGraphType];
     const graphData = sGraph!.data as Data;
+
     if (graphData) {
       if (graphData.nodes) {
         return graphData.nodes[selectedNode];
