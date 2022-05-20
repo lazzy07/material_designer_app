@@ -61,6 +61,7 @@ export const editGraphNodeData = (
   ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
     updateType: "update",
     update: JSON.stringify(update),
+    selectedGraphType: selectedType,
   });
 
   return update;
@@ -83,6 +84,7 @@ export const editKernelData = (
   ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
     updateType: "update",
     update: JSON.stringify({ update, type }),
+    selectedGraphType: "kernelGraph",
   });
 
   return action;
