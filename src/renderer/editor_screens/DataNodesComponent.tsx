@@ -13,11 +13,9 @@ import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 interface Props {
   dimensions: { height: number; width: number };
   localDataNodes: Graphs[];
-  localShaderNodes: Graphs[];
-  selectedGraphType: GRAPH_TYPES | null;
 }
 
-class NodesComponent extends Component<Props> {
+class DataNodesComponent extends Component<Props> {
   readLocalLibrary = async () => {
     const NODES_PATH = LOCAL_NODES_PATH;
     ipcRenderer.send(IpcMessages.LOAD_LOCAL_LIBRARY_NODES, NODES_PATH);
@@ -40,27 +38,7 @@ class NodesComponent extends Component<Props> {
   };
 
   render() {
-    const nodeLib =
-      this.props.selectedGraphType === "shaderGraph"
-        ? this.props.localShaderNodes
-        : this.props.localDataNodes;
-
-    if (!this.props.selectedGraphType) {
-      return (
-        <div
-          style={{
-            height: "100%",
-            width: "100%",
-            padding: 30,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          You must select a graph
-        </div>
-      );
-    }
+    const nodeLib = this.props.localDataNodes;
 
     return (
       <div>
@@ -93,9 +71,7 @@ class NodesComponent extends Component<Props> {
 const mapStateToProps = (state: Store) => {
   return {
     localDataNodes: state.graphLibraries.dataGraphNodes,
-    localShaderNodes: state.graphLibraries.shaderGraphNodes,
-    selectedGraphType: state.system.selectedItems.graphType,
   };
 };
 
-export default connect(mapStateToProps)(NodesComponent);
+export default connect(mapStateToProps)(DataNodesComponent);

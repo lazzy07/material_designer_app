@@ -8,7 +8,7 @@ import { TEXTURE_BIT_DEPTH } from "../../../../interfaces/TextureBitDepths";
 
 export default class ShaderNodeEditor extends NodeEditor {
   constructor(domElement: HTMLDivElement) {
-    super(domElement, new DataNodeEngine());
+    super(domElement, new DataNodeEngine(), "shaderGraph");
 
     ipcRenderer.on(
       IpcMessages.UPDATE_TEXTURE_POINTER,
@@ -16,7 +16,6 @@ export default class ShaderNodeEditor extends NodeEditor {
         _,
         args: { nodeId: number; buffer: ArrayBuffer; elementSize: number }
       ) => {
-        console.log(args.buffer);
         const bitType = elementSizeToBitDepth(args.elementSize);
         let buffer: any;
         if (bitType === TEXTURE_BIT_DEPTH.U_INT_8) {

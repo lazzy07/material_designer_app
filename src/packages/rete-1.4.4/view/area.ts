@@ -80,6 +80,10 @@ export class Area extends Emitter<EventsTypes> {
       this.translate(this._startPosition.x + dx, this._startPosition.y + dy);
   }
 
+  getMousePos() {
+    return this.mouse;
+  }
+
   onZoom(delta: number, ox: number, oy: number, source: ZoomSource) {
     this.zoom(this.transform.k * (1 + delta), ox, oy, source);
 

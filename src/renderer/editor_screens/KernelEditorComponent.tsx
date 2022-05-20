@@ -15,7 +15,6 @@ interface State {}
 interface Props {
   height: number;
   width: number;
-  graphType: GRAPH_TYPES | null;
   selectedGraph: Graphs | null;
   selectedGraphType: GRAPH_TYPES | null;
   onChange: (id: string, type: string, change: string) => void;
@@ -33,7 +32,7 @@ class KernelEditorComponent extends Component<Props, State> {
     return (
       <div>
         <div
-          hidden={this.props.graphType == "kernelGraph"}
+          hidden={this.props.selectedGraphType == "kernelGraph"}
           style={{
             display: "flex",
             height: this.props.height,
@@ -77,7 +76,7 @@ class KernelEditorComponent extends Component<Props, State> {
         </div>
         <MonacoEditor
           height={this.props.height}
-          width="100%"
+          width={this.props.width}
           language="cpp"
           theme="vs-dark"
           value={
@@ -94,12 +93,13 @@ class KernelEditorComponent extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: Store) => {
+  const graph = state.project.packages[
+    state.system.selectedItems.graphId
+  ] as Graphs;
+
   return {
-    graphType: state.system.selectedItems.graphType,
-    selectedGraph: state.project.packages[
-      state.system.selectedItems.graphId
-    ] as Graphs,
-    selectedGraphType: state.system.selectedItems.graphType,
+    selectedGraph: graph,
+    selectedGraphType: graph ? graph.type : null,
   };
 };
 

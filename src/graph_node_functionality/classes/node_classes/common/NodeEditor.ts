@@ -14,16 +14,23 @@ import { Data } from "../../../../packages/rete-1.4.4/core/data";
 import { editGraphData } from "../../../../redux/actions/GraphActions";
 import { Store } from "../../../../redux/reducers";
 import { IpcMessages } from "../../../../IpcMessages";
+import { GRAPH_TYPES } from "../../../../interfaces/Graphs";
 
 export default abstract class NodeEditor {
   dom: HTMLDivElement;
   engine: NodeEngine;
   private editorCore: ReteNodeEditor;
   mouse: Mouse = { x: 0, y: 0 };
+  nodeEditorType: GRAPH_TYPES;
 
-  constructor(domElement: HTMLDivElement, engine: NodeEngine) {
+  constructor(
+    domElement: HTMLDivElement,
+    engine: NodeEngine,
+    nodeEditorType: GRAPH_TYPES
+  ) {
     this.dom = domElement;
     this.engine = engine;
+    this.nodeEditorType = nodeEditorType;
     this.editorCore = new ReteNodeEditor(
       "materialdesigner@" + EDITOR_VERSION,
       this.dom
@@ -68,6 +75,7 @@ export default abstract class NodeEditor {
       ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
         updateType: "createNode",
         update: JSON.stringify(node),
+        selectedGraphType: this.nodeEditorType,
       });
     });
 
@@ -75,6 +83,7 @@ export default abstract class NodeEditor {
       ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
         updateType: "removeNode",
         update: JSON.stringify(node),
+        selectedGraphType: this.nodeEditorType,
       });
     });
 
@@ -82,6 +91,7 @@ export default abstract class NodeEditor {
       ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
         updateType: "addConnection",
         update: JSON.stringify(connection),
+        selectedGraphType: this.nodeEditorType,
       });
     });
 
@@ -89,6 +99,7 @@ export default abstract class NodeEditor {
       ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
         updateType: "removeConnection",
         update: JSON.stringify(connection),
+        selectedGraphType: this.nodeEditorType,
       });
     });
 
@@ -97,7 +108,7 @@ export default abstract class NodeEditor {
       const state: Store = store.getState();
       const selectedItems = state.system.selectedItems;
       store.dispatch(
-        editGraphData(selectedItems.graphId, selectedItems.graphType!, json)
+        editGraphData(selectedItems.graphId, this.nodeEditorType, json)
       );
     });
   };
@@ -108,7 +119,7 @@ export default abstract class NodeEditor {
 
   handleSelectNodes = () => {
     this.editorCore.on("nodeselected", (e) => {
-      store.dispatch(setSelectedNode(e.id));
+      store.dispatch(setSelectedNode(e.id, this.nodeEditorType));
     });
   };
 

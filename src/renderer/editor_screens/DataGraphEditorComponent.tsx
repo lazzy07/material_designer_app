@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { defaultColors } from "../constants/Colors";
-import { createGrid } from "../services/CreateGrid";
+import { createGrid, createGrid2 } from "../services/CreateGrid";
 import DropFileComponent from "../components/library_components/DropFileComponent";
 import { DraggableItem } from "../../interfaces/DraggableItem";
 import ContextMenu, {
@@ -14,12 +14,9 @@ import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faProjectDiagram } from "@fortawesome/free-solid-svg-icons";
 import DataNodeEditor from "../../graph_node_functionality/classes/node_classes/data_node_classes/DataNodeEditor";
-import ShaderNodeEditor from "../../graph_node_functionality/classes/node_classes/shader_node_classes/ShaderNodeEditor";
 import { Node } from "../../packages/rete-1.4.4";
 import DataNodeLibrary from "../../graph_node_functionality/classes/node_classes/data_node_classes/DataNodeLibrary";
-import ShaderNodeLibrary from "../../graph_node_functionality/classes/node_classes/shader_node_classes/ShaderNodeLibrary";
 import NodeLibrary from "../../graph_node_functionality/classes/node_classes/common/NodeLibrary";
-import { getPackageElementById } from "../services/GetPackageElement";
 import _ from "lodash";
 import { Data } from "../../packages/rete-1.4.4/core/data";
 import NodeEditor from "../../graph_node_functionality/classes/node_classes/common/NodeEditor";
@@ -27,7 +24,6 @@ import NodeEditor from "../../graph_node_functionality/classes/node_classes/comm
 interface Props {
   dimensions: { width: number; height: number };
   graphType: GRAPH_TYPES | null;
-  localLibShaderNodes: Graphs[];
   localLibDataNodes: Graphs[];
   graph: Graphs | undefined | null;
 }
@@ -37,15 +33,10 @@ interface State {
   selectedNode: Node | null;
 }
 
-class GraphEditorComponent extends Component<Props, State> {
-  private shaderDomRef = React.createRef<HTMLDivElement>();
+class DataGraphEditorComponent extends Component<Props, State> {
   private dataDomRef = React.createRef<HTMLDivElement>();
-
   private dataGraphEditor: DataNodeEditor | undefined;
-  private shaderGraphEditor: ShaderNodeEditor | undefined;
-
   private dataNodeLibrary = new DataNodeLibrary();
-  private shaderNodeLibrary: ShaderNodeLibrary | undefined;
 
   timeOut: NodeJS.Timeout | null = null;
 
@@ -68,10 +59,8 @@ class GraphEditorComponent extends Component<Props, State> {
 
   selectContextMenuType = () => {
     let canPropagate = true;
-    const editor =
-      this.props.graphType === "shaderGraph"
-        ? this.shaderGraphEditor
-        : this.dataGraphEditor;
+    const editor = this.dataGraphEditor;
+
     if (editor) {
       editor!.getReteEditor().on("contextmenu", (e) => {
         if (e.node) {
@@ -96,31 +85,22 @@ class GraphEditorComponent extends Component<Props, State> {
   };
 
   onCallContextMenu = () => {
-    const editor =
-      this.props.graphType === "shaderGraph"
-        ? this.shaderGraphEditor
-        : this.dataGraphEditor;
+    const editor = this.dataGraphEditor;
+
     if (editor) {
       this.contextMenuPos = editor.mouse;
     }
   };
 
   onContextMenuItemClick = async (item: Graphs) => {
-    const lib: NodeLibrary | undefined =
-      this.props.graphType === "shaderGraph"
-        ? this.shaderNodeLibrary
-        : this.dataNodeLibrary;
-    const editor =
-      this.props.graphType === "shaderGraph"
-        ? this.shaderGraphEditor
-        : this.dataGraphEditor;
+    const lib: NodeLibrary | undefined = this.dataNodeLibrary;
+    const editor = this.dataGraphEditor;
+
     if (lib)
       for (const node of lib.getReteNodes()) {
         if (node.data.id === item.id) {
           const newNode = await node.createNode();
-
           newNode.position = [this.contextMenuPos.x, this.contextMenuPos.y];
-
           editor?.getReteEditor().addNode(newNode);
 
           if (this.createNodeByDraggingToSpace) {
@@ -135,19 +115,11 @@ class GraphEditorComponent extends Component<Props, State> {
   };
 
   onClickDeleteNode = (node: Node) => {
-    if (this.props.graphType === "shaderGraph") {
-      this.shaderGraphEditor?.getReteEditor().removeNode(node);
-    } else {
-      this.dataGraphEditor?.getReteEditor().removeNode(node);
-    }
+    this.dataGraphEditor?.getReteEditor().removeNode(node);
   };
 
   onClickCopyNode = (node: Node) => {
-    if (this.props.graphType === "shaderGraph") {
-      this.shaderGraphEditor?.getReteEditor().addNode(node);
-    } else {
-      this.shaderGraphEditor?.getReteEditor().addNode(node);
-    }
+    this.dataGraphEditor?.getReteEditor().addNode(node);
   };
 
   // Since we forcibly open context menu the mouse values are not correct, so correct values can be found in the event
@@ -165,15 +137,6 @@ class GraphEditorComponent extends Component<Props, State> {
       this.dataGraphEditor.handleSelectNodes();
       this.dataGraphEditor.registerNodes(this.dataNodeLibrary);
       this.dataGraphEditor.onEditorChange();
-    }
-
-    if (this.shaderDomRef.current) {
-      this.shaderGraphEditor = new ShaderNodeEditor(this.shaderDomRef.current!);
-      this.shaderGraphEditor.enableEditorPlugins();
-      this.shaderGraphEditor.handleSelectNodes();
-      this.shaderNodeLibrary = new ShaderNodeLibrary(this.shaderGraphEditor!);
-      this.shaderGraphEditor.registerNodes(this.shaderNodeLibrary);
-      this.shaderGraphEditor.onEditorChange();
     }
   };
 
@@ -199,26 +162,18 @@ class GraphEditorComponent extends Component<Props, State> {
     this.listenToNodeMenuOpen();
     this.initEditors();
     this.selectContextMenuType();
-    this.loadDataFromStore(this.shaderGraphEditor!);
     this.loadDataFromStore(this.dataGraphEditor!);
   };
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     if (this.props.graph) {
-      if (!this.dataGraphEditor || !this.shaderGraphEditor) {
+      if (!this.dataGraphEditor) {
         this.initEditors();
       }
 
       this.selectContextMenuType();
 
       if (this.props.graph.id != (prevProps.graph ? prevProps.graph.id : "")) {
-        if (this.shaderGraphEditor) {
-          this.shaderGraphEditor!.getReteEditor().clear();
-          this.shaderGraphEditor!.getReteEditor().fromJSON(
-            this.props.graph.shaderGraph!.data as Data
-          );
-        }
-
         if (this.dataGraphEditor) {
           this.dataGraphEditor!.getReteEditor().clear();
           this.dataGraphEditor!.getReteEditor().fromJSON(
@@ -233,9 +188,7 @@ class GraphEditorComponent extends Component<Props, State> {
     if (this.timeOut) {
       clearTimeout(this.timeOut);
     }
-    this.shaderGraphEditor
-      ?.getReteEditor()
-      .view.area.el.removeEventListener("drop", () => {});
+
     this.dataGraphEditor
       ?.getReteEditor()
       .view.area.el.removeEventListener("drop", () => {});
@@ -252,11 +205,7 @@ class GraphEditorComponent extends Component<Props, State> {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            display:
-              this.props.graphType !== "dataGraph" &&
-              this.props.graphType !== "shaderGraph"
-                ? "flex"
-                : "none",
+            display: this.props.graphType ? "none" : "flex",
           }}
         >
           <div style={{ padding: 10 }}>
@@ -271,11 +220,7 @@ class GraphEditorComponent extends Component<Props, State> {
         </div>
         <div
           style={{
-            display:
-              this.props.graphType === "dataGraph" ||
-              this.props.graphType === "shaderGraph"
-                ? undefined
-                : "none",
+            display: this.props.graphType ? undefined : "none",
           }}
         >
           <DropFileComponent
@@ -285,11 +230,7 @@ class GraphEditorComponent extends Component<Props, State> {
             <ContextMenu
               selectedNode={this.state.selectedNode}
               selectedType={this.state.contextMenuType}
-              localLibraryNodes={
-                this.props.graphType === "shaderGraph"
-                  ? this.props.localLibShaderNodes
-                  : this.props.localLibDataNodes
-              }
+              localLibraryNodes={this.props.localLibDataNodes}
               onClickAction={this.onContextMenuItemClick}
               onClickDelete={this.onClickDeleteNode}
               onClickCopy={this.onClickCopyNode}
@@ -302,7 +243,7 @@ class GraphEditorComponent extends Component<Props, State> {
                 }}
               >
                 <div style={{ position: "absolute", width, height, top: 30 }}>
-                  {createGrid(
+                  {createGrid2(
                     defaultColors.GRAPH_EDITOR_GRID_COLOR,
                     width,
                     height,
@@ -311,26 +252,14 @@ class GraphEditorComponent extends Component<Props, State> {
                     10
                   )}
                 </div>
-                <div
-                  onContextMenu={this.onCallContextMenu}
-                  ref={this.shaderDomRef}
-                  style={{
-                    width,
-                    height,
-                    display:
-                      this.props.graphType === "shaderGraph"
-                        ? undefined
-                        : "none",
-                  }}
-                ></div>
+
                 <div
                   onContextMenu={this.onCallContextMenu}
                   ref={this.dataDomRef}
                   style={{
                     width,
                     height,
-                    display:
-                      this.props.graphType === "dataGraph" ? undefined : "none",
+                    display: this.props.graphType ? undefined : "none",
                   }}
                 ></div>
               </div>
@@ -343,19 +272,16 @@ class GraphEditorComponent extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: Store) => {
-  const pkg = getPackageElementById(state.system.selectedItems.graphId || "");
-  let graph: Graphs | undefined = undefined;
-
-  if (pkg) {
-    graph = pkg.data as Graphs;
-  }
+  const graph = state.project.packages[
+    state.system.selectedItems.graphId
+  ] as Graphs;
+  const graphType = graph ? graph.type : null;
 
   return {
-    graph: state.project.packages[state.system.selectedItems.graphId] as Graphs,
-    graphType: state.system.selectedItems.graphType,
-    localLibShaderNodes: state.graphLibraries.shaderGraphNodes,
+    graph,
+    graphType,
     localLibDataNodes: state.graphLibraries.dataGraphNodes,
   };
 };
 
-export default connect(mapStateToProps)(GraphEditorComponent);
+export default connect(mapStateToProps)(DataGraphEditorComponent);

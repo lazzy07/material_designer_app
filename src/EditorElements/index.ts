@@ -5,10 +5,16 @@ export interface EditorElement {
   isClosable?: boolean;
 }
 
-export const NodeLibrary: EditorElement = {
-  title: "Nodes",
+export const ShaderNodeLibrary: EditorElement = {
+  title: "Shader Nodes",
   type: "react-component",
-  component: "nodes",
+  component: "shadernodes",
+};
+
+export const DataNodeLibrary: EditorElement = {
+  title: "Data Nodes",
+  type: "react-component",
+  component: "shadernodes",
 };
 
 export const HdriLibrary: EditorElement = {
@@ -29,10 +35,16 @@ export const Preview3D: EditorElement = {
   component: "preview3d",
 };
 
-export const GraphEditor: EditorElement = {
-  title: "Graph Editor",
+export const DataGraphEditor: EditorElement = {
+  title: "Data Editor",
   type: "react-component",
-  component: "graphEditor",
+  component: "dataGraphEditor",
+};
+
+export const ShaderGraphEditor: EditorElement = {
+  title: "Shader Editor",
+  type: "react-component",
+  component: "shaderGraphEditor",
 };
 
 export const NodePreview: EditorElement = {
@@ -84,11 +96,13 @@ export const CompilerOutput: EditorElement = {
 };
 
 export const allElements = [
-  NodeLibrary,
+  ShaderNodeLibrary,
+  DataNodeLibrary,
   HdriLibrary,
   TextureLibrary,
   Preview3D,
-  GraphEditor,
+  ShaderGraphEditor,
+  DataGraphEditor,
   NodePreview,
   Outliner,
   NodeProps,
