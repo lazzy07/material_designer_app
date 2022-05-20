@@ -1,10 +1,12 @@
 import {
-  NodeLibrary,
+  DataNodeLibrary,
+  ShaderNodeLibrary,
   HdriLibrary,
   TextureLibrary,
   Preview3D,
   NodePreview,
-  GraphEditor,
+  DataGraphEditor,
+  ShaderGraphEditor,
   Outliner,
   NodeProps,
   GraphProps,
@@ -24,7 +26,12 @@ export const DEFAULT_LAYOUT = [
         content: [
           {
             type: "stack",
-            content: [NodeLibrary, HdriLibrary, TextureLibrary],
+            content: [
+              ShaderNodeLibrary,
+              DataNodeLibrary,
+              HdriLibrary,
+              TextureLibrary,
+            ],
           },
         ],
       },
@@ -46,7 +53,8 @@ export const DEFAULT_LAYOUT = [
               {
                 type: "stack",
                 content: [
-                  GraphEditor,
+                  ShaderGraphEditor,
+                  DataGraphEditor,
                   FunctionsEditor,
                   KernelEditor,
                   InputOutputEditor,
