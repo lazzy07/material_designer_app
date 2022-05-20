@@ -4,7 +4,7 @@ import NodeLibrary from "../common/NodeLibrary";
 
 export default class DataNodeEditor extends NodeEditor {
   constructor(domElement: HTMLDivElement) {
-    super(domElement, new DataNodeEngine());
+    super(domElement, new DataNodeEngine(), "dataGraph");
   }
 
   registerNodes = (nodeLibrary: NodeLibrary) => {
