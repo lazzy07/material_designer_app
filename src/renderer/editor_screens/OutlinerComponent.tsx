@@ -38,6 +38,7 @@ import {
 import { showDialogBox } from "../services/QuestionDialog";
 import { ipcRenderer } from "electron";
 import { IpcMessages } from "../../IpcMessages";
+import DraggableComponent from "../components/library_components/DraggableComponent";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -422,10 +423,17 @@ class OutlinerComponent extends Component<Props, State> {
               graphOutlinerElem.isExpanded = this.state.expanded.includes(
                 graph.shaderGraph!.id
               );
-              graphOutlinerElem.label = this.renderOutlinerLabel(
-                graph.name,
-                graph.id,
-                "shaderGraph"
+              graphOutlinerElem.label = (
+                <DraggableComponent
+                  name={graph.id}
+                  data={{ item: graph, itemType: "shaderGraph" }}
+                >
+                  {this.renderOutlinerLabel(
+                    graph.name,
+                    graph.id,
+                    "shaderGraph"
+                  )}
+                </DraggableComponent>
               );
               break;
 
@@ -440,10 +448,17 @@ class OutlinerComponent extends Component<Props, State> {
                 graph.kernelGraph!.id
               );
 
-              graphOutlinerElem.label = this.renderOutlinerLabel(
-                graph.name,
-                graph.id,
-                "kernelGraph"
+              graphOutlinerElem.label = (
+                <DraggableComponent
+                  name={graph.id}
+                  data={{ item: graph, itemType: "shaderGraph" }}
+                >
+                  {this.renderOutlinerLabel(
+                    graph.name,
+                    graph.id,
+                    "kernelGraph"
+                  )}
+                </DraggableComponent>
               );
               break;
 
@@ -458,10 +473,13 @@ class OutlinerComponent extends Component<Props, State> {
               graphOutlinerElem.id = graph.dataGraph!.id;
               graphOutlinerElem.isSelected =
                 this.state.clicked === graph.dataGraph!.id;
-              graphOutlinerElem.label = this.renderOutlinerLabel(
-                graph.name,
-                graph.id,
-                "dataGraph"
+              graphOutlinerElem.label = (
+                <DraggableComponent
+                  name={graph.id}
+                  data={{ item: graph, itemType: "dataGraph" }}
+                >
+                  {this.renderOutlinerLabel(graph.name, graph.id, "dataGraph")}
+                </DraggableComponent>
               );
 
               break;

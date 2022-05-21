@@ -20,6 +20,7 @@ import NodeLibrary from "../../graph_node_functionality/classes/node_classes/com
 import _ from "lodash";
 import { Data } from "../../packages/rete-1.4.4/core/data";
 import NodeEditor from "../../graph_node_functionality/classes/node_classes/common/NodeEditor";
+import { DataGraphNode } from "../../graph_node_functionality/classes/node_classes/data_node_classes/primitive_nodes/DataGraphNode";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -42,6 +43,7 @@ class DataGraphEditorComponent extends Component<Props, State> {
 
   createNodeByDraggingToSpace = false;
   contextMenuPos: Mouse = { x: 0, y: 0 };
+  mousePos: Mouse = { x: 0, y: 0 };
 
   constructor(props: Props) {
     super(props);
@@ -52,9 +54,27 @@ class DataGraphEditorComponent extends Component<Props, State> {
     };
   }
 
-  onNodeDropped = (item: DraggableItem<Graphs>) => {
-    //Simulate menu item click
-    this.onContextMenuItemClick(item.item);
+  onNodeDropped = (drop: DraggableItem<Graphs>) => {
+    if (drop.itemType === "dataNode") {
+      this.onContextMenuItemClick(drop.item);
+    } else {
+      const lib = this.dataNodeLibrary;
+
+      //TODO:: Create node generator and create a node from it
+      const component = new DataGraphNode(drop.item, "dataGraph");
+      try {
+        this.dataGraphEditor!.getReteEditor().register(component);
+        this.dataGraphEditor!.getReteEngine().register(component);
+      } catch (err: any) {
+        console.log(err.message);
+      }
+
+      component.createNode(drop.item).then((node) => {
+        component.build(node);
+        node.position = [this.mousePos.x, this.mousePos.y];
+        this.dataGraphEditor!.getReteEditor().addNode(node);
+      });
+    }
   };
 
   selectContextMenuType = () => {
@@ -101,6 +121,7 @@ class DataGraphEditorComponent extends Component<Props, State> {
         if (node.data.id === item.id) {
           const newNode = await node.createNode();
           newNode.position = [this.contextMenuPos.x, this.contextMenuPos.y];
+          node.build(newNode);
           editor?.getReteEditor().addNode(newNode);
 
           if (this.createNodeByDraggingToSpace) {
@@ -158,11 +179,32 @@ class DataGraphEditorComponent extends Component<Props, State> {
     }
   };
 
+  onMouseMove = (e: MouseEvent) => {
+    const canvas = this.dataGraphEditor?.getReteEditor().view.area;
+
+    const pos = canvas?.getMousePos();
+    this.mousePos.x = pos ? pos.x : 0;
+    this.mousePos.y = pos ? pos.y : 0;
+  };
+
+  startMousePointerListner = () => {
+    this.dataGraphEditor
+      ?.getReteEditor()
+      .view.area.el.addEventListener("mousemove", this.onMouseMove);
+  };
+
+  removeMousePointerListener = () => {
+    this.dataGraphEditor
+      ?.getReteEditor()
+      .view.area.el.removeEventListener("mousemove", this.onMouseMove);
+  };
+
   componentDidMount = async () => {
     this.listenToNodeMenuOpen();
     this.initEditors();
     this.selectContextMenuType();
     this.loadDataFromStore(this.dataGraphEditor!);
+    this.startMousePointerListner();
   };
 
   componentDidUpdate(prevProps: Props, prevState: State) {
@@ -224,7 +266,7 @@ class DataGraphEditorComponent extends Component<Props, State> {
           }}
         >
           <DropFileComponent
-            dropType={["node"]}
+            dropType={["dataNode", "dataGraph"]}
             onDropComplete={(item) => this.onNodeDropped(item)}
           >
             <ContextMenu
