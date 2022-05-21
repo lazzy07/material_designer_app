@@ -64,9 +64,14 @@ export default class NodePreviewItem extends Component<Props> {
   };
 
   render() {
+    const { type } = this.props.data;
+
     return (
       <DraggableComponent
-        data={{ item: this.props.data, itemType: "node" }}
+        data={{
+          item: this.props.data,
+          itemType: type === "dataGraph" ? "dataNode" : "shaderNode",
+        }}
         name={this.props.data.id}
       >
         <div
