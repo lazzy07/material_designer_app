@@ -10,12 +10,12 @@ export const Num1toCol1 = (): Graphs => ({
     id: "211",
     data: [
       {
-        id: "2111",
+        id: "default",
         name: "Default Value",
         data: 0,
         dataType: "number",
         groups: {
-          id: "21111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",

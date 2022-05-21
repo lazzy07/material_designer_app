@@ -10,12 +10,12 @@ export const Col3toNum1 = (): Graphs => ({
     id: "221",
     data: [
       {
-        id: "2211",
+        id: "default",
         name: "Default Value",
         data: "#ffffff",
         dataType: "colorvec3",
         groups: {
-          id: "22111",
+          id: "default",
           name: "Default",
         },
         inputType: "colorpicker",

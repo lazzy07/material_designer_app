@@ -10,24 +10,24 @@ export const MultiplyNumber = (): Graphs => ({
     id: "161",
     data: [
       {
-        id: "1611",
+        id: "default",
         name: "Default Value 1",
         data: 0,
         dataType: "number",
         groups: {
-          id: "15111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",
         type: "",
       },
       {
-        id: "1612",
+        id: "default2",
         name: "Default Value 2",
         data: 0,
         dataType: "number",
         groups: {
-          id: "16111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",

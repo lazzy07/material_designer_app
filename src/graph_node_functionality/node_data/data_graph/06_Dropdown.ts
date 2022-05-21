@@ -10,24 +10,24 @@ export const Dropdown = (): Graphs => ({
     id: "61",
     data: [
       {
-        id: "var_name",
-        name: "Variable Name",
-        data: "",
+        id: "label",
+        name: "Label Name",
+        data: "Data",
         dataType: "string",
         groups: {
-          id: "1",
+          id: "default",
           name: "Default",
         },
         inputType: "input",
         type: "",
       },
       {
-        id: "111",
+        id: "default",
         name: "Default Value",
         data: {},
         dataType: "number",
         groups: {
-          id: "6111",
+          id: "default",
           name: "Default",
         },
         inputType: "dropdown",

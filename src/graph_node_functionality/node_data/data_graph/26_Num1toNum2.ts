@@ -10,24 +10,24 @@ export const Num1toNum2 = (): Graphs => ({
     id: "261",
     data: [
       {
-        id: "2611",
+        id: "default",
         name: "Default Value",
         data: 0,
         dataType: "number",
         groups: {
-          id: "26111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",
         type: "",
       },
       {
-        id: "2612",
+        id: "default2",
         name: "Default Value",
         data: 0,
         dataType: "number",
         groups: {
-          id: "26111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",

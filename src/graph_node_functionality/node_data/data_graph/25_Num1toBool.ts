@@ -10,12 +10,12 @@ export const Num1toBool = (): Graphs => ({
     id: "251",
     data: [
       {
-        id: "2511",
+        id: "default",
         name: "Default Value",
         data: 0,
         dataType: "number",
         groups: {
-          id: "25111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",

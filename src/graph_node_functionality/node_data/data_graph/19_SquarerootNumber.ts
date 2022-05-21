@@ -10,12 +10,12 @@ export const SquarerootNumber = (): Graphs => ({
     id: "191",
     data: [
       {
-        id: "1911",
+        id: "default",
         name: "Default Value 1",
         data: 0,
         dataType: "number",
         groups: {
-          id: "19111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",

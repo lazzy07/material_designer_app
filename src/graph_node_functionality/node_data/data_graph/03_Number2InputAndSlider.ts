@@ -10,24 +10,24 @@ export const Number2InputAndSlider = (): Graphs => ({
     id: "31",
     data: [
       {
-        id: "var_name",
-        name: "Variable Name",
-        data: "",
+        id: "label",
+        name: "Label Name",
+        data: "Data",
         dataType: "string",
         groups: {
-          id: "1",
+          id: "default",
           name: "Default",
         },
         inputType: "input",
         type: "",
       },
       {
-        id: "311",
+        id: "default",
         name: "Default Value",
         data: [0, 0],
         dataType: "number2",
         groups: {
-          id: "3111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",

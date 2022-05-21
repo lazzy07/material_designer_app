@@ -10,12 +10,12 @@ export const BooltoNum1 = (): Graphs => ({
     id: "241",
     data: [
       {
-        id: "2411",
+        id: "default",
         name: "Default Value",
         data: false,
         dataType: "boolean",
         groups: {
-          id: "24111",
+          id: "default",
           name: "Default",
         },
         inputType: "button",

@@ -8,7 +8,20 @@ export const InputGrayscale = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "22",
-    data: [],
+    data: [
+      {
+        id: "label",
+        name: "Label Name",
+        data: "Data",
+        dataType: "string",
+        groups: {
+          id: "1",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+      },
+    ],
     parentId: "2",
     ioType: "generator",
     operationType: "grayscale",

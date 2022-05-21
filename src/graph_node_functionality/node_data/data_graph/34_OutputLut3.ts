@@ -15,14 +15,26 @@ export const OutputLut3 = (): Graphs => ({
         data: "",
         dataType: "string",
         groups: {
-          id: "1",
+          id: "default",
           name: "Default",
         },
         inputType: "input",
         type: "",
       },
       {
-        id: "3411",
+        id: "label",
+        name: "Label Name",
+        data: "Data",
+        dataType: "string",
+        groups: {
+          id: "default",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+      },
+      {
+        id: "default",
         name: "Default Value",
         data: [
           {
@@ -36,7 +48,7 @@ export const OutputLut3 = (): Graphs => ({
         ],
         dataType: "lut3",
         groups: {
-          id: "34111",
+          id: "default",
           name: "Default",
         },
         inputType: "lut",
