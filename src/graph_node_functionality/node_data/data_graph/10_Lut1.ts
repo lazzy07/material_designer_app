@@ -10,6 +10,18 @@ export const Lut1 = (): Graphs => ({
     id: "101",
     data: [
       {
+        id: "var_name",
+        name: "Variable Name",
+        data: "",
+        dataType: "string",
+        groups: {
+          id: "1",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+      },
+      {
         id: "1011",
         name: "Default Value",
         data: [

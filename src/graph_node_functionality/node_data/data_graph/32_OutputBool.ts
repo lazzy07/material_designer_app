@@ -11,6 +11,18 @@ export const OutputBool = (): Graphs => ({
     id: "321",
     data: [
       {
+        id: "var_name",
+        name: "Variable Name",
+        data: "",
+        dataType: "string",
+        groups: {
+          id: "1",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+      },
+      {
         id: "3211",
         name: "Default Value",
         data: false,
@@ -20,18 +32,6 @@ export const OutputBool = (): Graphs => ({
           name: "Default",
         },
         inputType: "button",
-        type: "",
-      },
-      {
-        id: "var_name",
-        name: "Variable Name",
-        data: v4(),
-        dataType: "string",
-        groups: {
-          id: "32111",
-          name: "Default",
-        },
-        inputType: "input",
         type: "",
       },
       {

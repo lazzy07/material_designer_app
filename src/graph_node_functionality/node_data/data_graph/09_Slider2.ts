@@ -10,6 +10,18 @@ export const Slider2 = (): Graphs => ({
     id: "91",
     data: [
       {
+        id: "var_name",
+        name: "Variable Name",
+        data: "",
+        dataType: "string",
+        groups: {
+          id: "1",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+      },
+      {
         id: "311",
         name: "Default Value",
         data: [0, 0],
