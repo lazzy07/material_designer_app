@@ -10,24 +10,24 @@ export const PowerNumber = (): Graphs => ({
     id: "181",
     data: [
       {
-        id: "1811",
+        id: "default",
         name: "Default Value 1",
         data: 0,
         dataType: "number",
         groups: {
-          id: "18111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",
         type: "",
       },
       {
-        id: "1812",
+        id: "default2",
         name: "Default Value 2",
         data: 1,
         dataType: "number",
         groups: {
-          id: "18111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",

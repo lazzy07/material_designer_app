@@ -8,7 +8,20 @@ export const InputColor = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "11",
-    data: [],
+    data: [
+      {
+        id: "label",
+        name: "Label Name",
+        data: "Data",
+        dataType: "string",
+        groups: {
+          id: "1",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+      },
+    ],
     parentId: "1",
     ioType: "generator",
     operationType: "color",

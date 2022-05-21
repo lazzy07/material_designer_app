@@ -37,6 +37,7 @@ export const createGraph = (
       data: { id: "materialdesigner@" + EDITOR_VERSION, nodes: {} },
       parentId: id,
       createdAt: new Date(),
+      isSecondary: true,
     },
     kernelGraph: {
       id: v4(),
@@ -46,12 +47,14 @@ export const createGraph = (
       },
       parentId: id,
       createdAt: new Date(),
+      isSecondary: true,
     },
     shaderGraph: {
       id: v4(),
       data: { id: "materialdesigner@" + EDITOR_VERSION, nodes: {} },
       parentId: id,
       createdAt: new Date(),
+      isSecondary: true,
     },
   };
 };

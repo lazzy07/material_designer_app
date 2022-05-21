@@ -1,7 +1,7 @@
 import { NodePropertyData } from "../../graph_node_functionality/interfaces/NodePropertyData";
 import { DataGraph } from "../../interfaces/DataGraph";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
-import { Data, NodeData } from "../../packages/rete-1.4.4/core/data";
+import { Data, NodeData, NodesData } from "../../packages/rete-1.4.4/core/data";
 import { renderDatagraphElement } from "./RenderDataGraphElements";
 
 export const nodePropertiesToElements = (
@@ -10,7 +10,7 @@ export const nodePropertiesToElements = (
   selectedGraphType: GRAPH_TYPES
 ) => {
   const nodeDataGraph = node.data.dataGraph as DataGraph;
-  const isPrimitive = nodeDataGraph.ioType;
+  const isPrimitive = !nodeDataGraph.isSecondary;
   const elements: JSX.Element[] = [];
 
   if (isPrimitive) {
@@ -24,13 +24,20 @@ export const nodePropertiesToElements = (
     }
   } else {
     //TODO:: find all the generator types in the graph and render those data
-    const data: Data = node.data as any;
-    const nodes = data.nodes;
+    const nodeData = (node.data as any).dataGraph.data as NodesData;
+    const nodes = Object.values(nodeData);
+    const elements: JSX.Element[] = [];
+
     if (nodes) {
-      const keys = Object.keys(nodes);
-      for (const i of keys) {
-        const data = nodes[i].data as any as Graphs;
-        //TODO:: Handle graph data
+      let j = 0;
+      for (const node of nodes) {
+        const dataGraph = (node.data as any).dataGraph as DataGraph;
+        const isPrimitive = !dataGraph.isSecondary;
+
+        if (isPrimitive) {
+          // const elem = renderDatagraphElement(, )
+        }
+        // const elem = renderDatagraphElement(i, j, graph, node, selectedGraphType);
       }
     }
   }

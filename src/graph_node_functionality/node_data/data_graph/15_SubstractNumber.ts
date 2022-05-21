@@ -10,24 +10,24 @@ export const SubstractNumber = (): Graphs => ({
     id: "151",
     data: [
       {
-        id: "1511",
+        id: "default",
         name: "Default Value 1",
         data: 0,
         dataType: "number",
         groups: {
-          id: "15111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",
         type: "",
       },
       {
-        id: "1512",
+        id: "default2",
         name: "Default Value 2",
         data: 0,
         dataType: "number",
         groups: {
-          id: "15111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",

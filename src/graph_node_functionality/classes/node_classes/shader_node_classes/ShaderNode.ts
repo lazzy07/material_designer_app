@@ -38,7 +38,7 @@ export default abstract class ShaderNode extends Component {
         np.data = uniqueNamesGenerator({
           dictionaries: [adjectives, colors, animals],
           separator: "_",
-          length: 3,
+          length: 2,
         });
       }
     }

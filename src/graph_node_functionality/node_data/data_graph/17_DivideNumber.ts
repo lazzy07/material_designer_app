@@ -10,24 +10,24 @@ export const DivideNumber = (): Graphs => ({
     id: "171",
     data: [
       {
-        id: "1711",
+        id: "default",
         name: "Default Value 1",
         data: 0,
         dataType: "number",
         groups: {
-          id: "17111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",
         type: "",
       },
       {
-        id: "1712",
+        id: "default2",
         name: "Default Value 2",
         data: 1,
         dataType: "number",
         groups: {
-          id: "17111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",

@@ -10,24 +10,24 @@ export const Number1Input = (): Graphs => ({
     id: "11",
     data: [
       {
-        id: "var_name",
-        name: "Variable Name",
-        data: "",
+        id: "label",
+        name: "Label Name",
+        data: "Data",
         dataType: "string",
         groups: {
-          id: "1",
+          id: "default",
           name: "Default",
         },
         inputType: "input",
         type: "",
       },
       {
-        id: "111",
+        id: "default",
         name: "Default Value",
         data: 0,
         dataType: "number",
         groups: {
-          id: "1111",
+          id: "default",
           name: "Default",
         },
         inputType: "input",

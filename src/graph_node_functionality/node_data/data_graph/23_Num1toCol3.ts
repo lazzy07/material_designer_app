@@ -10,36 +10,36 @@ export const Num1toCol3 = (): Graphs => ({
     id: "231",
     data: [
       {
-        id: "2311",
+        id: "default",
         name: "Default Value",
         data: 0,
         dataType: "number",
         groups: {
-          id: "23111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",
         type: "",
       },
       {
-        id: "2312",
+        id: "default2",
         name: "Default Value",
         data: 0,
         dataType: "number",
         groups: {
-          id: "23111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",
         type: "",
       },
       {
-        id: "2113",
+        id: "default3",
         name: "Default Value",
         data: 0,
         dataType: "number",
         groups: {
-          id: "23111",
+          id: "default",
           name: "Default",
         },
         inputType: "input_and_slider",
