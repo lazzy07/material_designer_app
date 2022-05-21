@@ -26,10 +26,12 @@ export const nodePropertiesToElements = (
     //TODO:: find all the generator types in the graph and render those data
     const data: Data = node.data as any;
     const nodes = data.nodes;
-    const keys = Object.keys(nodes);
-    for (const i of keys) {
-      const data = nodes[i].data as any as Graphs;
-      //TODO:: Handle graph data
+    if (nodes) {
+      const keys = Object.keys(nodes);
+      for (const i of keys) {
+        const data = nodes[i].data as any as Graphs;
+        //TODO:: Handle graph data
+      }
     }
   }
 
