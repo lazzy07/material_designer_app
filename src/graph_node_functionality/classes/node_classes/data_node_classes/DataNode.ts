@@ -26,7 +26,7 @@ export default abstract class DataNode<T> extends Component {
         data.data = uniqueNamesGenerator({
           dictionaries: [adjectives, colors, animals],
           separator: "_",
-          length: 3,
+          length: 2,
         });
       }
     }

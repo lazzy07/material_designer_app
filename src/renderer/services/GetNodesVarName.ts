@@ -7,7 +7,7 @@ export const getVarName = (graph: Graphs) => {
     : [];
 
   for (const elem of data) {
-    if (elem.id === "var_name") {
+    if (elem.id === "label") {
       return elem.data as string;
     }
   }

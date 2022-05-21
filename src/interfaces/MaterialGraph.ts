@@ -11,4 +11,5 @@ export interface MaterialGraph {
   author?: Author;
   createdAt?: Date;
   ioType?: NODE_IO_TYPE;
+  isSecondary?: boolean;
 }

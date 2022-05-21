@@ -10,6 +10,8 @@ import {
 } from "../../../renderer/services/NodeColors";
 import { fetchFromGraphData } from "../node_classes/common/FetchFromGraphData";
 
+const MAX_WIDTH_INOUT_LABELS = 40;
+
 export default class MaterialNode extends Component<any, any> {
   state: any;
   props: any;
@@ -37,6 +39,7 @@ export default class MaterialNode extends Component<any, any> {
     //node.meta.engineType
     const graphData = fetchFromGraphData("dataGraph", node.data);
     const ioType = graphData.ioType;
+
     const color = getNodeColor(
       node.meta.engineType === "dataGraph"
         ? ((ioType + ".grayscale") as NODE_TYPES)
@@ -102,7 +105,14 @@ export default class MaterialNode extends Component<any, any> {
                     innerRef={bindSocket}
                   />
                   {!input.showControl() && (
-                    <div style={{ fontWeight: "bolder", fontSize: 17 }}>
+                    <div
+                      style={{
+                        fontWeight: "bolder",
+                        fontSize: 17,
+                        maxWidth: MAX_WIDTH_INOUT_LABELS,
+                        overflow: "hidden",
+                      }}
+                    >
                       {input.name}
                     </div>
                   )}
@@ -126,7 +136,14 @@ export default class MaterialNode extends Component<any, any> {
                     paddingBottom: 5,
                   }}
                 >
-                  <div style={{ fontWeight: "bolder", fontSize: 17 }}>
+                  <div
+                    style={{
+                      fontWeight: "bolder",
+                      fontSize: 17,
+                      maxWidth: MAX_WIDTH_INOUT_LABELS,
+                      overflow: "hidden",
+                    }}
+                  >
                     {output.name}
                   </div>
                   <Socket

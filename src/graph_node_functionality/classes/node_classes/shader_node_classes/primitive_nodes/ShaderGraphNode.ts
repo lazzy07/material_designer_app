@@ -10,6 +10,12 @@ export class ShaderGraphNode extends ShaderNode {
   async builder(node: Node) {
     const shaderGraph = (node.data as unknown as Graphs).shaderGraph!;
     const nodes = (shaderGraph.data as Data).nodes;
+    node.meta = { engineType: "shaderGraph" };
+
+    let isOutput = false;
+    let isInput = false;
+    let operationType = "grayscale";
+
     for (const nodeData of Object.values(nodes)) {
       const initID = nodeData.data.id;
       if (initID == "1") {
@@ -20,6 +26,8 @@ export class ShaderGraphNode extends ShaderNode {
             COLOR_SOCKET
           )
         );
+        operationType = "color";
+        isInput = true;
       } else if (initID == "7") {
         node.addOutput(
           new Output(
@@ -28,6 +36,8 @@ export class ShaderGraphNode extends ShaderNode {
             COLOR_SOCKET
           )
         );
+        operationType = "color";
+        isOutput = true;
       } else if (initID == "2") {
         node.addInput(
           new Input(
@@ -36,6 +46,7 @@ export class ShaderGraphNode extends ShaderNode {
             GRAYSCALE_SOCKET
           )
         );
+        isInput = true;
       } else if (initID == "8") {
         node.addOutput(
           new Output(
@@ -44,9 +55,18 @@ export class ShaderGraphNode extends ShaderNode {
             GRAYSCALE_SOCKET
           )
         );
+        isOutput = true;
       }
     }
 
+    if (isInput && !isOutput) {
+      (node.data as any).dataGraph.ioType = "generator";
+    } else if (!isInput && isOutput) {
+      (node.data as any).dataGraph.ioType = "output";
+    } else {
+      (node.data as any).dataGraph.ioType = "process";
+    }
+    (node.data as any).dataGraph.operationType = operationType;
     node.addControl(
       new ImageController("Add", this.data.id, this.data.name, node)
     );
