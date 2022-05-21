@@ -11,6 +11,18 @@ export const OutputCol1 = (): Graphs => ({
     id: "301",
     data: [
       {
+        id: "var_name",
+        name: "Variable Name",
+        data: "",
+        dataType: "string",
+        groups: {
+          id: "1",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+      },
+      {
         id: "3011",
         name: "Default Value",
         data: 0,
@@ -20,18 +32,6 @@ export const OutputCol1 = (): Graphs => ({
           name: "Default",
         },
         inputType: "colorpicker",
-        type: "",
-      },
-      {
-        id: "var_name",
-        name: "Variable Name",
-        data: "",
-        dataType: "string",
-        groups: {
-          id: "30111",
-          name: "Default",
-        },
-        inputType: "input",
         type: "",
       },
       {

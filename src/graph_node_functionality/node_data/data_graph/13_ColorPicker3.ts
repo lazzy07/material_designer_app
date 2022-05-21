@@ -10,6 +10,18 @@ export const ColorPicker3 = (): Graphs => ({
     id: "131",
     data: [
       {
+        id: "var_name",
+        name: "Variable Name",
+        data: "",
+        dataType: "string",
+        groups: {
+          id: "1",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+      },
+      {
         id: "1311",
         name: "Default Value",
         data: "#ffffff",

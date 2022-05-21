@@ -20,6 +20,7 @@ import NodeLibrary from "../../graph_node_functionality/classes/node_classes/com
 import _ from "lodash";
 import { Data } from "../../packages/rete-1.4.4/core/data";
 import NodeEditor from "../../graph_node_functionality/classes/node_classes/common/NodeEditor";
+import { ShaderGraphNode } from "../../graph_node_functionality/classes/node_classes/shader_node_classes/primitive_nodes/ShaderGraphNode";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -53,9 +54,32 @@ class ShaderGraphEditorComponent extends Component<Props, State> {
     };
   }
 
-  onNodeDropped = (item: DraggableItem<Graphs>) => {
+  onNodeDropped = (drop: DraggableItem<Graphs>) => {
     //Simulate menu item click
-    this.onContextMenuItemClick(item.item);
+    if (drop.itemType === "shaderNode") {
+      this.onContextMenuItemClick(drop.item);
+    } else {
+      const lib = this.shaderNodeLibrary;
+
+      //TODO:: Create node generator and create a node from it
+      const component = new ShaderGraphNode(
+        drop.item,
+        "shaderGraph",
+        this.shaderGraphEditor!
+      );
+      try {
+        this.shaderGraphEditor!.getReteEditor().register(component);
+        this.shaderGraphEditor!.getReteEngine().register(component);
+      } catch (err: any) {
+        console.log(err.message);
+      }
+
+      component.createNode(drop.item).then((node) => {
+        component.build(node);
+        node.position = [this.mousePos.x, this.mousePos.y];
+        this.shaderGraphEditor!.getReteEditor().addNode(node);
+      });
+    }
   };
 
   selectContextMenuType = () => {
@@ -99,6 +123,7 @@ class ShaderGraphEditorComponent extends Component<Props, State> {
       for (const node of lib.getReteNodes()) {
         if (node.data.id === item.id) {
           const newNode = await node.createNode();
+          node.build(newNode);
 
           if (this.createNodeByDraggingToSpace) {
             newNode.position = [this.mousePos.x, this.mousePos.y];
@@ -256,7 +281,7 @@ class ShaderGraphEditorComponent extends Component<Props, State> {
           }}
         >
           <DropFileComponent
-            dropType={["node"]}
+            dropType={["shaderNode", "shaderGraph"]}
             onDropComplete={(item) => this.onNodeDropped(item)}
           >
             <ContextMenu

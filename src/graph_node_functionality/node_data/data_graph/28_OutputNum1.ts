@@ -11,6 +11,18 @@ export const OutputNum1 = (): Graphs => ({
     id: "281",
     data: [
       {
+        id: "var_name",
+        name: "Variable Name",
+        data: "",
+        dataType: "string",
+        groups: {
+          id: "1",
+          name: "Default",
+        },
+        inputType: "input",
+        type: "",
+      },
+      {
         id: "2811",
         name: "Default Value",
         data: 0,
@@ -20,18 +32,6 @@ export const OutputNum1 = (): Graphs => ({
           name: "Default",
         },
         inputType: "input_and_slider",
-        type: "",
-      },
-      {
-        id: "var_name",
-        name: "Variable Name",
-        data: "",
-        dataType: "string",
-        groups: {
-          id: "28111",
-          name: "Default",
-        },
-        inputType: "input",
         type: "",
       },
       {

@@ -9,6 +9,7 @@ import { KernelOutputColor } from "./primitive_nodes/KernelOutputColor";
 import { KernelOutputGrayscale } from "./primitive_nodes/KernelOutputGrayscale";
 import { OutputColor } from "./primitive_nodes/OutputColor";
 import { OutputGrayscale } from "./primitive_nodes/OutputGrayscale";
+import { ShaderGraphNode } from "./primitive_nodes/ShaderGraphNode";
 import { Viewer } from "./primitive_nodes/Viewer";
 import ShaderNodeEditor from "./ShaderNodeEditor";
 
@@ -36,6 +37,6 @@ export const getNodeFromFactory = (
     case "9":
       return new Viewer(nodeData, "shaderGraph", editor);
     default:
-      return new Viewer(nodeData, "shaderGraph", editor);
+      return new ShaderGraphNode(nodeData, "shaderGraph", editor);
   }
 };

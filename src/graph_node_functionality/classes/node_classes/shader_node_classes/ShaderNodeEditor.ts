@@ -2,9 +2,9 @@ import { elementSizeToBitDepth } from "./../../../../renderer/services/ElementSi
 import { IpcMessages } from "./../../../../IpcMessages/index";
 import NodeEditor from "../common/NodeEditor";
 import DataNodeEngine from "./ShaderNodeEngine";
-import NodeLibrary from "../common/NodeLibrary";
 import { ipcRenderer } from "electron";
 import { TEXTURE_BIT_DEPTH } from "../../../../interfaces/TextureBitDepths";
+import ShaderNodeLibrary from "./ShaderNodeLibrary";
 
 export default class ShaderNodeEditor extends NodeEditor {
   constructor(domElement: HTMLDivElement) {
@@ -46,7 +46,7 @@ export default class ShaderNodeEditor extends NodeEditor {
     );
   }
 
-  registerNodes = (nodeLibrary: NodeLibrary) => {
+  registerNodes = (nodeLibrary: ShaderNodeLibrary) => {
     const nodes = nodeLibrary.getReteNodes();
     for (const i of nodes) {
       this.getReteEditor().register(i);
