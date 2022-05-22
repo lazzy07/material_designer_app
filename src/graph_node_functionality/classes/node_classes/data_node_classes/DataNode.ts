@@ -20,15 +20,13 @@ export default abstract class DataNode<T> extends Component {
   }
 
   async builder(node: Node) {
-    for (let data of (node.data as any).dataGraph!
-      .data as NodePropertyData<any>[]) {
-      if (data.id === "var_name" && !data.data) {
-        data.data = uniqueNamesGenerator({
-          dictionaries: [adjectives, colors, animals],
-          separator: "_",
-          length: 2,
-        });
-      }
+    const varName = (node.data as any).dataGraph!.data["var_name"];
+    if (varName) {
+      varName.data = uniqueNamesGenerator({
+        dictionaries: [adjectives, colors, animals],
+        separator: "_",
+        length: 2,
+      });
     }
   }
 

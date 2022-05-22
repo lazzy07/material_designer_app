@@ -15,9 +15,11 @@ export const nodePropertiesToElements = (
 
   if (isPrimitive) {
     //Primitive type node has been queried
-    const options = nodeDataGraph.data as NodePropertyData<any>[];
+    const options = nodeDataGraph.data as {
+      [id: string]: NodePropertyData<any>;
+    };
     let j = 0;
-    for (const i of options) {
+    for (const i of Object.values(options)) {
       const elem = renderDatagraphElement(i, j, graph, node, selectedGraphType);
       elements.push(elem);
       j++;
@@ -34,10 +36,12 @@ export const nodePropertiesToElements = (
           const isPrimitive = !dataGraph?.isSecondary;
 
           if (isPrimitive) {
-            const options = dataGraph!.data as NodePropertyData<any>[];
+            const options = dataGraph!.data as {
+              [id: string]: NodePropertyData<any>;
+            };
             let j = 0;
 
-            for (const i of options) {
+            for (const i of Object.values(options)) {
               if (i.id === "default") {
                 const elem = renderDatagraphElement(
                   i,

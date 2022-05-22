@@ -268,13 +268,12 @@ function onChangeData<T>(
   const selectedNodeData = reteGraph.nodes[selectedNode.id];
   const data: Graphs = selectedNodeData.data as any;
 
-  const nodePrimitiveData = data["dataGraph"]!.data as NodePropertyData<T>[];
+  const nodePrimitiveData = data["dataGraph"]!.data as {
+    [id: string]: NodePropertyData<any>;
+  };
 
-  for (const i of nodePrimitiveData) {
-    if (i.id === nodeProperty.id) {
-      i.data = value;
-    }
-  }
+  nodePrimitiveData[nodeProperty.id].data = value;
+
   const state = store.getState() as Store;
   store.dispatch(
     editGraphNodeData(
@@ -298,9 +297,11 @@ function onChangeDataElem(
   const selectedNodeData = reteGraph.nodes[selectedNode.id];
   const data: Graphs = selectedNodeData.data as any;
 
-  const nodePrimitiveData = data["dataGraph"]!.data as NodePropertyData<any>[];
+  const nodePrimitiveData = data["dataGraph"]!.data as {
+    [id: string]: NodePropertyData<any>;
+  };
 
-  for (const i of nodePrimitiveData) {
+  for (const i of Object.values(nodePrimitiveData)) {
     if (i.id === nodeProperty.id) {
       i.data.value = value;
     }
