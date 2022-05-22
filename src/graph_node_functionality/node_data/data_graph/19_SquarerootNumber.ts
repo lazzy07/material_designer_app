@@ -8,8 +8,8 @@ export const SquarerootNumber = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "191",
-    data: [
-      {
+    data: {
+      default: {
         id: "default",
         name: "Default Value 1",
         data: 0,
@@ -21,7 +21,7 @@ export const SquarerootNumber = (): Graphs => ({
         inputType: "input_and_slider",
         type: "",
       },
-    ],
+    },
     parentId: "19",
     ioType: "process",
     operationType: "",

@@ -8,8 +8,8 @@ export const ColorPicker3 = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "131",
-    data: [
-      {
+    data: {
+      label: {
         id: "label",
         name: "Label Name",
         data: "Data",
@@ -21,7 +21,7 @@ export const ColorPicker3 = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-      {
+      default: {
         id: "default",
         name: "Default Value",
         data: "#ffffff",
@@ -33,7 +33,7 @@ export const ColorPicker3 = (): Graphs => ({
         inputType: "colorpicker",
         type: "",
       },
-    ],
+    },
     parentId: "13",
     ioType: "generator",
     operationType: "",

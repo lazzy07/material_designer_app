@@ -8,8 +8,8 @@ export const Button = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "41",
-    data: [
-      {
+    data: {
+      label: {
         id: "label",
         name: "Label Name",
         data: "Data",
@@ -21,7 +21,7 @@ export const Button = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-      {
+      default: {
         id: "default",
         name: "Default Value",
         data: false,
@@ -33,7 +33,7 @@ export const Button = (): Graphs => ({
         inputType: "button",
         type: "",
       },
-    ],
+    },
     parentId: "4",
     ioType: "generator",
     operationType: "",

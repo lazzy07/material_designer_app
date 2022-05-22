@@ -9,8 +9,8 @@ export const OutputBool = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "321",
-    data: [
-      {
+    data: {
+      var_name: {
         id: "var_name",
         name: "Variable Name",
         data: "",
@@ -22,7 +22,7 @@ export const OutputBool = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-      {
+      default: {
         id: "default",
         name: "Default Value",
         data: false,
@@ -34,7 +34,7 @@ export const OutputBool = (): Graphs => ({
         inputType: "button",
         type: "",
       },
-      {
+      label: {
         id: "label",
         name: "Label Name",
         data: "Data",
@@ -46,7 +46,7 @@ export const OutputBool = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-    ],
+    },
     parentId: "32",
     ioType: "output",
     operationType: "",

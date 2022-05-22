@@ -8,8 +8,8 @@ export const Num2toNum1 = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "271",
-    data: [
-      {
+    data: {
+      default: {
         id: "default",
         name: "Default Value",
         data: [0, 0],
@@ -21,7 +21,7 @@ export const Num2toNum1 = (): Graphs => ({
         inputType: "input_and_slider",
         type: "",
       },
-    ],
+    },
     parentId: "27",
     ioType: "process",
     operationType: "",

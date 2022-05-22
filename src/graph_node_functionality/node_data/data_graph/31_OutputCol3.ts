@@ -9,8 +9,8 @@ export const OutputCol3 = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "311",
-    data: [
-      {
+    data: {
+      var_name: {
         id: "var_name",
         name: "Variable Name",
         data: "",
@@ -22,7 +22,7 @@ export const OutputCol3 = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-      {
+      default: {
         id: "default",
         name: "Default Value",
         data: "#ffffff",
@@ -34,7 +34,7 @@ export const OutputCol3 = (): Graphs => ({
         inputType: "colorpicker",
         type: "",
       },
-      {
+      label: {
         id: "label",
         name: "Label Name",
         data: "Data",
@@ -46,7 +46,7 @@ export const OutputCol3 = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-    ],
+    },
     parentId: "31",
     ioType: "output",
     operationType: "",

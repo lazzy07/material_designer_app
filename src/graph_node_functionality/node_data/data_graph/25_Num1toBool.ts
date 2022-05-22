@@ -8,8 +8,8 @@ export const Num1toBool = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "251",
-    data: [
-      {
+    data: {
+      default: {
         id: "default",
         name: "Default Value",
         data: 0,
@@ -21,7 +21,7 @@ export const Num1toBool = (): Graphs => ({
         inputType: "input_and_slider",
         type: "",
       },
-    ],
+    },
     parentId: "25",
     ioType: "process",
     operationType: "",

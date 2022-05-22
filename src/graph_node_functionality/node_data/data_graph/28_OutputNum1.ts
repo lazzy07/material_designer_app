@@ -9,8 +9,8 @@ export const OutputNum1 = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "281",
-    data: [
-      {
+    data: {
+      var_name: {
         id: "var_name",
         name: "Variable Name",
         data: "",
@@ -22,7 +22,7 @@ export const OutputNum1 = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-      {
+      label: {
         id: "label",
         name: "Label Name",
         data: "Data",
@@ -34,7 +34,7 @@ export const OutputNum1 = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-      {
+      default: {
         id: "default",
         name: "Default Value",
         data: 0,
@@ -46,7 +46,7 @@ export const OutputNum1 = (): Graphs => ({
         inputType: "input_and_slider",
         type: "",
       },
-    ],
+    },
     parentId: "28",
     ioType: "output",
     operationType: "",

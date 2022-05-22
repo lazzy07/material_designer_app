@@ -8,8 +8,8 @@ export const Num1toCol3 = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "231",
-    data: [
-      {
+    data: {
+      default: {
         id: "default",
         name: "Default Value",
         data: 0,
@@ -21,7 +21,7 @@ export const Num1toCol3 = (): Graphs => ({
         inputType: "input_and_slider",
         type: "",
       },
-      {
+      default2: {
         id: "default2",
         name: "Default Value",
         data: 0,
@@ -33,7 +33,7 @@ export const Num1toCol3 = (): Graphs => ({
         inputType: "input_and_slider",
         type: "",
       },
-      {
+      default3: {
         id: "default3",
         name: "Default Value",
         data: 0,
@@ -45,7 +45,7 @@ export const Num1toCol3 = (): Graphs => ({
         inputType: "input_and_slider",
         type: "",
       },
-    ],
+    },
     parentId: "23",
     ioType: "process",
     operationType: "",

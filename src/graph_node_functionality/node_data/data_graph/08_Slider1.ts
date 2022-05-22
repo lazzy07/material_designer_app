@@ -8,8 +8,8 @@ export const Slider1 = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "81",
-    data: [
-      {
+    data: {
+      label: {
         id: "label",
         name: "Label Name",
         data: "Data",
@@ -21,7 +21,7 @@ export const Slider1 = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-      {
+      default: {
         id: "default",
         name: "Default Value",
         data: 0,
@@ -33,7 +33,7 @@ export const Slider1 = (): Graphs => ({
         inputType: "slider",
         type: "",
       },
-    ],
+    },
     parentId: "8",
     ioType: "generator",
     operationType: "",

@@ -8,8 +8,8 @@ export const BooltoNum1 = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "241",
-    data: [
-      {
+    data: {
+      default: {
         id: "default",
         name: "Default Value",
         data: false,
@@ -21,7 +21,7 @@ export const BooltoNum1 = (): Graphs => ({
         inputType: "button",
         type: "",
       },
-    ],
+    },
     parentId: "24",
     ioType: "process",
     operationType: "",

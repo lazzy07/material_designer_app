@@ -8,8 +8,8 @@ export const KernelOutputGrayscale = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "66",
-    data: [
-      {
+    data: {
+      resolution_type: {
         id: "resolution_type",
         name: "Resolution Type",
         data: {
@@ -33,7 +33,7 @@ export const KernelOutputGrayscale = (): Graphs => ({
         inputType: "dropdown",
         type: "",
       },
-      {
+      resolution_h: {
         id: "resolution_h",
         groups: {
           id: "1",
@@ -45,7 +45,7 @@ export const KernelOutputGrayscale = (): Graphs => ({
         name: "Resolution Height",
         type: "",
       },
-      {
+      resolution_w: {
         id: "resolution_w",
         groups: {
           id: "1",
@@ -57,7 +57,7 @@ export const KernelOutputGrayscale = (): Graphs => ({
         name: "Resolution Width",
         type: "",
       },
-      {
+      var_name: {
         id: "var_name",
         name: "Variable Name",
         data: "",
@@ -69,7 +69,7 @@ export const KernelOutputGrayscale = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-    ],
+    },
     parentId: "6",
     ioType: "process",
     operationType: "grayscale",

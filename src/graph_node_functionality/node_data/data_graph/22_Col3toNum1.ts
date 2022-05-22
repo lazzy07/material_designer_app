@@ -8,8 +8,8 @@ export const Col3toNum1 = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "221",
-    data: [
-      {
+    data: {
+      default: {
         id: "default",
         name: "Default Value",
         data: "#ffffff",
@@ -21,7 +21,7 @@ export const Col3toNum1 = (): Graphs => ({
         inputType: "colorpicker",
         type: "",
       },
-    ],
+    },
     parentId: "22",
     ioType: "process",
     operationType: "",

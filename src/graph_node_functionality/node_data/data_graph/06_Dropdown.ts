@@ -8,8 +8,8 @@ export const Dropdown = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "61",
-    data: [
-      {
+    data: {
+      label: {
         id: "label",
         name: "Label Name",
         data: "Data",
@@ -21,7 +21,7 @@ export const Dropdown = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-      {
+      default: {
         id: "default",
         name: "Default Value",
         data: {},
@@ -33,7 +33,7 @@ export const Dropdown = (): Graphs => ({
         inputType: "dropdown",
         type: "",
       },
-    ],
+    },
     parentId: "6",
     ioType: "generator",
     operationType: "",

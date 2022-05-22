@@ -8,8 +8,8 @@ export const OutputColor = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "77",
-    data: [
-      {
+    data: {
+      label: {
         id: "label",
         name: "Label Name",
         data: "Data",
@@ -21,7 +21,7 @@ export const OutputColor = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-    ],
+    },
     parentId: "7",
     ioType: "output",
     operationType: "color",

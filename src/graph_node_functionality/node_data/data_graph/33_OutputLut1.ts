@@ -8,8 +8,8 @@ export const OutputLut1 = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "331",
-    data: [
-      {
+    data: {
+      var_name: {
         id: "var_name",
         name: "Variable Name",
         data: "",
@@ -21,7 +21,7 @@ export const OutputLut1 = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-      {
+      label: {
         id: "label",
         name: "Label Name",
         data: "Data",
@@ -33,7 +33,7 @@ export const OutputLut1 = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-      {
+      default: {
         id: "default",
         name: "Default Value",
         data: [
@@ -54,7 +54,7 @@ export const OutputLut1 = (): Graphs => ({
         inputType: "lut",
         type: "",
       },
-    ],
+    },
     parentId: "33",
     ioType: "output",
     operationType: "",

@@ -8,8 +8,8 @@ export const MultiplyNumber = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "161",
-    data: [
-      {
+    data: {
+      default: {
         id: "default",
         name: "Default Value 1",
         data: 0,
@@ -21,7 +21,7 @@ export const MultiplyNumber = (): Graphs => ({
         inputType: "input_and_slider",
         type: "",
       },
-      {
+      default2: {
         id: "default2",
         name: "Default Value 2",
         data: 0,
@@ -33,7 +33,7 @@ export const MultiplyNumber = (): Graphs => ({
         inputType: "input_and_slider",
         type: "",
       },
-    ],
+    },
     parentId: "16",
     ioType: "process",
     operationType: "",

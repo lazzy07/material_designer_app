@@ -8,7 +8,7 @@ export const Viewer = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "99",
-    data: [],
+    data: {},
     parentId: "9",
     ioType: "output",
     operationType: "color",

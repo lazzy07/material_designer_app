@@ -8,8 +8,8 @@ export const DivideNumber = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "171",
-    data: [
-      {
+    data: {
+      default: {
         id: "default",
         name: "Default Value 1",
         data: 0,
@@ -21,7 +21,7 @@ export const DivideNumber = (): Graphs => ({
         inputType: "input_and_slider",
         type: "",
       },
-      {
+      default2: {
         id: "default2",
         name: "Default Value 2",
         data: 1,
@@ -33,7 +33,7 @@ export const DivideNumber = (): Graphs => ({
         inputType: "input_and_slider",
         type: "",
       },
-    ],
+    },
     parentId: "17",
     ioType: "process",
     operationType: "",

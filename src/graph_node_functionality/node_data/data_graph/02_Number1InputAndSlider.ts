@@ -8,8 +8,8 @@ export const Number1InputAndSlider = (): Graphs => ({
   children: [],
   dataGraph: {
     id: "21",
-    data: [
-      {
+    data: {
+      label: {
         id: "label",
         name: "Label Name",
         data: "Data",
@@ -21,7 +21,7 @@ export const Number1InputAndSlider = (): Graphs => ({
         inputType: "input",
         type: "",
       },
-      {
+      default: {
         id: "default",
         name: "Default Value",
         data: 0,
@@ -33,7 +33,7 @@ export const Number1InputAndSlider = (): Graphs => ({
         inputType: "input_and_slider",
         type: "",
       },
-    ],
+    },
     parentId: "2",
     ioType: "generator",
     operationType: "",
