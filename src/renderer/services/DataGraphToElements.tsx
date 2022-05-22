@@ -24,20 +24,34 @@ export const nodePropertiesToElements = (
     }
   } else {
     //TODO:: find all the generator types in the graph and render those data
-    const nodeData = (node.data as any).dataGraph.data as NodesData;
+    const nodeData = (node.data as any).dataGraph.data.nodes as NodesData;
     const nodes = Object.values(nodeData);
-    const elements: JSX.Element[] = [];
 
     if (nodes) {
-      let j = 0;
-      for (const node of nodes) {
-        const dataGraph = (node.data as any).dataGraph as DataGraph;
-        const isPrimitive = !dataGraph.isSecondary;
+      for (const elem of nodes) {
+        if (elem) {
+          const dataGraph = (elem.data as unknown as Graphs).dataGraph;
+          const isPrimitive = !dataGraph?.isSecondary;
 
-        if (isPrimitive) {
-          // const elem = renderDatagraphElement(, )
+          if (isPrimitive) {
+            const options = dataGraph!.data as NodePropertyData<any>[];
+            let j = 0;
+
+            for (const i of options) {
+              if (i.id === "default") {
+                const elem = renderDatagraphElement(
+                  i,
+                  j,
+                  graph,
+                  node,
+                  selectedGraphType
+                );
+                elements.push(elem);
+              }
+              j++;
+            }
+          }
         }
-        // const elem = renderDatagraphElement(i, j, graph, node, selectedGraphType);
       }
     }
   }
