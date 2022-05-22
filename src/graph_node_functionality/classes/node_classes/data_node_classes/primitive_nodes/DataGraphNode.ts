@@ -157,9 +157,9 @@ export class DataGraphNode extends DataNode<any> {
     if (isInput && !isOutput) {
       (node.data as any).dataGraph.ioType = "generator";
     } else if (!isInput && isOutput) {
-      (node.data as any).ioType = "output";
+      (node.data as any).dataGraph.ioType = "output";
     } else {
-      (node.data as any).ioType = "process";
+      (node.data as any).dataGraph.ioType = "process";
     }
 
     node.addControl(
