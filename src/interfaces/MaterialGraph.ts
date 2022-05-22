@@ -7,7 +7,7 @@ import { NODE_IO_TYPE } from "./GraphNodeIOType";
 export interface MaterialGraph {
   parentId: string;
   id: string;
-  data: Data | NodePropertyData<any>[] | KernelGraphData;
+  data: Data | { [id: string]: NodePropertyData<any> } | KernelGraphData;
   author?: Author;
   createdAt?: Date;
   ioType?: NODE_IO_TYPE;
