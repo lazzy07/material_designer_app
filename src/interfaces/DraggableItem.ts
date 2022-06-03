@@ -4,7 +4,8 @@ export type DRAGGABLE_ITEM_TYPE =
   | "shaderNode"
   | "dataNode"
   | "shaderGraph"
-  | "dataGraph";
+  | "dataGraph"
+  | "dataGraphElement";
 
 export interface DraggableItem<T> {
   itemType: DRAGGABLE_ITEM_TYPE;
