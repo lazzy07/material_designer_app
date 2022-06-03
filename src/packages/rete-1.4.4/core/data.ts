@@ -1,3 +1,5 @@
+import { Connection } from "../connection";
+
 export interface ConnectionData {
   node: number;
   data: unknown;
@@ -41,6 +43,7 @@ export interface NodesData {
 export interface Data {
   id: string;
   nodes: NodesData;
+  connections: { [id: string]: Connection };
 }
 
 export interface WorkerInputs {

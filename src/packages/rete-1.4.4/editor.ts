@@ -123,7 +123,7 @@ export class NodeEditor extends Context<EventsTypes> {
   }
 
   toJSON() {
-    const data: Data = { id: this.id, nodes: {} };
+    const data: any = { id: this.id, nodes: {} };
 
     this.nodes.forEach((node) => (data.nodes[node.id] = node.toJSON()));
     this.trigger("export", data);
