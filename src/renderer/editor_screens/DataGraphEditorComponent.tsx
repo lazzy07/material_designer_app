@@ -21,6 +21,7 @@ import _ from "lodash";
 import { Data } from "../../packages/rete-1.4.4/core/data";
 import NodeEditor from "../../graph_node_functionality/classes/node_classes/common/NodeEditor";
 import { DataGraphNode } from "../../graph_node_functionality/classes/node_classes/data_node_classes/primitive_nodes/DataGraphNode";
+import { DataGraphDraggableElement } from "../../interfaces/DataGraphDraggableElement";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -57,6 +58,9 @@ class DataGraphEditorComponent extends Component<Props, State> {
   onNodeDropped = (drop: DraggableItem<Graphs>) => {
     if (drop.itemType === "dataNode") {
       this.onContextMenuItemClick(drop.item);
+    } else if (drop.itemType === "dataGraphElement") {
+      const data = drop.item as unknown as DataGraphDraggableElement;
+      console.log(data);
     } else {
       const lib = this.dataNodeLibrary;
 
@@ -71,6 +75,7 @@ class DataGraphEditorComponent extends Component<Props, State> {
 
       component.createNode(drop.item).then((node) => {
         component.build(node);
+        (node.data as any).type = "dataGraph";
         node.position = [this.mousePos.x, this.mousePos.y];
         this.dataGraphEditor!.getReteEditor().addNode(node);
       });
@@ -266,7 +271,7 @@ class DataGraphEditorComponent extends Component<Props, State> {
           }}
         >
           <DropFileComponent
-            dropType={["dataNode", "dataGraph"]}
+            dropType={["dataNode", "dataGraph", "dataGraphElement"]}
             onDropComplete={(item) => this.onNodeDropped(item)}
           >
             <ContextMenu

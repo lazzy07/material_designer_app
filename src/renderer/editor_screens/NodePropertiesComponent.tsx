@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { ColorLUT } from "../../interfaces/ColorLutData";
 import { connect } from "react-redux";
 import { Store } from "../../redux/reducers";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
