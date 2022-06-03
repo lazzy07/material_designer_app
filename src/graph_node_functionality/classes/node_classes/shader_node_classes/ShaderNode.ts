@@ -32,15 +32,16 @@ export default abstract class ShaderNode extends Component {
   }
 
   async builder(node: Node) {
-    for (let np of (node.data as any).dataGraph!
-      .data as NodePropertyData<any>[]) {
-      if (np.id === "var_name") {
-        np.data = uniqueNamesGenerator({
-          dictionaries: [adjectives, colors, animals],
-          separator: "_",
-          length: 2,
-        });
-      }
+    const nodeData = (node.data as any).dataGraph!.data as {
+      [id: string]: NodePropertyData<any>;
+    };
+    const dt = nodeData["var_name"];
+    if (dt) {
+      dt.data = uniqueNamesGenerator({
+        dictionaries: [adjectives, colors, animals],
+        separator: "_",
+        length: 2,
+      });
     }
   }
 
