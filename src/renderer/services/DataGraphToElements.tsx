@@ -1,7 +1,9 @@
+import React from "react";
 import { NodePropertyData } from "../../graph_node_functionality/interfaces/NodePropertyData";
 import { DataGraph } from "../../interfaces/DataGraph";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import { Data, NodeData, NodesData } from "../../packages/rete-1.4.4/core/data";
+import DraggableComponent from "../components/library_components/DraggableComponent";
 import { renderDatagraphElement } from "./RenderDataGraphElements";
 
 export const nodePropertiesToElements = (
@@ -43,14 +45,35 @@ export const nodePropertiesToElements = (
 
             for (const i of Object.values(options)) {
               if (i.id === "default") {
-                const elem = renderDatagraphElement(
-                  i,
-                  j,
-                  graph,
-                  node,
-                  selectedGraphType
-                );
-                elements.push(elem);
+                let renelem: any;
+
+                if (graph.type !== "dataGraph") {
+                  renelem = (
+                    <DraggableComponent
+                      data={{
+                        itemType: "dataGraphElement",
+                        item: {
+                          graphId: graph.id,
+                          nodeId: node.id,
+                          subnodeId: elem.id,
+                          dataitemId: i.id,
+                        },
+                      }}
+                      name={i.id}
+                    ></DraggableComponent>
+                  );
+                } else {
+                  renderDatagraphElement(
+                    i,
+                    j,
+                    graph,
+                    node,
+                    selectedGraphType,
+                    i.id,
+                    elem
+                  );
+                }
+                elements.push(renelem);
               }
               j++;
             }

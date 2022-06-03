@@ -14,7 +14,7 @@ import ColorPicker1 from "../components/graph_property_inputs/ColorPicker1";
 import ColorPicker3 from "../components/graph_property_inputs/ColorPicker3";
 import { store } from "../../redux/store";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
-import { Data, NodeData } from "../../packages/rete-1.4.4/core/data";
+import { Data, NodeData, NodesData } from "../../packages/rete-1.4.4/core/data";
 import { editGraphNodeData } from "../../redux/actions/GraphActions";
 import { ColorLUT } from "../../interfaces/ColorLutData";
 import Dropdown from "../components/graph_property_inputs/Dropdown";
@@ -27,7 +27,9 @@ export const renderDatagraphElement = (
   index: number,
   graph: Graphs,
   selectedNode: NodeData,
-  selectedGraphType: GRAPH_TYPES
+  selectedGraphType: GRAPH_TYPES,
+  id?: string,
+  elem?: NodeData
 ) => {
   if (nodeProperty.isHidden) {
     return <div></div>;
@@ -49,7 +51,9 @@ export const renderDatagraphElement = (
           nodeProperty,
           graph,
           selectedNode,
-          selectedGraphType
+          selectedGraphType,
+          id,
+          elem
         )}
       </div>
     </div>
@@ -60,7 +64,9 @@ const selectGraphElement = (
   nodeProperty: NodePropertyData<any>,
   graph: Graphs,
   selectedNode: NodeData,
-  selectedGraphType: GRAPH_TYPES
+  selectedGraphType: GRAPH_TYPES,
+  id?: string,
+  elem?: NodeData
 ) => {
   const dataType = nodeProperty.dataType;
   const type = nodeProperty.inputType;
@@ -75,7 +81,9 @@ const selectGraphElement = (
             nodeProperty,
             graph,
             selectedNode,
-            selectedGraphType
+            selectedGraphType,
+            id,
+            elem
           )
         }
       />
@@ -89,7 +97,9 @@ const selectGraphElement = (
             nodeProperty,
             graph,
             selectedNode,
-            selectedGraphType
+            selectedGraphType,
+            id,
+            elem
           )
         }
         value={nodeProperty.data}
@@ -104,7 +114,9 @@ const selectGraphElement = (
             nodeProperty,
             graph,
             selectedNode,
-            selectedGraphType
+            selectedGraphType,
+            id,
+            elem
           )
         }
         value={nodeProperty.data}
@@ -120,7 +132,9 @@ const selectGraphElement = (
             nodeProperty,
             graph,
             selectedNode,
-            selectedGraphType
+            selectedGraphType,
+            id,
+            elem
           )
         }
       />
@@ -135,7 +149,9 @@ const selectGraphElement = (
             nodeProperty,
             graph,
             selectedNode,
-            selectedGraphType
+            selectedGraphType,
+            id,
+            elem
           )
         }
       />
@@ -166,7 +182,9 @@ const selectGraphElement = (
             nodeProperty,
             graph,
             selectedNode,
-            selectedGraphType
+            selectedGraphType,
+            id,
+            elem
           )
         }
       />
@@ -181,7 +199,9 @@ const selectGraphElement = (
             nodeProperty,
             graph,
             selectedNode,
-            selectedGraphType
+            selectedGraphType,
+            id,
+            elem
           )
         }
       />
@@ -197,7 +217,9 @@ const selectGraphElement = (
             nodeProperty,
             graph,
             selectedNode,
-            selectedGraphType
+            selectedGraphType,
+            id,
+            elem
           )
         }
       />
@@ -213,7 +235,9 @@ const selectGraphElement = (
             nodeProperty,
             graph,
             selectedNode,
-            selectedGraphType
+            selectedGraphType,
+            id,
+            elem
           )
         }
       />
@@ -228,7 +252,9 @@ const selectGraphElement = (
             nodeProperty,
             graph,
             selectedNode,
-            selectedGraphType
+            selectedGraphType,
+            id,
+            elem
           )
         }
         id={v4()}
@@ -244,7 +270,9 @@ const selectGraphElement = (
             nodeProperty,
             graph,
             selectedNode,
-            selectedGraphType
+            selectedGraphType,
+            id,
+            elem
           )
         }
         id={v4()}
@@ -261,28 +289,48 @@ function onChangeData<T>(
   nodeProperty: NodePropertyData<T>,
   selectedGraph: Graphs,
   selectedNode: NodeData,
-  selectedGraphType: GRAPH_TYPES
+  selectedGraphType: GRAPH_TYPES,
+  id?: string, //for secondary nodes
+  elem?: NodeData
 ) {
+  const state = store.getState() as Store;
   const dataGraph = selectedGraph![selectedGraphType];
   const reteGraph = dataGraph!.data as Data;
   const selectedNodeData = reteGraph.nodes[selectedNode.id];
   const data: Graphs = selectedNodeData.data as any;
 
-  const nodePrimitiveData = data["dataGraph"]!.data as {
-    [id: string]: NodePropertyData<any>;
-  };
+  if (!data.dataGraph!.isSecondary) {
+    const nodePrimitiveData = data["dataGraph"]!.data as {
+      [id: string]: NodePropertyData<any>;
+    };
 
-  nodePrimitiveData[nodeProperty.id].data = value;
+    nodePrimitiveData[nodeProperty.id].data = value;
 
-  const state = store.getState() as Store;
-  store.dispatch(
-    editGraphNodeData(
-      state.system.selectedItems.graphId,
-      "dataGraph",
-      selectedNodeData,
-      selectedNode.id
-    )
-  );
+    store.dispatch(
+      editGraphNodeData(
+        state.system.selectedItems.graphId,
+        selectedGraphType,
+        selectedNodeData,
+        selectedNode.id
+      )
+    );
+  } else {
+    const nodes: NodesData = (data.dataGraph!.data as any).nodes;
+    const sNode: Graphs = nodes[elem!.id].data as any;
+
+    const dataGraph = sNode.dataGraph!;
+    const dt = dataGraph.data as { [id: string]: NodePropertyData<any> };
+    dt[id!].data = value;
+
+    store.dispatch(
+      editGraphNodeData(
+        state.system.selectedItems.graphId,
+        "dataGraph",
+        selectedNodeData,
+        selectedNode.id
+      )
+    );
+  }
 }
 
 function onChangeDataElem(
