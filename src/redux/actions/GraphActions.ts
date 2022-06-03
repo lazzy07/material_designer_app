@@ -1,3 +1,4 @@
+import { Connection } from "./../../packages/rete-1.4.4/connection";
 import { ipcRenderer } from "electron";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
 import {
@@ -10,6 +11,8 @@ import { Action } from "../store";
 
 export const CHANGE_GRAPHS = "change graphs";
 export const EDIT_GRAPH_DATA = "edit graph data";
+export const CREATE_CONNECTION = "create connection";
+export const REMOVE_CONNECTION = "remove connection";
 export const EDIT_GRAPH_NODE_DATA = "edit graph node data";
 export const EDIT_KERNEL_DATA = "edit kernel data";
 export const SET_KERNEL_ERROR = "set kernel error";
@@ -38,6 +41,36 @@ export const editGraphData = (
       id,
       selectedType,
       packageData,
+    },
+  };
+};
+
+export const createConnection = (
+  id: string,
+  selectedType: GRAPH_TYPES,
+  connection: Connection
+) => {
+  return {
+    type: CREATE_CONNECTION,
+    payload: {
+      id,
+      selectedType,
+      connection,
+    },
+  };
+};
+
+export const removeConnection = (
+  id: string,
+  selectedType: GRAPH_TYPES,
+  connection: Connection
+) => {
+  return {
+    type: REMOVE_CONNECTION,
+    payload: {
+      id,
+      selectedType,
+      connection,
     },
   };
 };

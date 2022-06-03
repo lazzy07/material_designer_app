@@ -34,7 +34,11 @@ export const createGraph = (
     createdAt: new Date(),
     dataGraph: {
       id: v4(),
-      data: { id: "materialdesigner@" + EDITOR_VERSION, nodes: {} },
+      data: {
+        id: "materialdesigner@" + EDITOR_VERSION,
+        nodes: {},
+        connections: {},
+      },
       parentId: id,
       createdAt: new Date(),
       isSecondary: true,
@@ -51,7 +55,11 @@ export const createGraph = (
     },
     shaderGraph: {
       id: v4(),
-      data: { id: "materialdesigner@" + EDITOR_VERSION, nodes: {} },
+      data: {
+        id: "materialdesigner@" + EDITOR_VERSION,
+        nodes: {},
+        connections: {},
+      },
       parentId: id,
       createdAt: new Date(),
       isSecondary: true,

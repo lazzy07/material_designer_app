@@ -10,9 +10,12 @@ import {
   CHANGE_GRAPHS,
   EDIT_GRAPH_NODE_DATA,
   EDIT_KERNEL_DATA,
+  CREATE_CONNECTION,
+  REMOVE_CONNECTION,
 } from "../actions/GraphActions";
 import { Data } from "../../packages/rete-1.4.4/core/data";
 import { Graphs } from "../../interfaces/Graphs";
+import { Connection } from "../../packages/rete-1.4.4";
 
 export interface ProjectReducer extends Project {
   modifiedAt: number;
@@ -41,20 +44,24 @@ export const projectReducer = (
       };
 
     case EDIT_GRAPH_DATA:
-      const toUpdate: Data = { ...action.payload.packageData };
-      const newNodes = toUpdate.nodes;
       const id = action.payload.id;
-      const pkg = state.packages[id];
-      const prevData: Data = {
-        ...pkg[action.payload.selectedType!].data,
+      return {
+        ...state,
+        packages: {
+          ...state.packages,
+          [id]: {
+            ...state.packages[id],
+            [action.payload.selectedType!]: {
+              ...action.payload.packageData,
+            },
+          },
+        },
       };
-      const prevNodes = prevData.nodes;
 
-      for (const i of Object.keys(newNodes)) {
-        if (!prevNodes[i]) {
-          prevNodes[i] = { ...newNodes[i] };
-        }
-      }
+    case CREATE_CONNECTION: {
+      const id = action.payload.id;
+      const connection: Connection = { ...action.payload.connection };
+
       return {
         ...state,
         packages: {
@@ -63,11 +70,39 @@ export const projectReducer = (
             ...state.packages[id],
             [action.payload.selectedType!]: {
               ...state.packages[id][action.payload.selectedType!],
-              data: prevData,
+              connections: {
+                ...state.packages[id][action.payload.selectedType!].connections,
+                [connection.id]: connection,
+              },
             },
           },
         },
       };
+    }
+
+    case REMOVE_CONNECTION: {
+      const id = action.payload.id;
+      const connection: Connection = { ...action.payload.connection };
+      const connections = {
+        ...state.packages[id][action.payload.selectedType].connections,
+      };
+      delete connections[connection.id];
+      console.log(connections);
+
+      return {
+        ...state,
+        packages: {
+          ...state.packages,
+          [id]: {
+            ...state.packages[id],
+            [action.payload.selectedType!]: {
+              ...state.packages[id][action.payload.selectedType!],
+              connections,
+            },
+          },
+        },
+      };
+    }
 
     case EDIT_GRAPH_NODE_DATA: {
       const id = action.payload.id;
