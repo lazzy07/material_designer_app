@@ -72,6 +72,7 @@ export default abstract class NodeEditor {
     );
 
     this.editorCore.on("nodecreated", (node) => {
+      console.log(node);
       ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
         updateType: "createNode",
         update: JSON.stringify(node),
