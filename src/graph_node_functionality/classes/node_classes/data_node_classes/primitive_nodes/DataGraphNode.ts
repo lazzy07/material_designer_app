@@ -19,6 +19,7 @@ export class DataGraphNode extends DataNode<any> {
     const dataGraph = (node.data as unknown as Graphs).dataGraph!;
     const nodes = (dataGraph.data as any).nodes;
     node.meta = { engineType: "dataGraph" };
+    (node.data as unknown as Graphs).type = "dataGraph";
 
     let isInput = false;
     let isOutput = false;
