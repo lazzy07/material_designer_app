@@ -1,7 +1,3 @@
-import {
-  createConnection,
-  removeConnection,
-} from "./../../../../redux/actions/GraphActions";
 import { ipcRenderer } from "electron";
 import { store } from "../../../../redux/store";
 import { EDITOR_VERSION } from "../../../../renderer/constants/Versions";
@@ -92,13 +88,6 @@ export default abstract class NodeEditor {
     });
 
     this.editorCore.on("connectioncreated", (connection) => {
-      const state: Store = store.getState();
-      const selectedItems = state.system.selectedItems;
-
-      store.dispatch(
-        createConnection(selectedItems.graphId, this.nodeEditorType, connection)
-      );
-
       ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
         updateType: "addConnection",
         update: JSON.stringify(connection),
@@ -107,13 +96,6 @@ export default abstract class NodeEditor {
     });
 
     this.editorCore.on("connectionremoved", (connection) => {
-      const state: Store = store.getState();
-      const selectedItems = state.system.selectedItems;
-
-      store.dispatch(
-        removeConnection(selectedItems.graphId, this.nodeEditorType, connection)
-      );
-
       ipcRenderer.send(IpcMessages.UPDATE_GRAPH, {
         updateType: "removeConnection",
         update: JSON.stringify(connection),
@@ -121,15 +103,18 @@ export default abstract class NodeEditor {
       });
     });
 
-    this.editorCore.on(["nodecreated", "noderemoved"], () => {
-      const json = this.editorCore!.toJSON();
+    this.editorCore.on(
+      ["nodecreated", "noderemoved", "connectioncreated", "connectionremoved"],
+      () => {
+        const json = this.editorCore!.toJSON();
 
-      const state: Store = store.getState();
-      const selectedItems = state.system.selectedItems;
-      store.dispatch(
-        editGraphData(selectedItems.graphId, this.nodeEditorType, json)
-      );
-    });
+        const state: Store = store.getState();
+        const selectedItems = state.system.selectedItems;
+        store.dispatch(
+          editGraphData(selectedItems.graphId, this.nodeEditorType, json)
+        );
+      }
+    );
   };
 
   loadFromStore = (data: Data) => {
