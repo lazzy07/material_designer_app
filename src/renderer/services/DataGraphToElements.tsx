@@ -2,7 +2,7 @@ import React from "react";
 import { NodePropertyData } from "../../graph_node_functionality/interfaces/NodePropertyData";
 import { DataGraph } from "../../interfaces/DataGraph";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
-import { Data, NodeData, NodesData } from "../../packages/rete-1.4.4/core/data";
+import { NodeData, NodesData } from "../../packages/rete-1.4.4/core/data";
 import DraggableComponent from "../components/library_components/DraggableComponent";
 import { renderDatagraphElement } from "./RenderDataGraphElements";
 
@@ -35,48 +35,55 @@ export const nodePropertiesToElements = (
       for (const elem of nodes) {
         if (elem) {
           const dataGraph = (elem.data as unknown as Graphs).dataGraph;
-          const isPrimitive = !dataGraph?.isSecondary;
 
-          if (isPrimitive) {
-            const options = dataGraph!.data as {
-              [id: string]: NodePropertyData<any>;
-            };
-            let j = 0;
+          const options = dataGraph!.data as {
+            [id: string]: NodePropertyData<any>;
+          };
+          let j = 0;
 
-            for (const i of Object.values(options)) {
-              if (i.id === "default") {
-                let renelem: any;
+          for (const i of Object.values(options)) {
+            if (i.id === "default") {
+              let renelem: any;
 
-                if (graph.type !== "dataGraph") {
-                  renelem = (
-                    <DraggableComponent
-                      data={{
-                        itemType: "dataGraphElement",
-                        item: {
-                          graphId: graph.id,
-                          nodeId: node.id,
-                          subnodeId: elem.id,
-                          dataitemId: i.id,
-                        },
-                      }}
-                      name={i.id}
-                    ></DraggableComponent>
-                  );
-                } else {
-                  renderDatagraphElement(
-                    i,
-                    j,
-                    graph,
-                    node,
-                    selectedGraphType,
-                    i.id,
-                    elem
-                  );
-                }
-                elements.push(renelem);
+              if (graph.type !== "dataGraph") {
+                renelem = (
+                  <DraggableComponent
+                    data={{
+                      itemType: "dataGraphElement",
+                      item: {
+                        graphId: graph.id,
+                        nodeId: node.id,
+                        subnodeId: elem.id,
+                        dataitemId: i.id,
+                      },
+                    }}
+                    name={i.id}
+                  >
+                    {renderDatagraphElement(
+                      i,
+                      j,
+                      graph,
+                      node,
+                      selectedGraphType,
+                      i.id,
+                      elem
+                    )}
+                  </DraggableComponent>
+                );
+              } else {
+                renelem = renderDatagraphElement(
+                  i,
+                  j,
+                  graph,
+                  node,
+                  selectedGraphType,
+                  i.id,
+                  elem
+                );
               }
-              j++;
+              elements.push(renelem);
             }
+            j++;
           }
         }
       }
