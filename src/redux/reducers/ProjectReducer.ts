@@ -10,8 +10,6 @@ import {
   CHANGE_GRAPHS,
   EDIT_GRAPH_NODE_DATA,
   EDIT_KERNEL_DATA,
-  CREATE_CONNECTION,
-  REMOVE_CONNECTION,
 } from "../actions/GraphActions";
 import { Data } from "../../packages/rete-1.4.4/core/data";
 import { Graphs } from "../../interfaces/Graphs";
@@ -44,51 +42,23 @@ export const projectReducer = (
       };
 
     case EDIT_GRAPH_DATA:
+      const toUpdate: Data = { ...action.payload.packageData };
+      // const newNodes = toUpdate.nodes;
       const id = action.payload.id;
-      return {
-        ...state,
-        packages: {
-          ...state.packages,
-          [id]: {
-            ...state.packages[id],
-            [action.payload.selectedType!]: {
-              ...action.payload.packageData,
-            },
-          },
-        },
-      };
+      // const pkg = state.packages[id];
+      // const prevData: Data = {
+      //   ...pkg[action.payload.selectedType!].data,
+      // };
+      // const prevNodes = prevData.nodes;
 
-    case CREATE_CONNECTION: {
-      const id = action.payload.id;
-      const connection: Connection = { ...action.payload.connection };
-
-      return {
-        ...state,
-        packages: {
-          ...state.packages,
-          [id]: {
-            ...state.packages[id],
-            [action.payload.selectedType!]: {
-              ...state.packages[id][action.payload.selectedType!],
-              connections: {
-                ...state.packages[id][action.payload.selectedType!].connections,
-                [connection.id]: connection,
-              },
-            },
-          },
-        },
-      };
-    }
-
-    case REMOVE_CONNECTION: {
-      const id = action.payload.id;
-      const connection: Connection = { ...action.payload.connection };
-      const connections = {
-        ...state.packages[id][action.payload.selectedType].connections,
-      };
-      delete connections[connection.id];
-      console.log(connections);
-
+      // for (const i of Object.keys(newNodes)) {
+      //   if (
+      //     !prevNodes[i] ||
+      //     JSON.stringify(prevNodes[i]) !== JSON.stringify(newNodes[i])
+      //   ) {
+      //     prevNodes[i] = { ...newNodes[i] };
+      //   }
+      // }
       return {
         ...state,
         packages: {
@@ -97,12 +67,11 @@ export const projectReducer = (
             ...state.packages[id],
             [action.payload.selectedType!]: {
               ...state.packages[id][action.payload.selectedType!],
-              connections,
+              data: toUpdate,
             },
           },
         },
       };
-    }
 
     case EDIT_GRAPH_NODE_DATA: {
       const id = action.payload.id;
