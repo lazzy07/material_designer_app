@@ -44,11 +44,16 @@ export const setSelectedGraphData = (data: any) => {
   };
 };
 
-export const setSelectedNode = (id: number, graphType: GRAPH_TYPES) => {
+export const setSelectedNode = (
+  nodeId: number,
+  graphId: string,
+  graphType: GRAPH_TYPES
+) => {
   return {
     type: SET_SELECTED_NODE,
     payload: {
-      id,
+      nodeId,
+      graphId,
       graphType,
     },
   };

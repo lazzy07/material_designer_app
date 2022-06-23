@@ -47,7 +47,8 @@ export const editGraphNodeData = (
   id: string,
   selectedType: GRAPH_TYPES,
   data: NodeData,
-  nodeId: number
+  nodeId: number,
+  subNodeId?: number
 ): Action => {
   const update = {
     type: EDIT_GRAPH_NODE_DATA,
@@ -56,6 +57,7 @@ export const editGraphNodeData = (
       selectedType,
       data,
       selectedNode: nodeId,
+      subNodeId,
     },
   };
 
