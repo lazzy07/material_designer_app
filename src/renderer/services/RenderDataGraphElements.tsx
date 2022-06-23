@@ -327,7 +327,8 @@ function onChangeData<T>(
         state.system.selectedItems.graphId,
         "dataGraph",
         selectedNodeData,
-        selectedNode.id
+        selectedNode.id,
+        elem!.id
       )
     );
   }

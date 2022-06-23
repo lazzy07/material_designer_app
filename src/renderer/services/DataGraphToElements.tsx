@@ -44,7 +44,6 @@ export const nodePropertiesToElements = (
           for (const i of Object.values(options)) {
             if (i.id === "default") {
               let renelem: any;
-
               if (graph.type !== "dataGraph") {
                 renelem = (
                   <DraggableComponent
