@@ -45,13 +45,13 @@ class NodePropertiesComponent extends Component<Props, State> {
 
 const mapStateToProps = (state: Store) => {
   const graph = state.project.packages[
-    state.system.selectedItems.graphId
+    state.system.selectedItems.node.graphId
   ] as Graphs;
 
   return {
-    selectedNode: state.system.selectedItems.node,
+    selectedNode: state.system.selectedItems.node.nodeId,
     selectedGraph: graph,
-    selectedGraphType: state.system.selectedItems.selectedNodesGraphType,
+    selectedGraphType: state.system.selectedItems.node.graphType,
   };
 };
 
