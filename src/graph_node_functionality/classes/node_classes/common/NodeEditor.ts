@@ -123,7 +123,11 @@ export default abstract class NodeEditor {
 
   handleSelectNodes = () => {
     this.editorCore.on("nodeselected", (e) => {
-      store.dispatch(setSelectedNode(e.id, this.nodeEditorType));
+      const state: Store = store.getState();
+      const selectedItems = state.system.selectedItems;
+      store.dispatch(
+        setSelectedNode(e.id, selectedItems.graphId, this.nodeEditorType)
+      );
     });
   };
 
