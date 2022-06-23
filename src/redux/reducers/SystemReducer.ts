@@ -16,8 +16,7 @@ export interface SystemReducer {
   };
   selectedItems: {
     graphId: string;
-    selectedNodesGraphType: GRAPH_TYPES;
-    node: number;
+    node: { nodeId: number; graphId: string; graphType: GRAPH_TYPES };
     previewNode: number;
   };
   kernelCompilerError: string;
@@ -30,8 +29,7 @@ const initialState: SystemReducer = {
   },
   selectedItems: {
     graphId: "",
-    selectedNodesGraphType: "dataGraph",
-    node: -1,
+    node: { nodeId: -1, graphId: "", graphType: "dataGraph" },
     previewNode: -1,
   },
   kernelCompilerError: "",
@@ -61,8 +59,11 @@ export const systemReducer = (
         ...state,
         selectedItems: {
           ...state.selectedItems,
-          node: action.payload.id,
-          selectedNodesGraphType: action.payload.graphType,
+          node: {
+            nodeId: action.payload.nodeId,
+            graphId: action.payload.graphId,
+            graphType: action.payload.graphType,
+          },
         },
       };
 
