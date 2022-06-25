@@ -117,7 +117,7 @@
     "filenamify": "^4.1.0",
     "golden-layout": "^1.5.9",
     "jquery": "^3.4.1",
-    "jsdom": "^16.4.0",
+    "jsdom": "^16.5.0",
     "jsdom-global": "^3.0.2",
     "lodash": "^4.17.20",
     "monaco-editor-webpack-plugin": "^4.1.1",
