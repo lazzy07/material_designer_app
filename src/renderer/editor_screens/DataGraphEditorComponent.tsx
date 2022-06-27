@@ -22,6 +22,7 @@ import { Data } from "../../packages/rete-1.4.4/core/data";
 import NodeEditor from "../../graph_node_functionality/classes/node_classes/common/NodeEditor";
 import { DataGraphNode } from "../../graph_node_functionality/classes/node_classes/data_node_classes/primitive_nodes/DataGraphNode";
 import { DataGraphDraggableElement } from "../../interfaces/DataGraphDraggableElement";
+import { DataReferenceNode } from "../../graph_node_functionality/classes/node_classes/data_node_classes/primitive_nodes/DataReferenceNode";
 
 interface Props {
   dimensions: { width: number; height: number };
@@ -60,10 +61,22 @@ class DataGraphEditorComponent extends Component<Props, State> {
       this.onContextMenuItemClick(drop.item);
     } else if (drop.itemType === "dataGraphElement") {
       const data = drop.item as unknown as DataGraphDraggableElement;
-      console.log(data);
-    } else {
-      const lib = this.dataNodeLibrary;
+      const component = new DataReferenceNode(data);
 
+      try {
+        this.dataGraphEditor!.getReteEditor().register(component);
+        this.dataGraphEditor!.getReteEngine().register(component);
+      } catch (err: any) {
+        console.log(err.message);
+      }
+
+      component.createNode(drop.item).then((node) => {
+        component.build(node);
+        (node.data as any).type = "dataGraph";
+        node.position = [this.mousePos.x, this.mousePos.y];
+        this.dataGraphEditor!.getReteEditor().addNode(node);
+      });
+    } else {
       //TODO:: Create node generator and create a node from it
       const component = new DataGraphNode(drop.item, "dataGraph");
       try {

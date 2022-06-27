@@ -76,6 +76,7 @@ class ShaderGraphEditorComponent extends Component<Props, State> {
 
       component.createNode(drop.item).then((node) => {
         component.build(node);
+        (node.data as any).type = "shaderGraph";
         node.position = [this.mousePos.x, this.mousePos.y];
         this.shaderGraphEditor!.getReteEditor().addNode(node);
       });
