@@ -54,6 +54,7 @@ export const nodePropertiesToElements = (
                         nodeId: node.id,
                         subnodeId: elem.id,
                         dataitemId: i.id,
+                        dataItemName: i.name,
                       },
                     }}
                     name={i.id}
