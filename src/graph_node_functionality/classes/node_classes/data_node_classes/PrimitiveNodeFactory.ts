@@ -32,8 +32,7 @@ import { OutputCol3 } from "./primitive_nodes/OutputCol3";
 import { OutputBool } from "./primitive_nodes/OutputBool";
 import { OutputLut1 } from "./primitive_nodes/OutputLut1";
 import { OutputLut3 } from "./primitive_nodes/OutputLut3";
-import { NodePropertyData } from "../../../interfaces/NodePropertyData";
-import { v4 } from "uuid";
+import { DataReferenceNode } from "./primitive_nodes/DataReferenceNode";
 
 export const getNodeFromFactory = (nodeData: Graphs) => {
   let data = { ...nodeData };
@@ -102,6 +101,8 @@ export const getNodeFromFactory = (nodeData: Graphs) => {
       return new OutputLut1(data, "dataGraph");
     case "34":
       return new OutputLut3(data, "dataGraph");
+    case "35":
+      return new DataReferenceNode(data as any);
     default:
       return new DataGraphReference(data, "dataGraph");
   }
