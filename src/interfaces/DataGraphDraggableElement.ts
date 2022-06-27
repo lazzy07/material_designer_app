@@ -3,4 +3,5 @@ export interface DataGraphDraggableElement {
   nodeId: number;
   subnodeId: number;
   dataitemId: string;
+  dataItemName: string;
 }
