@@ -70,12 +70,22 @@ class DataGraphEditorComponent extends Component<Props, State> {
         console.log(err.message);
       }
 
-      component.createNode(drop.item).then((node) => {
-        component.build(node);
-        (node.data as any).type = "dataGraph";
-        node.position = [this.mousePos.x, this.mousePos.y];
-        this.dataGraphEditor!.getReteEditor().addNode(node);
-      });
+      component
+        .createNode({
+          dataGraph: {
+            id: "351",
+            ioType: "output",
+            operationType: "",
+            data: { ...drop.item },
+            parentId: "35",
+          },
+        })
+        .then((node) => {
+          component.build(node);
+          (node.data as any).type = "dataGraph";
+          node.position = [this.mousePos.x, this.mousePos.y];
+          this.dataGraphEditor!.getReteEditor().addNode(node);
+        });
     } else {
       //TODO:: Create node generator and create a node from it
       const component = new DataGraphNode(drop.item, "dataGraph");
