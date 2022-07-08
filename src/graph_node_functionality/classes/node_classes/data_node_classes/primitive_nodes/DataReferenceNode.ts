@@ -2,22 +2,15 @@ import { DataGraphDraggableElement } from "../../../../../interfaces/DataGraphDr
 import { Graphs } from "../../../../../interfaces/Graphs";
 import { Node } from "../../../../../packages/rete-1.4.4";
 import { dataTypeToSocket } from "../../../../../renderer/services/DataTypeToSocket";
+import { DataRef } from "../../../../node_data/data_graph/35_DataRef";
 import NameController from "../../../renderer/controls/NameController";
 import DataProcessNode from "../DataProcessNode";
 
 export class DataReferenceNode extends DataProcessNode<any> {
   dragData: DataGraphDraggableElement;
+
   constructor(ref: DataGraphDraggableElement) {
-    super(
-      {
-        type: "dataGraph",
-        children: [],
-        id: "any",
-        contentType: "graph",
-        name: "Dummy Data",
-      },
-      "dataGraph"
-    );
+    super(DataRef(), "dataGraph");
     this.dragData = ref;
   }
 
