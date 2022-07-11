@@ -43,6 +43,7 @@ export const nodePropertiesToElements = (
 
           for (const i of Object.values(options)) {
             if (i.id === "default") {
+              console.log(node, elem, graph, i);
               let renelem: any;
               if (graph.type !== "dataGraph") {
                 renelem = (
@@ -50,11 +51,13 @@ export const nodePropertiesToElements = (
                     data={{
                       itemType: "dataGraphElement",
                       item: {
+                        nodeType: elem.data.id,
                         graphId: graph.id,
                         nodeId: node.id,
                         subnodeId: elem.id,
                         dataitemId: i.id,
                         dataItemName: i.name,
+                        label: i.name,
                       },
                     }}
                     name={i.id}
