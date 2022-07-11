@@ -26,9 +26,13 @@ export class DataReferenceNode extends DataProcessNode<any> {
       )
     );
 
-    const nodeData = node.data;
-    const initID: string = node.data.id as string;
-
-    dataTypeToSocket(initID, node, nodeData);
+    const nodeData = {
+      id: node.id,
+      ...node.data,
+      data: { dataGraph: { label: (node.data.dataGraph as any).data.label } },
+    };
+    const initID: string = (node.data as any).dataGraph.data.nodeType;
+    console.log(nodeData);
+    dataTypeToSocket(initID, node, node);
   }
 }
