@@ -36,7 +36,7 @@ export const renderDatagraphElement = (
   }
 
   return (
-    <div key={index}>
+    <div key={v4()}>
       <div
         style={{
           padding: "3px 10px",
