@@ -1,7 +1,6 @@
 import { DataGraphDraggableElement } from "../../../../../interfaces/DataGraphDraggableElement";
-import { Graphs } from "../../../../../interfaces/Graphs";
 import { Node } from "../../../../../packages/rete-1.4.4";
-import { dataTypeToSocket } from "../../../../../renderer/services/DataTypeToSocket";
+import { dataTypeToSocketRef } from "../../../../../renderer/services/DataTypeToSocket";
 import { DataRef } from "../../../../node_data/data_graph/35_DataRef";
 import NameController from "../../../renderer/controls/NameController";
 import DataProcessNode from "../DataProcessNode";
@@ -20,7 +19,7 @@ export class DataReferenceNode extends DataProcessNode<any> {
     node.addControl(
       new NameController(
         "Ref",
-        this.dragData.nodeId + "_" + this.dragData.dataitemId,
+        this.dragData.nodeId + "_" + this.dragData.dataItemId,
         this.dragData.dataItemName,
         node
       )
@@ -28,11 +27,9 @@ export class DataReferenceNode extends DataProcessNode<any> {
 
     const nodeData = {
       id: node.id,
-      ...node.data,
-      data: { dataGraph: { label: (node.data.dataGraph as any).data.label } },
+      name: this.dragData.dataItemName,
     };
     const initID: string = (node.data as any).dataGraph.data.nodeType;
-    console.log(nodeData);
-    dataTypeToSocket(initID, node, node);
+    dataTypeToSocketRef(initID, node, nodeData);
   }
 }
