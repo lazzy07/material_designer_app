@@ -1,4 +1,5 @@
 import React from "react";
+import { v4 } from "uuid";
 import { NodePropertyData } from "../../graph_node_functionality/interfaces/NodePropertyData";
 import { DataGraph } from "../../interfaces/DataGraph";
 import { Graphs, GRAPH_TYPES } from "../../interfaces/Graphs";
@@ -43,11 +44,11 @@ export const nodePropertiesToElements = (
 
           for (const i of Object.values(options)) {
             if (i.id === "default") {
-              console.log(node, elem, graph, i);
               let renelem: any;
               if (graph.type !== "dataGraph") {
                 renelem = (
                   <DraggableComponent
+                    key={v4()}
                     data={{
                       itemType: "dataGraphElement",
                       item: {
@@ -55,7 +56,7 @@ export const nodePropertiesToElements = (
                         graphId: graph.id,
                         nodeId: node.id,
                         subnodeId: elem.id,
-                        dataitemId: i.id,
+                        dataItemId: i.id,
                         dataItemName: i.name,
                         label: i.name,
                       },
