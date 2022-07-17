@@ -2,6 +2,6 @@ export interface DataGraphDraggableElement {
   graphId: string;
   nodeId: number;
   subnodeId: number;
-  dataitemId: string;
+  dataItemId: string;
   dataItemName: string;
 }
