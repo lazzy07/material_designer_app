@@ -26,7 +26,7 @@ export class DataReferenceNode extends DataProcessNode<any> {
     );
 
     const nodeData = {
-      id: node.id,
+      id: 1,
       name: this.dragData.dataItemName,
     };
     const initID: string = (node.data as any).dataGraph.data.nodeType;
