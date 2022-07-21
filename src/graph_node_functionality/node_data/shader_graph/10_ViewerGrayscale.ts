@@ -1,15 +1,15 @@
 import { Graphs } from "../../../interfaces/Graphs";
 
-export const Viewer = (): Graphs => ({
-  id: "9",
-  name: "Viewer",
+export const ViewerGrayscale = (): Graphs => ({
+  id: "10",
+  name: "Viewer Grayscale",
   type: "shaderGraph",
   contentType: "graph",
   children: [],
   dataGraph: {
-    id: "99",
+    id: "101",
     data: {},
-    parentId: "9",
+    parentId: "10",
     ioType: "output",
     operationType: "color",
   },
