@@ -3,7 +3,7 @@ import { COLOR_SOCKET } from "../../../../ConnectionTypes";
 import ImageController from "../../../renderer/controls/ImageController";
 import ShaderOutputNode from "../ShaderOutputNode";
 
-export class Viewer extends ShaderOutputNode {
+export class ViewerColor extends ShaderOutputNode {
   async builder(node: Node) {
     (node as any).data = { ...this.data };
     super.builder(node);
