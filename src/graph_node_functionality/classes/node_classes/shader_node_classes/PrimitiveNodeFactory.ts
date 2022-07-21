@@ -1,6 +1,4 @@
-import { v4 } from "uuid";
 import { Graphs } from "../../../../interfaces/Graphs";
-import { NodePropertyData } from "../../../interfaces/NodePropertyData";
 import { InputColor } from "./primitive_nodes/InputColor";
 import { InputGrayscale } from "./primitive_nodes/InputGrayscale";
 import { KernelInputColor } from "./primitive_nodes/KernelInputColor";
@@ -10,7 +8,8 @@ import { KernelOutputGrayscale } from "./primitive_nodes/KernelOutputGrayscale";
 import { OutputColor } from "./primitive_nodes/OutputColor";
 import { OutputGrayscale } from "./primitive_nodes/OutputGrayscale";
 import { ShaderGraphNode } from "./primitive_nodes/ShaderGraphNode";
-import { Viewer } from "./primitive_nodes/Viewer";
+import { ViewerColor } from "./primitive_nodes/ViewerColor";
+import { ViewerGrayscale } from "./primitive_nodes/ViewerGrayscale";
 import ShaderNodeEditor from "./ShaderNodeEditor";
 
 export const getNodeFromFactory = (
@@ -35,7 +34,9 @@ export const getNodeFromFactory = (
     case "8":
       return new OutputGrayscale(nodeData, "shaderGraph", editor);
     case "9":
-      return new Viewer(nodeData, "shaderGraph", editor);
+      return new ViewerColor(nodeData, "shaderGraph", editor);
+    case "10":
+      return new ViewerGrayscale(nodeData, "shaderGraph", editor);
     default:
       return new ShaderGraphNode(nodeData, "shaderGraph", editor);
   }
