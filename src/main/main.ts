@@ -58,7 +58,7 @@ const initializeApp = () => {
 
   try {
     MatdV8.init(
-      "H:/projects/material_designer/material_designer_lib/bin/Windows/x64/Debug/matd_v8_bindings.node"
+      "C:/personal/projects/material_designer/material_designer_library_alpha/bin/Windows/x64/Debug/matd_v8_bindings.node"
     );
     let state: Store = store.getState();
     MatdV8.openMaterialProject(JSON.stringify(state.project));

@@ -12,6 +12,8 @@ export class EditorScreen {
     minWidth: 800,
     frame: false,
     transparent: true,
+    resizable: true,
+    maximizable: true,
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,

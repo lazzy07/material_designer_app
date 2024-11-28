@@ -86,7 +86,7 @@ export default class ContextMenu extends Component<Props> {
   };
 
   componentDidMount = () => {
-    this.ref.current!.handleClickDoc();
+    this.ref.current!.handleClickDoc(null);
   };
 
   render() {
