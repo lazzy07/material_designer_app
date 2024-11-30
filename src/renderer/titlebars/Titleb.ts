@@ -1,12 +1,14 @@
-import { Titlebar, Color } from "custom-electron-titlebar";
 import { defaultColors } from "../constants/Colors";
-import { ipcRenderer } from "electron";
+import { ipcRenderer, Menu } from "electron";
 import { IpcMessages } from "../../IpcMessages";
 import { EditorMenu } from "../menus/EditorMenu";
+import { Titlebar, Color } from "custom-electron-titlebar";
+import {} from "electron"
 
 export class Titleb {
-  private titlebar: Titlebar;
   private menu: Electron.Menu | undefined;
+  private titlebar: Titlebar;
+
   constructor(options?: any) {
     this.titlebar = new Titlebar({
       backgroundColor: Color.fromHex(defaultColors.IMPORTANT_BACKGROUND_COLOR),
@@ -21,6 +23,10 @@ export class Titleb {
     return this.titlebar;
   };
 
+  getMenu = () => {
+    return this.menu;
+  }
+
   startListenUpdateMenu = () => {
     ipcRenderer.on(IpcMessages.UPDATE_TITLEBAR, () => {
       const em = new EditorMenu();
@@ -30,6 +36,5 @@ export class Titleb {
 
   setMenu = (menu: Electron.Menu) => {
     this.menu = menu;
-    this.titlebar.updateMenu(menu);
   };
 }

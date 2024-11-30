@@ -27,6 +27,7 @@ import PreferencesScreenHot from "./PreferencesScreenHot";
 import ColorPickerHot from "./ColorPickerHot";
 import { ThemeManager } from "./constants/Colors";
 import { Preferences } from "./services/Preferences";
+import { max } from "lodash";
 
 let titlebar: Titleb;
 const lastPart = window.location.href.split("?")[1];
@@ -42,6 +43,7 @@ switch (windowType) {
     titlebar = new Titleb({
       icon: getStaticPath("/dependencies/img/icon_32x32.png"),
       shadow: false,
+      maximizable: true,
     });
     element = (
       <div>
@@ -59,7 +61,7 @@ switch (windowType) {
       maximizable: false,
       titleHorizontalAlignment: "center",
     });
-    titlebar.getTitlebar().updateTitle("Login - Material Designer");
+    // titlebar.getTitlebar().updateTitle("Login - Material Designer");
 
     element = <LoginHot />;
     break;
@@ -71,7 +73,7 @@ switch (windowType) {
       titleHorizontalAlignment: "center",
       minimizable: false,
     });
-    titlebar.getTitlebar().updateTitle("Open Project");
+    // titlebar.getTitlebar().updateTitle("Open Project");
     element = <OpenProjectHot />;
     break;
 
@@ -83,7 +85,7 @@ switch (windowType) {
       titleHorizontalAlignment: "center",
       minimizable: false,
     });
-    titlebar.getTitlebar().updateTitle("New Project");
+    // titlebar.getTitlebar().updateTitle("New Project");
     element = <NewProjectHot />;
     break;
 
@@ -95,7 +97,7 @@ switch (windowType) {
       titleHorizontalAlignment: "center",
       minimizable: false,
     });
-    titlebar.getTitlebar().updateTitle("Import Assets - Material designer");
+    // titlebar.getTitlebar().updateTitle("Import Assets - Material designer");
     element = <ImportHot />;
     break;
 
@@ -108,7 +110,7 @@ switch (windowType) {
       titleHorizontalAlignment: "center",
       minimizable: false,
     });
-    titlebar.getTitlebar().updateTitle("Save Project");
+    // titlebar.getTitlebar().updateTitle("Save Project");
     element = <SaveProjectHot />;
     break;
   case "subeditor":
@@ -132,7 +134,7 @@ switch (windowType) {
       titleHorizontalAlignment: "center",
       minimizable: false,
     });
-    titlebar.getTitlebar().updateTitle("Preferences Manager");
+    // titlebar.getTitlebar().updateTitle("Preferences Manager");
     element = <PreferencesScreenHot />;
     break;
   case "colorpicker":
@@ -145,7 +147,7 @@ switch (windowType) {
       titleHorizontalAlignment: "center",
       minimizable: false,
     });
-    titlebar.getTitlebar().updateTitle("Color Picker");
+    // titlebar.getTitlebar().updateTitle("Color Picker");
     element = <ColorPickerHot color={color} />;
     break;
 }
